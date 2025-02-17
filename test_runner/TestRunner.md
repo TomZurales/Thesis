@@ -11,15 +11,14 @@ Test Runner is used to ensure that every test of a SLAM system is accomplished i
 
 ## Database Schema
 ### Test
-* Datestamp
-* Timestamp
-* FK: Thesis Repo ID
-* Thesis Repo Dirty
-* FK: SLAM System Repo ID
-* SLAM Repo Dirty
-* FK: Config ID
-* FK: Dataset ID
-* 
+* id
+* timestamp
+* slam_system_name
+* config_name
+* thesis_hash
+* slam_system_hash
+* output_dir
+* success
 
 ## Process
 ### Pre-Test Checks
