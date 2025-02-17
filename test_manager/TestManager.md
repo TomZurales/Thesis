@@ -1,9 +1,10 @@
 # Install
 ## Dependencies
 * pygit2
+* imgui
 
-# Test Runner
-Test Runner is used to ensure that every test of a SLAM system is accomplished in a repeatable way, with no loss of important data. This is accomplished by recording the current hash of all involved repositories, datasets, and config files at test time to a test database. Additionally, test config files can be used to specify all generated outputs which should be saved.
+# Test Manager
+Test Manager is used to ensure that every test of a SLAM system is accomplished in a repeatable way, with no loss of important data. This is accomplished by recording the current hash of all involved repositories, datasets, and config files at test time to a test database. Additionally, test config files can be used to specify all generated outputs which should be saved.
 
 ## Inputs
 * SLAM System - The name of the slam system which will run the test (Eg. ORB_SLAM3)
@@ -33,6 +34,6 @@ The current git commit hash of the ```thesis``` repository is recorded, along wi
 
 The file hash of the config file is recorded and compared to the previous. If the hash is different, the config version is changed accordingly.
 
-The hash of the test_runner binary is recorded and compared to the previous. If the hash is different, the test runner version is changed accordingly.
+The hash of the test_runner binary is recorded and compared to the previous. If the hash is different, the test manager version is changed accordingly.
 
 ## Config File Verification
