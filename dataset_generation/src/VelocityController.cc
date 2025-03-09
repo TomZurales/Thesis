@@ -5,7 +5,8 @@ GZ_ADD_PLUGIN(
     gz::sim::System,
     dataset_generation::VelocityController::ISystemConfigure,
     dataset_generation::VelocityController::ISystemPreUpdate,
-    dataset_generation::VelocityController::ISystemPostUpdate);
+    dataset_generation::VelocityController::ISystemPostUpdate,
+    dataset_generation::VelocityController::ISystemReset);
 
 using namespace dataset_generation;
 
@@ -17,6 +18,9 @@ VelocityController::~VelocityController()
 {
     if(joystick_fd >= 0)
         close(joystick_fd);
+
+    std::cout << "[VelocityController] Closing control file..." << std::endl;
+    controlFile.close();
 }
 
 void VelocityController::Configure(const gz::sim::Entity &_entity, const std::shared_ptr<const sdf::Element> &_sdf,
@@ -54,6 +58,15 @@ void VelocityController::Configure(const gz::sim::Entity &_entity, const std::sh
         std::cerr << "[VelocityController] Setup Failed, verify observer model is loaded.\nError: " << e.what() << std::endl;
         return;
     }
+
+    std::string outputFilePath = "forces.txt";
+    controlFile.open(outputFilePath, std::ios::out | std::ios::trunc);
+    if (!controlFile.is_open())
+    {
+        std::cerr << "[VelocityController] Failed to open output file " << outputFilePath << std::endl;
+        exit(1);
+    }
+    std::cout << "[VelocityController] Opening output file " << outputFilePath << std::endl;
     std::cout << "[VelocityController] Done Initializing" << std::endl;
 }
 
@@ -61,12 +74,15 @@ std::vector<float> VelocityController::ReadJoystick()
 {
     struct js_event js;
     ssize_t bytes = read(joystick_fd, &js, sizeof(js_event));
+    hasInput = false;
     if (bytes > 0)
     {
         if (js.type == JS_EVENT_AXIS)
         {
             if(js.number < 4)
             {
+                startCounting = true;
+                hasInput = true;
                 axes[js.number] = js.value / 32767.0f;
             }
             else {
@@ -88,6 +104,7 @@ void VelocityController::PreUpdate(const gz::sim::UpdateInfo &_info,
     // Set z_slider_joint force based on setpoint
     double z_slider_joint_setpoint = map_range(axes[0], -1.0, 1.0, z_slider_joint_min, z_slider_joint_max);
     double z_slider_joint_position = z_slider_joint.Position(_ecm).value()[0];
+
     if(abs(z_slider_joint_setpoint - z_slider_joint_position) > z_slider_joint_deadzone)
     {
         z_slider_joint.SetForce(_ecm, {z_slider_joint_force * min(z_slider_joint_setpoint - z_slider_joint_position, 1)});
@@ -130,6 +147,13 @@ void VelocityController::PreUpdate(const gz::sim::UpdateInfo &_info,
         // link.AddWorldWrench(_ecm, gz::math::v7::Vector3d(vel.X() * -3, vel.Y() * -3, 0), gz::math::v7::Vector3d(0.0, 0.0, ang_vel.Z() * -3));
         // }
     }
+
+    if(startCounting)
+    {
+        step++;
+        if(hasInput)
+            controlFile << std::fixed << std::setprecision(3) << step << " " << axes[0] << " " << axes[1] << " " << axes[2] << " " << axes[3] << std::endl;
+    }
 }
 
 void VelocityController::PostUpdate(const gz::sim::UpdateInfo &_info,
@@ -146,4 +170,11 @@ void VelocityController::PostUpdate(const gz::sim::UpdateInfo &_info,
     //     link.SetLinearVelocity(_ecm, gz::math::v7::Vector3d(0.0, 0.0, 0.0));
     //     body.SetWorldPoseCmd(_ecm, gz::math::v7::Pose3d(link.WorldPose().value().Coor, gz::math::v7::Quaterniond(0.0, 0.0, 0.0, 1.0)));
     // }
+}
+
+void VelocityController::Reset(const gz::sim::UpdateInfo &_info,
+    gz::sim::EntityComponentManager &_ecm)
+{
+    std::cout << "[VelocityController] Closing control file..." << std::endl;
+    controlFile.close();
 }

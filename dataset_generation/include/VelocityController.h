@@ -11,6 +11,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <vector>
+#include <fstream>
 #include <iomanip>
 
 #define map_range(value, in_min, in_max, out_min, out_max) \
@@ -22,7 +23,7 @@
  
 namespace dataset_generation
 {
-  class VelocityController: public gz::sim::System, public gz::sim::ISystemConfigure, public gz::sim::ISystemPreUpdate, public gz::sim::ISystemPostUpdate
+  class VelocityController: public gz::sim::System, public gz::sim::ISystemConfigure, public gz::sim::ISystemPreUpdate, public gz::sim::ISystemPostUpdate, public gz::sim::ISystemReset
   {
   private:
     int joystick_fd = -1;
@@ -42,6 +43,17 @@ namespace dataset_generation
     const double z_slider_joint_force = 5.0;
     const double z_slider_joint_deadzone = 0.1;
 
+    // hasInput = true if usable joystick input was detected the last time ReadJoystick was called
+    // This is used to determine if the forces should be recorded at the current step
+    bool hasInput = false;
+
+    bool startCounting = false;
+
+    // The current step of the simulation. This is used for recording forces to a file
+    uint64_t step = 0;
+
+    std::ofstream controlFile;
+
   public: 
     VelocityController();
     ~VelocityController() override;
@@ -53,6 +65,9 @@ namespace dataset_generation
         gz::sim::EntityComponentManager &_ecm) override;
 
     void PostUpdate(const gz::sim::UpdateInfo &_info,
-          const gz::sim::EntityComponentManager &_ecm) override;;
+          const gz::sim::EntityComponentManager &_ecm) override;
+
+    void Reset(const gz::sim::UpdateInfo &_info,
+        gz::sim::EntityComponentManager &_ecm) override;
   };
 }
