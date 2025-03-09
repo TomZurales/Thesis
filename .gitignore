@@ -2,5 +2,7 @@
 build/
 datasets/
 venv/
+__pycache__/
+
 
 imgui.ini
