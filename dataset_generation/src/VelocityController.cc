@@ -59,7 +59,7 @@ void VelocityController::Configure(const gz::sim::Entity &_entity, const std::sh
         return;
     }
 
-    std::string outputFilePath = "forces.txt";
+    std::string outputFilePath = "/tmp/forces.txt";
     controlFile.open(outputFilePath, std::ios::out | std::ios::trunc);
     if (!controlFile.is_open())
     {
@@ -68,6 +68,18 @@ void VelocityController::Configure(const gz::sim::Entity &_entity, const std::sh
     }
     std::cout << "[VelocityController] Opening output file " << outputFilePath << std::endl;
     std::cout << "[VelocityController] Done Initializing" << std::endl;
+
+    // sdf::SDFPtr loadedSDF(new sdf::SDF());
+    // sdf::init(loadedSDF);
+    // if (!sdf::readFile("/home/tom/workspace/thesis/dataset_generation/world_1/warehouse.sdf", loadedSDF))
+    // {
+    //   std::cerr << " is not a valid SDF file!" << std::endl;
+    // }
+    // gz::sim::SdfEntityCreator creator(_ecm, _eventManager);
+    // sdf::Model model;
+    // // sdf::World world;
+    // model.Load(loadedSDF->Root()->GetElement("model"));
+    // creator.CreateEntities(&model);
 }
 
 std::vector<float> VelocityController::ReadJoystick()
@@ -178,3 +190,5 @@ void VelocityController::Reset(const gz::sim::UpdateInfo &_info,
     std::cout << "[VelocityController] Closing control file..." << std::endl;
     controlFile.close();
 }
+
+// TODO: Create a UI element with a file selector and a record button

@@ -6,6 +6,8 @@
 #include <gz/plugin/RegisterMore.hh>
 #include <gz/sim/Link.hh>
 #include <gz/math7/gz/math.hh>
+#include <gz/sdformat14/sdformat.hh>
+#include <gz/sim/SdfEntityCreator.hh>
 #include <gz/sim/Joint.hh>
 #include <linux/joystick.h>
 #include <fcntl.h>

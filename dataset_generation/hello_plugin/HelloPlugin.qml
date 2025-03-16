@@ -17,9 +17,11 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.0
 import QtQuick.Dialogs 1.0
+
 Rectangle {
   color: "transparent"
   anchors.fill: parent
+
   Button {
     text: qsTr("Hello, plugin!")
     highlighted: true

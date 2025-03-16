@@ -1,5 +1,7 @@
 # Dataset Generation
-I need to create 3D environments for SLAM datasets. The controlable aspects of the dataset include: Movable "dynamic" objects, Force control over the body with the camera, and lockable axes. The outputs are stereo video, IMU readings, and ground truth positions.
+Datasets for my thesis consist of:
+* A stereo image stream
+* A stereo segmented image stream, highlighting the objects which are 
 
 # Plugins
 We have a couple of different plugins
