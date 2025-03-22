@@ -34,6 +34,7 @@ public:
         // Start joystick reading thread
         running = true;
         joystickThread = std::thread(&JoystickPlugin::ReadJoystick, this);
+        std::cout << "[JoystickPlugin] Initialized" << std::endl;
     }
 
     ~JoystickPlugin()
@@ -64,7 +65,7 @@ private:
             if (bytes > 0)
             {
                 // Parse event
-                switch (js.type & ~JS_EVENT_INIT)
+                switch (js.type)
                 {
                 case JS_EVENT_AXIS:
                     if (js.number < axes.size())
@@ -79,11 +80,8 @@ private:
                 // Publish joystick message
                 msgs::Joystick msg;
                 for (float axis : axes)
-                    std::cout << axis << " ";
                 for (int button : buttons)
                     msg.add_buttons(button);
-                
-                node.Request("/joystick", msg);
             }
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }

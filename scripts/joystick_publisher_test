@@ -1,0 +1,3 @@
+#!/bin/bash
+
+gz sim $THESIS/dataset_generation/sdf/joystick_publisher_test.sdf
