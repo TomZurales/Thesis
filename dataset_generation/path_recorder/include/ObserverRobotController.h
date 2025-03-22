@@ -1,15 +1,13 @@
 #pragma once
 
+#include "JoystickManager.h"
+
 #include <iostream>
-#include <gz/sim/System.hh>
-#include <gz/plugin/Register.hh>
-#include <gz/plugin/RegisterMore.hh>
-#include <gz/sim/Link.hh>
-#include <gz/math7/gz/math.hh>
-#include <gz/sdformat14/sdformat.hh>
-#include <gz/sim/SdfEntityCreator.hh>
-#include <gz/sim/Joint.hh>
-#include <linux/joystick.h>
+#include <gz/sim9/gz/sim.hh>
+#include <gz/plugin3/gz/plugin.hh>
+#include <gz/plugin3/gz/plugin/RegisterMore.hh>
+#include <gz/math8/gz/math.hh>
+#include <gz/sdformat15/sdformat.hh>
 #include <fcntl.h>
 #include <unistd.h>
 #include <vector>
@@ -25,12 +23,12 @@
  
 namespace dataset_generation
 {
-  class ObserverRobotController: public gz::sim::System, public gz::sim::ISystemConfigure, public gz::sim::ISystemPreUpdate, public gz::sim::ISystemPostUpdate, public gz::sim::ISystemReset
+  class ObserverRobotController: public gz::sim::System, public gz::sim::ISystemConfigure, public gz::sim::ISystemPreUpdate, public gz::sim::ISystemPostUpdate
   {
   private:
     int joystick_fd = -1;
-    std::vector<float> axes;  // Reading only the first 4 axes
-    std::vector<float> ReadJoystick();
+
+    JoystickManager jm;
 
     float ax, ay, twz = 0;
     float az = -9.81;
@@ -69,7 +67,7 @@ namespace dataset_generation
     void PostUpdate(const gz::sim::UpdateInfo &_info,
           const gz::sim::EntityComponentManager &_ecm) override;
 
-    void Reset(const gz::sim::UpdateInfo &_info,
-        gz::sim::EntityComponentManager &_ecm) override;
+    // void Reset(const gz::sim::UpdateInfo &_info,
+    //     const gz::sim::EntityComponentManager &_ecm) override;
   };
 }

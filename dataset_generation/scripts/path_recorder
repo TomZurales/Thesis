@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export GZ_GUI_PLUGIN_PATH=$GZ_GUI_PLUGIN_PATH:${THESIS}/dataset_generation/build
-export GZ_SIM_SYSTEM_PLUGIN_PATH=$GZ_SIM_SYSTEM_PLUGIN_PATH:${THESIS}/dataset_generation/build
+export GZ_GUI_PLUGIN_PATH=$GZ_GUI_PLUGIN_PATH:${THESIS}/dataset_generation/lib
+export GZ_SIM_SYSTEM_PLUGIN_PATH=$GZ_SIM_SYSTEM_PLUGIN_PATH:${THESIS}/dataset_generation/lib
 export GZ_SIM_RESOURCE_PATH=$GZ_SIM_RESOURCE_PATH:${THESIS}/dataset_generation/sdf
 
 gz sim ${THESIS}/dataset_generation/sdf/path_recorder.sdf
