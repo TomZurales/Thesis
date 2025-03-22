@@ -1,9 +1,8 @@
 #include <JoystickManager.h>
 
-#include <gz/sim/System.hh>
-#include <gz/transport/Node.hh>
-#include <gz/msgs/joystick.pb.h>
-#include <gz/plugin/Register.hh>
+// #include <gz/transport/Node.hh>
+// #include <gz/msgs/joystick.pb.h>
+// #include <gz/plugin/Register.hh>
 
 #include <linux/joystick.h>
 #include <fcntl.h>
@@ -12,8 +11,8 @@
 #include <vector>
 #include <iostream>
 
-using namespace gz;
-using namespace sim;
+// using namespace gz;
+// using namespace sim;
 
 JoystickManager::JoystickManager()
 {
@@ -35,8 +34,6 @@ JoystickManager::~JoystickManager()
 
 JoystickData JoystickManager::readJoystick()
 {
-    struct JoystickData data;
-
     struct js_event js;
     ssize_t bytes = read(joystick_fd, &js, sizeof(js_event));
 
@@ -44,10 +41,10 @@ JoystickData JoystickManager::readJoystick()
     {
         if (js.type == JS_EVENT_AXIS)
         {
-            if(js.number == 0) data.lh = js.value / 32767.0f;
-            else if(js.number == 1) data.lv = js.value / 32767.0f;
-            else if(js.number == 2) data.rh = js.value / 32767.0f;
-            else if(js.number == 3) data.rv = js.value / 32767.0f;
+            if(js.number == 0) data.lv = js.value / 32767.0f;
+            else if(js.number == 1) data.rh = js.value / 32767.0f;
+            else if(js.number == 2) data.rv = js.value / 32767.0f;
+            else if(js.number == 3) data.lh = js.value / 32767.0f;
         }
     }
 

@@ -25,7 +25,7 @@
  
 namespace dataset_generation
 {
-  class VelocityController: public gz::sim::System, public gz::sim::ISystemConfigure, public gz::sim::ISystemPreUpdate, public gz::sim::ISystemPostUpdate, public gz::sim::ISystemReset
+  class ObserverRobotController: public gz::sim::System, public gz::sim::ISystemConfigure, public gz::sim::ISystemPreUpdate, public gz::sim::ISystemPostUpdate, public gz::sim::ISystemReset
   {
   private:
     int joystick_fd = -1;
@@ -57,8 +57,8 @@ namespace dataset_generation
     std::ofstream controlFile;
 
   public: 
-    VelocityController();
-    ~VelocityController() override;
+    ObserverRobotController();
+    ~ObserverRobotController() override;
 
     void Configure(const gz::sim::Entity &_entity, const std::shared_ptr<const sdf::Element> &_sdf,
         gz::sim::EntityComponentManager &_ecm, gz::sim::EventManager &_eventManager) override;

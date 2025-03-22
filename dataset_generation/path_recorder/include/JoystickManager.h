@@ -1,5 +1,8 @@
 #pragma once
 
+#include <sstream>
+#include <stdio_ext.h>
+
 struct JoystickData
 {
     float lh = 0;
@@ -9,7 +12,9 @@ struct JoystickData
 
     std::string toString()
     {
-        std::cout << "lh: " << lh << ", " << "lv: " << lv  << "rh: " << rh << ", " << "rv: " << rv << std::endl;
+        std::stringstream ss;
+        ss << "lh: " << lh << ", lv: " << lv << ", rh: " << rh << ", rv: " << rv;
+        return ss.str();
     }
 };
 
@@ -18,6 +23,7 @@ class JoystickManager
 private:
     int joystick_fd = -1;
     bool connected = false;
+    struct JoystickData data;
 
 public:
     JoystickManager();

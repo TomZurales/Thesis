@@ -1,37 +1,37 @@
-#include "VelocityController.h"
+#include "ObserverRobotController.h"
 
 GZ_ADD_PLUGIN(
-    dataset_generation::VelocityController,
+    dataset_generation::ObserverRobotController,
     gz::sim::System,
-    dataset_generation::VelocityController::ISystemConfigure,
-    dataset_generation::VelocityController::ISystemPreUpdate,
-    dataset_generation::VelocityController::ISystemPostUpdate,
-    dataset_generation::VelocityController::ISystemReset);
+    dataset_generation::ObserverRobotController::ISystemConfigure,
+    dataset_generation::ObserverRobotController::ISystemPreUpdate,
+    dataset_generation::ObserverRobotController::ISystemPostUpdate,
+    dataset_generation::ObserverRobotController::ISystemReset);
 
 using namespace dataset_generation;
 
-VelocityController::VelocityController()
+ObserverRobotController::ObserverRobotController()
 {
 }
 
-VelocityController::~VelocityController()
+ObserverRobotController::~ObserverRobotController()
 {
     if(joystick_fd >= 0)
         close(joystick_fd);
 
-    std::cout << "[VelocityController] Closing control file..." << std::endl;
+    std::cout << "[ObserverRobotController] Closing control file..." << std::endl;
     controlFile.close();
 }
 
-void VelocityController::Configure(const gz::sim::Entity &_entity, const std::shared_ptr<const sdf::Element> &_sdf,
+void ObserverRobotController::Configure(const gz::sim::Entity &_entity, const std::shared_ptr<const sdf::Element> &_sdf,
     gz::sim::EntityComponentManager &_ecm, gz::sim::EventManager &_eventManager)
 {
-    std::cout << "[VelocityController] Initializing..." << std::fixed << std::setprecision(3) << std::endl;
+    std::cout << "[ObserverRobotController] Initializing..." << std::fixed << std::setprecision(3) << std::endl;
 
     joystick_fd = open("/dev/input/js0", O_RDONLY | O_NONBLOCK);
     if (joystick_fd < 0)
     {
-        std::cerr << "[VelocityController] Failed to open /dev/input/js0" << std::endl;
+        std::cerr << "[ObserverRobotController] Failed to open /dev/input/js0" << std::endl;
         return;
     }
     axes = std::vector<float>(4, 0.0f);
@@ -51,11 +51,11 @@ void VelocityController::Configure(const gz::sim::Entity &_entity, const std::sh
         }
         z_slider_joint_min = z_slider_joint_min + 1;
         z_slider_joint_max = z_slider_joint_max - 1;
-        std::cout << "[VelocityController] z_slider_joint_min: " << z_slider_joint_min << std::endl;
-        std::cout << "[VelocityController] z_slider_joint_max: " << z_slider_joint_max << std::endl;
+        std::cout << "[ObserverRobotController] z_slider_joint_min: " << z_slider_joint_min << std::endl;
+        std::cout << "[ObserverRobotController] z_slider_joint_max: " << z_slider_joint_max << std::endl;
     } catch (const std::exception &e)
     {
-        std::cerr << "[VelocityController] Setup Failed, verify observer model is loaded.\nError: " << e.what() << std::endl;
+        std::cerr << "[ObserverRobotController] Setup Failed, verify observer model is loaded.\nError: " << e.what() << std::endl;
         return;
     }
 
@@ -63,11 +63,11 @@ void VelocityController::Configure(const gz::sim::Entity &_entity, const std::sh
     controlFile.open(outputFilePath, std::ios::out | std::ios::trunc);
     if (!controlFile.is_open())
     {
-        std::cerr << "[VelocityController] Failed to open output file " << outputFilePath << std::endl;
+        std::cerr << "[ObserverRobotController] Failed to open output file " << outputFilePath << std::endl;
         exit(1);
     }
-    std::cout << "[VelocityController] Opening output file " << outputFilePath << std::endl;
-    std::cout << "[VelocityController] Done Initializing" << std::endl;
+    std::cout << "[ObserverRobotController] Opening output file " << outputFilePath << std::endl;
+    std::cout << "[ObserverRobotController] Done Initializing" << std::endl;
 
     // sdf::SDFPtr loadedSDF(new sdf::SDF());
     // sdf::init(loadedSDF);
@@ -82,7 +82,7 @@ void VelocityController::Configure(const gz::sim::Entity &_entity, const std::sh
     // creator.CreateEntities(&model);
 }
 
-std::vector<float> VelocityController::ReadJoystick()
+std::vector<float> ObserverRobotController::ReadJoystick()
 {
     struct js_event js;
     ssize_t bytes = read(joystick_fd, &js, sizeof(js_event));
@@ -105,7 +105,7 @@ std::vector<float> VelocityController::ReadJoystick()
     return axes;
 }
 
-void VelocityController::PreUpdate(const gz::sim::UpdateInfo &_info,
+void ObserverRobotController::PreUpdate(const gz::sim::UpdateInfo &_info,
     gz::sim::EntityComponentManager &_ecm)
 {
     if(_info.paused)
@@ -168,7 +168,7 @@ void VelocityController::PreUpdate(const gz::sim::UpdateInfo &_info,
     }
 }
 
-void VelocityController::PostUpdate(const gz::sim::UpdateInfo &_info,
+void ObserverRobotController::PostUpdate(const gz::sim::UpdateInfo &_info,
     const gz::sim::EntityComponentManager &_ecm)
 {
     // if(_info.paused)
@@ -184,10 +184,10 @@ void VelocityController::PostUpdate(const gz::sim::UpdateInfo &_info,
     // }
 }
 
-void VelocityController::Reset(const gz::sim::UpdateInfo &_info,
+void ObserverRobotController::Reset(const gz::sim::UpdateInfo &_info,
     gz::sim::EntityComponentManager &_ecm)
 {
-    std::cout << "[VelocityController] Closing control file..." << std::endl;
+    std::cout << "[ObserverRobotController] Closing control file..." << std::endl;
     controlFile.close();
 }
 
