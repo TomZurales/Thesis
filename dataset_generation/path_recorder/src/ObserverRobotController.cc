@@ -1,16 +1,10 @@
 #include "ObserverRobotController.h"
 
-GZ_ADD_PLUGIN(
-    dataset_generation::ObserverRobotController,
-    gz::sim::System,
-    dataset_generation::ObserverRobotController::ISystemConfigure,
-    dataset_generation::ObserverRobotController::ISystemPreUpdate,
-    dataset_generation::ObserverRobotController::ISystemPostUpdate);
-
 using namespace dataset_generation;
 
 ObserverRobotController::ObserverRobotController()
 {
+    jm = std::unique_ptr<JoystickManager>(new JoystickManager());
 }
 
 ObserverRobotController::~ObserverRobotController()
@@ -19,6 +13,7 @@ ObserverRobotController::~ObserverRobotController()
         close(joystick_fd);
 
     std::cout << "[ObserverRobotController] Closing control file..." << std::endl;
+    jm->~JoystickManager();
     controlFile.close();
 }
 
@@ -26,7 +21,6 @@ void ObserverRobotController::Configure(const gz::sim::Entity &_entity, const st
                                         gz::sim::EntityComponentManager &_ecm, gz::sim::EventManager &_eventManager)
 {
     std::cout << "[ObserverRobotController] Initializing..." << std::fixed << std::setprecision(3) << std::endl;
-    jm = JoystickManager();
     try
     {
         z_slider_joint = gz::sim::Joint(_ecm.EntityByName("z_slider_joint").value());
@@ -79,7 +73,7 @@ void ObserverRobotController::PreUpdate(const gz::sim::UpdateInfo &_info,
     if (_info.paused)
         return;
 
-    JoystickData jd = jm.readJoystick();
+    JoystickData jd = jm->readJoystick();
 
     // Set z_slider_joint force based on setpoint
     double z_slider_joint_setpoint = map_range(jd.lv, -1.0, 1.0, z_slider_joint_min, z_slider_joint_max);
@@ -107,13 +101,13 @@ void ObserverRobotController::PreUpdate(const gz::sim::UpdateInfo &_info,
         auto pose = link.WorldPose(_ecm).value();
         auto body_rotation = pose.Rot().Yaw();
 
-        auto body_force_vec = gz::math::v8::Vector3d(jd.rv * 6, -jd.rh * 6, 0.0);
+        auto body_force_vec = gz::math::v8::Vector3d(jd.rv * 6, -jd.lh * 6, 0.0);
         auto world_force_vec = gz::math::v8::Vector3d(
             body_force_vec.X() * cos(body_rotation) - body_force_vec.Y() * sin(body_rotation),
             body_force_vec.X() * sin(body_rotation) + body_force_vec.Y() * cos(body_rotation),
             0.0);
         // link.SetLinearVelocity(_ecm, gz::math::v7::Vector3d(axes[2], -axes[1], 0.0));
-        link.AddWorldWrench(_ecm, world_force_vec, gz::math::v8::Vector3d(0.0, 0.0, -jd.lh * 5));
+        link.AddWorldWrench(_ecm, world_force_vec, gz::math::v8::Vector3d(0.0, 0.0, -jd.rh * 5));
         // // link.SetAngularVelocity(_ecm, gz::math::v7::Vector3d(0.0, 0.0, -axes[3]));
         // link.EnableVelocityChecks(_ecm, true);
         // // Get the current linear and angular velocities

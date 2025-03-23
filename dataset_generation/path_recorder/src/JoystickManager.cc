@@ -47,7 +47,7 @@ JoystickData JoystickManager::readJoystick()
             else if(js.number == 3) data.lh = js.value / 32767.0f;
         }
     }
-    std::cout << data.toString() << std::endl;
+
     return data;
 }
 

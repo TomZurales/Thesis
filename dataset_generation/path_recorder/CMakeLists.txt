@@ -8,9 +8,9 @@ add_library(JoystickManager src/JoystickManager.cc)
 target_include_directories(JoystickManager PUBLIC include)
 target_compile_options(JoystickManager PRIVATE -fPIC)
 
-add_library(ObserverRobotController SHARED src/ObserverRobotController.cc)
+add_library(ObserverRobotController SHARED src/ObserverRobotController.cc src/JoystickManager.cc)
 target_include_directories(ObserverRobotController PRIVATE include)
-target_link_libraries(ObserverRobotController PRIVATE JoystickManager)
+# target_link_libraries(ObserverRobotController PRIVATE JoystickManager)
 target_link_libraries(ObserverRobotController
   PRIVATE gz-plugin3::gz-plugin3
   PRIVATE gz-sim9::gz-sim9

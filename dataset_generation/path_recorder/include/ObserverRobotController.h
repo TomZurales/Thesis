@@ -5,13 +5,14 @@
 #include <iostream>
 #include <gz/sim9/gz/sim.hh>
 #include <gz/plugin3/gz/plugin.hh>
-#include <gz/plugin3/gz/plugin/RegisterMore.hh>
+#include <gz/plugin3/gz/plugin/Register.hh>
 #include <gz/math8/gz/math.hh>
-#include <gz/sdformat15/sdformat.hh>
+#include <gz/sdformat15/sdformat.hh> 
 #include <fcntl.h>
 #include <unistd.h>
 #include <vector>
 #include <fstream>
+#include <memory>
 #include <iomanip>
 
 #define map_range(value, in_min, in_max, out_min, out_max) \
@@ -28,7 +29,7 @@ namespace dataset_generation
   private:
     int joystick_fd = -1;
 
-    JoystickManager jm;
+    std::unique_ptr<JoystickManager> jm;
 
     float ax, ay, twz = 0;
     float az = -9.81;
@@ -71,3 +72,10 @@ namespace dataset_generation
     //     const gz::sim::EntityComponentManager &_ecm) override;
   };
 }
+
+GZ_ADD_PLUGIN(
+  dataset_generation::ObserverRobotController,
+  gz::sim::System,
+  dataset_generation::ObserverRobotController::ISystemConfigure,
+  dataset_generation::ObserverRobotController::ISystemPreUpdate,
+  dataset_generation::ObserverRobotController::ISystemPostUpdate);
