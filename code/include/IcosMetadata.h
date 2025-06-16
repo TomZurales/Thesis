@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "Point.h"
+#include "Icosahedron.h"
 
 class IcosMetadata
 {
@@ -16,6 +17,10 @@ private:
   std::vector<float> faceDists = std::vector<float>(20, 1.0f);
 
   int getClosestIcosFaceIndex(Eigen::Vector3f cameraPose);
+
+  std::vector<Eigen::Vector3f> icosVertices = {
+      Eigen::Vector3f(0.0f, 0.0f, 0.0f) // Placeholder vertex, actual vertices will be set later
+  };
 
   std::vector<Eigen::Vector3f> faceCenterVecs = {
       Eigen::Vector3f(-0.57735027, -0.57735027, -0.57735027),

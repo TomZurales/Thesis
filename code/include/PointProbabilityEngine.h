@@ -19,4 +19,7 @@ public:
   PointProbabilityEngine();
 
   void Update(Eigen::Matrix4f cameraPose, std::vector<Point *> visiblePoints);
+  
+  // Getter for points
+  const std::map<Point *, std::shared_ptr<IcosMetadata>>& getPointData() const { return pointData; }
 };
