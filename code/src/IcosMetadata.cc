@@ -4,7 +4,8 @@
 void IcosMetadata::addFailedObservation(Eigen::Matrix4f observerPose, Eigen::Vector3f pointPose)
 {
   float distance = (observerPose.block<3, 1>(0, 3) - pointPose).norm();
-  int face = getClosestIcosFaceIndex(observerPose.block<3, 1>(0, 3));
+  int face = icos.getNearestFace(observerPose.block<3, 1>(0, 3));
+  std::cout << face << std::endl;
   if (distance > faceDists[face])
     return;
   // Decrease p(seen | exists)
@@ -29,29 +30,13 @@ void IcosMetadata::addFailedObservation(Eigen::Matrix4f observerPose, Eigen::Vec
 void IcosMetadata::addSuccessfulObservation(Eigen::Matrix4f observerPose, Eigen::Vector3f pointPose)
 {
   float distance = (observerPose.block<3, 1>(0, 3) - pointPose).norm();
-  int face = getClosestIcosFaceIndex(observerPose.block<3, 1>(0, 3));
+  int face = icos.getNearestFace(observerPose.block<3, 1>(0, 3));
+  std::cout << face << std::endl;
+
   faceDists[face] = std::max(faceDists[face], distance);
 
   // Increase P(seen | exists)
   faceWeights[face] = alpha + ((1 - alpha) * faceWeights[face]);
   pExists = 0.9;
   std::cout << pExists << std::endl;
-}
-
-int IcosMetadata::getClosestIcosFaceIndex(Eigen::Vector3f cameraPose)
-{
-  // Generate a vector from the point pose to the camera pose
-  auto pointToCam = (pPoint->getPose() - cameraPose).normalized();
-  float maxDot = -1.0f;
-  int closestIdx = -1;
-  for (size_t i = 0; i < faceCenterVecs.size(); ++i)
-  {
-    float dot = pointToCam.dot(faceCenterVecs[i]);
-    if (dot > maxDot)
-    {
-      maxDot = dot;
-      closestIdx = static_cast<int>(i);
-    }
-  }
-  return closestIdx;
 }

@@ -16,35 +16,13 @@ private:
   std::vector<float> faceWeights = std::vector<float>(20, 0.0f);
   std::vector<float> faceDists = std::vector<float>(20, 1.0f);
 
-  int getClosestIcosFaceIndex(Eigen::Vector3f cameraPose);
-
   std::vector<Eigen::Vector3f> icosVertices = {
       Eigen::Vector3f(0.0f, 0.0f, 0.0f) // Placeholder vertex, actual vertices will be set later
   };
 
-  std::vector<Eigen::Vector3f> faceCenterVecs = {
-      Eigen::Vector3f(-0.57735027, -0.57735027, -0.57735027),
-      Eigen::Vector3f(-0.57735027, 0.57735027, -0.57735027),
-      Eigen::Vector3f(0.35682209, 0., -0.93417236),
-      Eigen::Vector3f(-0.35682209, 0., -0.93417236),
-      Eigen::Vector3f(0., -0.93417236, 0.35682209),
-      Eigen::Vector3f(0.57735027, -0.57735027, -0.57735027),
-      Eigen::Vector3f(0., -0.93417236, -0.35682209),
-      Eigen::Vector3f(-0.93417236, 0.35682209, 0.),
-      Eigen::Vector3f(-0.93417236, -0.35682209, 0.),
-      Eigen::Vector3f(-0.57735027, -0.57735027, 0.57735027),
-      Eigen::Vector3f(-0.35682209, 0., 0.93417236),
-      Eigen::Vector3f(-0.57735027, 0.57735027, 0.57735027),
-      Eigen::Vector3f(0., 0.93417236, 0.35682209),
-      Eigen::Vector3f(0., 0.93417236, -0.35682209),
-      Eigen::Vector3f(0.57735027, 0.57735027, -0.57735027),
-      Eigen::Vector3f(0.93417236, -0.35682209, 0.),
-      Eigen::Vector3f(0.35682209, 0., 0.93417236),
-      Eigen::Vector3f(0.57735027, -0.57735027, 0.57735027),
-      Eigen::Vector3f(0.57735027, 0.57735027, 0.57735027),
-      Eigen::Vector3f(0.93417236, 0.35682209, 0.)};
-
 public:
+  Icosahedron icos;
+
   IcosMetadata(Point *point) : pPoint(point) {};
 
   float getPexists();

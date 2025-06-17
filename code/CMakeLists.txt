@@ -24,6 +24,7 @@ add_library(PointProbabilityEngine SHARED
   src/IcosMetadata.cc
   src/Visualizer.cpp
   src/Icosahedron.cc
+  src/Utility.cc
 )
 
 target_include_directories(PointProbabilityEngine
