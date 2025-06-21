@@ -45,3 +45,83 @@ int Icosahedron::getNearestFace(Eigen::Vector3f in)
   }
   return nearest_index;
 }
+
+void Icosahedron::createValueBuffer(const std::string &name, float initialValue)
+{
+  valueBuffers[name] = std::vector<float>(faces.size(), initialValue);
+}
+float Icosahedron::getValue(const std::string &name, int index)
+{
+  if (valueBuffers.find(name) != valueBuffers.end())
+  {
+    if (index >= 0 && index < valueBuffers[name].size())
+    {
+      return valueBuffers[name][index];
+    }
+  }
+  std::cerr << "Value buffer " << name << " does not exist." << std::endl;
+  exit(EXIT_FAILURE);
+}
+void Icosahedron::setValue(const std::string &name, int index, float value)
+{
+  if (valueBuffers.find(name) != valueBuffers.end())
+  {
+    if (index >= 0 && index < valueBuffers[name].size())
+    {
+      valueBuffers[name][index] = value;
+    }
+  }
+  else
+  {
+    std::cerr << "Value buffer " << name << " does not exist." << std::endl;
+    exit(EXIT_FAILURE);
+  }
+}
+
+float Icosahedron::getMinValue(const std::string &name)
+{
+  if (valueBuffers.find(name) != valueBuffers.end())
+  {
+    float minValue = valueBuffers[name][0];
+    for (const auto &value : valueBuffers[name])
+    {
+      if (value < minValue)
+      {
+        minValue = value;
+      }
+    }
+    return minValue;
+  }
+  std::cerr << "Value buffer " << name << " does not exist." << std::endl;
+  exit(EXIT_FAILURE);
+}
+float Icosahedron::getMaxValue(const std::string &name)
+{
+  if (valueBuffers.find(name) != valueBuffers.end())
+  {
+    float maxValue = valueBuffers[name][0];
+    for (const auto &value : valueBuffers[name])
+    {
+      if (value > maxValue)
+      {
+        maxValue = value;
+      }
+    }
+    return maxValue;
+  }
+  std::cerr << "Value buffer " << name << " does not exist." << std::endl;
+  exit(EXIT_FAILURE);
+}
+// Gets a value normalized to the range [0, 1]
+float Icosahedron::getNormalizedValue(const std::string &name, int index)
+{
+  if (valueBuffers.find(name) != valueBuffers.end())
+  {
+    float minValue = getMinValue(name);
+    float maxValue = getMaxValue(name);
+    float value = getValue(name, index);
+    return (value - minValue) / (maxValue - minValue);
+  }
+  std::cerr << "Value buffer " << name << " does not exist." << std::endl;
+  return 0.0f; // Return 0 if the buffer does not exist or is empty
+}

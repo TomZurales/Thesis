@@ -16,4 +16,5 @@ public:
   float getHeight() const { return height; }
   float getFx() const { return fx; }
   float getFy() const { return fy; }
+  float getFov() const { return 2 * atan((width / 2) / fx); } // Horizontal FOV in radians
 };

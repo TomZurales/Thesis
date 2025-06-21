@@ -417,17 +417,17 @@ void Visualizer::render()
   glDrawArrays(GL_LINES, 0, 6);
 
   // Get point data from engine and convert to vector for rendering
-  const auto &pointMap = engine->getPointData();
+  const auto &pointMap = engine->getMap().getMapPoints();
   std::vector<float> pointVertices;
   pointVertices.reserve(pointMap.size() * 3);
 
-  for (const auto &[point, metadata] : pointMap)
-  {
-    const auto &pos = point->getPose();
-    pointVertices.push_back(pos.x());
-    pointVertices.push_back(pos.y());
-    pointVertices.push_back(pos.z());
-  }
+  // for (const auto &[point, metadata] : pointMap)
+  // {
+  //   const auto &pos = point->getPose();
+  //   pointVertices.push_back(pos.x());
+  //   pointVertices.push_back(pos.y());
+  //   pointVertices.push_back(pos.z());
+  // }
 
   // Update point buffer
   glBindVertexArray(pointVAO);
@@ -450,35 +450,35 @@ void Visualizer::render()
   glUniformMatrix4fv(glGetUniformLocation(icosShaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
   glUniformMatrix4fv(glGetUniformLocation(icosShaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
-  for (const auto &[point, metadata] : pointMap)
-  {
-    const auto &pos = point->getPose();
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(pos.x(), pos.y(), pos.z()));
-    model = glm::scale(model, glm::vec3(0.1f)); // Scale down the icosahedron
-    glUniformMatrix4fv(glGetUniformLocation(icosShaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
+  // for (const auto &[point, metadata] : pointMap)
+  // {
+  //   const auto &pos = point->getPose();
+  //   glm::mat4 model = glm::mat4(1.0f);
+  //   model = glm::translate(model, glm::vec3(pos.x(), pos.y(), pos.z()));
+  //   model = glm::scale(model, glm::vec3(0.1f)); // Scale down the icosahedron
+  //   glUniformMatrix4fv(glGetUniformLocation(icosShaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
 
-    // Render faces
-    glBindVertexArray(icosVAO);
-    for (size_t j = 0; j < icosIndices.size(); j += 3)
-    {
-      size_t colorIndex = (j / 3) * 4;
-      glVertexAttrib4f(1, icosColors[colorIndex], icosColors[colorIndex + 1],
-                       icosColors[colorIndex + 2], icosColors[colorIndex + 3]);
-      glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (void *)(j * sizeof(unsigned int)));
-    }
+  //   // Render faces
+  //   glBindVertexArray(icosVAO);
+  //   for (size_t j = 0; j < icosIndices.size(); j += 3)
+  //   {
+  //     size_t colorIndex = (j / 3) * 4;
+  //     glVertexAttrib4f(1, icosColors[colorIndex], icosColors[colorIndex + 1],
+  //                      icosColors[colorIndex + 2], icosColors[colorIndex + 3]);
+  //     glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (void *)(j * sizeof(unsigned int)));
+  //   }
 
-    // Render wireframe
-    glUseProgram(icosWireframeShaderProgram);
-    glUniformMatrix4fv(glGetUniformLocation(icosWireframeShaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glUniformMatrix4fv(glGetUniformLocation(icosWireframeShaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(glGetUniformLocation(icosWireframeShaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+  //   // Render wireframe
+  //   glUseProgram(icosWireframeShaderProgram);
+  //   glUniformMatrix4fv(glGetUniformLocation(icosWireframeShaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
+  //   glUniformMatrix4fv(glGetUniformLocation(icosWireframeShaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
+  //   glUniformMatrix4fv(glGetUniformLocation(icosWireframeShaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glBindVertexArray(icosWireframeVAO);
-    glDrawElements(GL_LINES, icosWireframeIndices.size(), GL_UNSIGNED_INT, 0);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-  }
+  //   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  //   glBindVertexArray(icosWireframeVAO);
+  //   glDrawElements(GL_LINES, icosWireframeIndices.size(), GL_UNSIGNED_INT, 0);
+  //   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  // }
 
   glfwSwapBuffers(window);
 }

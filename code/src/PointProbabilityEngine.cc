@@ -1,66 +1,131 @@
 #include "PointProbabilityEngine.h"
-#include <eigen3/Eigen/LU>
+#include "Viewer.h"
 
-PointProbabilityEngine::PointProbabilityEngine() : camera(Camera(1920, 1080, 0.2, 0.2))
+PointProbabilityEngine::PointProbabilityEngine(Camera camera, Model model, Map map, bool useViewer) : camera(camera), model(model), map(map), useViewer(useViewer)
 {
-}
+  backend = nullptr;
 
-void PointProbabilityEngine::Update(Eigen::Matrix4f cameraPose, std::vector<Point *> visiblePoints)
-{
-  for (auto *point : visiblePoints)
+  switch (model)
   {
-    if (pointData.find(point) == pointData.end())
-    {
-      pointData[point] = std::make_shared<IcosMetadata>(point);
-      std::cout << "Adding new point" << std::endl;
-    }
+  case ICOSAHEDRON:
+    backend = new IcosahedronBackend();
+    break;
+
+  case SPHERE:
+    // Initialize for Sphere model
+    break;
+
+  default:
+    std::cerr << "Unknown model type!" << std::endl;
+    exit(EXIT_FAILURE);
   }
 
-  // Get the camera matrix
-  Eigen::Matrix3f camMatrix = camera.getCameraMatrix();
-
-  // Get the camera position from the pose (assuming last column is translation)
-  Eigen::Vector3f camPosition = cameraPose.block<3, 1>(0, 3);
-
-  for (const auto &entry : pointData)
+  if (useViewer)
   {
-    Point *point = entry.first;
+    std::cout << "Visualizer enabled." << std::endl;
+    viewer = new Viewer(this);
+  }
+}
 
-    // Get the point position
-    Eigen::Vector3f pointPosition = point->getPose();
+void PointProbabilityEngine::Update(Eigen::Matrix4f cameraPose, std::vector<Point *> visiblePoints) // TODO: Revisit the code for getting points in camera view
+{
+  if (!isPaused || doStep)
+  {
+    // Update the camera pose
+    this->cameraPose = cameraPose;
 
-    // Transform point to camera coordinates
-    Eigen::Vector4f pointHomogeneous(pointPosition.x(), pointPosition.y(), pointPosition.z(), 1.0f);
-    Eigen::Vector4f pointInCamera = cameraPose.inverse() * pointHomogeneous;
+    // If a point is not in the map, add it
+    map.addNewMapPoints(visiblePoints);
 
-    // Check if point is in front of the camera (z > 0 in camera coordinates)
-    bool isInCameraView = pointInCamera.z() > 0;
+    // Get the camera matrix
+    Eigen::Matrix3f camMatrix = camera.getCameraMatrix();
 
-    // Project to image plane and check if within image bounds
-    if (isInCameraView)
+    // Get the camera position from the pose (assuming last column is translation)
+    Eigen::Vector3f camPosition = cameraPose.block<3, 1>(0, 3);
+
+    // Determine which points are in the camera's view frustum
+    // TODO: This is broken, pushing all points as in view for now
+    // Ideally, we would check if the point is within the camera's field of view
+    std::vector<Point *> pointsInView;
+    for (auto *point : map.getMapPoints())
     {
-      Eigen::Vector3f projected = camMatrix * pointInCamera.head<3>();
-      float x = projected.x() / projected.z();
-      float y = projected.y() / projected.z();
-
-      if (x < 0 || x >= camera.getWidth() || y < 0 || y >= camera.getHeight())
-        isInCameraView = false;
+      point->setInView(false);
+      point->setVisible(false);
+      Eigen::Vector3f pointPos = point->getPose();
+      Eigen::Vector3f dirToPoint = pointPos - camPosition;
+      float distance = dirToPoint.norm();
+      dirToPoint.normalize();
+      Eigen::Vector3f camForward = cameraPose.block<3, 1>(0, 2); // Assuming Z-forward
+      float angle = std::acos(camForward.dot(dirToPoint));
+      // if (angle < camera.getFov() / 2)
+      // {
+      pointsInView.push_back(point);
+      // }
     }
+    // Separate visible points into seen and not seen
+    std::vector<Point *> seenPoints;
+    std::vector<Point *> notSeenPoints;
 
-    // Do something if not visible
-    if (isInCameraView)
+    for (auto *point : pointsInView)
     {
-      // This will run for every point which should be in the camera view.
+      point->setInView(true);
       if (std::find(visiblePoints.begin(), visiblePoints.end(), point) != visiblePoints.end())
       {
-        // Points which we expect to see, and do see
-        pointData[point]->addSuccessfulObservation(cameraPose, point->getPose());
+        point->setVisible(true);
+        seenPoints.push_back(point);
       }
       else
       {
-        // Points which we expect to see, but do not
-        pointData[point]->addFailedObservation(cameraPose, point->getPose());
+        point->setVisible(false);
+        notSeenPoints.push_back(point);
       }
     }
+    // Call the backend to update probabilities
+    backend->addObservation(cameraPose, seenPoints, notSeenPoints);
   }
+
+  // If a viewer is used, update it with the current state
+  if (useViewer)
+  {
+    viewer->update();
+    viewer->render();
+    if (viewer->getShouldClose())
+    {
+      delete viewer;
+      viewer = nullptr;
+      useViewer = false;
+      std::cout << "Visualizer closed." << std::endl;
+
+      // Shut down the engine
+      shouldClose = true;
+    }
+  }
+}
+
+void PointProbabilityEngine::showState() const
+{
+  ImGui::Begin("Point Probability Engine State");
+
+  ImGui::Text("# Map Points: %zu    ", map.getMapPoints().size());
+  ImGui::SameLine();
+  ImGui::Text("Camera Pose: (%.2f, %.2f, %.2f)", cameraPose(0, 3), cameraPose(1, 3), cameraPose(2, 3));
+  ImGui::End();
+}
+
+void PointProbabilityEngine::showControls()
+{
+  ImGui::Begin("Controls");
+
+  ImGui::Checkbox("Pause", &isPaused);
+  if (isPaused)
+    doStep = ImGui::Button("Step");
+  else
+    doStep = false;
+
+  ImGui::End();
+}
+
+void PointProbabilityEngine::showBackendState() const
+{
+  backend->showState(); // Assuming the backend has a method to show its state
 }

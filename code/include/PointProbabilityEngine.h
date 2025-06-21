@@ -5,21 +5,51 @@
 #include <iostream>
 #include <memory>
 
-#include "IcosMetadata.h"
+#include "IcosahedronBackend.h"
 #include "Point.h"
 #include "Camera.h"
+#include "Map.h"
+#include "PPEBackend.h"
+
+enum Model
+{
+  ICOSAHEDRON,
+  SPHERE
+};
+
+class Viewer; // Forward declaration to avoid circular dependency
 
 class PointProbabilityEngine
 {
-  std::map<Point *, std::shared_ptr<IcosMetadata>> pointData;
-
   Camera camera;
+  Model model;
+  PPEBackend *backend;
+  Map map;
+  Viewer *viewer; // Pointer to the viewer, if used
+
+  Eigen::Matrix4f cameraPose; // Current camera pose
+
+  bool useViewer;
+  bool shouldClose = false;
+
+  // Visualization Parameters
+  bool isPaused = false;
+  bool doStep = false;
 
 public:
-  PointProbabilityEngine();
+  PointProbabilityEngine(Camera camera, Model model = ICOSAHEDRON, Map map = Map(), bool useViewer = true);
 
   void Update(Eigen::Matrix4f cameraPose, std::vector<Point *> visiblePoints);
-  
-  // Getter for points
-  const std::map<Point *, std::shared_ptr<IcosMetadata>>& getPointData() const { return pointData; }
+
+  Map &getMap() { return map; }
+
+  Eigen::Matrix4f getCameraPose() const { return cameraPose; }
+
+  bool getShouldClose() const { return shouldClose; }
+
+  // Visualization methods
+  void showState() const;
+  void showControls();
+  void showBackendState() const;
+  void show3DView() const;
 };

@@ -21,10 +21,21 @@ set_target_properties(glad PROPERTIES
 add_library(PointProbabilityEngine SHARED
   src/PointProbabilityEngine.cc
   src/Camera.cc
-  src/IcosMetadata.cc
-  src/Visualizer.cpp
+  src/IcosahedronBackend.cc
+  # src/Visualizer.cc
   src/Icosahedron.cc
   src/Utility.cc
+  src/Viewer.cc
+  src/PointProbabilityEngine/3DView.cc
+  
+  # Imgui files
+  third_party/imgui/imgui.cpp
+  third_party/imgui/imgui_draw.cpp
+  third_party/imgui/imgui_widgets.cpp
+  third_party/imgui/imgui_demo.cpp
+  third_party/imgui/imgui_tables.cpp
+  third_party/imgui/backends/imgui_impl_glfw.cpp
+  third_party/imgui/backends/imgui_impl_opengl3.cpp
 )
 
 target_include_directories(PointProbabilityEngine
@@ -36,6 +47,7 @@ target_include_directories(PointProbabilityEngine
     ${GLFW_INCLUDE_DIRS}
     ${GLM_INCLUDE_DIRS}
     ${GLAD_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/imgui
 )
 
 target_link_libraries(PointProbabilityEngine

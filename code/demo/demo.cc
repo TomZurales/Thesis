@@ -45,7 +45,7 @@ int main(int argc, char **argv)
   // The camera is always looking directly at the map point, but can only see
   // it when it is in front of the wall between a rotation of 0 and pi radians.
 
-  PointProbabilityEngine ppe;
+  PointProbabilityEngine ppe(Camera(1920, 1080, 0.2, 0.2));
   Point p(Eigen::Vector3f(0., 0., 0.));
 
   // Changable parameters
