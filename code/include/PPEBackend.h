@@ -16,4 +16,5 @@ protected:
 public:
     virtual void addObservation(Eigen::Matrix4f cameraPose, std::vector<Point *> seen, std::vector<Point *> notSeen) = 0;
     virtual void showState() = 0;
+    virtual Point *getActivePoint() const = 0;
 };

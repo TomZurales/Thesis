@@ -9,14 +9,14 @@
 
 #include "Shader.h"
 
-class IcosModel
+class PointCloud
 {
     Shader *shader;
-    GLuint icosVAO = 0;
+    GLuint pointCloudVAO = 0;
     glm::mat4 modelPose = glm::mat4(1.0f); // Point cloud is always at the origin
 
 public:
-    IcosModel() = delete;
-    IcosModel(Shader *shader);
+    PointCloud() = delete;
+    PointCloud(Shader *shader);
     void draw(std::vector<Point *> points) const;
 };

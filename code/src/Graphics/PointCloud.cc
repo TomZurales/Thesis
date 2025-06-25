@@ -1,14 +1,14 @@
 #include "PointCloud.h"
 
-IcosModel::IcosModel(Shader *shader) : shader(shader)
+PointCloud::PointCloud(Shader *shader) : shader(shader)
 {
 
     unsigned int pointCloudVBO;
 
-    glGenVertexArrays(1, &icosVAO);
+    glGenVertexArrays(1, &pointCloudVAO);
     glGenBuffers(1, &pointCloudVBO);
 
-    glBindVertexArray(icosVAO);
+    glBindVertexArray(pointCloudVAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, pointCloudVBO);
 
@@ -20,7 +20,7 @@ IcosModel::IcosModel(Shader *shader) : shader(shader)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // Unbind EBO
 }
 
-void IcosModel::draw(std::vector<Point *> points) const
+void PointCloud::draw(std::vector<Point *> points) const
 {
     if (points.empty())
         return;
@@ -37,7 +37,7 @@ void IcosModel::draw(std::vector<Point *> points) const
     shader->use();
     shader->setMatrix4fv("model", modelPose);
     glEnable(GL_DEPTH_TEST);
-    glBindVertexArray(icosVAO);
+    glBindVertexArray(pointCloudVAO);
     glPointSize(8.0f);
     shader->setVector4f("color", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
     glDrawArrays(GL_POINTS, 0, points.size());

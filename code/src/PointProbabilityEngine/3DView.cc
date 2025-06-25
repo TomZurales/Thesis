@@ -41,7 +41,8 @@ void PointProbabilityEngine::init3DView()
     solidColor3DShader->setMatrix4fv("projection", glm::perspective(glm::radians(45.0f), 1.0f, 0.01f, 100.0f));
 
     floorPlane = new FloorPlane(solidColor3DShader);
-    pointCloud = new IcosModel(solidColor3DShader);
+    pointCloud = new PointCloud(solidColor3DShader);
+    icosModel = new IcosModel(solidColor3DShader);
 }
 
 void PointProbabilityEngine::show3DView() const
@@ -68,6 +69,7 @@ void PointProbabilityEngine::show3DView() const
                                                  ));
     floorPlane->draw();
     pointCloud->draw(map.getMapPoints());
+    icosModel->draw(backend->getActivePoint(), ((IcosahedronBackend *)backend)->getActiveIcosahedron()); // Draw the icosahedron model at the origin
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     ImGui::Image((ImTextureID)texture, windowSize); // Placeholder for 3D rendering
     ImGui::End();

@@ -31,6 +31,7 @@ add_library(PointProbabilityEngine SHARED
   # Graphics files
   src/Graphics/FloorPlane.cc
   src/Graphics/PointCloud.cc
+  src/Graphics/IcosModel.cc
   # src/Graphics/CenteredPoint.cc
   
   # Imgui files

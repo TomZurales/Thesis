@@ -12,6 +12,7 @@
 #include "PPEBackend.h"
 #include "FloorPlane.h"
 #include "PointCloud.h"
+#include "IcosModel.h"
 
 enum Model
 {
@@ -63,7 +64,8 @@ private:
   Shader *solidColor3DShader = nullptr;
 
   FloorPlane *floorPlane = nullptr;
-  IcosModel *pointCloud = nullptr;
+  PointCloud *pointCloud = nullptr;
+  IcosModel *icosModel = nullptr;
 
 public:
   void init3DView();

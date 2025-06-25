@@ -42,5 +42,8 @@ public:
 
   void showState() override;
 
+  Point *getActivePoint() const override;
+
   void show2DView(std::string name, Icosahedron *selectedIcos, int currentFace, bool isPointInView, bool isPointVisible) const;
+  Icosahedron *getActiveIcosahedron() const;
 };

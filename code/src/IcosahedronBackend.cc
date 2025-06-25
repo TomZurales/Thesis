@@ -209,3 +209,21 @@ void IcosahedronBackend::show2DView(std::string name, Icosahedron *selectedIcos,
   }
   ImGui::Dummy(ImVec2(0, 7.5 + ((3 * sqrt(3) / 2) * scale))); // Add some space before the button
 }
+
+Point *IcosahedronBackend::getActivePoint() const
+{
+  if (pointIcosMapIndex != pointIcosMap.end())
+  {
+    return pointIcosMapIndex->first;
+  }
+  return nullptr; // Return nullptr if no points are available
+}
+
+Icosahedron *IcosahedronBackend::getActiveIcosahedron() const
+{
+  if (pointIcosMapIndex != pointIcosMap.end())
+  {
+    return pointIcosMapIndex->second;
+  }
+  return nullptr; // Return nullptr if no points are available
+}
