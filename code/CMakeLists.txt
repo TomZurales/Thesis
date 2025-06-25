@@ -27,6 +27,11 @@ add_library(PointProbabilityEngine SHARED
   src/Utility.cc
   src/Viewer.cc
   src/PointProbabilityEngine/3DView.cc
+
+  # Graphics files
+  src/Graphics/FloorPlane.cc
+  src/Graphics/PointCloud.cc
+  # src/Graphics/CenteredPoint.cc
   
   # Imgui files
   third_party/imgui/imgui.cpp

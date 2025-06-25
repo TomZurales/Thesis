@@ -10,6 +10,8 @@
 #include "Camera.h"
 #include "Map.h"
 #include "PPEBackend.h"
+#include "FloorPlane.h"
+#include "PointCloud.h"
 
 enum Model
 {
@@ -51,5 +53,19 @@ public:
   void showState() const;
   void showControls();
   void showBackendState() const;
+
+  // Stuff related to the 3D View
+private:
+  uint fbo;
+  uint texture;
+  GLuint rbo;
+
+  Shader *solidColor3DShader = nullptr;
+
+  FloorPlane *floorPlane = nullptr;
+  IcosModel *pointCloud = nullptr;
+
+public:
+  void init3DView();
   void show3DView() const;
 };

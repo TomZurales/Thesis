@@ -32,10 +32,10 @@ int main()
     while (!engine->getShouldClose())
     {
         // Calculate camera position in a circle around the origin
-        float radius = (3.0f * cos(time)) + 1; // Vary radius slightly for effect
+        float radius = 30.0f + cos(time); // Vary radius slightly for effect
         float x = radius * std::cos(time);
         float z = radius * std::sin(time);
-        float y = 0; // Keep camera slightly above the cube
+        float y = 10.0f + std::sin(time); // Keep camera slightly above the cube
 
         // Update camera position and look at origin
         cameraPos = Eigen::Vector3f(x, y, z);

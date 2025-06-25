@@ -24,6 +24,7 @@ PointProbabilityEngine::PointProbabilityEngine(Camera camera, Model model, Map m
   {
     std::cout << "Visualizer enabled." << std::endl;
     viewer = new Viewer(this);
+    init3DView(); // Initialize the 3D view if the viewer is used
   }
 }
 

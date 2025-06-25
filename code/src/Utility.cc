@@ -63,3 +63,12 @@ std::vector<float> colorMap(float value, float min, float max)
 
     return {r, g, b};
 }
+
+glm::mat4 eigenToGlm(const Eigen::Matrix4f &m)
+{
+    glm::mat4 result;
+    for (int i = 0; i < 4; ++i)
+        for (int j = 0; j < 4; ++j)
+            result[j][i] = -1 * m(i, j); // glm is column-major
+    return result;
+}
