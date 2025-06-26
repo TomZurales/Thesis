@@ -4,7 +4,7 @@ Simultaneous Localization and Mapping (SLAM) empowers computers to generate a sp
 
 It is obvious that the assumption of a static, unchanging world does not hold in practice. In fact, the motivation for this research came from attempts to perform localization on the International Space Station (ISS). As of the time of publication, there are three mobile autonomous vehicles (MAVs) on board the ISS known as Astrobees. While used for numerous experiments and product development tasks on the ISS, the Astrobees are prone to failure due to loss of localization. The primary cause of this localization failure is the constant changes occurring on the ISS, including equipment changes, resupply missions, and any other activities which may change the visual features of the ISS.
 
-The situation on the ISS is certainly not unique
+The situation on the ISS is not unique, 
 
 ## Research Questions
 
