@@ -16,6 +16,8 @@ This research is specific to a subset of the greater SLAM problem known as keypo
 
 There are numerous keypoint-based visual SLAM implementations seeing use today, but all follow a relatively straightforward pipeline of
 
+1. 
+
 <!-- Motivation -->
 
 Numerous methods for improving performance over time have been implemented, pushing the field of SLAM to the point where it is now seeing deployment in numerous dynamic environments. A discussion of these implementations takes place in the Background section, with a focus on each implementation's strengths, weaknesses, and overall effectiveness.
