@@ -2,8 +2,7 @@
 
 Simultaneous Localization and Mapping (SLAM) empowers computers to generate a spatial understanding of the world around them. This spatial understanding is not only useful, but necessary for systems intending to operate in and interact with physical environments. Virtual reality, robotics, and industrial automation all make use of SLAM to generate an idea of the state of the local and global environments. SLAM does have the distinction of being a "solved" problem in the ideal case. If an agent is able to perfectly measure the environment, and is guaranteed to make correct data associations, then a perfect map can be generated and the agent's location within that map can be known with certainty. This ideal case makes several assumptions, paramount of which is the existence of ideal sensors, but there is a secondary assumption that the state of the world does not change.
 
-<!-- Maybe this is more of a background section? I certainly want to mention the motivation in the introduction, but the full explanation of the Astrobee platform could wait. -->
-It is obvious that the assumption of a static, unchanging world does not hold in practice. In fact, the motivation for this research came from attempts to perform localization on the International Space Station (ISS). 
+It is obvious that the assumption of a static, unchanging world does not hold in practice. In fact, the motivation for this research came from attempts to perform localization on the International Space Station (ISS).
 
 ## Research Questions
 
@@ -13,6 +12,7 @@ Can this be used as a heuristic to determine when to re-enable mapping on MAVs?
 
 # Background
 
+As of the time of publication, there are three mobile autonomous vehicles (MAVs) on board the ISS known as Astrobees. The Astrobee project was motivated by the desire to research human/robot interaction, robotic automation and inspection, and to provide a research platform on which companies and researchers could deploy software and hardware for testing in a micro-gravity environment. The Astrobee platform has been used to develop satellite rendezvous control algorithms, grippers to capture tumbling orbital debris, inspection methods to autonomously detect anomalous operation, and many other space habitation focused endeavors.
 
 # Related Work
 
