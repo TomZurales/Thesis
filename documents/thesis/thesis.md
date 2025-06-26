@@ -20,7 +20,7 @@ There are numerous keypoint-based visual SLAM implementations seeing use today, 
 2. For subsequent images, match features with previously identified 3D points
 3. Determine the transformation between the previous image and the new image which maximizes the number of map point alignments
 
-Implementation differences tend to come from optimization steps, pruning of redundant data, anomaly handling, and additional sensor integrations. In order to achieve lifetime SLAM, the system must be able to determine what data is remaining static, what data is changing, and act accordingly. Imagine an art gallery with paintings on the walls. If you were to visit this galary 
+Implementation differences tend to come from optimization steps, pruning of redundant data, anomaly handling, and additional sensor integrations. In order to achieve lifetime SLAM, the system must be able to determine what data is remaining static, what data is changing, and act accordingly. Imagine an art gallery with many paintings on the walls. If you were to visit this gallery 
 
 <!-- Motivation -->
 Numerous methods for improving performance over time have been implemented, pushing the field of SLAM to the point where it is now seeing deployment in numerous dynamic environments. A discussion of these implementations takes place in the Background section, with a focus on each implementation's strengths, weaknesses, and overall effectiveness. 
