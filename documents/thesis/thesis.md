@@ -8,7 +8,7 @@ Can this be used as a heuristic to determine when to re-enable mapping on MAVs?
 
 # Background
 
-Simultaneous Localization and Mapping (SLAM) empowers computers to generate a spatial understanding of the world around them. This spatial understanding is not only useful, but necessary for systems intending to operate in and interact with physical environments. Virtual reality, robotics, and industrial automation all make use of SLAM to generate an idea of the state of the local and global environments. SLAM does have the distinction of being a "solved" problem in the ideal case. If an agent is able to perfectly measure the environment, and is guaranteed to make correct data associations, then a perfect map can be generated and the agent's location within that map can be known with certainty. This ideal case makes several assumptions, paramount of which is the existence of ideal sensors, but 
+Simultaneous Localization and Mapping (SLAM) empowers computers to generate a spatial understanding of the world around them. This spatial understanding is not only useful, but necessary for systems intending to operate in and interact with physical environments. Virtual reality, robotics, and industrial automation all make use of SLAM to generate an idea of the state of the local and global environments. SLAM does have the distinction of being a "solved" problem in the ideal case. If an agent is able to perfectly measure the environment, and is guaranteed to make correct data associations, then a perfect map can be generated and the agent's location within that map can be known with certainty. This ideal case makes several assumptions, paramount of which is the existence of ideal sensors, but there is a secondary assumption that the 
 
 # Related Work
 
