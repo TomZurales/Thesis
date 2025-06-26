@@ -10,6 +10,9 @@ The situation on the ISS is not unique, and would be experienced by any agent ru
 
 The field of research into making SLAM perform over long timeframes has been called lifetime SLAM[], eluding to the fact that SLAM systems with the requirement for an unchanging environment will still be able to operate successfully over short timeframes, but will struggle with missions which take place over multiple days, weeks, months, or years.
 
+<!-- High-level background -->
+
+
 <!-- Motivation -->
 
 Numerous methods for improving performance over time have been implemented, pushing the field of SLAM to the point where it is now seeing deployment in numerous dynamic environments. A discussion of these implementations takes place in the Background section, with a focus on each implementation's strengths, weaknesses, and overall effectiveness.
