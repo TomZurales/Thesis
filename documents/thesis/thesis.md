@@ -17,7 +17,7 @@ This research is specific to a subset of the greater SLAM problem known as keypo
 There are numerous keypoint-based visual SLAM implementations seeing use today, but all follow a relatively straightforward pipeline, defined as follows:
 
 1. Determine an initial set of 3D points from two images with sufficient parallax
-2. For subsequent images, determine the transformation which explains 
+2. For subsequent images, determine the transformation which is valid for the new view 
 
 <!-- Motivation -->
 
