@@ -11,7 +11,7 @@ The situation on the ISS is not unique, and would be experienced by any agent ru
 The field of research into making SLAM perform over long timeframes has been called lifetime SLAM[], eluding to the fact that SLAM systems with the requirement for an unchanging environment will still be able to operate successfully over short timeframes, but will struggle with missions which take place over multiple days, weeks, months, or years.
 
 <!-- High-level background -->
-This research is specific to a subset of the greater SLAM problem known as keypoint-based, visual SLAM. The distinctions 
+This research is specific to a subset of the greater SLAM problem known as keypoint-based, visual SLAM. The distinctions between these 
 
 <!-- Motivation -->
 
