@@ -16,7 +16,7 @@ This research is specific to a subset of the greater SLAM problem known as keypo
 
 There are numerous keypoint-based visual SLAM implementations seeing use today, but all follow a relatively straightforward pipeline of
 
-1. Determining an initial set of 3D points from two s
+1. Determining an initial set of 3D points from two sufficiently paralaxed 
 
 <!-- Motivation -->
 
