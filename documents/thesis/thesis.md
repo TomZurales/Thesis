@@ -14,9 +14,10 @@ The field of research into making SLAM perform over long timeframes has been cal
 This research is specific to a subset of the greater SLAM problem known as keypoint-based, visual SLAM. The distinctions between these will be discussed in detail in the Background section, but a high-level overview is offered here. Keypoint-based visual SLAM operates on images taken over time. The core principal involves constructing a sparse 3D map of image features which are identifiable from multiple perspectives. This is accomplished through photogrammetry methods such as the 5-point method, which allows the depths of 5 matched pairs of points, and the paralax transformation to be determined from two 2d images [FACT CHECK & CITATION].
 <!-- Go into a few more details about some of the other fields of research which are used by SLAM -->
 
-There are numerous keypoint-based visual SLAM implementations seeing use today, but all follow a relatively straightforward pipeline of
+There are numerous keypoint-based visual SLAM implementations seeing use today, but all follow a relatively straightforward pipeline, 
 
 1. Determining an initial set of 3D points from two images with sufficient parallax
+2. 
 <!-- Motivation -->
 
 Numerous methods for improving performance over time have been implemented, pushing the field of SLAM to the point where it is now seeing deployment in numerous dynamic environments. A discussion of these implementations takes place in the Background section, with a focus on each implementation's strengths, weaknesses, and overall effectiveness.
