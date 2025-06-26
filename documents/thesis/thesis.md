@@ -18,7 +18,7 @@ There are numerous keypoint-based visual SLAM implementations seeing use today, 
 
 1. Determine an initial set of 3D points from two images with sufficient parallax
 2. For subsequent images, match features with previously identified 3D points
-3. Determine the transformation 
+3. Determine the transformation between the previous image and the new image based on 
 
 <!-- Motivation -->
 
