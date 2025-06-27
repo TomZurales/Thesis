@@ -38,7 +38,7 @@ This research intends to build upon the previously developed probability models,
 3. To prevent redundant data from updating a 
 
 <!-- Contribution -->
-In this research, we contribute a library which is compatible with any 
+Through this research, we contribute a library which is compatible with any 
 
 <!-- Road Map -->
 
