@@ -35,7 +35,7 @@ This research intends to build upon the previously developed probability models,
 
 1. To utilize constant additional space for each map point
 2. To complete the update step in constant time
-3. To be resistant to redundant data 
+3. To maintain  to redundant data 
 
 <!-- Contribution -->
 Through this research, we contribute a library which is compatible with any 
