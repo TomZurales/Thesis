@@ -35,6 +35,7 @@ This research intends to build upon the previously developed probability models,
 
 1. To utilize constant additional space for each map point
 2. To complete the update step in constant time
+3. To 
 <!-- Contribution -->
 <!-- Road Map -->
 
