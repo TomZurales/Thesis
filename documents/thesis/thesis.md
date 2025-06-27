@@ -56,6 +56,8 @@ Can this be used as a heuristic to determine when to re-enable mapping on MAVs?
 
 The Astrobee project was motivated by the desire to research human/robot interaction, robotic automation and inspection, and to provide a research platform on which companies and researchers could deploy software and hardware for testing in a micro-gravity environment. The Astrobee platform has been used to develop satellite rendezvous control algorithms, grippers to capture tumbling orbital debris, inspection methods to autonomously detect anomalous operation, and many other space habitation focused endeavors.
 
+
+
 # Related Work
 
 Numerous methods have been developed to improve long-term SLAM performance, generalizing the problem to remove the constraint that the environment remains static.
