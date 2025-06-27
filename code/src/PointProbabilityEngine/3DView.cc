@@ -83,7 +83,13 @@ void PointProbabilityEngine::show3DView() const
                                               glm::vec3(0.0f, 1.0f, 0.0f)                                      // Up vector
                                               ));
     floorPlane->draw();
-    pointCloud->draw(map.getMapPoints());
+    std::vector<Point *> visiblePoints;
+    for (const auto &point : map.getMapPoints())
+    {
+        if (point->isInView() && point->isVisible())
+            visiblePoints.push_back(point);
+    }
+    pointCloud->draw(visiblePoints);
     icosModel->draw(backend->getActivePoint(), ((IcosahedronBackend *)backend)->getActiveIcosahedron()); // Draw the icosahedron model at the origin
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     ImGui::Image((ImTextureID)texture, windowSize); // Placeholder for 3D rendering

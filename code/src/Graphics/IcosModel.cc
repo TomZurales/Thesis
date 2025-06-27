@@ -62,44 +62,16 @@ void IcosModel::draw(Point *point, Icosahedron *icos) const
     glBindVertexArray(icosVAO);
     glDrawElements(GL_TRIANGLES, icos->faces.size() * 3, GL_UNSIGNED_INT, 0);
 
-    // --- Draw edges in black ---
-    // Build edge index buffer on the fly (or cache it in the class for efficiency)
-    std::vector<unsigned int> edge_indices;
-    std::set<std::pair<unsigned int, unsigned int>> unique_edges;
-    for (const auto &face : icos->faces)
-    {
-        for (int i = 0; i < 3; ++i)
-        {
-            unsigned int a = face[i];
-            unsigned int b = face[(i + 1) % 3];
-            if (a > b)
-                std::swap(a, b);
-            if (unique_edges.insert({a, b}).second)
-            {
-                edge_indices.push_back(a);
-                edge_indices.push_back(b);
-            }
-        }
-    }
-    glBindVertexArray(0); // Unbind VAO before binding edge EBO
-
-    GLuint edgeEBO;
-    glGenBuffers(1, &edgeEBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, edgeEBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, edge_indices.size() * sizeof(unsigned int), edge_indices.data(), GL_STATIC_DRAW);
-
+    // --- Draw wireframe edges ---
     solidShader->use();
-    // solidShader->setMatrix4fv("model", glm::translate(glm::mat4(1.0f), glm::vec3(point->getPose().x(), point->getPose().y(), point->getPose().z())));
-    solidShader->setVector4f("color", glm::vec4(0, 0, 0, 1));
-    glDisable(GL_CULL_FACE);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    // You may need to re-bind your vertex VBO and set up attrib pointers here if not using VAO
-    glBindVertexArray(icosVAO); // If your VAO has the correct vertex attrib pointers
-    glDrawElements(GL_LINES, edge_indices.size(), GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glEnable(GL_CULL_FACE);
+    solidShader->setMatrix4fv("model", glm::translate(glm::mat4(1.0f), glm::vec3(point->getPose().x(), point->getPose().y(), point->getPose().z())));
+    solidShader->setVector4f("color", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)); // Black color
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glDeleteBuffers(1, &edgeEBO);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glDisable(GL_CULL_FACE);
+    glBindVertexArray(icosVAO);
+    glDrawElements(GL_TRIANGLES, icos->faces.size() * 3, GL_UNSIGNED_INT, 0);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // Reset to fill mode
+
+    glBindVertexArray(0); // Unbind VAO before binding edge EBO
 }
