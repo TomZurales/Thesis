@@ -33,7 +33,8 @@ Numerous methods for improving SLAM's performance over long timeframes have been
 <!-- Objective -->
 This research intends to build upon the previously developed probability models, in order to distill the update step of each map point's probability of existence into a simple Bayesian update step. The goals for this model are as follows:
 
-1. To utilize 
+1. To utilize constant additional space for each map point
+2. To complete the update step in constant time
 <!-- Contribution -->
 <!-- Road Map -->
 
