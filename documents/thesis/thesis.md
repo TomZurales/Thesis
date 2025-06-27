@@ -38,7 +38,7 @@ This research intends to build upon the previously developed probability models,
 3. To 
 
 <!-- Contribution -->
-Through this research, we develop a perspective-dependent, priorless, constant space and time probability model for the existence of map points. To facilitate future research 
+Through this research, we develop a perspective-dependent, priorless, constant space and time probability model for the existence of map points. To facilitate future research, this model is released as an open-source library, 
 
 <!-- Road Map -->
 
