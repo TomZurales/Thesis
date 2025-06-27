@@ -31,6 +31,7 @@ The benefits of eliminating data which is not helpful for long-term operations a
 Numerous methods for improving SLAM's performance over long timeframes have been implemented, pushing the field of SLAM to the point where it is now seeing deployment in numerous dynamic environments. A discussion of several of these implementations takes place in the Background section, with a focus on each implementation's strengths, weaknesses, and overall effectiveness. An area that remains lacking is implementations on MAVs with limited compute. Due to their mobile nature, MAVs are inherently compute limited, as any additional weight and power consumption decreases capability and operation time. This prevents the inclusion of many popular models for dynamic data elimination such as image segmentation and semantic identification. Other methods utilizing statistical methods for point existence exist, but fail to fully utilize the vast array of data to update their predictions
 
 <!-- Objective -->
+
 This research intends to build upon the previously developed probability models, in order to distill the update step of each map point's probability of existence into a simple Bayesian update step. The goals for this model are as follows:
 
 1. To utilize constant additional space for each map point
@@ -38,7 +39,10 @@ This research intends to build upon the previously developed probability models,
 3. To resist updating confidence levels with redundant data
 
 <!-- Contribution -->
-Through this research, we develop a perspective-dependent, priorless, constant space and time probability model for the existence of map points. This model is implemented as an icosahedral shell surrounding each map point, providing metadata regarding observability at 20  To facilitate future research, this model is released as an open-source library, which is compatible with any keypoint based visual SLAM implementation.
+
+Through this research, we develop a perspective-dependent, priorless, constant space and time probability model for the existence of map points. This model is implemented as an icosahedral shell surrounding each map point, providing metadata regarding observability at 20 unique perspectives.
+
+To facilitate future research, this model is released as an open-source library, which is compatible with any keypoint based visual SLAM implementation.
 
 <!-- Road Map -->
 
