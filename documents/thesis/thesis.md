@@ -36,7 +36,10 @@ This research intends to build upon the previously developed probability models,
 1. To utilize constant additional space for each map point
 2. To complete the update step in constant time
 3. To prevent redundant data from updating a 
+
 <!-- Contribution -->
+
+
 <!-- Road Map -->
 
 ## Research Questions
