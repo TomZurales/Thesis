@@ -62,6 +62,7 @@ private:
   GLuint rbo;
 
   Shader *solidColor3DShader = nullptr;
+  Shader *heatmap3DShader = nullptr;
 
   FloorPlane *floorPlane = nullptr;
   PointCloud *pointCloud = nullptr;

@@ -1,6 +1,6 @@
 #include "IcosModel.h"
 
-IcosModel::IcosModel(Shader *shader) : shader(shader)
+IcosModel::IcosModel(Shader *shader, Shader *solidShader) : shader(shader), solidShader(solidShader)
 {
 
     unsigned int icosModelVBO;
@@ -46,13 +46,60 @@ void IcosModel::draw(Point *point, Icosahedron *icos) const
     if (!icos)
         return;
 
+    // --- Draw faces with heatmap colors ---
     shader->use();
-
     shader->setMatrix4fv("model", glm::translate(glm::mat4(1.0f), glm::vec3(point->getPose().x(), point->getPose().y(), point->getPose().z())));
+
+    std::vector<float> intensities;
+    for (int i = 0; i < 20; i++)
+        intensities.push_back(icos->getNormalizedValue("dists", i));
+    shader->setFloatArray("heatmapValues", intensities);
+
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CCW);
     glBindVertexArray(icosVAO);
-    shader->setVector4f("color", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
     glDrawElements(GL_TRIANGLES, icos->faces.size() * 3, GL_UNSIGNED_INT, 0);
+
+    // --- Draw edges in black ---
+    // Build edge index buffer on the fly (or cache it in the class for efficiency)
+    std::vector<unsigned int> edge_indices;
+    std::set<std::pair<unsigned int, unsigned int>> unique_edges;
+    for (const auto &face : icos->faces)
+    {
+        for (int i = 0; i < 3; ++i)
+        {
+            unsigned int a = face[i];
+            unsigned int b = face[(i + 1) % 3];
+            if (a > b)
+                std::swap(a, b);
+            if (unique_edges.insert({a, b}).second)
+            {
+                edge_indices.push_back(a);
+                edge_indices.push_back(b);
+            }
+        }
+    }
+    glBindVertexArray(0); // Unbind VAO before binding edge EBO
+
+    GLuint edgeEBO;
+    glGenBuffers(1, &edgeEBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, edgeEBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, edge_indices.size() * sizeof(unsigned int), edge_indices.data(), GL_STATIC_DRAW);
+
+    solidShader->use();
+    // solidShader->setMatrix4fv("model", glm::translate(glm::mat4(1.0f), glm::vec3(point->getPose().x(), point->getPose().y(), point->getPose().z())));
+    solidShader->setVector4f("color", glm::vec4(0, 0, 0, 1));
+    glDisable(GL_CULL_FACE);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    // You may need to re-bind your vertex VBO and set up attrib pointers here if not using VAO
+    glBindVertexArray(icosVAO); // If your VAO has the correct vertex attrib pointers
+    glDrawElements(GL_LINES, edge_indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // Unbind EBO
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glEnable(GL_CULL_FACE);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glDeleteBuffers(1, &edgeEBO);
 }
