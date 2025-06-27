@@ -35,7 +35,7 @@ This research intends to build upon the previously developed probability models,
 
 1. To utilize constant additional space for each map point
 2. To complete the update step in constant time
-3. To resist updating confidence levels 
+3. To resist updating confidence levels with redundant data
 
 <!-- Contribution -->
 Through this research, we develop a perspective-dependent, priorless, constant space and time probability model for the existence of map points. To facilitate future research, this model is released as an open-source library, which is compatible with any keypoint based visual SLAM implementation.
