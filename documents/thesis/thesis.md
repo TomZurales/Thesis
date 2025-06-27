@@ -38,7 +38,7 @@ This research intends to build upon the previously developed probability models,
 3. To 
 
 <!-- Contribution -->
-Through this research, we develop a perspective-dependent 
+Through this research, we develop a perspective-dependent, priorless, 
 
 <!-- Road Map -->
 
