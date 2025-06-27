@@ -30,6 +30,9 @@ The benefits of eliminating data which is not helpful for long-term operations a
 
 Numerous methods for improving SLAM's performance over long timeframes have been implemented, pushing the field of SLAM to the point where it is now seeing deployment in numerous dynamic environments. A discussion of several of these implementations takes place in the Background section, with a focus on each implementation's strengths, weaknesses, and overall effectiveness. An area that remains lacking is implementations on MAVs with limited compute. Due to their mobile nature, MAVs are inherently compute limited, as any additional weight and power consumption decreases capability and operation time. This prevents the inclusion of many popular models for dynamic data elimination such as image segmentation and semantic identification. Other probability based methods exist, and will be explored in detail in the Related Work section, but these methods ten This research was conducted with the goal of creating a light-weight method
 
+<!-- Objective -->
+
+
 ## Research Questions
 
 Does a probability model which identifies and culls outdated map points provide significant improvements to relocalization and tracking during map reuse in keypoint-based SLAM?
