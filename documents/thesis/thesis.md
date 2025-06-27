@@ -38,7 +38,7 @@ This research intends to build upon the previously developed probability models,
 3. To resist updating confidence levels with redundant data
 
 <!-- Contribution -->
-Through this research, we develop a perspective-dependent, priorless, constant space and time probability model for the existence of map points. This model is implemented as an icosahedral shell surrounding each map point, providing metadata regarding  To facilitate future research, this model is released as an open-source library, which is compatible with any keypoint based visual SLAM implementation.
+Through this research, we develop a perspective-dependent, priorless, constant space and time probability model for the existence of map points. This model is implemented as an icosahedral shell surrounding each map point, providing metadata regarding observability at 20  To facilitate future research, this model is released as an open-source library, which is compatible with any keypoint based visual SLAM implementation.
 
 <!-- Road Map -->
 
