@@ -65,20 +65,16 @@ void PointProbabilityEngine::show3DView() const
     glViewport(0, 0, windowSize.x, windowSize.y);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    // solidColor3DShader->use();
-    // solidColor3DShader->setMatrix4fv("view", glm::lookAt(
-    //                                              glm::vec3(-1 * cameraPose(0, 3), -1 * cameraPose(1, 3), -1 * cameraPose(2, 3)), // Camera position
-    //                                              glm::vec3(0.0f, 0.0f, 0.0f),                                                    // Look at point
-    //                                              glm::vec3(0.0f, 1.0f, 0.0f)                                                     // Up vector
-    //                                              ));
-    // // Invert the y-axis in the change of basis matrix
-    // heatmap3DShader->use();
-    // heatmap3DShader->setMatrix4fv("view", glm::lookAt(
-    //                                           glm::vec3(cameraPose(0, 3), cameraPose(1, 3), cameraPose(2, 3)), // Camera position
-    //                                           glm::vec3(0.0f, 0.0f, 0.0f),                                     // Look at point
-    //                                           glm::vec3(0.0f, 1.0f, 0.0f)                                      // Up vector
-    //                                           ));
+    ShaderManager::getInstance()->setViewMatrix(glm::lookAt(
+        glm::vec3(-1 * cameraPose(0, 3), -1 * cameraPose(1, 3), -1 * cameraPose(2, 3)), // Camera position
+        glm::vec3(0.0f, 0.0f, 0.0f),                                                    // Look at point
+        glm::vec3(0.0f, 1.0f, 0.0f)                                                     // Up vector
+        ));
+
+    // Draw the floor plane
     floorPlane->draw();
+
+    // Draw the point cloud
     std::vector<Point *> visiblePoints;
     for (const auto &point : map.getMapPoints())
     {
@@ -86,6 +82,7 @@ void PointProbabilityEngine::show3DView() const
             visiblePoints.push_back(point);
     }
     // pointCloud->draw(visiblePoints);
+
     // icosModel->draw(backend->getActivePoint(), ((IcosahedronBackend *)backend)->getActiveIcosahedron()); // Draw the icosahedron model at the origin
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     ImGui::Image((ImTextureID)texture, windowSize); // Placeholder for 3D rendering

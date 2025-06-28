@@ -1,6 +1,6 @@
 #include "PointCloud.h"
 
-PointCloud::PointCloud(Shader *shader) : shader(shader)
+PointCloud::PointCloud()
 {
 
     unsigned int pointCloudVBO;
@@ -34,12 +34,13 @@ void PointCloud::draw(std::vector<Point *> points) const
     }
     glBufferData(GL_ARRAY_BUFFER, pointData.size() * sizeof(float), pointData.data(), GL_STREAM_DRAW);
 
-    shader->use();
-    shader->setMatrix4fv("model", modelPose);
+    ShaderManager *sm = ShaderManager::getInstance();
+    sm->useShader("solid_color_3d");
+    sm->setModelMatrix(modelPose);
+    sm->setColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)); // Set color to black
     glEnable(GL_DEPTH_TEST);
     glBindVertexArray(pointCloudVAO);
     glPointSize(8.0f);
-    shader->setVector4f("color", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
     glDrawArrays(GL_POINTS, 0, points.size());
     glBindVertexArray(0);
 }

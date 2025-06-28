@@ -7,16 +7,15 @@
 #include <vector>
 #include <Point.h>
 
+#include "ShaderManager.h"
 #include "Shader.h"
 
 class PointCloud
 {
-    Shader *shader;
     GLuint pointCloudVAO = 0;
     glm::mat4 modelPose = glm::mat4(1.0f); // Point cloud is always at the origin
 
 public:
-    PointCloud() = delete;
-    PointCloud(Shader *shader);
+    PointCloud();
     void draw(std::vector<Point *> points) const;
 };
