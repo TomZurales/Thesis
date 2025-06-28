@@ -13,6 +13,7 @@
 #include "FloorPlane.h"
 #include "PointCloud.h"
 #include "IcosModel.h"
+#include "ShaderManager.h"
 
 enum Model
 {

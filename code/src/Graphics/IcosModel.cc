@@ -56,13 +56,13 @@ void IcosModel::draw(Point *point, Icosahedron *icos) const
     shader->setFloatArray("heatmapValues", intensities);
 
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-    glFrontFace(GL_CCW);
+    // glEnable(GL_CULL_FACE);
+    // glCullFace(GL_BACK);
+    // glFrontFace(GL_CCW);
     glBindVertexArray(icosVAO);
     glDrawElements(GL_TRIANGLES, icos->faces.size() * 3, GL_UNSIGNED_INT, 0);
 
-    // --- Draw wireframe edges ---
+    // // --- Draw wireframe edges ---
     solidShader->use();
     solidShader->setMatrix4fv("model", glm::translate(glm::mat4(1.0f), glm::vec3(point->getPose().x(), point->getPose().y(), point->getPose().z())));
     solidShader->setVector4f("color", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)); // Black color

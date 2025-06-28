@@ -1,6 +1,6 @@
 #include "FloorPlane.h"
 
-FloorPlane::FloorPlane(Shader *shader) : shader(shader)
+FloorPlane::FloorPlane()
 {
     std::vector<float> line_vertices;
     std::vector<unsigned int> line_indices;
@@ -59,13 +59,14 @@ FloorPlane::FloorPlane(Shader *shader) : shader(shader)
 
 void FloorPlane::draw() const
 {
-    shader->use();
-    shader->setMatrix4fv("model", modelPose);
+    ShaderManager *sm = ShaderManager::getInstance();
+    sm->useShader("solid_color_3d");
+    sm->setModelMatrix(modelPose);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glBindVertexArray(linesVAO);
-    shader->setVector4f("color", glm::vec4(0.3f, 0.3f, 0.3f, 0.1f)); // Set a gray color for the grid lines
-    glDrawElements(GL_LINES, 84, GL_UNSIGNED_INT, 0);                // 42 vertical + 42 horizontal = 84 indices
+    sm->setColor(glm::vec4(0.3f, 0.3f, 0.3f, 0.1f));  // Set a gray color for the grid lines
+    glDrawElements(GL_LINES, 84, GL_UNSIGNED_INT, 0); // 42 vertical + 42 horizontal = 84 indices
     glBindVertexArray(0);
 }

@@ -26,6 +26,7 @@ add_library(PointProbabilityEngine SHARED
   src/Icosahedron.cc
   src/Utility.cc
   src/Viewer.cc
+  src/ShaderManager.cc
   src/PointProbabilityEngine/3DView.cc
 
   # Graphics files

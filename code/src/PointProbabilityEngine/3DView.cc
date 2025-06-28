@@ -33,24 +33,20 @@ void PointProbabilityEngine::init3DView()
     // Unbind framebuffer
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    // Initialize the shader for 3D rendering
-    solidColor3DShader = new Shader("/home/tom/workspace/thesis/code/src/Graphics/shaders/vertex/solid_color_3d.glsl",
-                                    "/home/tom/workspace/thesis/code/src/Graphics/shaders/fragment/solid_color_3d.glsl");
+    ShaderManager *sm = ShaderManager::getInstance();
+    sm->addShader("solid_color_3d",
+                  "/home/tom/workspace/thesis/code/src/Graphics/shaders/vertex/solid_color_3d.glsl",
+                  "/home/tom/workspace/thesis/code/src/Graphics/shaders/fragment/solid_color_3d.glsl");
+    sm->addShader("heatmap_3d",
+                  "/home/tom/workspace/thesis/code/src/Graphics/shaders/vertex/solid_color_3d.glsl",
+                  "/home/tom/workspace/thesis/code/src/Graphics/shaders/fragment/heatmap_3d.glsl");
 
-    solidColor3DShader->use();
-    solidColor3DShader->setMatrix4fv("projection", glm::perspective(glm::radians(45.0f), 1.0f, 0.01f, 100.0f));
-    solidColor3DShader->setMatrix4fv("changeOfBasis", glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, -1.0f, 1.0f)));
+    sm->setProjectionMatrix(glm::perspective(glm::radians(45.0f), 1.0f, 0.01f, 100.0f));
+    sm->setChangeOfBasis(glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, -1.0f, 1.0f)));
 
-    // Initialize the shader for heatmap rendering
-    heatmap3DShader = new Shader("/home/tom/workspace/thesis/code/src/Graphics/shaders/vertex/solid_color_3d.glsl",
-                                 "/home/tom/workspace/thesis/code/src/Graphics/shaders/fragment/heatmap_3d.glsl");
-    heatmap3DShader->use();
-    heatmap3DShader->setMatrix4fv("projection", glm::perspective(glm::radians(45.0f), 1.0f, 0.01f, 100.0f));
-    heatmap3DShader->setMatrix4fv("changeOfBasis", glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, -1.0f, 1.0f)));
-
-    floorPlane = new FloorPlane(solidColor3DShader);
-    pointCloud = new PointCloud(solidColor3DShader);
-    icosModel = new IcosModel(heatmap3DShader, solidColor3DShader);
+    floorPlane = new FloorPlane();
+    // pointCloud = new PointCloud(solidColor3DShader);
+    // icosModel = new IcosModel(heatmap3DShader, solidColor3DShader);
 }
 
 void PointProbabilityEngine::show3DView() const
@@ -69,19 +65,19 @@ void PointProbabilityEngine::show3DView() const
     glViewport(0, 0, windowSize.x, windowSize.y);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    solidColor3DShader->use();
-    solidColor3DShader->setMatrix4fv("view", glm::lookAt(
-                                                 glm::vec3(-1 * cameraPose(0, 3), -1 * cameraPose(1, 3), -1 * cameraPose(2, 3)), // Camera position
-                                                 glm::vec3(0.0f, 0.0f, 0.0f),                                                    // Look at point
-                                                 glm::vec3(0.0f, 1.0f, 0.0f)                                                     // Up vector
-                                                 ));
-    // Invert the y-axis in the change of basis matrix
-    heatmap3DShader->use();
-    heatmap3DShader->setMatrix4fv("view", glm::lookAt(
-                                              glm::vec3(cameraPose(0, 3), cameraPose(1, 3), cameraPose(2, 3)), // Camera position
-                                              glm::vec3(0.0f, 0.0f, 0.0f),                                     // Look at point
-                                              glm::vec3(0.0f, 1.0f, 0.0f)                                      // Up vector
-                                              ));
+    // solidColor3DShader->use();
+    // solidColor3DShader->setMatrix4fv("view", glm::lookAt(
+    //                                              glm::vec3(-1 * cameraPose(0, 3), -1 * cameraPose(1, 3), -1 * cameraPose(2, 3)), // Camera position
+    //                                              glm::vec3(0.0f, 0.0f, 0.0f),                                                    // Look at point
+    //                                              glm::vec3(0.0f, 1.0f, 0.0f)                                                     // Up vector
+    //                                              ));
+    // // Invert the y-axis in the change of basis matrix
+    // heatmap3DShader->use();
+    // heatmap3DShader->setMatrix4fv("view", glm::lookAt(
+    //                                           glm::vec3(cameraPose(0, 3), cameraPose(1, 3), cameraPose(2, 3)), // Camera position
+    //                                           glm::vec3(0.0f, 0.0f, 0.0f),                                     // Look at point
+    //                                           glm::vec3(0.0f, 1.0f, 0.0f)                                      // Up vector
+    //                                           ));
     floorPlane->draw();
     std::vector<Point *> visiblePoints;
     for (const auto &point : map.getMapPoints())
@@ -89,8 +85,8 @@ void PointProbabilityEngine::show3DView() const
         if (point->isInView() && point->isVisible())
             visiblePoints.push_back(point);
     }
-    pointCloud->draw(visiblePoints);
-    icosModel->draw(backend->getActivePoint(), ((IcosahedronBackend *)backend)->getActiveIcosahedron()); // Draw the icosahedron model at the origin
+    // pointCloud->draw(visiblePoints);
+    // icosModel->draw(backend->getActivePoint(), ((IcosahedronBackend *)backend)->getActiveIcosahedron()); // Draw the icosahedron model at the origin
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     ImGui::Image((ImTextureID)texture, windowSize); // Placeholder for 3D rendering
     ImGui::End();
