@@ -1,8 +1,7 @@
 #include "IcosModel.h"
 
-IcosModel::IcosModel(Shader *shader, Shader *solidShader) : shader(shader), solidShader(solidShader)
+IcosModel::IcosModel()
 {
-
     unsigned int icosModelVBO;
 
     glGenVertexArrays(1, &icosVAO);
@@ -47,25 +46,27 @@ void IcosModel::draw(Point *point, Icosahedron *icos) const
         return;
 
     // --- Draw faces with heatmap colors ---
-    shader->use();
-    shader->setMatrix4fv("model", glm::translate(glm::mat4(1.0f), glm::vec3(point->getPose().x(), point->getPose().y(), point->getPose().z())));
+    ShaderManager *sm = ShaderManager::getInstance();
+    sm->useShader("heatmap_3d");
+    sm->setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(point->getPose().x(), point->getPose().y(), point->getPose().z())));
 
     std::vector<float> intensities;
     for (int i = 0; i < 20; i++)
-        intensities.push_back(icos->getNormalizedValue("dists", i));
-    shader->setFloatArray("heatmapValues", intensities);
+    {
+        intensities.push_back(icos->getPDFValue("probSeen", i));
+    }
+    sm->setFaceValues(intensities);
 
-    glEnable(GL_DEPTH_TEST);
-    // glEnable(GL_CULL_FACE);
-    // glCullFace(GL_BACK);
-    // glFrontFace(GL_CCW);
     glBindVertexArray(icosVAO);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CCW);
     glDrawElements(GL_TRIANGLES, icos->faces.size() * 3, GL_UNSIGNED_INT, 0);
 
     // // --- Draw wireframe edges ---
-    solidShader->use();
-    solidShader->setMatrix4fv("model", glm::translate(glm::mat4(1.0f), glm::vec3(point->getPose().x(), point->getPose().y(), point->getPose().z())));
-    solidShader->setVector4f("color", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)); // Black color
+    sm->useShader("solid_color_3d");
+    sm->setColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)); // Black color
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glDisable(GL_CULL_FACE);

@@ -13,7 +13,8 @@ int main()
 {
     auto engine = std::make_shared<PointProbabilityEngine>(Camera(1920, 1080, 0.2, 0.2));
 
-    Point *thePoint(new Point(Eigen::Vector3f(0, 0, 0)));
+    Point *thePoint(new Point(Eigen::Vector3f(0.5, 1.5, 0)));
+    Point *secondPoint(new Point(Eigen::Vector3f(1, 1, 0)));
 
     // Create the visualizer with the engine
     // Visualizer visualizer(engine, 800, 600, "OpenGL Visualizer Demo");
@@ -40,10 +41,12 @@ int main()
         // Update camera position and look at origin
         cameraPos = Eigen::Vector3f(x, y, z);
         lookAt = Eigen::Vector3f(0.0f, 0.0f, 0.0f);
+        std::vector<Point *> seenPoints = {secondPoint};
 
-        std::vector<Point *> seenPoints = {};
-        if (time <= M_PI)
+        if (time <= M_PI - 0.5 || time >= 1.5 * M_PI)
+        {
             seenPoints.push_back(thePoint);
+        }
 
         engine->Update(LookAtTransform(cameraPos, lookAt), seenPoints);
 

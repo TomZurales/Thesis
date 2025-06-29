@@ -7,7 +7,7 @@ void PointProbabilityEngine::init3DView()
     // Generate framebuffer
     glGenFramebuffers(1, &fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-
+    glObjectLabel(GL_FRAMEBUFFER, fbo, -1, "3D View FBO");
     // Generate texture to render to
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -45,8 +45,8 @@ void PointProbabilityEngine::init3DView()
     sm->setChangeOfBasis(glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, -1.0f, 1.0f)));
 
     floorPlane = new FloorPlane();
-    // pointCloud = new PointCloud(solidColor3DShader);
-    // icosModel = new IcosModel(heatmap3DShader, solidColor3DShader);
+    pointCloud = new PointCloud();
+    icosModel = new IcosModel();
 }
 
 void PointProbabilityEngine::show3DView() const
@@ -66,24 +66,24 @@ void PointProbabilityEngine::show3DView() const
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     ShaderManager::getInstance()->setViewMatrix(glm::lookAt(
-        glm::vec3(-1 * cameraPose(0, 3), -1 * cameraPose(1, 3), -1 * cameraPose(2, 3)), // Camera position
-        glm::vec3(0.0f, 0.0f, 0.0f),                                                    // Look at point
-        glm::vec3(0.0f, 1.0f, 0.0f)                                                     // Up vector
+        glm::vec3(cameraPose(0, 3), cameraPose(1, 3), cameraPose(2, 3)), // Camera position
+        glm::vec3(0.0f, 0.0f, 0.0f),                                     // Look at point
+        glm::vec3(0.0f, 1.0f, 0.0f)                                      // Up vector
         ));
 
-    // Draw the floor plane
-    floorPlane->draw();
-
-    // Draw the point cloud
+    // Draw the point cloud first (opaque objects)
     std::vector<Point *> visiblePoints;
     for (const auto &point : map.getMapPoints())
     {
         if (point->isInView() && point->isVisible())
             visiblePoints.push_back(point);
     }
-    // pointCloud->draw(visiblePoints);
+    pointCloud->draw(visiblePoints);
 
-    // icosModel->draw(backend->getActivePoint(), ((IcosahedronBackend *)backend)->getActiveIcosahedron()); // Draw the icosahedron model at the origin
+    // Draw the floor plane last (transparent objects)
+    floorPlane->draw();
+
+    icosModel->draw(backend->getActivePoint(), ((IcosahedronBackend *)backend)->getActiveIcosahedron()); // Draw the icosahedron model at the origin
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     ImGui::Image((ImTextureID)texture, windowSize); // Placeholder for 3D rendering
     ImGui::End();

@@ -63,10 +63,12 @@ void FloorPlane::draw() const
     sm->useShader("solid_color_3d");
     sm->setModelMatrix(modelPose);
     glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_FALSE); // Disable depth writing for transparency
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glBindVertexArray(linesVAO);
     sm->setColor(glm::vec4(0.3f, 0.3f, 0.3f, 0.1f));  // Set a gray color for the grid lines
     glDrawElements(GL_LINES, 84, GL_UNSIGNED_INT, 0); // 42 vertical + 42 horizontal = 84 indices
+    glDepthMask(GL_TRUE);                             // Re-enable depth writing
     glBindVertexArray(0);
 }

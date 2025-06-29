@@ -13,6 +13,7 @@
 class PointCloud
 {
     GLuint pointCloudVAO = 0;
+    GLuint pointCloudVBO = 0;
     glm::mat4 modelPose = glm::mat4(1.0f); // Point cloud is always at the origin
 
 public:

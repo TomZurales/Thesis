@@ -16,6 +16,8 @@ private:
     ~ShaderManager();
     ShaderManager(const ShaderManager &) = delete;            // Delete copy constructor
     ShaderManager &operator=(const ShaderManager &) = delete; // Delete copy assignment operator
+    std::string activeShaderName;
+
 public:
     static ShaderManager *getInstance();
     void addShader(const std::string &name, const char *vertexPath, const char *fragmentPath);
@@ -27,4 +29,5 @@ public:
     void setColor(const glm::vec4 &color);
     void setFaceValues(const std::vector<float> &values);
     void setChangeOfBasis(const glm::mat4 &matrix);
+    std::string getActiveShaderName() const;
 };

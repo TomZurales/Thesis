@@ -62,6 +62,7 @@ float Icosahedron::getValue(const std::string &name, int index)
   std::cerr << "Value buffer " << name << " does not exist." << std::endl;
   exit(EXIT_FAILURE);
 }
+
 void Icosahedron::setValue(const std::string &name, int index, float value)
 {
   if (valueBuffers.find(name) != valueBuffers.end())
@@ -121,6 +122,29 @@ float Icosahedron::getNormalizedValue(const std::string &name, int index)
     float maxValue = getMaxValue(name);
     float value = getValue(name, index);
     return (value - minValue) / (maxValue - minValue);
+  }
+  std::cerr << "Value buffer " << name << " does not exist." << std::endl;
+  return 0.0f; // Return 0 if the buffer does not exist or is empty
+}
+
+// Gets the value in a way such that the sum of all faces is 1
+float Icosahedron::getPDFValue(const std::string &name, int index)
+{
+  if (valueBuffers.find(name) != valueBuffers.end())
+  {
+    float sum = 0.0f;
+    for (const auto &value : valueBuffers[name])
+    {
+      sum += value;
+    }
+    if (sum > 0.0f)
+    {
+      return valueBuffers[name][index] / sum;
+    }
+    else
+    {
+      return 0.0f; // Avoid division by zero
+    }
   }
   std::cerr << "Value buffer " << name << " does not exist." << std::endl;
   return 0.0f; // Return 0 if the buffer does not exist or is empty

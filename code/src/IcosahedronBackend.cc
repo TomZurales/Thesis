@@ -48,18 +48,62 @@ void IcosahedronBackend::successfulObservation(Eigen::Matrix4f observerPose, Poi
     pointIcosMap[point] = new Icosahedron();
     pointIcosMap[point]->createValueBuffer("missedCount", 0.0f);
     pointIcosMap[point]->createValueBuffer("seenCount", 0.0f);
+    pointIcosMap[point]->createValueBuffer("probSeen", 0.0f);
     pointIcosMap[point]->createValueBuffer("dists", 1.0f);
   }
   auto icos = pointIcosMap[point];
   float distance = (observerPose.block<3, 1>(0, 3) - point->getPose()).norm();
   Eigen::Vector3f direction = observerPose.block<3, 1>(0, 3) - point->getPose();
   int face = icos->getNearestFace(direction);
+
+  // If we are still viewing the same face (the camera hasn't moved much), require that
+  // there is a sufficient ammount of paralax to call this a new observation
+  if (face == icos->getLastFace())
+  {
+    bool enoughMovement = true;
+
+    for (auto prevObservation : icos->getPrevObservations())
+    {
+      // Check angular similarity using dot product of normalized vectors
+      Eigen::Vector3f prevNorm = prevObservation.normalized();
+      Eigen::Vector3f currNorm = direction.normalized();
+      float similarity = prevNorm.dot(currNorm);
+
+      // If angle between vectors is less than ~5 degrees, not enough movement
+      float angleThreshold = std::cos(5.0f * M_PI / 180.0f); // cos(5°) ≈ 0.996
+      if (similarity > angleThreshold)
+      {
+        enoughMovement = false;
+        break;
+      }
+    }
+    if (enoughMovement)
+    {
+      icos->addPrevObservation(direction);
+    }
+    else
+    {
+      // If we haven't moved enough, we don't update the last face
+      return;
+    }
+  }
+  else
+  {
+    icos->clearPrevObservations();
+    icos->setLastFace(face);
+  }
+
   if (icos->getValue("dists", face) < distance)
   {
     icos->setValue("dists", face, distance);
   }
   // Update the seen count for this face
-  icos->setValue("seenCount", face, icos->getValue("seenCount", face) + 1.0f);
+  float newSeenCount = icos->getValue("seenCount", face) + 1.0f;
+  float missedCount = icos->getValue("missedCount", face);
+  icos->setValue("seenCount", face, newSeenCount);
+  icos->setValue("probSeen", face, newSeenCount / (newSeenCount + missedCount));
+
+  icos->setProbExists(0.95f);
 }
 
 void IcosahedronBackend::failedObservation(Eigen::Matrix4f observerPose, Point *point)
@@ -69,6 +113,43 @@ void IcosahedronBackend::failedObservation(Eigen::Matrix4f observerPose, Point *
   Eigen::Vector3f direction = observerPose.block<3, 1>(0, 3) - point->getPose();
   int face = icos->getNearestFace(direction);
 
+  // If we are still viewing the same face (the camera hasn't moved much), require that
+  // there is a sufficient ammount of paralax to call this a new observation
+  if (face == icos->getLastFace())
+  {
+    bool enoughMovement = true;
+
+    for (auto prevObservation : icos->getPrevObservations())
+    {
+      // Check angular similarity using dot product of normalized vectors
+      Eigen::Vector3f prevNorm = prevObservation.normalized();
+      Eigen::Vector3f currNorm = direction.normalized();
+      float similarity = prevNorm.dot(currNorm);
+
+      // If angle between vectors is less than ~5 degrees, not enough movement
+      float angleThreshold = std::cos(5.0f * M_PI / 180.0f); // cos(5°) ≈ 0.996
+      if (similarity > angleThreshold)
+      {
+        enoughMovement = false;
+        break;
+      }
+    }
+    if (enoughMovement)
+    {
+      icos->addPrevObservation(direction);
+    }
+    else
+    {
+      // If we haven't moved enough, we don't update the last face
+      return;
+    }
+  }
+  else
+  {
+    icos->clearPrevObservations();
+    icos->setLastFace(face);
+  }
+
   // We have never had a successful observation from this distance, so we update nothing
   if (icos->getValue("dists", face) < distance)
   {
@@ -76,7 +157,31 @@ void IcosahedronBackend::failedObservation(Eigen::Matrix4f observerPose, Point *
   }
 
   // We have had a successful observation from this distance, so we update the missed count
-  icos->setValue("missedCount", face, icos->getValue("missedCount", face) + 1.0f);
+  float newMissedCount = icos->getValue("missedCount", face) + 1.0f;
+  float seenCount = icos->getValue("seenCount", face);
+  float newProbSeen = seenCount / (seenCount + newMissedCount);
+  icos->setValue("missedCount", face, newMissedCount);
+  icos->setValue("probSeen", face, newProbSeen);
+
+  // Perform a Bayesean update to set probExists based on the missed observation;
+  float currentProbExists = icos->getPDFValue("probSeen", face);
+  float pSeenGivenExists = currentProbExists;
+  float pNotSeenGivenExists = 1.0f - pSeenGivenExists;
+  float pNotSeenGivenNotExists = 1.0f; // If it doesn't exist, it can't be seen
+  float pExistsPrior = icos->getProbExists();
+  float pNotExistsPrior = 1.0f - pExistsPrior;
+
+  // Bayes: p(exists|not seen) = [p(not seen|exists) * p(exists)] / p(not seen)
+  float pNotSeen = pNotSeenGivenExists * pExistsPrior + pNotSeenGivenNotExists * pNotExistsPrior;
+  if (pNotSeen > 0.0f)
+  {
+    float newProbExists = (pNotSeenGivenExists * pExistsPrior) / pNotSeen;
+    icos->setProbExists(newProbExists);
+  }
+  else
+  {
+    icos->setProbExists(0.0f); // If pNotSeen is zero, we set probExists to zero
+  }
 }
 
 void IcosahedronBackend::showState()
@@ -131,6 +236,7 @@ void IcosahedronBackend::showState()
     ImGui::Text("Current Distance: %.2f", currentDistance);
     ImGui::Text("Point In View?: %s", isPointInView ? "Yes" : "No");
     ImGui::Text("Point Seen?: %s", isPointVisible ? "Yes" : "No");
+    ImGui::Text("Probability Exists: %.2f", selectedIcos->getProbExists());
     ImGui::Separator();
     ImGui::BeginTable("Face Values", 4, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg);
     ImGui::TableSetupColumn("Face", ImGuiTableColumnFlags_WidthFixed, 50.0f);

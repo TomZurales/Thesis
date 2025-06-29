@@ -1,6 +1,19 @@
 cmake_minimum_required(VERSION 3.14)
 project(PointProbabilityEngine VERSION 1.0.0 LANGUAGES C CXX)
+# Set build type to Release with maximum optimizations if not specified
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
 
+# Enable maximum optimizations
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG")
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3 -DNDEBUG")
+
+# Additional optimization flags for GCC/Clang
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -march=native -mtune=native")
+  set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -march=native -mtune=native")
+endif()
 # Find required packages
 find_package(Eigen3 REQUIRED)
 find_package(OpenGL REQUIRED)

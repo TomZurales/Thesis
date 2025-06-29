@@ -14,6 +14,12 @@ class Icosahedron
 private:
     std::map<std::string, std::vector<float>> valueBuffers;
 
+    int lastFace = -1;
+    std::vector<Eigen::Vector3f> prevObservations;
+
+    // Overall probability that this point exists
+    float probExists = 0.95f;
+
 public:
     Icosahedron();
     ~Icosahedron() = default;
@@ -27,6 +33,15 @@ public:
     float getMaxValue(const std::string &name);
     // Gets a value normalized to the range [0, 1]
     float getNormalizedValue(const std::string &name, int index);
+    float getPDFValue(const std::string &name, int index);
+
+    int getLastFace() const { return lastFace; }
+    void setLastFace(int face) { lastFace = face; }
+    const std::vector<Eigen::Vector3f> &getPrevObservations() const { return prevObservations; }
+    void addPrevObservation(const Eigen::Vector3f &observation) { prevObservations.push_back(observation); }
+    void clearPrevObservations() { prevObservations.clear(); }
+    float getProbExists() const { return probExists; }
+    void setProbExists(float probExists) { this->probExists = probExists; }
 
     std::vector<Eigen::Vector3f> vertices = {
         Eigen::Vector3f(0, ICOS_LONG, ICOS_SHORT).normalized(),   // 1

@@ -40,6 +40,7 @@ void ShaderManager::useShader(const std::string &name)
     if (it != shaders.end())
     {
         it->second->use();
+        activeShaderName = name;
     }
     else
     {
@@ -54,6 +55,7 @@ void ShaderManager::setModelMatrix(const glm::mat4 &matrix)
         pair.second->use();
         pair.second->setMatrix4fv("model", matrix);
     }
+    useShader(activeShaderName); // Ensure the active shader is set after changing matrices
 }
 
 void ShaderManager::setViewMatrix(const glm::mat4 &matrix)
@@ -63,6 +65,7 @@ void ShaderManager::setViewMatrix(const glm::mat4 &matrix)
         pair.second->use();
         pair.second->setMatrix4fv("view", matrix);
     }
+    useShader(activeShaderName); // Ensure the active shader is set after changing matrices
 }
 
 void ShaderManager::setProjectionMatrix(const glm::mat4 &matrix)
@@ -72,6 +75,7 @@ void ShaderManager::setProjectionMatrix(const glm::mat4 &matrix)
         pair.second->use();
         pair.second->setMatrix4fv("projection", matrix);
     }
+    useShader(activeShaderName); // Ensure the active shader is set after changing matrices
 }
 
 void ShaderManager::setColor(const glm::vec4 &color)
@@ -81,6 +85,7 @@ void ShaderManager::setColor(const glm::vec4 &color)
         pair.second->use();
         pair.second->setVector4f("color", color);
     }
+    useShader(activeShaderName); // Ensure the active shader is set after changing matrices
 }
 
 void ShaderManager::setFaceValues(const std::vector<float> &values)
@@ -90,6 +95,7 @@ void ShaderManager::setFaceValues(const std::vector<float> &values)
         pair.second->use();
         pair.second->setFloatArray("heatmapValues", values);
     }
+    useShader(activeShaderName); // Ensure the active shader is set after changing matrices
 }
 
 void ShaderManager::setChangeOfBasis(const glm::mat4 &matrix)
@@ -99,4 +105,5 @@ void ShaderManager::setChangeOfBasis(const glm::mat4 &matrix)
         pair.second->use();
         pair.second->setMatrix4fv("changeOfBasis", matrix);
     }
+    useShader(activeShaderName); // Ensure the active shader is set after changing matrices
 }

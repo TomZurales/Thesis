@@ -9,17 +9,15 @@
 #include <Icosahedron.h>
 #include <set>
 
+#include "ShaderManager.h"
 #include "Shader.h"
 
 class IcosModel
 {
-    Shader *shader;
-    Shader *solidShader;
     GLuint icosVAO = 0;
     GLuint icosEBO = 0;
 
 public:
-    IcosModel() = delete;
-    IcosModel(Shader *shader, Shader *solidShader);
+    IcosModel();
     void draw(Point *point, Icosahedron *icos) const;
 };
