@@ -54,7 +54,11 @@ Can this be used as a heuristic to determine when to re-enable mapping on MAVs?
 
 # Background
 
-The Astrobee project was motivated by the desire to research human/robot interaction, robotic automation and inspection, and to provide a research platform on which companies and researchers could deploy software and hardware for testing in a micro-gravity environment. The Astrobee platform has been used to develop satellite rendezvous control algorithms, grippers to capture tumbling orbital debris, inspection methods to autonomously detect anomalous operation, and many other space habitation focused endeavors.
+This research is acts as an extension to keypoint-based visual SLAM; a term which warrants some explanation. But before exploring the specifics of keypoint-based visual SLAM, some background on the general SLAM problem is required. The idea behind SLAM is to simultaneously produce a map of an environment, and determine the position of the observer within the map. 
+
+There have been hundreds of SLAM implementations for a wide variety of sensors, commonly targeting combinations of monocular, stereo or RGBD cameras, IMUs, LIDARs, etc.
+
+Due to it providing the motivation for this project, the Astrobee robots will me mentioned several times throughout this work. The Astrobee project was motivated by the desire to research human/robot interaction, robotic automation and inspection, and to provide a research platform on which companies and researchers could deploy software and hardware for testing in a micro-gravity environment. The Astrobee platform has been used to develop satellite rendezvous control algorithms, grippers to capture tumbling orbital debris, inspection methods to autonomously detect anomalous operation, and many other space habitation focused endeavors.
 
 # Related Work
 
@@ -122,5 +126,11 @@ Each of these assumptions will be interrogated and analyzed to determine their v
 Implementation 2
 The assumption that the probability of a keypoint’s existence does not change as a function of time may be false. This implementation makes use of the time between the loaded map’s generation and the current time to increase the probability that a keypoint no longer exists based on the time delta to when it was last observed.
 Evaluation of probability model on simulated and real-world datasets
+
+<!-- This is going to contain a section on comparisons with other methods of dynamics removal.
+This is difficult to do in practice due to the complications of using other people's numbers
+in direct comparison to my own. Add a section on potential research into context independent
+slam benchmarking. -->
+
 Discussion
 Conclusion
