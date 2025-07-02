@@ -77,6 +77,8 @@ Due to it providing the motivation for this project, the Astrobee robots will me
 
 ## Extensions to Core SLAM
 
+## 
+
 # Related Work
 
 Numerous methods have been developed to improve long-term SLAM performance, generalizing the problem to remove the constraint that the environment remains static.
