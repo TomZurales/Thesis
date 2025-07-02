@@ -1,5 +1,7 @@
 # Introduction
 
+<!-- Still need to come up with a term for the general class of my extension. Right now I'm using point removal optimizations -->
+
 <!-- Problem Context -->
 
 Simultaneous Localization and Mapping (SLAM) empowers computers to generate a spatial understanding of the world around them. This spatial understanding is not only useful, but necessary for systems intending to operate in and interact with physical environments. Virtual reality, robotics, and industrial automation all make use of SLAM to generate an internal map of the local and global environments. SLAM does have the distinction of being a "solved" problem in the ideal case. If an agent is able to perfectly measure the environment, and is guaranteed to make correct data associations, then a perfect map can be generated and the agent's location within that map can be known with certainty. This ideal case makes several assumptions, paramount of which is the existence of ideal sensors, but there is a secondary assumption that the state of the world does not change.
@@ -40,11 +42,17 @@ This research intends to build upon the previously developed probability models,
 
 <!-- Contribution -->
 
-Through this research, we introduce an incrementally updated directional confidence model for the existence of map points. This model is implemented as an icosahedral shell surrounding each map point, providing metadata regarding the observability of the point at a discrete set of perspectives. Additionally, the same logic is implemented for a continuous shell around the point utilizing von Mises-Fisher distributions.
+Through this research, we introduce an incrementally updated directional confidence model for the existence of map points. This model differs from other point removal optimizations in several ways. First, this implementation avoids the use of neural networks, facilitating use on resource constrained hardware without facilities optimized to run them. Second, while other probability based point removal optimizations have been developed, this model introduces the idea of utilizing a continuously updated perspective dependent shell of metadata for each keypoint, which can be used to reduce the problem of point existence to a simple Bayesian update step. This implementation allows perspective of observation to play a role in the point's existence probability update step, and avoids some of the common a priori work such as prior estimation common to other point removal optimization techniques. This shell is implemented in both finite and continuous modalities, utilizing regular convex polyhedral shells in the finite case, and von-meiser fisher distributions on the sphere in the continuous case.
 
-To facilitate future research, this model is released as an open-source library, which is compatible with any keypoint based visual SLAM implementation.
+To facilitate future research, this model is released as an open-source library, which is compatible with any keypoint based visual SLAM implementation. Additionally, a collection of co-registered visual-inertial & LIDAR datasets is provided, containing instances of multiple traversals through the same environments with changes to scene contents. Information regarding the locations of these environmental changes is included in the dataset, facilitating the benchmarking of point removal optimization implementations.
 
 <!-- Road Map -->
+
+Chapter X of this thesis discusses the background of the general SLAM problem, covering the history, use cases, and general pipeline utilized by SLAM systems. This is followed by a deeper dive into keypoint-based visual SLAM, the sensor modality targeted by this research. We provide a brief survey of widely utilized extensions to the core SLAM algorithm which target deficiencies in the core pipeline. Finally, we discuss fields outside the scope of SLAM which provide insight and methodology into this research.
+
+Chapter X discusses works related to this research, specifically focusing on extensions targeting improved performance in dynamic situations, with additional focus given to those methods which utilize point removal optimizations.
+
+Chapter X
 
 ## Research Questions
 
@@ -54,12 +62,34 @@ Can this be used as a heuristic to determine when to re-enable mapping on MAVs?
 
 # Background
 
-The Astrobee project was motivated by the desire to research human/robot interaction, robotic automation and inspection, and to provide a research platform on which companies and researchers could deploy software and hardware for testing in a micro-gravity environment. The Astrobee platform has been used to develop satellite rendezvous control algorithms, grippers to capture tumbling orbital debris, inspection methods to autonomously detect anomalous operation, and many other space habitation focused endeavors.
+In this chapter, we provide a high level overview of the definitions, objectives, and history of SLAM, in addition to an overview of the common sensor modalities found in SLAM systems. Following this, we discuss the stages of the SLAM pipeline in the generic case, followed by a more in-depth exploration of keypoint-based visual SLAM, the sensor modality targeted by this research. Next, we look into several of the widely adopted extensions to the base SLAM pipeline which address core issues and enhance performance. A discussion of extensions which have similar goals to this research is held for the chapter on related works.
+
+## Simultaneous Localization and Mapping (SLAM): A High Level Overview
+
+This research is acts as an extension to keypoint-based visual SLAM; a term which warrants some explanation. But before exploring the specifics of keypoint-based visual SLAM, some background on the general SLAM problem is required. The idea behind SLAM is to simultaneously produce a map of an environment, and determine the position of the observer within the map based on a set of sensor data. The process differs heavily based on the sensor types being utilized. For example, LIDAR provides a direct measurement of 3D distances from the sensor, while an RGB camera must calculate them from correspondences between multiple frames. While implementations differ heavily, a common SLAM pipeline could be described as follows:
+
+## The Generic SLAM Pipeline
+This stage is responsible for the creation of the initial map. 
+
+There have been hundreds of SLAM implementations for a wide variety of sensors, commonly targeting combinations of monocular, stereo or RGBD cameras, IMUs, LIDARs, etc.
+
+Due to it providing the motivation for this project, the Astrobee robots will me mentioned several times throughout this work. The Astrobee project was motivated by the desire to research human/robot interaction, robotic automation and inspection, and to provide a research platform on which companies and researchers could deploy software and hardware for testing in a micro-gravity environment. The Astrobee platform has been used to develop satellite rendezvous control algorithms, grippers to capture tumbling orbital debris, inspection methods to autonomously detect anomalous operation, and many other space habitation focused endeavors.
+
+## Keypoint-Based Visual SLAM Deep Dive
+
+## Extensions to Core SLAM
+
+## Additional Fields of Research
+### Directional Probability
 
 # Related Work
 
 Numerous methods have been developed to improve long-term SLAM performance, generalizing the problem to remove the constraint that the environment remains static.
 https://arxiv.org/pdf/2209.10710 - ChangingSlam - Uses a Bayes filter to remove changing map points. Utilizes semantic detection to determine dynamic objects before filter is used, which prevents it from working on deformable objects.
+
+## Point Removal Optimizations
+### Semantics Based Implementations
+### Probability Based Optimizations
 
 # Approach
 
@@ -122,5 +152,11 @@ Each of these assumptions will be interrogated and analyzed to determine their v
 Implementation 2
 The assumption that the probability of a keypoint’s existence does not change as a function of time may be false. This implementation makes use of the time between the loaded map’s generation and the current time to increase the probability that a keypoint no longer exists based on the time delta to when it was last observed.
 Evaluation of probability model on simulated and real-world datasets
+
+<!-- This is going to contain a section on comparisons with other methods of dynamics removal.
+This is difficult to do in practice due to the complications of using other people's numbers
+in direct comparison to my own. Add a section on potential research into context independent
+slam benchmarking. -->
+
 Discussion
 Conclusion
