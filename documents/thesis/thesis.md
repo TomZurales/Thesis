@@ -54,7 +54,7 @@ Can this be used as a heuristic to determine when to re-enable mapping on MAVs?
 
 # Background
 
-In this section, we provide a high level overview of the definitions, objectives, and history of SLAM. Following this, a discussion of the generic 
+In this section, we provide a high level overview of the definitions, objectives, and history of SLAM. Following this, a discussion of the generic data pipeline is 
 
 ## An Overview of Simultaneous Localization and Mapping (SLAM)
 
