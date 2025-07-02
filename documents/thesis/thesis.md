@@ -48,6 +48,8 @@ To facilitate future research, this model is released as an open-source library,
 
 <!-- Road Map -->
 
+This 
+
 ## Research Questions
 
 Does a probability model which identifies and culls outdated map points provide significant improvements to relocalization and tracking during map reuse in keypoint-based SLAM?
