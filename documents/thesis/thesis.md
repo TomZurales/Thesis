@@ -54,7 +54,7 @@ Can this be used as a heuristic to determine when to re-enable mapping on MAVs?
 
 # Background
 
-
+In this section, a 
 
 ## An Overview of Simultaneous Localization and Mapping (SLAM)
 
