@@ -54,7 +54,7 @@ Can this be used as a heuristic to determine when to re-enable mapping on MAVs?
 
 # Background
 
-In this section, we provide a high level overview of the definitions, objectives, and history of SLAM, in addition to an overview of the common sensor modalities found in SLAM systems. Following this, we discuss the stages of the SLAM pipeline in the generic case. Additionally, due to this research's focus on keypoint-based visual SLAM, a more detailed breakdown of this modality is provided.
+In this section, we provide a high level overview of the definitions, objectives, and history of SLAM, in addition to an overview of the common sensor modalities found in SLAM systems. Following this, we discuss the stages of the SLAM pipeline in the generic case, followed by due to this research's focus on keypoint-based visual SLAM, a more detailed breakdown of this modality is provided.
 
 ## An Overview of Simultaneous Localization and Mapping (SLAM)
 
