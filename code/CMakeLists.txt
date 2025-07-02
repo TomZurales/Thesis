@@ -19,6 +19,7 @@ find_package(Eigen3 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
+find_package(PCL REQUIRED)
 
 # Add GLAD as a static library
 set(GLAD_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/glad)
@@ -40,6 +41,7 @@ add_library(PointProbabilityEngine SHARED
   src/Utility.cc
   src/Viewer.cc
   src/ShaderManager.cc
+  src/PointXYZID.cc
   src/PointProbabilityEngine/3DView.cc
 
   # Graphics files
@@ -67,6 +69,7 @@ target_include_directories(PointProbabilityEngine
     ${GLFW_INCLUDE_DIRS}
     ${GLM_INCLUDE_DIRS}
     ${GLAD_SOURCE_DIR}/include
+    ${PCL_INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/imgui
 )
 
@@ -77,6 +80,7 @@ target_link_libraries(PointProbabilityEngine
     glfw
     glad
     ${CMAKE_DL_LIBS}
+    ${PCL_LIBRARIES}
 )
 
 set_target_properties(PointProbabilityEngine PROPERTIES

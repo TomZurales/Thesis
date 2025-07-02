@@ -7,9 +7,12 @@ class Camera
 private:
   float width, height, fx, fy;
   Eigen::Matrix3f cameraMatrix;
+  Eigen::Matrix4f pose; // Assuming pose is a 4x4 matrix for transformation
 
 public:
   Camera(float width, float height, float fx, float fy);
+  void setPose(const Eigen::Matrix4f &newPose) { pose = newPose; }
+  Eigen::Matrix4f getPose() const { return pose; }
 
   Eigen::Matrix3f getCameraMatrix() { return cameraMatrix; }
   float getWidth() const { return width; }
