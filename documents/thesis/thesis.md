@@ -83,6 +83,7 @@ Numerous methods have been developed to improve long-term SLAM performance, gene
 https://arxiv.org/pdf/2209.10710 - ChangingSlam - Uses a Bayes filter to remove changing map points. Utilizes semantic detection to determine dynamic objects before filter is used, which prevents it from working on deformable objects.
 
 ## Point Removal Optimizations
+### Semantics Based Implementations
 ### 
 
 # Approach
