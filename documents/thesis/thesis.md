@@ -84,7 +84,7 @@ https://arxiv.org/pdf/2209.10710 - ChangingSlam - Uses a Bayes filter to remove 
 
 ## Point Removal Optimizations
 ### Semantics Based Implementations
-### 
+### Probability Based Optimizations
 
 # Approach
 
