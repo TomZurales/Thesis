@@ -54,7 +54,7 @@ Can this be used as a heuristic to determine when to re-enable mapping on MAVs?
 
 # Background
 
-## An 
+## An Overview of Simultaneous Localization and Mapping (SLAM)
 
 This research is acts as an extension to keypoint-based visual SLAM; a term which warrants some explanation. But before exploring the specifics of keypoint-based visual SLAM, some background on the general SLAM problem is required. The idea behind SLAM is to simultaneously produce a map of an environment, and determine the position of the observer within the map based on a set of sensor data. The process differs heavily based on the sensor types being utilized. For example, LIDAR provides a direct measurement of 3D distances from the sensor, while an RGB camera must calculate them from correspondences between multiple frames. While implementations differ heavily, a common SLAM pipeline could be described as follows:
 
