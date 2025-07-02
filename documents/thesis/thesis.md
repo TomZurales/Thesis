@@ -48,7 +48,7 @@ To facilitate future research, this model is released as an open-source library,
 
 <!-- Road Map -->
 
-This 
+This thesis will begin with a discussion of 
 
 ## Research Questions
 
