@@ -48,7 +48,7 @@ To facilitate future research, this model is released as an open-source library,
 
 <!-- Road Map -->
 
-Chapter X of this thesis discusses the background of the general SLAM problem, covering the history, use cases, and general pipeline utilized by SLAM systems. This 
+Chapter X of this thesis discusses the background of the general SLAM problem, covering the history, use cases, and general pipeline utilized by SLAM systems. This is followed by a 
 
 ## Research Questions
 
