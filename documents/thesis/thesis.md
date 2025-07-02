@@ -40,7 +40,7 @@ This research intends to build upon the previously developed probability models,
 
 <!-- Contribution -->
 
-Through this research, we introduce an incrementally updated directional confidence model for the existence of map points. This model differs from otherThis model is implemented as an icosahedral shell surrounding each map point, providing metadata regarding the observability of the point at a discrete set of perspectives. Additionally, the same logic is implemented for a continuous shell around the point utilizing von Mises-Fisher distributions.
+Through this research, we introduce an incrementally updated directional confidence model for the existence of map points. This model differs from other implementations This model is implemented as an icosahedral shell surrounding each map point, providing metadata regarding the observability of the point at a discrete set of perspectives. Additionally, the same logic is implemented for a continuous shell around the point utilizing von Mises-Fisher distributions.
 
 To facilitate future research, this model is released as an open-source library, which is compatible with any keypoint based visual SLAM implementation.
 
