@@ -73,7 +73,7 @@ Due to it providing the motivation for this project, the Astrobee robots will me
 
 ## Keypoint-Based Visual SLAM Deep Dive
 
-## 
+## Extensions to Core SLAM
 
 # Related Work
 
