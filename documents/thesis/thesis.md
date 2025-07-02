@@ -77,7 +77,8 @@ Due to it providing the motivation for this project, the Astrobee robots will me
 
 ## Extensions to Core SLAM
 
-## 
+## Additional Fields of Research
+
 
 # Related Work
 
