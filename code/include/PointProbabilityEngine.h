@@ -31,8 +31,6 @@ class PointProbabilityEngine
   Map map;
   Viewer *viewer; // Pointer to the viewer, if used
 
-  Eigen::Matrix4f cameraPose; // Current camera pose
-
   bool useViewer;
   bool shouldClose = false;
 
@@ -43,11 +41,9 @@ class PointProbabilityEngine
 public:
   PointProbabilityEngine(Camera camera, Model model = ICOSAHEDRON, Map map = Map(), bool useViewer = true);
 
-  void Update(Eigen::Matrix4f cameraPose, std::vector<Point *> visiblePoints);
+  void Update(Eigen::Matrix4f, std::vector<Point *>);
 
   Map &getMap() { return map; }
-
-  Eigen::Matrix4f getCameraPose() const { return cameraPose; }
 
   bool getShouldClose() const { return shouldClose; }
 

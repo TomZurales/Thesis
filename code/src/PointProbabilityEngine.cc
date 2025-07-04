@@ -28,12 +28,12 @@ PointProbabilityEngine::PointProbabilityEngine(Camera camera, Model model, Map m
   }
 }
 
-void PointProbabilityEngine::Update(Eigen::Matrix4f cameraPose, std::vector<Point *> visiblePoints) // TODO: Revisit the code for getting points in camera view
+void PointProbabilityEngine::Update(Eigen::Matrix4f observationPose, std::vector<Point *> visiblePoints)
 {
   if (!isPaused || doStep)
   {
     // Update the camera pose
-    this->cameraPose = cameraPose;
+    camera.setPose(observationPose);
 
     // If a point is not in the map, add it
     map.addNewMapPoints(visiblePoints);
@@ -42,7 +42,7 @@ void PointProbabilityEngine::Update(Eigen::Matrix4f cameraPose, std::vector<Poin
     Eigen::Matrix3f camMatrix = camera.getCameraMatrix();
 
     // Get the camera position from the pose (assuming last column is translation)
-    Eigen::Vector3f camPosition = cameraPose.block<3, 1>(0, 3);
+    Eigen::Vector3f camPosition = camera.getPose().block<3, 1>(0, 3);
 
     // Determine which points are in the camera's view frustum
     // TODO: This is broken, pushing all points as in view for now
@@ -56,7 +56,7 @@ void PointProbabilityEngine::Update(Eigen::Matrix4f cameraPose, std::vector<Poin
       Eigen::Vector3f dirToPoint = pointPos - camPosition;
       float distance = dirToPoint.norm();
       dirToPoint.normalize();
-      Eigen::Vector3f camForward = cameraPose.block<3, 1>(0, 2); // Assuming Z-forward
+      Eigen::Vector3f camForward = camera.getPose().block<3, 1>(0, 2); // Assuming Z-forward
       float angle = std::acos(camForward.dot(dirToPoint));
       // if (angle < camera.getFov() / 2)
       // {
@@ -82,7 +82,7 @@ void PointProbabilityEngine::Update(Eigen::Matrix4f cameraPose, std::vector<Poin
       }
     }
     // Call the backend to update probabilities
-    backend->addObservation(cameraPose, seenPoints, notSeenPoints);
+    backend->addObservation(camera.getPose(), seenPoints, notSeenPoints);
   }
 
   // If a viewer is used, update it with the current state
@@ -109,7 +109,7 @@ void PointProbabilityEngine::showState() const
 
   ImGui::Text("# Map Points: %zu    ", map.getMapPoints().size());
   ImGui::SameLine();
-  ImGui::Text("Camera Pose: (%.2f, %.2f, %.2f)", cameraPose(0, 3), cameraPose(1, 3), cameraPose(2, 3));
+  ImGui::Text("Camera Pose: (%.2f, %.2f, %.2f)", camera.getPose()(0, 3), camera.getPose()(1, 3), camera.getPose()(2, 3));
   ImGui::End();
 }
 

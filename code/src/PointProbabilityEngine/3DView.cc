@@ -42,7 +42,8 @@ void PointProbabilityEngine::init3DView()
                   "/home/tom/workspace/thesis/code/src/Graphics/shaders/fragment/heatmap_3d.glsl");
 
     sm->setProjectionMatrix(glm::perspective(glm::radians(45.0f), 1.0f, 0.01f, 100.0f));
-    sm->setChangeOfBasis(glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, -1.0f, 1.0f)));
+    // sm->setChangeOfBasis(glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, -1.0f, 1.0f)));
+    sm->setChangeOfBasis(glm::mat4(1.0f));
 
     floorPlane = new FloorPlane();
     pointCloud = new PointCloud();
@@ -65,11 +66,7 @@ void PointProbabilityEngine::show3DView() const
     glViewport(0, 0, windowSize.x, windowSize.y);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    ShaderManager::getInstance()->setViewMatrix(glm::lookAt(
-        glm::vec3(cameraPose(0, 3), cameraPose(1, 3), cameraPose(2, 3)), // Camera position
-        glm::vec3(0.0f, 0.0f, 0.0f),                                     // Look at point
-        glm::vec3(0.0f, 1.0f, 0.0f)                                      // Up vector
-        ));
+    ShaderManager::getInstance()->setViewMatrix(eigenToGlm(camera.getPose().inverse()));
 
     // Draw the point cloud first (opaque objects)
     std::vector<Point *> visiblePoints;

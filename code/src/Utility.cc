@@ -72,3 +72,12 @@ glm::mat4 eigenToGlm(const Eigen::Matrix4f &m)
             result[j][i] = -1 * m(i, j); // glm is column-major
     return result;
 }
+
+Eigen::Matrix4f glmToEigen(const glm::mat4 &m)
+{
+    Eigen::Matrix4f result;
+    for (int i = 0; i < 4; ++i)
+        for (int j = 0; j < 4; ++j)
+            result(i, j) = -1 * m[j][i]; // Eigen is row-major
+    return result;
+}
