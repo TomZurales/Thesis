@@ -8,28 +8,32 @@
 #include "imgui.h"
 
 #include "PPEBackend.h"
-#include "Point.h"
+#include "PPEPointInterface.h"
 #include "Icosahedron.h"
 #include "Utility.h"
 
 class IcosahedronBackend : public PPEBackend
 {
 private:
-  std::map<Point *, Icosahedron *> pointIcosMap = std::map<Point *, Icosahedron *>();
+  std::map<PPEPointInterface *, Icosahedron *> pointIcosMap = std::map<PPEPointInterface *, Icosahedron *>();
 
   // Visualization parameters
-  std::map<Point *, Icosahedron *>::iterator pointIcosMapIndex = pointIcosMap.begin();
+  std::map<PPEPointInterface *, Icosahedron *>::iterator pointIcosMapIndex = pointIcosMap.begin();
 
 public:
   IcosahedronBackend() = default;
 
-  void _addFailedObservation(Point *point) override;
-  void _addSuccessfulObservation(Point *point) override;
+  void _addFailedObservation(PPEPointInterface *point) override;
+  void _addSuccessfulObservation(PPEPointInterface *point) override;
 
   void showState() override;
 
-  Point *getActivePoint() const override;
+  PPEPointInterface *getActivePoint() const override;
 
   void show2DView(std::string name, Icosahedron *selectedIcos, int currentFace, bool isPointInView, bool isPointVisible) const;
   Icosahedron *getActiveIcosahedron() const;
+
+  int getNumPoints() const override { return static_cast<int>(pointIcosMap.size()); }
+
+  std::vector<PPEPointInterface *> getAllPoints() const override;
 };

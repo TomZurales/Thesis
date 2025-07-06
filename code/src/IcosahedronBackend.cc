@@ -41,7 +41,7 @@
 //   std::cout << pExists << std::endl;
 // }
 
-void IcosahedronBackend::_addSuccessfulObservation(Point *point)
+void IcosahedronBackend::_addSuccessfulObservation(PPEPointInterface *point)
 {
   if (pointIcosMap.find(point) == pointIcosMap.end())
   {
@@ -52,8 +52,8 @@ void IcosahedronBackend::_addSuccessfulObservation(Point *point)
     pointIcosMap[point]->createValueBuffer("dists", 1.0f);
   }
   auto icos = pointIcosMap[point];
-  float distance = (currentCameraPose.block<3, 1>(0, 3) - point->getPose()).norm();
-  Eigen::Vector3f direction = point->getPose() - currentCameraPose.block<3, 1>(0, 3);
+  float distance = (currentCameraPose.block<3, 1>(0, 3) - point->getPosition()).norm();
+  Eigen::Vector3f direction = point->getPosition() - currentCameraPose.block<3, 1>(0, 3);
   int face = icos->getNearestFace(direction);
 
   // If we are still viewing the same face (the camera hasn't moved much), require that
@@ -106,11 +106,19 @@ void IcosahedronBackend::_addSuccessfulObservation(Point *point)
   icos->setProbExists(0.95f);
 }
 
-void IcosahedronBackend::_addFailedObservation(Point *point)
+void IcosahedronBackend::_addFailedObservation(PPEPointInterface *point)
 {
+  if (pointIcosMap.find(point) == pointIcosMap.end())
+  {
+    pointIcosMap[point] = new Icosahedron();
+    pointIcosMap[point]->createValueBuffer("missedCount", 0.0f);
+    pointIcosMap[point]->createValueBuffer("seenCount", 0.0f);
+    pointIcosMap[point]->createValueBuffer("probSeen", 0.0f);
+    pointIcosMap[point]->createValueBuffer("dists", 1.0f);
+  }
   auto icos = pointIcosMap[point];
-  float distance = (currentCameraPose.block<3, 1>(0, 3) - point->getPose()).norm();
-  Eigen::Vector3f direction = point->getPose() - currentCameraPose.block<3, 1>(0, 3);
+  float distance = (currentCameraPose.block<3, 1>(0, 3) - point->getPosition()).norm();
+  Eigen::Vector3f direction = point->getPosition() - currentCameraPose.block<3, 1>(0, 3);
   int face = icos->getNearestFace(direction);
 
   // If we are still viewing the same face (the camera hasn't moved much), require that
@@ -193,8 +201,8 @@ void IcosahedronBackend::showState()
     // Step 1. Let's build the state to visualize
     auto selectedPoint = pointIcosMapIndex->first;
     auto selectedIcos = pointIcosMapIndex->second;
-    auto currentFace = selectedIcos->getNearestFace(currentCameraPose.block<3, 1>(0, 3) - selectedPoint->getPose());
-    auto currentDistance = (currentCameraPose.block<3, 1>(0, 3) - selectedPoint->getPose()).norm();
+    auto currentFace = selectedIcos->getNearestFace(currentCameraPose.block<3, 1>(0, 3) - selectedPoint->getPosition());
+    auto currentDistance = (currentCameraPose.block<3, 1>(0, 3) - selectedPoint->getPosition()).norm();
     auto isPointInView = selectedPoint->isInView();
     auto isPointVisible = selectedPoint->isVisible();
 
@@ -229,9 +237,9 @@ void IcosahedronBackend::showState()
       pointIcosMapIndex = it;
     }
     ImGui::Text("Point Pose: (%.2f, %.2f, %.2f)",
-                selectedPoint->getPose().x(),
-                selectedPoint->getPose().y(),
-                selectedPoint->getPose().z());
+                selectedPoint->getPosition().x(),
+                selectedPoint->getPosition().y(),
+                selectedPoint->getPosition().z());
     ImGui::Text("Current Face: %d", currentFace);
     ImGui::Text("Current Distance: %.2f", currentDistance);
     ImGui::Text("Point In View?: %s", isPointInView ? "Yes" : "No");
@@ -316,7 +324,7 @@ void IcosahedronBackend::show2DView(std::string name, Icosahedron *selectedIcos,
   ImGui::Dummy(ImVec2(0, 7.5 + ((3 * sqrt(3) / 2) * scale))); // Add some space before the button
 }
 
-Point *IcosahedronBackend::getActivePoint() const
+PPEPointInterface *IcosahedronBackend::getActivePoint() const
 {
   if (pointIcosMapIndex != pointIcosMap.end())
   {
@@ -332,4 +340,14 @@ Icosahedron *IcosahedronBackend::getActiveIcosahedron() const
     return pointIcosMapIndex->second;
   }
   return nullptr; // Return nullptr if no points are available
+}
+
+std::vector<PPEPointInterface *> IcosahedronBackend::getAllPoints() const
+{
+  std::vector<PPEPointInterface *> points;
+  for (const auto &entry : pointIcosMap)
+  {
+    points.push_back(entry.first);
+  }
+  return points;
 }

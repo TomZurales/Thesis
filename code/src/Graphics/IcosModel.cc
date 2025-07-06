@@ -39,7 +39,7 @@ IcosModel::IcosModel()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void IcosModel::draw(Point *point, Icosahedron *icos) const
+void IcosModel::draw(PPEPointInterface *point, Icosahedron *icos) const
 {
     if (!icos)
         return;
@@ -47,7 +47,7 @@ void IcosModel::draw(Point *point, Icosahedron *icos) const
     // --- Draw faces with heatmap colors ---
     ShaderManager *sm = ShaderManager::getInstance();
     sm->useShader("heatmap_3d");
-    sm->setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(point->getPose().x(), point->getPose().y(), point->getPose().z())));
+    sm->setModelMatrix(glm::translate(glm::mat4(1.0f), glm::vec3(point->getPosition().x(), point->getPosition().y(), point->getPosition().z())));
 
     std::vector<float> intensities;
     for (int i = 0; i < 20; i++)

@@ -5,10 +5,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
-#include <Point.h>
-#include <Icosahedron.h>
 #include <set>
 
+#include "PPEPointInterface.h"
+#include "Icosahedron.h"
 #include "ShaderManager.h"
 #include "Shader.h"
 
@@ -19,5 +19,5 @@ class IcosModel
 
 public:
     IcosModel();
-    void draw(Point *point, Icosahedron *icos) const;
+    void draw(PPEPointInterface *point, Icosahedron *icos) const;
 };

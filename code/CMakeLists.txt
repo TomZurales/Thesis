@@ -25,9 +25,7 @@ find_package(GLEW REQUIRED)
 # Add library source files here
 add_library(PointProbabilityEngine SHARED
   src/PointProbabilityEngine.cc
-  src/Camera.cc
   src/IcosahedronBackend.cc
-  # src/Visualizer.cc
   src/Icosahedron.cc
   src/Utility.cc
   src/Viewer.cc
@@ -83,9 +81,18 @@ set_target_properties(PointProbabilityEngine PROPERTIES
   POSITION_INDEPENDENT_CODE ON
 )
 
-# Add demo executables
-add_executable(demo demo/demo.cc)
-target_link_libraries(demo PointProbabilityEngine)
+# Demo Build
+set(DEMO_SRCS
+  demo/src/PointImpl.cc
+  demo/src/MapImpl.cc
+  demo/src/CameraImpl.cc
+  demo/point_probability_engine_demo.cc
+)
 
-add_executable(visualizer_demo demo/visualizer_demo.cc)
-target_link_libraries(visualizer_demo PointProbabilityEngine)
+add_executable(point_probability_engine_demo ${DEMO_SRCS})
+target_link_libraries(point_probability_engine_demo PointProbabilityEngine ${PCL_LIBRARIES})
+target_include_directories(point_probability_engine_demo
+PRIVATE
+  ${PCL_INCLUDE_DIRS}
+  demo/include
+)

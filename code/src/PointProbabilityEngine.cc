@@ -1,24 +1,9 @@
 #include "PointProbabilityEngine.h"
 #include "Viewer.h"
 
-PointProbabilityEngine::PointProbabilityEngine(Camera *camera, Model model, Map map, bool useViewer) : camera(camera), model(model), map(map), useViewer(useViewer)
+PointProbabilityEngine::PointProbabilityEngine(PPEModel model, PPEMapInterface *map, PPECameraInterface *camera, bool useViewer) : model(model), mapInterface(map), cameraInterface(camera), useViewer(useViewer)
 {
-  backend = nullptr;
-
-  switch (model)
-  {
-  case ICOSAHEDRON:
-    backend = new IcosahedronBackend();
-    break;
-
-  case SPHERE:
-    // Initialize for Sphere model
-    break;
-
-  default:
-    std::cerr << "Unknown model type!" << std::endl;
-    exit(EXIT_FAILURE);
-  }
+  initializeModel();
 
   if (useViewer)
   {
@@ -28,49 +13,15 @@ PointProbabilityEngine::PointProbabilityEngine(Camera *camera, Model model, Map 
   }
 }
 
-void PointProbabilityEngine::Update(Eigen::Matrix4f observationPose, std::vector<Point *> visiblePoints)
+void PointProbabilityEngine::Update(Eigen::Matrix4f observationPose, std::vector<PPEPointInterface *> visiblePoints)
 {
   if (!isPaused || doStep)
   {
-    // Update the camera pose
-    camera->setPose(observationPose);
+    auto mapPointsInCameraFrustum = mapInterface->getPointsInCameraView(cameraInterface, observationPose);
 
-    // If a point is not in the map, add it
-    map.addNewMapPoints(visiblePoints);
-
-    // Get the camera matrix
-    Eigen::Matrix3f camMatrix = camera->getCameraMatrix();
-
-    // Get the camera position from the pose (assuming last column is translation)
-    Eigen::Vector3f camPosition = camera->getPose().block<3, 1>(0, 3);
-
-    // Determine which points are in the camera's view frustum
-    // TODO: This is broken, pushing all points as in view for now
-    // Ideally, we would check if the point is within the camera's field of view
-    std::vector<Point *> pointsInView;
-    for (auto *point : map.getMapPoints())
+    backend->beginObservation(observationPose);
+    for (auto *point : mapPointsInCameraFrustum)
     {
-      point->setInView(false);
-      point->setVisible(false);
-      Eigen::Vector3f pointPos = point->getPose();
-      Eigen::Vector3f dirToPoint = pointPos - camPosition;
-      float distance = dirToPoint.norm();
-      dirToPoint.normalize();
-      Eigen::Vector3f camForward = camera->getPose().block<3, 1>(0, 2); // Assuming Z-forward
-      float angle = std::acos(camForward.dot(dirToPoint));
-      // if (angle < camera.getFov() / 2)
-      // {
-      pointsInView.push_back(point);
-      // }
-    }
-    // Separate visible points into seen and not seen
-    std::vector<Point *> seenPoints;
-    std::vector<Point *> notSeenPoints;
-
-    backend->beginObservation(camera->getPose());
-    for (auto *point : pointsInView)
-    {
-      point->setInView(true);
       if (std::find(visiblePoints.begin(), visiblePoints.end(), point) != visiblePoints.end())
       {
         point->setVisible(true);
@@ -78,10 +29,10 @@ void PointProbabilityEngine::Update(Eigen::Matrix4f observationPose, std::vector
       }
       else
       {
-        point->setVisible(false);
         backend->addFailedObservation(point);
       }
     }
+
     backend->endObservation();
     // // Call the backend to update probabilities
     // backend->addObservation(camera->getPose(), seenPoints, notSeenPoints);
@@ -109,9 +60,9 @@ void PointProbabilityEngine::showState() const
 {
   ImGui::Begin("Point Probability Engine State");
 
-  ImGui::Text("# Map Points: %zu    ", map.getMapPoints().size());
+  ImGui::Text("# Map Points: %d    ", backend->getNumPoints());
   ImGui::SameLine();
-  ImGui::Text("Camera Pose: (%.2f, %.2f, %.2f)", camera->getPose()(0, 3), camera->getPose()(1, 3), camera->getPose()(2, 3));
+  ImGui::Text("Camera Pose: (%.2f, %.2f, %.2f)", backend->getLastCameraPose()(0, 3), backend->getLastCameraPose()(1, 3), backend->getLastCameraPose()(2, 3));
   ImGui::End();
 }
 
@@ -131,4 +82,22 @@ void PointProbabilityEngine::showControls()
 void PointProbabilityEngine::showBackendState() const
 {
   backend->showState(); // Assuming the backend has a method to show its state
+}
+
+void PointProbabilityEngine::initializeModel()
+{
+  switch (model)
+  {
+  case ICOSAHEDRON:
+    backend = new IcosahedronBackend();
+    break;
+
+  case SPHERE:
+    // Initialize for Sphere model
+    break;
+
+  default:
+    std::cerr << "Unknown model type!" << std::endl;
+    exit(EXIT_FAILURE);
+  }
 }

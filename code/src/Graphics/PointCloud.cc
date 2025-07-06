@@ -3,11 +3,11 @@
 
 PointCloud::PointCloud()
 {
-    glGenVertexArrays(1, &pointCloudVAO);
-    glBindVertexArray(pointCloudVAO);
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
 
-    glGenBuffers(1, &pointCloudVBO);
-    glBindBuffer(GL_ARRAY_BUFFER, pointCloudVBO);
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
@@ -15,37 +15,59 @@ PointCloud::PointCloud()
     glBindVertexArray(0);
 }
 
-void PointCloud::draw(std::vector<Point *> points, Camera *camera) const
+void PointCloud::draw(std::vector<PPEPointInterface *> points) const
 {
     if (points.empty())
         return;
 
-    std::vector<float> pointData;
+    std::vector<float> outOfFrustumData;
+    std::vector<float> hiddenData;
+    std::vector<float> visibleData;
     for (const auto &point : points)
     {
-        Eigen::Vector3f pose = point->getPose();
-        pointData.push_back(pose.x());
-        pointData.push_back(pose.y());
-        pointData.push_back(pose.z());
+        Eigen::Vector3f position = point->getPosition();
+
+        if (!point->isInView())
+        {
+            outOfFrustumData.push_back(position.x());
+            outOfFrustumData.push_back(position.y());
+            outOfFrustumData.push_back(position.z());
+        }
+        else if (!point->isVisible())
+        {
+            hiddenData.push_back(position.x());
+            hiddenData.push_back(position.y());
+            hiddenData.push_back(position.z());
+        }
+        else
+        {
+            visibleData.push_back(position.x());
+            visibleData.push_back(position.y());
+            visibleData.push_back(position.z());
+        }
     }
 
-    pointData.push_back(camera->getPose()(0, 3)); // Camera position x
-    pointData.push_back(camera->getPose()(1, 3)); // Camera position y
-    pointData.push_back(camera->getPose()(2, 3)); // Camera position z
-
-    glBindVertexArray(pointCloudVAO);
+    glBindVertexArray(VAO);
 
     ShaderManager *sm = ShaderManager::getInstance();
     sm->useShader("solid_color_3d");
     sm->setModelMatrix(modelPose);
     sm->setColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)); // Set color to black
 
-    glBindBuffer(GL_ARRAY_BUFFER, pointCloudVBO);
-    glBufferData(GL_ARRAY_BUFFER, pointData.size() * sizeof(GLfloat), pointData.data(), GL_STREAM_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, outOfFrustumData.size() * sizeof(GLfloat), outOfFrustumData.data(), GL_STREAM_DRAW);
 
     glEnable(GL_DEPTH_TEST);
-    glPointSize(2.0f);
-    glDrawArrays(GL_POINTS, 0, points.size());
+    glPointSize(4.0f);
+    glDrawArrays(GL_POINTS, 0, outOfFrustumData.size() / 3);
+
+    sm->setColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)); // Set color to red
+    glBufferData(GL_ARRAY_BUFFER, hiddenData.size() * sizeof(GLfloat), hiddenData.data(), GL_STREAM_DRAW);
+    glDrawArrays(GL_POINTS, 0, hiddenData.size() / 3);
+
+    sm->setColor(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)); // Set color to green
+    glBufferData(GL_ARRAY_BUFFER, visibleData.size() * sizeof(GLfloat), visibleData.data(), GL_STREAM_DRAW);
+    glDrawArrays(GL_POINTS, 0, visibleData.size() / 3);
 
     glBindVertexArray(0);
 }

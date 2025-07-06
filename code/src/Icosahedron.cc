@@ -121,6 +121,10 @@ float Icosahedron::getNormalizedValue(const std::string &name, int index)
     float minValue = getMinValue(name);
     float maxValue = getMaxValue(name);
     float value = getValue(name, index);
+    if (maxValue - minValue == 0.0f)
+    {
+      return 0.0f; // Avoid division by zero if all values are the same
+    }
     return (value - minValue) / (maxValue - minValue);
   }
   std::cerr << "Value buffer " << name << " does not exist." << std::endl;

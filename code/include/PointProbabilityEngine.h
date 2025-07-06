@@ -6,17 +6,16 @@
 #include <memory>
 
 #include "IcosahedronBackend.h"
-#include "Point.h"
-#include "Camera.h"
-#include "Map.h"
 #include "PPEBackend.h"
 #include "FloorPlane.h"
 #include "PointCloud.h"
 #include "IcosModel.h"
 #include "ShaderManager.h"
 #include "CameraModel.h"
+#include "PPECameraInterface.h"
+#include "PPEMapInterface.h"
 
-enum Model
+enum PPEModel
 {
   ICOSAHEDRON,
   SPHERE
@@ -26,11 +25,11 @@ class Viewer; // Forward declaration to avoid circular dependency
 
 class PointProbabilityEngine
 {
-  Camera *camera;
-  Model model;
+  PPECameraInterface *cameraInterface;
   PPEBackend *backend;
-  Map map;
+  PPEMapInterface *mapInterface;
   Viewer *viewer; // Pointer to the viewer, if used
+  PPEModel model;
 
   bool useViewer;
   bool shouldClose = false;
@@ -39,13 +38,13 @@ class PointProbabilityEngine
   bool isPaused = false;
   bool doStep = false;
 
+private:
+  void initializeModel();
+
 public:
-  PointProbabilityEngine() = default;
-  PointProbabilityEngine(Camera *camera, Model model = ICOSAHEDRON, Map map = Map(), bool useViewer = true);
+  PointProbabilityEngine(PPEModel model, PPEMapInterface *map, PPECameraInterface *camera, bool useViewer = true);
 
-  void Update(Eigen::Matrix4f, std::vector<Point *>);
-
-  Map &getMap() { return map; }
+  void Update(Eigen::Matrix4f, std::vector<PPEPointInterface *>);
 
   bool getShouldClose() const { return shouldClose; }
 

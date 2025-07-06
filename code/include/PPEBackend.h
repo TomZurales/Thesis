@@ -1,7 +1,7 @@
 #pragma once
 
 #include <eigen3/Eigen/Core>
-#include "Point.h"
+#include "PPEPointInterface.h"
 
 // This class is the interface for the backend model of the Point Probability Engine (PPE).
 // The interface implements an addObservation method, which is called by the PPE and contains
@@ -11,13 +11,13 @@
 class PPEBackend
 {
 protected:
-    std::map<Point *, float> pointProbExists;
+    std::map<PPEPointInterface *, float> pointProbExists;
     Eigen::Matrix4f currentCameraPose = Eigen::Matrix4f::Identity();
     Eigen::Matrix4f lastCameraPose = Eigen::Matrix4f::Identity();
     bool isObservationActive = false;
 
-    virtual void _addSuccessfulObservation(Point *point) = 0;
-    virtual void _addFailedObservation(Point *point) = 0;
+    virtual void _addSuccessfulObservation(PPEPointInterface *point) = 0;
+    virtual void _addFailedObservation(PPEPointInterface *point) = 0;
 
 public:
     // virtual void addObservation(Eigen::Matrix4f cameraPose, std::vector<Point *> seen, std::vector<Point *> notSeen) = 0;
@@ -41,7 +41,7 @@ public:
         }
         isObservationActive = false;
     }
-    void addSuccessfulObservation(Point *point)
+    void addSuccessfulObservation(PPEPointInterface *point)
     {
         if (!isObservationActive)
         {
@@ -50,7 +50,7 @@ public:
         }
         _addSuccessfulObservation(point);
     }
-    void addFailedObservation(Point *point)
+    void addFailedObservation(PPEPointInterface *point)
     {
         if (!isObservationActive)
         {
@@ -60,5 +60,8 @@ public:
         _addFailedObservation(point);
     }
     virtual void showState() = 0;
-    virtual Point *getActivePoint() const = 0;
+    virtual PPEPointInterface *getActivePoint() const = 0;
+    virtual int getNumPoints() const = 0;
+    virtual std::vector<PPEPointInterface *> getAllPoints() const = 0;
+    Eigen::Matrix4f getLastCameraPose() const { return lastCameraPose; }
 };

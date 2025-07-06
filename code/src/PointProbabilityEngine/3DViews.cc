@@ -83,7 +83,7 @@ void PointProbabilityEngine::init3DView()
     floorPlane = new FloorPlane();
     pointCloud = new PointCloud();
     icosModel = new IcosModel();
-    cameraModel = new CameraModel(camera);
+    cameraModel = new CameraModel();
 }
 
 void PointProbabilityEngine::showCameraView() const
@@ -102,16 +102,9 @@ void PointProbabilityEngine::showCameraView() const
     glViewport(0, 0, windowSize.x, windowSize.y);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    ShaderManager::getInstance()->setViewMatrix(eigenToGlm(camera->getPose().inverse()));
+    ShaderManager::getInstance()->setViewMatrix(eigenToGlm(backend->getLastCameraPose().inverse()));
 
-    // Draw the point cloud first (opaque objects)
-    std::vector<Point *> visiblePoints;
-    for (const auto &point : map.getMapPoints())
-    {
-        if (point->isInView() && point->isVisible())
-            visiblePoints.push_back(point);
-    }
-    pointCloud->draw(visiblePoints, camera);
+    pointCloud->draw(backend->getAllPoints());
 
     // Draw the floor plane last (transparent objects)
     floorPlane->draw();
@@ -239,15 +232,8 @@ void PointProbabilityEngine::showStaticView()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     ShaderManager::getInstance()->setViewMatrix(staticViewMatrix);
 
-    // Draw the point cloud first (opaque objects)
-    std::vector<Point *> visiblePoints;
-    for (const auto &point : map.getMapPoints())
-    {
-        if (point->isInView() && point->isVisible())
-            visiblePoints.push_back(point);
-    }
-    pointCloud->draw(visiblePoints, camera);
-    cameraModel->draw(); // Draw the camera model at the origin
+    pointCloud->draw(backend->getAllPoints());
+    cameraModel->draw(backend->getLastCameraPose()); // Draw the camera model at the origin
 
     // Draw the floor plane last (transparent objects)
     floorPlane->draw();

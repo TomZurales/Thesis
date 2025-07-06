@@ -8,15 +8,14 @@
 #include <memory>
 
 #include "ShaderManager.h"
-#include "Camera.h"
+#include "PPECameraInterface.h"
 #include "Utility.h"
 
 class CameraModel
 {
-    GLuint cameraModelVAO = 0;
-    Camera *camera;
+    GLuint VAO = 0;
 
 public:
-    CameraModel(Camera *);
-    void draw() const;
+    CameraModel();
+    void draw(Eigen::Matrix4f cameraPose) const;
 };

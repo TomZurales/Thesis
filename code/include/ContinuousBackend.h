@@ -7,9 +7,9 @@ class ContinuousBackend : public PPEBackend
 {
 public:
     void showState() override;
-    Point *getActivePoint() const override;
+    PPEPointInterface *getActivePoint() const override;
 
 private:
-    void _addSuccessfulObservation(Point *point) override;
-    void _addFailedObservation(Point *point) override;
+    void _addSuccessfulObservation(PPEPointInterface *point) override;
+    void _addFailedObservation(PPEPointInterface *point) override;
 };
