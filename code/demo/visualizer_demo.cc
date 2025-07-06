@@ -11,7 +11,7 @@
 
 int main()
 {
-    auto engine = std::make_shared<PointProbabilityEngine>(Camera(1920, 1080, 0.2, 0.2));
+    auto engine = std::make_shared<PointProbabilityEngine>(new Camera(1920, 1080, 0.2, 0.2));
 
     Point *thePoint(new Point(Eigen::Vector3f(0.5, 1.5, 0)));
     Point *secondPoint(new Point(Eigen::Vector3f(1, 1, 0)));

@@ -8,13 +8,15 @@
 #include <memory>
 
 #include "ShaderManager.h"
+#include "Camera.h"
+#include "Utility.h"
 
-class FloorPlane
+class CameraModel
 {
-    GLuint linesVAO = 0;
-    glm::mat4 modelPose = glm::mat4(1.0f); // Floor plane is always at the origin
+    GLuint cameraModelVAO = 0;
+    Camera *camera;
 
 public:
-    FloorPlane();
+    CameraModel(Camera *);
     void draw() const;
 };

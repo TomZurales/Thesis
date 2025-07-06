@@ -14,6 +14,7 @@
 #include "PointCloud.h"
 #include "IcosModel.h"
 #include "ShaderManager.h"
+#include "CameraModel.h"
 
 enum Model
 {
@@ -25,7 +26,7 @@ class Viewer; // Forward declaration to avoid circular dependency
 
 class PointProbabilityEngine
 {
-  Camera camera;
+  Camera *camera;
   Model model;
   PPEBackend *backend;
   Map map;
@@ -39,7 +40,8 @@ class PointProbabilityEngine
   bool doStep = false;
 
 public:
-  PointProbabilityEngine(Camera camera, Model model = ICOSAHEDRON, Map map = Map(), bool useViewer = true);
+  PointProbabilityEngine() = default;
+  PointProbabilityEngine(Camera *camera, Model model = ICOSAHEDRON, Map map = Map(), bool useViewer = true);
 
   void Update(Eigen::Matrix4f, std::vector<Point *>);
 
@@ -54,18 +56,27 @@ public:
 
   // Stuff related to the 3D View
 private:
-  uint fbo;
-  uint texture;
-  GLuint rbo;
+  uint camera_fbo;
+  uint camera_texture;
+  GLuint camera_rbo;
 
-  Shader *solidColor3DShader = nullptr;
-  Shader *heatmap3DShader = nullptr;
+  uint static_fbo;
+  uint static_texture;
+  GLuint static_rbo;
 
   FloorPlane *floorPlane = nullptr;
   PointCloud *pointCloud = nullptr;
   IcosModel *icosModel = nullptr;
+  CameraModel *cameraModel = nullptr;
+
+  glm::mat4 staticViewMatrix = glm::lookAt(
+      glm::vec3(10.0f, 10.0f, 30.0f), // Static camera position
+      glm::vec3(0.0f, 0.0f, 0.0f),    // Look at point
+      glm::vec3(0.0f, 1.0f, 0.0f)     // Up vector
+  );
 
 public:
   void init3DView();
-  void show3DView() const;
+  void showCameraView() const;
+  void showStaticView();
 };

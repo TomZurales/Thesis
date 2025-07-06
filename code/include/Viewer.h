@@ -4,7 +4,7 @@
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 #include <stdio.h>
-#include <glad/glad.h>  // Initialize with gladLoadGLLoader()
+#include <GL/glew.h>    // Initialize with glewInit()
 #include <GLFW/glfw3.h> // Will drag system OpenGL headers
 #include <cstdlib>
 

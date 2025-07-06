@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glad/glad.h>
+#include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -9,6 +9,7 @@
 
 #include "ShaderManager.h"
 #include "Shader.h"
+#include "Camera.h"
 
 class PointCloud
 {
@@ -18,5 +19,5 @@ class PointCloud
 
 public:
     PointCloud();
-    void draw(std::vector<Point *> points) const;
+    void draw(std::vector<Point *> points, Camera *camera) const;
 };

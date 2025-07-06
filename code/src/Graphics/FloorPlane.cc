@@ -35,13 +35,13 @@ FloorPlane::FloorPlane()
         line_indices.push_back(42 + i * 2 + 1);
     }
 
-    unsigned int lineVBO, lineEBO;
+    GLuint lineVBO, lineEBO = 0;
 
     glGenVertexArrays(1, &linesVAO);
+    glBindVertexArray(linesVAO);
+
     glGenBuffers(1, &lineVBO);
     glGenBuffers(1, &lineEBO);
-
-    glBindVertexArray(linesVAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, lineVBO);
     glBufferData(GL_ARRAY_BUFFER, line_vertices.size() * sizeof(float), line_vertices.data(), GL_STATIC_DRAW);
@@ -52,13 +52,13 @@ FloorPlane::FloorPlane()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // Unbind EBO
 }
 
 void FloorPlane::draw() const
 {
+    glBindVertexArray(linesVAO);
+
     ShaderManager *sm = ShaderManager::getInstance();
     sm->useShader("solid_color_3d");
     sm->setModelMatrix(modelPose);
@@ -66,9 +66,9 @@ void FloorPlane::draw() const
     glDepthMask(GL_FALSE); // Disable depth writing for transparency
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glBindVertexArray(linesVAO);
     sm->setColor(glm::vec4(0.3f, 0.3f, 0.3f, 0.1f));  // Set a gray color for the grid lines
     glDrawElements(GL_LINES, 84, GL_UNSIGNED_INT, 0); // 42 vertical + 42 horizontal = 84 indices
     glDepthMask(GL_TRUE);                             // Re-enable depth writing
+
     glBindVertexArray(0);
 }

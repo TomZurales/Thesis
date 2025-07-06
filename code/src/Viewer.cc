@@ -1,4 +1,5 @@
 #include "Viewer.h"
+#include <iostream>
 
 static void glfw_error_callback(int error, const char *description)
 {
@@ -26,9 +27,9 @@ Viewer::Viewer(PointProbabilityEngine *ppe)
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1); // Enable vsync
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    if (glewInit() != GLEW_OK)
     {
-        std::cout << "Failed to initialize GLAD" << std::endl;
+        std::cout << "Failed to initialize GLEW" << std::endl;
         exit(EXIT_FAILURE);
     }
 
@@ -107,7 +108,8 @@ void Viewer::update()
 
     ppe->showBackendState();
 
-    ppe->show3DView();
+    ppe->showCameraView();
+    ppe->showStaticView();
 
     ImGui::End();
 }

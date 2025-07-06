@@ -25,6 +25,7 @@ public:
 
     void setModelMatrix(const glm::mat4 &matrix);
     void setViewMatrix(const glm::mat4 &matrix);
+    void setStaticViewMatrix(const glm::mat4 &matrix);
     void setProjectionMatrix(const glm::mat4 &matrix);
     void setColor(const glm::vec4 &color);
     void setFaceValues(const std::vector<float> &values);

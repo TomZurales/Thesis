@@ -41,7 +41,7 @@
 //   std::cout << pExists << std::endl;
 // }
 
-void IcosahedronBackend::successfulObservation(Eigen::Matrix4f observerPose, Point *point)
+void IcosahedronBackend::_addSuccessfulObservation(Point *point)
 {
   if (pointIcosMap.find(point) == pointIcosMap.end())
   {
@@ -52,8 +52,8 @@ void IcosahedronBackend::successfulObservation(Eigen::Matrix4f observerPose, Poi
     pointIcosMap[point]->createValueBuffer("dists", 1.0f);
   }
   auto icos = pointIcosMap[point];
-  float distance = (observerPose.block<3, 1>(0, 3) - point->getPose()).norm();
-  Eigen::Vector3f direction = observerPose.block<3, 1>(0, 3) - point->getPose();
+  float distance = (currentCameraPose.block<3, 1>(0, 3) - point->getPose()).norm();
+  Eigen::Vector3f direction = point->getPose() - currentCameraPose.block<3, 1>(0, 3);
   int face = icos->getNearestFace(direction);
 
   // If we are still viewing the same face (the camera hasn't moved much), require that
@@ -106,11 +106,11 @@ void IcosahedronBackend::successfulObservation(Eigen::Matrix4f observerPose, Poi
   icos->setProbExists(0.95f);
 }
 
-void IcosahedronBackend::failedObservation(Eigen::Matrix4f observerPose, Point *point)
+void IcosahedronBackend::_addFailedObservation(Point *point)
 {
   auto icos = pointIcosMap[point];
-  float distance = (observerPose.block<3, 1>(0, 3) - point->getPose()).norm();
-  Eigen::Vector3f direction = observerPose.block<3, 1>(0, 3) - point->getPose();
+  float distance = (currentCameraPose.block<3, 1>(0, 3) - point->getPose()).norm();
+  Eigen::Vector3f direction = point->getPose() - currentCameraPose.block<3, 1>(0, 3);
   int face = icos->getNearestFace(direction);
 
   // If we are still viewing the same face (the camera hasn't moved much), require that
@@ -193,8 +193,8 @@ void IcosahedronBackend::showState()
     // Step 1. Let's build the state to visualize
     auto selectedPoint = pointIcosMapIndex->first;
     auto selectedIcos = pointIcosMapIndex->second;
-    auto currentFace = selectedIcos->getNearestFace(lastCameraPose.block<3, 1>(0, 3) - selectedPoint->getPose());
-    auto currentDistance = (lastCameraPose.block<3, 1>(0, 3) - selectedPoint->getPose()).norm();
+    auto currentFace = selectedIcos->getNearestFace(currentCameraPose.block<3, 1>(0, 3) - selectedPoint->getPose());
+    auto currentDistance = (currentCameraPose.block<3, 1>(0, 3) - selectedPoint->getPose()).norm();
     auto isPointInView = selectedPoint->isInView();
     auto isPointVisible = selectedPoint->isVisible();
 

@@ -25,7 +25,6 @@ IcosModel::IcosModel()
         indices.push_back(face[1]);
         indices.push_back(face[2]);
     }
-
     glBindBuffer(GL_ARRAY_BUFFER, icosModelVBO);
     glBufferData(GL_ARRAY_BUFFER, pointData.size() * sizeof(float), pointData.data(), GL_STATIC_DRAW);
 
@@ -35,9 +34,9 @@ IcosModel::IcosModel()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // Unbind EBO
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void IcosModel::draw(Point *point, Icosahedron *icos) const
@@ -70,9 +69,8 @@ void IcosModel::draw(Point *point, Icosahedron *icos) const
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glDisable(GL_CULL_FACE);
-    glBindVertexArray(icosVAO);
     glDrawElements(GL_TRIANGLES, icos->faces.size() * 3, GL_UNSIGNED_INT, 0);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // Reset to fill mode
 
-    glBindVertexArray(0); // Unbind VAO before binding edge EBO
+    glBindVertexArray(0);
 }

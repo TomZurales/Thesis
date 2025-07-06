@@ -1,29 +1,30 @@
 #include "Utility.h"
+#include <glm/ext/matrix_transform.hpp>
 
-Eigen::Matrix4f LookAtTransform(const Eigen::Vector3f &position, const Eigen::Vector3f &lookAt)
-{
-    // ORB_SLAM3 up vector (Y-down)
-    Eigen::Vector3f up(0.0f, 1.0f, 0.0f);
+// Eigen::Matrix4f LookAtTransform(const Eigen::Vector3f &position, const Eigen::Vector3f &lookAt)
+// {
+//     // ORB_SLAM3 up vector (Y-down)
+//     Eigen::Vector3f up(0.0f, 1.0f, 0.0f);
 
-    // Forward vector (Z+)
-    Eigen::Vector3f forward = (lookAt - position).normalized();
+//     // Forward vector (Z+)
+//     Eigen::Vector3f forward = (lookAt - position).normalized();
 
-    // Right vector (X+)
-    Eigen::Vector3f right = up.cross(forward).normalized();
+//     // Right vector (X+)
+//     Eigen::Vector3f right = up.cross(forward).normalized();
 
-    // Recompute up to ensure orthogonality
-    Eigen::Vector3f trueUp = forward.cross(right).normalized();
+//     // Recompute up to ensure orthogonality
+//     Eigen::Vector3f trueUp = forward.cross(right).normalized();
 
-    Eigen::Matrix4f transform = Eigen::Matrix4f::Identity();
-    // Set rotation (columns: right, up, forward)
-    transform.block<3, 1>(0, 0) = right;
-    transform.block<3, 1>(0, 1) = trueUp;
-    transform.block<3, 1>(0, 2) = forward;
-    // Set translation
-    transform.block<3, 1>(0, 3) = position;
+//     Eigen::Matrix4f transform = Eigen::Matrix4f::Identity();
+//     // Set rotation (columns: right, up, forward)
+//     transform.block<3, 1>(0, 0) = right;
+//     transform.block<3, 1>(0, 1) = trueUp;
+//     transform.block<3, 1>(0, 2) = forward;
+//     // Set translation
+//     transform.block<3, 1>(0, 3) = position;
 
-    return transform;
-}
+//     return transform;
+// }
 
 std::vector<float> colorMap(float value, float min, float max)
 {
@@ -80,4 +81,39 @@ Eigen::Matrix4f glmToEigen(const glm::mat4 &m)
         for (int j = 0; j < 4; ++j)
             result(i, j) = -1 * m[j][i]; // Eigen is row-major
     return result;
+}
+
+Eigen::Matrix4f LookAtTransform(const Eigen::Vector3f &position, const Eigen::Vector3f &lookAt)
+{
+    glm::vec3 glmPosition(position.x(), position.y(), position.z());
+    glm::vec3 glmLookAt(lookAt.x(), lookAt.y(), lookAt.z());
+    // Use glm::lookAt to create a view matrix
+    auto glmMat = glm::lookAt(
+        glmPosition,                // Camera position
+        glmLookAt,                  // Look at point
+        glm::vec3(0.0f, 1.0f, 0.0f) // Up vector
+    );
+    return glmToEigen(glmMat)
+        .inverse();
+    //     // ORB_SLAM3 up vector (Y-down)
+    //     Eigen::Vector3f up(0.0f, 1.0f, 0.0f);
+
+    // // Forward vector (Z+)
+    // Eigen::Vector3f forward = (lookAt - position).normalized();
+
+    // // Right vector (X+)
+    // Eigen::Vector3f right = up.cross(forward).normalized();
+
+    // // Recompute up to ensure orthogonality
+    // Eigen::Vector3f trueUp = forward.cross(right).normalized();
+
+    // Eigen::Matrix4f transform = Eigen::Matrix4f::Identity();
+    // // Set rotation (columns: right, up, forward)
+    // transform.block<3, 1>(0, 0) = right;
+    // transform.block<3, 1>(0, 1) = trueUp;
+    // transform.block<3, 1>(0, 2) = forward;
+    // // Set translation
+    // transform.block<3, 1>(0, 3) = position;
+
+    // return transform;
 }

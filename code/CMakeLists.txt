@@ -20,16 +20,7 @@ find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
 find_package(PCL REQUIRED)
-
-# Add GLAD as a static library
-set(GLAD_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/glad)
-add_library(glad STATIC ${GLAD_SOURCE_DIR}/src/glad.c)
-target_include_directories(glad PUBLIC ${GLAD_SOURCE_DIR}/include)
-set_target_properties(glad PROPERTIES
-    C_STANDARD 11
-    C_STANDARD_REQUIRED ON
-    POSITION_INDEPENDENT_CODE ON
-)
+find_package(GLEW REQUIRED)
 
 # Add library source files here
 add_library(PointProbabilityEngine SHARED
@@ -42,13 +33,14 @@ add_library(PointProbabilityEngine SHARED
   src/Viewer.cc
   src/ShaderManager.cc
   src/PointXYZID.cc
-  src/PointProbabilityEngine/3DView.cc
+  src/PointProbabilityEngine/3DViews.cc
 
   # Graphics files
   src/Graphics/FloorPlane.cc
   src/Graphics/PointCloud.cc
   src/Graphics/IcosModel.cc
-  # src/Graphics/CenteredPoint.cc
+  src/Graphics/CameraModel.cc
+  src/Graphics/VonMiserSphere.cc
   
   # Imgui files
   third_party/imgui/imgui.cpp
@@ -68,17 +60,17 @@ target_include_directories(PointProbabilityEngine
     ${OPENGL_INCLUDE_DIR}
     ${GLFW_INCLUDE_DIRS}
     ${GLM_INCLUDE_DIRS}
-    ${GLAD_SOURCE_DIR}/include
+    ${GLEW_INCLUDE_DIRS}
     ${PCL_INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/imgui
 )
 
 target_link_libraries(PointProbabilityEngine
-  PUBLIC 
+  PUBLIC
     Eigen3::Eigen
     OpenGL::GL
     glfw
-    glad
+    GLEW::GLEW
     ${CMAKE_DL_LIBS}
     ${PCL_LIBRARIES}
 )

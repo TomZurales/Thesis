@@ -68,6 +68,16 @@ void ShaderManager::setViewMatrix(const glm::mat4 &matrix)
     useShader(activeShaderName); // Ensure the active shader is set after changing matrices
 }
 
+void ShaderManager::setStaticViewMatrix(const glm::mat4 &matrix)
+{
+    for (auto &pair : shaders)
+    {
+        pair.second->use();
+        pair.second->setMatrix4fv("static_view", matrix);
+    }
+    useShader(activeShaderName); // Ensure the active shader is set after changing matrices
+}
+
 void ShaderManager::setProjectionMatrix(const glm::mat4 &matrix)
 {
     for (auto &pair : shaders)
