@@ -164,9 +164,6 @@ slam benchmarking. -->
 
 # 6. Discussion
 
-# 7. 
+# 7. Conclusion and Future Work
 
 # Appendices
-
-Discussion
-Conclusion
