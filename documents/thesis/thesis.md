@@ -80,7 +80,7 @@ Due to it providing the motivation for this project, the Astrobee robots will me
 
 ## 2.5 Additional Fields of Research
 
-### Directional Probability
+### 2.5.1 Directional Probability
 
 # Related Work
 
