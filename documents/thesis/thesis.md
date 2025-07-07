@@ -74,11 +74,11 @@ There have been hundreds of SLAM implementations for a wide variety of sensors, 
 
 Due to it providing the motivation for this project, the Astrobee robots will me mentioned several times throughout this work. The Astrobee project was motivated by the desire to research human/robot interaction, robotic automation and inspection, and to provide a research platform on which companies and researchers could deploy software and hardware for testing in a micro-gravity environment. The Astrobee platform has been used to develop satellite rendezvous control algorithms, grippers to capture tumbling orbital debris, inspection methods to autonomously detect anomalous operation, and many other space habitation focused endeavors.
 
-## Keypoint-Based Visual SLAM Deep Dive
+## 2.3 Keypoint-Based Visual SLAM Deep Dive
 
-## Extensions to Core SLAM
+## 2.4 Extensions to Core SLAM
 
-## Additional Fields of Research
+## 2.5 Additional Fields of Research
 
 ### Directional Probability
 
