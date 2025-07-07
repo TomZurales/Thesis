@@ -172,7 +172,9 @@ slam benchmarking. -->
 
 ## Evaluation Metrics
 
-## 
+## SLAM System Configurations
+
+
 
 # 6. Discussion
 
