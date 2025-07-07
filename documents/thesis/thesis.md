@@ -91,7 +91,7 @@ https://arxiv.org/pdf/2209.10710 - ChangingSlam - Uses a Bayes filter to remove 
 
 ### 3.1.1 Semantics Based Implementations
 
-### Probability Based Optimizations
+### 3.1.2 Probability Based Optimizations
 
 # Approach
 
