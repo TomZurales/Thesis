@@ -52,13 +52,13 @@ Chapter X of this thesis discusses the background of the general SLAM problem, c
 
 Chapter X discusses works related to this research, specifically focusing on extensions targeting improved performance in dynamic situations, with additional focus given to those methods which utilize point removal optimizations.
 
-## Research Questions
+## 1.7 Research Questions
 
 Does a probability model which identifies and culls outdated map points provide significant improvements to relocalization and tracking during map reuse in keypoint-based SLAM?
 To what extent do dynamic changes in a map affect mapping and relocalization performance?
 Can this be used as a heuristic to determine when to re-enable mapping on MAVs?
 
-# Background
+# 2. Background
 
 In this chapter, we provide a high level overview of the definitions, objectives, and history of SLAM, in addition to an overview of the common sensor modalities found in SLAM systems. Following this, we discuss the stages of the SLAM pipeline in the generic case, followed by a more in-depth exploration of keypoint-based visual SLAM, the sensor modality targeted by this research. Next, we look into several of the widely adopted extensions to the base SLAM pipeline which address core issues and enhance performance. A discussion of extensions which have similar goals to this research is held for the chapter on related works.
 
