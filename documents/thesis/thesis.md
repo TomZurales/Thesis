@@ -52,7 +52,7 @@ Chapter X of this thesis discusses the background of the general SLAM problem, c
 
 Chapter X discusses works related to this research, specifically focusing on extensions targeting improved performance in dynamic situations, with additional focus given to those methods which utilize point removal optimizations.
 
-Chapter X
+# 2
 
 ## Research Questions
 
