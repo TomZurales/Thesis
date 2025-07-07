@@ -1,6 +1,5 @@
 # 1. Introduction
 
-SLA
 
 ## 1.1 Problem Context
 
