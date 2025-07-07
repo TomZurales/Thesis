@@ -162,7 +162,9 @@ slam benchmarking. -->
 
 # 5. Experimental Analysis
 
-# 6. 
+# 6. Discussion
+
+# Appendices
 
 Discussion
 Conclusion
