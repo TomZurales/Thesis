@@ -74,7 +74,7 @@ Due to it providing the motivation for this project, the Astrobee robots will me
 
 ## 2.3 Keypoint-Based Visual SLAM Deep Dive
 
-The term Keypoint-Based Visual SLAM refers to the SLAM modality which primarily utilizes key points extracted from images as the primary means of mapping and navigating. This is in contradistinction to systems like LIDAR-based SLAM, which utilize direct distance measurements 
+The term Keypoint-Based Visual SLAM refers to the SLAM modality which primarily utilizes key points extracted from images as the primary means of mapping and navigating. This is in contradistinction to systems like LIDAR-based SLAM, which utilize direct distance measurements from a LIDAR sensor, and 
 
 ## 2.4 Extensions to Core SLAM
 
