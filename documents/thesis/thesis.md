@@ -178,7 +178,9 @@ slam benchmarking. -->
 
 ## Results
 
-### Quantitative 
+### Quantitative Evaluation
+
+### Qualitative Evaluation
 
 # 6. Discussion
 
