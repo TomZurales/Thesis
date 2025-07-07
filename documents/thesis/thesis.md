@@ -1,6 +1,6 @@
 # 1. Introduction
 
-Simultaneous Localization and Mapping (SLAM) empowers computers to generate a spatial understanding of the world around them. This chapter covers the general background regarding SLAM, 
+Simultaneous Localization and Mapping (SLAM) empowers computers to generate a spatial understanding of the world around them. This chapter covers the general background of SLAM, followed by a more detailed discussion 
 
 ## 1.1 Problem Context
 
