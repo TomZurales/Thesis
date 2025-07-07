@@ -82,12 +82,12 @@ Due to it providing the motivation for this project, the Astrobee robots will me
 
 ### 2.5.1 Directional Probability
 
-# Related Work
+# 3. Related Work
 
 Numerous methods have been developed to improve long-term SLAM performance, generalizing the problem to remove the constraint that the environment remains static.
 https://arxiv.org/pdf/2209.10710 - ChangingSlam - Uses a Bayes filter to remove changing map points. Utilizes semantic detection to determine dynamic objects before filter is used, which prevents it from working on deformable objects.
 
-## Point Removal Optimizations
+## 3.1 Point Removal Optimizations
 
 ### Semantics Based Implementations
 
