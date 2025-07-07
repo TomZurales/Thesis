@@ -74,6 +74,8 @@ Due to it providing the motivation for this project, the Astrobee robots will me
 
 ## 2.3 Keypoint-Based Visual SLAM Deep Dive
 
+The term Keypoint-Based Visual SLAM
+
 ## 2.4 Extensions to Core SLAM
 
 ## 2.5 Additional Fields of Research
