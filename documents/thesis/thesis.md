@@ -164,6 +164,11 @@ slam benchmarking. -->
 
 ## Dataset Creation
 
+### Hardware
+
+### Structure
+
+### 
 
 # 6. Discussion
 
