@@ -1,4 +1,4 @@
-# Introduction
+# 1. Introduction
 
 <!-- Still need to come up with a term for the general class of my extension. Right now I'm using point removal optimizations -->
 
