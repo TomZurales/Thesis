@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  7 JUL 2025 18:16
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  7 JUL 2025 18:17
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -136,9 +136,9 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <14.4> on input line 14.
+(Font)              <14.4> on input line 13.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 14.
+(Font)              <7> on input line 13.
 
 
 [1
@@ -154,7 +154,7 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 [5]
 
 [6]
-Overfull \hbox (96.67613pt too wide) in paragraph at lines 106--108
+Overfull \hbox (96.67613pt too wide) in paragraph at lines 105--107
 \OT1/cmr/m/n/12 ing the prob-lem to re-move the con-straint that the en-vi-ron-ment re-mains static. https://arxiv.org/pdf/2209.10710
  []
 
@@ -170,11 +170,11 @@ Overfull \hbox (96.67613pt too wide) in paragraph at lines 106--108
 
 [11]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 160.
+(Font)              <12> on input line 159.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 160.
+(Font)              <8> on input line 159.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 160.
+(Font)              <6> on input line 159.
 
 
 [12]
