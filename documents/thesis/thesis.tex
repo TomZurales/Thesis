@@ -19,7 +19,7 @@
 
 Simultaneous Localization and Mapping (SLAM) empowers computers to generate a spatial understanding of the world around them. This chapter covers the general background of SLAM, followed by a more detailed discussion 
 
-## 1.1 Problem Context
+\subsection{1.1 Problem Context}
 
 The spacial understanding provided by SLAM is not only useful, but necessary for systems intending to operate in and interact with physical environments. Virtual reality, robotics, and industrial automation all make use of SLAM to generate an internal map of the local and global environments. SLAM does have the distinction of being a "solved" problem in the ideal case. If an agent is able to perfectly measure the environment, and is guaranteed to make correct data associations, then a perfect map can be generated and the agent's location within that map can be known with certainty. This ideal case makes several assumptions, paramount of which is the existence of ideal sensors, but there is a secondary assumption that the state of the world does not change.
 
@@ -99,7 +99,7 @@ The term Keypoint-Based Visual SLAM refers to the SLAM modality which primarily 
 
 ## 2.5 Additional Fields of Research
 
-### 2.5.1 Directional Probability
+\subsubsection{2.5.1 Directional Probability}
 
 # 3. Related Work
 
@@ -108,16 +108,16 @@ https://arxiv.org/pdf/2209.10710 - ChangingSlam - Uses a Bayes filter to remove 
 
 ## 3.1 Point Removal Optimizations
 
-### 3.1.1 Semantics Based Implementations
+\subsubsection{3.1.1 Semantics Based Implementations}
 
-### 3.1.2 Probability Based Optimizations
+\subsubsection{3.1.2 Probability Based Optimizations}
 
 # 4. Implementation
 
 A probability model for the elimination of inaccurate map points
 For each new frame which comes in, the tracking thread completes its estimation of the new pose, based on the motion model, the local map, or the reference keyframe. This pose is then optimized to improve local consistency. Post localization, the estimation of the current pose will be as good as possible based on the currently available information. This estimated pose, along with the set of map points in the map are then processed to update each map point’s probability of existence. Step one involves projecting each point to the camera’s image plane, determining the set of map points which should be visible given the currently estimated pose. We can then split these “expected” map points into two groups: those that are seen, and those that are not seen. For the map points which are seen, we set their probability of existence to 1, since we are sure they still exist. Next, their icosFaceProbs is increased using Bayes theorem to indicate that the point is visible from that perspective. Finally, the nearest vertex in icosVertexDists is set to the current distance between the camera and the map point, if it’s larger than the current setting. If all map points associated with the face are 0, we do something else I guess. If the point is not seen, things are a bit more interesting. First of all, the icosFaceProbs is updated using Bayes theorem, this time decreasing it. If the point’s overall probability drops enough for a specific face, the vertex distances begin to drop, in the hopes of moving to the inside of any obstructions. This prevents observations from one perspective from having too much power over the overall probability of existence. The distance is dropped by ½, and the face probability is set to the average of the adjacent face’s probabilities.
 
-### REWORDING
+\subsubsection{REWORDING}
 
 For each observed map point, we require the ability to determine both the perspectives from which it can be observed, and the maximum distance from that perspective at which the point can be observed. This effectively eliminates instances where a point is observable from a perspective while in front of a wall, but not while behind the wall.
 Icosahedron Observability Shell
@@ -183,25 +183,25 @@ slam benchmarking. -->
 
 ## Dataset Creation
 
-### Hardware
+\subsubsection{Hardware}
 
-### Structure
+\subsubsection{Structure}
 
-### Dataset Overview
+\subsubsection{Dataset Overview}
 
 ## Evaluation Metrics
 
 ## SLAM System Configurations
 
-### Parameter Tuning
+\subsubsection{Parameter Tuning}
 
 ## Results
 
-### Quantitative Evaluation
+\subsubsection{Quantitative Evaluation}
 
-### Qualitative Evaluation
+\subsubsection{Qualitative Evaluation}
 
-### Ablation Study
+\subsubsection{Ablation Study}
 
 # 6. Discussion
 
