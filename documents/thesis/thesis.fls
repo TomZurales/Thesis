@@ -50,6 +50,8 @@ INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmr17.tfm
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmr12.tfm
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
+OUTPUT thesis.pdf
+INPUT c:/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmr17.tfm
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm
 INPUT ./thesis.toc
@@ -64,8 +66,6 @@ INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmmi6.tfm
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmsy8.tfm
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmsy6.tfm
-OUTPUT thesis.pdf
-INPUT c:/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map
 OUTPUT thesis.toc
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmr10.tfm
 INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
