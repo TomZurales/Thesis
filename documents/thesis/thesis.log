@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  7 JUL 2025 18:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  7 JUL 2025 18:06
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -173,17 +173,6 @@ might try typing `S' now just to see what is salvageable.
 [3]
 
 [4]
-c:/Users/TomZu/workspace/Thesis/documents/thesis/thesis.tex:64: Misplaced alignment tab character &.
-l.64 ...lection of co-registered visual-inertial &
-                                                   LIDAR datasets is provide...
-I can't figure out why you would want to use a tab mark
-here. If you just want an ampersand, the remedy is
-simple: Just type `I\&' now. But if some right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
-
-
 
 [5]
 
