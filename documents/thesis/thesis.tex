@@ -159,12 +159,12 @@ $$
 Implementation 1
 The goal of this probability model is to estimate the probability that a keypoint $$kp_n\in map_{initial}$$ exists at time $$t$$, given the current sensor input $$Z_t$$ and state estimate $$x_t$$. Bayes’ theorem is used to determine a new probability for the existence of $$kp_n$$, written as:
 
-$$
-p(\mathbf{exists}(kp_n, t)|Z_t,x_t)=\begin{cases}p(\mathbf{exists}(kp_n, t-1)|Z_{t-1},x_{t-1}) &: kp_n \notin \mathbf{expectedkps}(x_t)
-1 &: kp_n\in Z_t
-\frac{p(Z_t,x_t|\mathbf{exists}(kp_n, t)) \times p(\mathbf{exists}(kp_n, t-1))}{p(Z_{t-1},x_{t-1})} &: \text{default}
-\end{cases}
-$$
+% $$
+% p(\mathbf{exists}(kp_n, t)|Z_t,x_t)=\begin{cases}p(\mathbf{exists}(kp_n, t-1)|Z_{t-1},x_{t-1}) &: kp_n \notin \mathbf{expectedkps}(x_t)
+% 1 &: kp_n\in Z_t
+% \frac{p(Z_t,x_t|\mathbf{exists}(kp_n, t)) \times p(\mathbf{exists}(kp_n, t-1))}{p(Z_{t-1},x_{t-1})} &: \text{default}
+% \end{cases}
+% $$
 
 This equation makes several assumptions:
 If $$kp_n$$ is observed by $$Z_t$$, then we can be sure it exists.
