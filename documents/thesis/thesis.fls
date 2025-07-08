@@ -106,6 +106,9 @@ OUTPUT Implementation.aux
 INPUT ./Implementation.tex
 INPUT ./Implementation.tex
 INPUT Implementation.tex
+INPUT c:/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm
+INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmbx8.tfm
+INPUT c:/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmbx6.tfm
 INPUT thesis.aux
 INPUT ./Introduction.aux
 INPUT ./Introduction.aux
@@ -119,8 +122,12 @@ INPUT RelatedWork.aux
 INPUT ./Implementation.aux
 INPUT ./Implementation.aux
 INPUT Implementation.aux
+INPUT c:/Users/TomZu/.texlive2025/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk
 INPUT c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 INPUT c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
+INPUT c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb
+INPUT c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb
 INPUT c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb
 INPUT c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb
 INPUT c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb
+INPUT c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb

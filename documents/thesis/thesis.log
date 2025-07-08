@@ -203,12 +203,25 @@ Overfull \hbox (96.67613pt too wide) in paragraph at lines 3--5
 ]
 \openout2 = `Implementation.aux'.
 
- (./Implementation.tex)
+ (./Implementation.tex
 
 [13
 
 
 
+]
+
+[14]
+
+[15]
+
+[16]
+
+[17])
+
+[18]
+
+[19
 
 
 ] (./thesis.aux (./Introduction.aux) (./Background.aux) (./RelatedWork.aux) (./Implementation.aux))
@@ -222,18 +235,18 @@ L3 programming layer <2025-06-09>
 ### semi simple group (level 1) entered at line 12 (\begingroup)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 2019 strings out of 469826
- 33165 string characters out of 5483777
- 435988 words of memory out of 5000000
- 30314 multiletter control sequences out of 15000+600000
- 632601 words of font info for 59 fonts, out of 8000000 for 9000
+ 2026 strings out of 469826
+ 33240 string characters out of 5483777
+ 438988 words of memory out of 5000000
+ 30318 multiletter control sequences out of 15000+600000
+ 633559 words of font info for 62 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 57i,6n,65p,1341b,271s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on thesis.pdf (13 pages, 97621 bytes).
+ 57i,6n,65p,1906b,272s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <c:/Users/TomZu/.texlive2025/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on thesis.pdf (19 pages, 137083 bytes).
 PDF statistics:
- 72 PDF objects out of 1000 (max. 8388607)
- 46 compressed objects within 1 object stream
+ 111 PDF objects out of 1000 (max. 8388607)
+ 72 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
