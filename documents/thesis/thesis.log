@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  7 JUL 2025 20:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  7 JUL 2025 20:45
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -167,14 +167,14 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 [6]
 
 [7]
-Overfull \hbox (7.54927pt too wide) in paragraph at lines 86--86
+Overfull \hbox (7.54927pt too wide) in paragraph at lines 88--88
 []\OT1/cmr/bx/n/14.4 Simultaneous Lo-cal-iza-tion and Map-ping (SLAM): A High Level
  []
 
 
 
 [8]
-Overfull \hbox (96.67613pt too wide) in paragraph at lines 110--112
+Overfull \hbox (96.67613pt too wide) in paragraph at lines 112--114
 \OT1/cmr/m/n/12 ing the prob-lem to re-move the con-straint that the en-vi-ron-ment re-mains static. https://arxiv.org/pdf/2209.10710
  []
 
