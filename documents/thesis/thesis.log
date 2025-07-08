@@ -156,17 +156,6 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 [1
 
 {c:/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-c:/Users/TomZu/workspace/Thesis/documents/thesis/thesis.tex:34: Misplaced alignment tab character &.
-l.34 ...etermined from two 2d images [FACT CHECK &
-                                                   CITATION].
-I can't figure out why you would want to use a tab mark
-here. If you just want an ampersand, the remedy is
-simple: Just type `I\&' now. But if some right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
-
-
 
 [2]
 
