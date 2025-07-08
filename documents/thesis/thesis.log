@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  7 JUL 2025 18:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  7 JUL 2025 18:22
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -139,6 +139,22 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <14.4> on input line 14.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 14.
+LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 16.
+(c:/texlive/2025/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2024/11/19 v2.5n Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/bx/n' in size <17.28> not available
+(Font)              Font shape `OMS/cmsy/b/n' tried instead on input line 16.
+
+c:/Users/TomZu/workspace/Thesis/documents/thesis/thesis.tex:16: Extra }, or forgotten \endgroup.
+l.16 \section\{Introduction}
+                            
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
 
 
 [1
@@ -152,15 +168,44 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 [4]
 
 [5]
+c:/Users/TomZu/workspace/Thesis/documents/thesis/thesis.tex:76: Extra }, or forgotten \endgroup.
+l.76 \section\{Background}
+                          
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
 
 [6]
-Overfull \hbox (96.67613pt too wide) in paragraph at lines 104--106
-\OT1/cmr/m/n/12 ing the prob-lem to re-move the con-straint that the en-vi-ron-ment re-mains static. https://arxiv.org/pdf/2209.10710
- []
+c:/Users/TomZu/workspace/Thesis/documents/thesis/thesis.tex:102: Extra }, or forgotten \endgroup.
+l.102 \section\{Related Work}
+                             
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
 
 
 
 [7]
+Overfull \hbox (114.30095pt too wide) in paragraph at lines 104--106
+\OT1/cmr/m/n/12 al-iz-ing the prob-lem to re-move the con-straint that the en-vi-ron-ment re-mains static. https://arxiv.org/pdf/2209.10710
+ []
+
+c:/Users/TomZu/workspace/Thesis/documents/thesis/thesis.tex:113: Extra }, or forgotten \endgroup.
+l.113 \section\{Implementation}
+                               
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
 
 [8]
 
@@ -180,8 +225,39 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 [12]
 
 [13]
+c:/Users/TomZu/workspace/Thesis/documents/thesis/thesis.tex:180: Extra }, or forgotten \endgroup.
+l.180 \section\{Experimental Analysis}
+                                      
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
 
-[14] (./thesis.aux)
+c:/Users/TomZu/workspace/Thesis/documents/thesis/thesis.tex:204: Extra }, or forgotten \endgroup.
+l.204 \section\{Discussion}
+                           
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+
+[14]
+c:/Users/TomZu/workspace/Thesis/documents/thesis/thesis.tex:206: Extra }, or forgotten \endgroup.
+l.206 \section\{Conclusion and Future Work}
+                                           
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+
+[15] (./thesis.aux)
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-06-09>
@@ -192,18 +268,18 @@ L3 programming layer <2025-06-09>
 ### semi simple group (level 1) entered at line 12 (\begingroup)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 1913 strings out of 469826
- 30371 string characters out of 5483777
- 437044 words of memory out of 5000000
- 30237 multiletter control sequences out of 15000+600000
- 632951 words of font info for 60 fonts, out of 8000000 for 9000
+ 1935 strings out of 469826
+ 30741 string characters out of 5483777
+ 437042 words of memory out of 5000000
+ 30255 multiletter control sequences out of 15000+600000
+ 633206 words of font info for 61 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  57i,6n,65p,1881b,229s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <c:/Users/TomZu/.texlive2025/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on thesis.pdf (14 pages, 104364 bytes).
+ <c:/Users/TomZu/.texlive2025/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on thesis.pdf (15 pages, 112836 bytes).
 PDF statistics:
- 85 PDF objects out of 1000 (max. 8388607)
- 55 compressed objects within 1 object stream
+ 93 PDF objects out of 1000 (max. 8388607)
+ 60 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -13,7 +13,7 @@
 
 \maketitle
 
-\section{1. Introduction}
+\section\{Introduction}
 
 Simultaneous Localization and Mapping (SLAM) empowers computers to generate a spatial understanding of the world around them. This chapter covers the general background of SLAM, followed by a more detailed discussion
 
@@ -73,7 +73,7 @@ Does a probability model which identifies and culls outdated map points provide 
 To what extent do dynamic changes in a map affect mapping and relocalization performance?
 Can this be used as a heuristic to determine when to re-enable mapping on MAVs?
 
-\section{2. Background}
+\section\{Background}
 
 In this chapter, we provide a high level overview of the definitions, objectives, and history of SLAM, in addition to an overview of the common sensor modalities found in SLAM systems. Following this, we discuss the stages of the SLAM pipeline in the generic case, followed by a more in-depth exploration of keypoint-based visual SLAM, the sensor modality targeted by this research. Next, we look into several of the widely adopted extensions to the base SLAM pipeline which address core issues and enhance performance. A discussion of extensions which have similar goals to this research is held for the chapter on related works.
 
@@ -99,7 +99,7 @@ The term Keypoint-Based Visual SLAM refers to the SLAM modality which primarily 
 
 \subsubsection{2.5.1 Directional Probability}
 
-\section{3. Related Work}
+\section\{Related Work}
 
 Numerous methods have been developed to improve long-term SLAM performance, generalizing the problem to remove the constraint that the environment remains static.
 https://arxiv.org/pdf/2209.10710 - ChangingSlam - Uses a Bayes filter to remove changing map points. Utilizes semantic detection to determine dynamic objects before filter is used, which prevents it from working on deformable objects.
@@ -110,7 +110,7 @@ https://arxiv.org/pdf/2209.10710 - ChangingSlam - Uses a Bayes filter to remove 
 
 \subsubsection{3.1.2 Probability Based Optimizations}
 
-\section{4. Implementation}
+\section\{Implementation}
 
 A probability model for the elimination of inaccurate map points
 For each new frame which comes in, the tracking thread completes its estimation of the new pose, based on the motion model, the local map, or the reference keyframe. This pose is then optimized to improve local consistency. Post localization, the estimation of the current pose will be as good as possible based on the currently available information. This estimated pose, along with the set of map points in the map are then processed to update each map point’s probability of existence. Step one involves projecting each point to the camera’s image plane, determining the set of map points which should be visible given the currently estimated pose. We can then split these “expected” map points into two groups: those that are seen, and those that are not seen. For the map points which are seen, we set their probability of existence to 1, since we are sure they still exist. Next, their icosFaceProbs is increased using Bayes theorem to indicate that the point is visible from that perspective. Finally, the nearest vertex in icosVertexDists is set to the current distance between the camera and the map point, if it’s larger than the current setting. If all map points associated with the face are 0, we do something else I guess. If the point is not seen, things are a bit more interesting. First of all, the icosFaceProbs is updated using Bayes theorem, this time decreasing it. If the point’s overall probability drops enough for a specific face, the vertex distances begin to drop, in the hopes of moving to the inside of any obstructions. This prevents observations from one perspective from having too much power over the overall probability of existence. The distance is dropped by ½, and the face probability is set to the average of the adjacent face’s probabilities.
@@ -177,7 +177,7 @@ This is difficult to do in practice due to the complications of using other peop
 in direct comparison to my own. Add a section on potential research into context independent
 slam benchmarking. -->
 
-\section{5. Experimental Analysis}
+\section\{Experimental Analysis}
 
 \subsection{Dataset Creation}
 
@@ -201,9 +201,9 @@ slam benchmarking. -->
 
 \subsubsection{Ablation Study}
 
-\section{6. Discussion}
+\section\{Discussion}
 
-\section{7. Conclusion and Future Work}
+\section\{Conclusion and Future Work}
 
 \section{Appendices}
 
