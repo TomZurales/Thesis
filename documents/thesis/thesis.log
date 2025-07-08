@@ -143,7 +143,7 @@ c:/Users/TomZu/workspace/Thesis/documents/thesis/thesis.tex:17: Missing $ insert
 <inserted text> 
                 $
 l.17 ...ource library, along with an extended ORB_
-                                                  SLAM3 implementation with the
+                                                  SLAM3 implementation with.
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
@@ -237,7 +237,7 @@ Here is how much of TeX's memory you used:
  36 hyphenation exceptions out of 8191
  57i,6n,65p,1881b,229s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <c:/Users/TomZu/.texlive2025/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on thesis.pdf (15 pages, 145123 bytes).
+Output written on thesis.pdf (15 pages, 145222 bytes).
 PDF statistics:
  103 PDF objects out of 1000 (max. 8388607)
  66 compressed objects within 1 object stream
