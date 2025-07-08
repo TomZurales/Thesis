@@ -229,76 +229,11 @@ return to the right one by typing `I}' or `I$' or `I\par'.
 
 [11]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 154.
+(Font)              <12> on input line 160.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 154.
+(Font)              <8> on input line 160.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 154.
-
-c:/Users/TomZu/workspace/Thesis/documents/thesis/thesis.tex:155: Undefined control sequence.
-l.155 \text
-           {map_{init}}
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-c:/Users/TomZu/workspace/Thesis/documents/thesis/thesis.tex:156: Missing delimiter (. inserted).
-<to be read again> 
-                   {
-l.156 \textbf{expectedkps}(x_t) = \left{
-                                        kp\in \text{map_{init}} | kp \in \te...
-I was expecting to see something like `(' or `\{' or
-`\}' here. If you typed, e.g., `{' instead of `\{', you
-should probably delete the `{' by typing `1' now, so that
-braces don't get unbalanced. Otherwise just proceed.
-Acceptable delimiters are characters whose \delcode is
-nonnegative, or you can use `\delimiter <delimiter code>'.
-
-c:/Users/TomZu/workspace/Thesis/documents/thesis/thesis.tex:156: Undefined control sequence.
-l.156 ...tbf{expectedkps}(x_t) = \left{kp\in \text
-                                                  {map_{init}} | kp \in \tex...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-c:/Users/TomZu/workspace/Thesis/documents/thesis/thesis.tex:156: Missing } inserted.
-<inserted text> 
-                }
-l.156 ...it}} | kp \in \textbf{frustum}(x_t)\right
-                                                  }
-I've inserted something that you may have forgotten.
-(See the <inserted text> above.)
-With luck, this will get me unwedged. But if you
-really didn't forget anything, try typing `2' now; then
-my insertion and my current dilemma will both disappear.
-
-c:/Users/TomZu/workspace/Thesis/documents/thesis/thesis.tex:156: Missing delimiter (. inserted).
-<to be read again> 
-                   }
-l.156 ...t}} | kp \in \textbf{frustum}(x_t)\right}
-                                                  
-I was expecting to see something like `(' or `\{' or
-`\}' here. If you typed, e.g., `{' instead of `\{', you
-should probably delete the `{' by typing `1' now, so that
-braces don't get unbalanced. Otherwise just proceed.
-Acceptable delimiters are characters whose \delcode is
-nonnegative, or you can use `\delimiter <delimiter code>'.
-
-c:/Users/TomZu/workspace/Thesis/documents/thesis/thesis.tex:156: Extra }, or forgotten $.
-<recently read> }
-                 
-l.156 ...t}} | kp \in \textbf{frustum}(x_t)\right}
-                                                  
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
+(Font)              <6> on input line 160.
 
 
 [12]
@@ -313,7 +248,7 @@ deleted material, e.g., by typing `I$}'.
 Here is how much of TeX's memory you used:
  1909 strings out of 469826
  30289 string characters out of 5483777
- 438917 words of memory out of 5000000
+ 438908 words of memory out of 5000000
  30235 multiletter control sequences out of 15000+600000
  632951 words of font info for 60 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191

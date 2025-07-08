@@ -151,10 +151,10 @@ Implementation of a probability model for the elimination of outdated map points
 Definitions
 The following functions and parameters are being defined here for use in the several probability model implementations discussed below.
 
-$$
-\text{map_{init}}
-\textbf{expectedkps}(x_t) = \left{kp\in \text{map_{init}} | kp \in \textbf{frustum}(x_t)\right}
-$$
+% $$
+% \text{map_{init}}
+% \textbf{expectedkps}(x_t) = \left{kp\in \text{map_{init}} | kp \in \textbf{frustum}(x_t)\right}
+% $$
 
 Implementation 1
 The goal of this probability model is to estimate the probability that a keypoint $$kp_n\in map_{initial}$$ exists at time $$t$$, given the current sensor input $$Z_t$$ and state estimate $$x_t$$. Bayes’ theorem is used to determine a new probability for the existence of $$kp_n$$, written as:
