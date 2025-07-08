@@ -175,31 +175,6 @@ Overfull \hbox (96.67613pt too wide) in paragraph at lines 106--108
 [7]
 
 [8]
-c:/Users/TomZu/workspace/Thesis/documents/thesis/thesis.tex:124: You can't use `macro parameter character #' in horizontal mode.
-l.124 ...sing 12 parameters for vertex distances #
-                                                  ## MAYBE CHANGE TO 20 FACE...
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-c:/Users/TomZu/workspace/Thesis/documents/thesis/thesis.tex:124: You can't use `macro parameter character #' in horizontal mode.
-l.124 ...ing 12 parameters for vertex distances ##
-                                                  # MAYBE CHANGE TO 20 FACE ...
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-c:/Users/TomZu/workspace/Thesis/documents/thesis/thesis.tex:124: You can't use `macro parameter character #' in horizontal mode.
-l.124 ...ng 12 parameters for vertex distances ###
-                                                   MAYBE CHANGE TO 20 FACE D...
-Sorry, but I'm not programmed to handle this case;
-I'll just pretend that you didn't ask for it.
-If you're in the wrong mode, you might be able to
-return to the right one by typing `I}' or `I$' or `I\par'.
-
-
 
 [9]
 
