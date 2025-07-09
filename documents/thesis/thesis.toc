@@ -3,7 +3,7 @@
 \contentsline {subsubsection}{\numberline {1.1.1}Problem Statement}{5}{}%
 \contentsline {subsubsection}{\numberline {1.1.2}Research Questions}{5}{}%
 \contentsline {subsection}{\numberline {1.2}Objectives and Scope}{8}{}%
-\contentsline {subsection}{\numberline {1.3}Contribution}{8}{}%
+\contentsline {subsection}{\numberline {1.3}Contribution}{9}{}%
 \contentsline {subsection}{\numberline {1.4}Road Map}{9}{}%
 \contentsline {section}{\numberline {2}Background}{11}{}%
 \contentsline {subsection}{\numberline {2.1}SLAM Overview}{11}{}%
