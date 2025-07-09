@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  8 JUL 2025 18:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  8 JUL 2025 18:28
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -65,7 +65,8 @@ Package: setspace 2022/12/04 v6.7b set line spacing
 ) (c:/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-06-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count286
-) (./thesis.aux (./src/Introduction.aux) (./src/Background.aux) (./src/RelatedWork.aux) (./src/Implementation.aux) (./src/Analysis.aux) (./src/Discussion.aux) (./src/Conclusion.aux) (./src/Appendices.aux))
+)
+No file thesis.aux.
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
@@ -82,7 +83,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
 LaTeX Font Info:    ... okay on input line 11.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
 LaTeX Font Info:    ... okay on input line 11.
- (c:/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+(c:/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count287
 \scratchdimen=\dimen159
@@ -145,139 +146,46 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
 {c:/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 
-[2] (./thesis.toc
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 2.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 2.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 2.
-
-
-[3])
+[2]
+No file thesis.toc.
 \tf@toc=\write3
 \openout3 = `thesis.toc'.
 
 
 
-[4]
+[3]
 \openout2 = `src/Introduction.aux'.
 
  (./src/Introduction.tex (./src/Introduction/1_Motivation.tex
 
-[5
+[4
 
 ]
 
-[6])
+[5])
 
-[7]
+[6]
 
-[8])
+! LaTeX Error: File `src/Introduction/2_Objectives.tex' not found.
 
-[9]
-\openout2 = `src/Background.aux'.
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: tex)
 
- (./src/Background.tex
+Enter file name: 
+./src/Introduction.tex:7: Emergency stop.
+<read *> 
+         
+l.7 \input{src/Introduction/2_Objectives}
+                                         ^^M
+*** (cannot \read from terminal in nonstop modes)
 
-[10
-
-
-
-])
-
-[11]
-\openout2 = `src/RelatedWork.aux'.
-
- (./src/RelatedWork.tex
-Overfull \hbox (96.67613pt too wide) in paragraph at lines 3--5
-\OT1/cmr/m/n/12 ing the prob-lem to re-move the con-straint that the en-vi-ron-ment re-mains static. https://arxiv.org/pdf/2209.10710
- []
-
-)
-
-[12
-
-
-
-]
-\openout2 = `src/Implementation.aux'.
-
- (./src/Implementation.tex
-
-[13
-
-
-
-]
-
-[14]
-
-[15]
-
-[16]
-
-[17])
-
-[18]
-\openout2 = `src/Analysis.aux'.
-
- (./src/Analysis.tex)
-
-[19
-
-
-
-]
-\openout2 = `src/Discussion.aux'.
-
- (./src/Discussion.tex)
-
-[20
-
-
-
-]
-\openout2 = `src/Conclusion.aux'.
-
- (./src/Conclusion.tex)
-
-[21
-
-
-
-]
-\openout2 = `src/Appendices.aux'.
-
- (./src/Appendices.tex)
-
-[22
-
-
-
-] (./thesis.aux (./src/Introduction.aux) (./src/Background.aux) (./src/RelatedWork.aux) (./src/Implementation.aux) (./src/Analysis.aux) (./src/Discussion.aux) (./src/Conclusion.aux) (./src/Appendices.aux))
- ***********
-LaTeX2e <2025-06-01> patch level 1
-L3 programming layer <2025-06-09>
- ***********
- )
-(\end occurred inside a group at level 1)
-
-### semi simple group (level 1) entered at line 12 (\begingroup)
-### bottom level 
+ 
 Here is how much of TeX's memory you used:
- 2136 strings out of 469826
- 36754 string characters out of 5483777
- 439932 words of memory out of 5000000
- 30395 multiletter control sequences out of 15000+600000
- 633559 words of font info for 62 fonts, out of 8000000 for 9000
+ 1915 strings out of 469826
+ 30853 string characters out of 5483777
+ 433051 words of memory out of 5000000
+ 30242 multiletter control sequences out of 15000+600000
+ 630163 words of font info for 51 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 57i,6n,65p,1910b,342s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <c:/Users/TomZu/.texlive2025/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on thesis.pdf (22 pages, 137738 bytes).
-PDF statistics:
- 120 PDF objects out of 1000 (max. 8388607)
- 78 compressed objects within 1 object stream
- 0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
-
+ 57i,6n,65p,1341b,229s stack positions out of 10000i,1000n,20000p,200000b,200000s
+./src/Introduction.tex:7:  ==> Fatal error occurred, no output PDF file produced!
