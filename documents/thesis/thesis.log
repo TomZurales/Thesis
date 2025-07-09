@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  7 JUL 2025 20:48
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  8 JUL 2025 18:41
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -65,7 +65,7 @@ Package: setspace 2022/12/04 v6.7b set line spacing
 ) (c:/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-06-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count286
-) (./thesis.aux)
+) (./thesis.aux (./src/1_Introduction.aux) (./src/Background.aux) (./src/RelatedWork.aux) (./src/Implementation.aux) (./src/Analysis.aux) (./src/Discussion.aux) (./src/Conclusion.aux) (./src/Appendices.aux))
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
@@ -161,34 +161,55 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
 
 [4]
+\openout2 = `src/1_Introduction.aux'.
 
-[5]
+ (./src/1_Introduction.tex (./src/1_Introduction/1_Motivation.tex
+
+[5
+
+]
 
 [6]
 
-[7]
+[7]) (./src/1_Introduction/2_Objectives.tex) (./src/1_Introduction/3_Contribution.tex
 
-[8]
+[8]) (./src/1_Introduction/4_RoadMap.tex))
 
 [9]
-Overfull \hbox (7.54927pt too wide) in paragraph at lines 92--92
-[]\OT1/cmr/bx/n/14.4 Simultaneous Lo-cal-iza-tion and Map-ping (SLAM): A High Level
- []
+\openout2 = `src/Background.aux'.
+
+ (./src/Background.tex
+
+[10
 
 
 
-[10]
-Overfull \hbox (96.67613pt too wide) in paragraph at lines 116--118
+])
+
+[11]
+\openout2 = `src/RelatedWork.aux'.
+
+ (./src/RelatedWork.tex
+Overfull \hbox (96.67613pt too wide) in paragraph at lines 3--5
 \OT1/cmr/m/n/12 ing the prob-lem to re-move the con-straint that the en-vi-ron-ment re-mains static. https://arxiv.org/pdf/2209.10710
  []
 
+)
+
+[12
 
 
-[11]
 
-[12]
+]
+\openout2 = `src/Implementation.aux'.
 
-[13]
+ (./src/Implementation.tex
+
+[13
+
+
+
+]
 
 [14]
 
@@ -196,9 +217,45 @@ Overfull \hbox (96.67613pt too wide) in paragraph at lines 116--118
 
 [16]
 
-[17]
+[17])
 
-[18] (./thesis.aux)
+[18]
+\openout2 = `src/Analysis.aux'.
+
+ (./src/Analysis.tex)
+
+[19
+
+
+
+]
+\openout2 = `src/Discussion.aux'.
+
+ (./src/Discussion.tex)
+
+[20
+
+
+
+]
+\openout2 = `src/Conclusion.aux'.
+
+ (./src/Conclusion.tex)
+
+[21
+
+
+
+]
+\openout2 = `src/Appendices.aux'.
+
+ (./src/Appendices.tex)
+
+[22
+
+
+
+] (./thesis.aux (./src/1_Introduction.aux) (./src/Background.aux) (./src/RelatedWork.aux) (./src/Implementation.aux) (./src/Analysis.aux) (./src/Discussion.aux) (./src/Conclusion.aux) (./src/Appendices.aux))
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-06-09>
@@ -209,18 +266,18 @@ L3 programming layer <2025-06-09>
 ### semi simple group (level 1) entered at line 12 (\begingroup)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 1926 strings out of 469826
- 30577 string characters out of 5483777
- 438044 words of memory out of 5000000
- 30246 multiletter control sequences out of 15000+600000
+ 2160 strings out of 469826
+ 37715 string characters out of 5483777
+ 439932 words of memory out of 5000000
+ 30410 multiletter control sequences out of 15000+600000
  633559 words of font info for 62 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 57i,6n,65p,1881b,229s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 57i,6n,65p,1910b,354s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <c:/Users/TomZu/.texlive2025/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on thesis.pdf (18 pages, 137418 bytes).
+Output written on thesis.pdf (22 pages, 137996 bytes).
 PDF statistics:
- 107 PDF objects out of 1000 (max. 8388607)
- 69 compressed objects within 1 object stream
+ 120 PDF objects out of 1000 (max. 8388607)
+ 78 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
