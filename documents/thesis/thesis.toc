@@ -5,33 +5,33 @@
 \contentsline {subsection}{\numberline {1.2}Objectives and Scope}{8}{}%
 \contentsline {subsection}{\numberline {1.3}Contribution}{8}{}%
 \contentsline {subsection}{\numberline {1.4}Road Map}{9}{}%
-\contentsline {section}{\numberline {2}Background}{10}{}%
-\contentsline {subsection}{\numberline {2.1}SLAM Overview}{10}{}%
-\contentsline {subsubsection}{\numberline {2.1.1}The SLAM Pipeline}{10}{}%
-\contentsline {subsubsection}{\numberline {2.1.2}Keypoint-Based Visual SLAM}{11}{}%
-\contentsline {subsubsection}{\numberline {2.1.3}Extensions to Core SLAM}{11}{}%
-\contentsline {subsection}{\numberline {2.2}Additional Fields of Research}{11}{}%
-\contentsline {subsubsection}{\numberline {2.2.1}Directional Probability}{11}{}%
-\contentsline {section}{\numberline {3}Related Work}{12}{}%
-\contentsline {subsection}{\numberline {3.1}Point Removal Optimizations}{12}{}%
-\contentsline {subsubsection}{\numberline {3.1.1}Semantics Based Implementations}{12}{}%
-\contentsline {subsubsection}{\numberline {3.1.2}Probability Based Optimizations}{12}{}%
-\contentsline {section}{\numberline {4}Implementation}{13}{}%
-\contentsline {subsubsection}{\numberline {4.0.1}REWORDING}{13}{}%
-\contentsline {section}{\numberline {5}Experimental Analysis}{19}{}%
-\contentsline {subsection}{\numberline {5.1}Dataset Creation}{19}{}%
-\contentsline {subsubsection}{\numberline {5.1.1}Hardware}{19}{}%
-\contentsline {subsubsection}{\numberline {5.1.2}Structure}{19}{}%
-\contentsline {subsubsection}{\numberline {5.1.3}Dataset Overview}{19}{}%
-\contentsline {subsection}{\numberline {5.2}Evaluation Metrics}{19}{}%
-\contentsline {subsection}{\numberline {5.3}SLAM System Configurations}{19}{}%
-\contentsline {subsubsection}{\numberline {5.3.1}Parameter Tuning}{19}{}%
-\contentsline {subsection}{\numberline {5.4}Results}{19}{}%
-\contentsline {subsubsection}{\numberline {5.4.1}Quantitative Evaluation}{19}{}%
-\contentsline {subsubsection}{\numberline {5.4.2}Qualitative Evaluation}{19}{}%
-\contentsline {subsubsection}{\numberline {5.4.3}Ablation Study}{19}{}%
-\contentsline {section}{\numberline {6}Discussion}{20}{}%
-\contentsline {section}{\numberline {7}Conclusion and Future Work}{21}{}%
-\contentsline {section}{Appendices}{22}{}%
-\contentsline {subsection}{Algorithm Implementations}{22}{}%
-\contentsline {subsection}{Full Results}{22}{}%
+\contentsline {section}{\numberline {2}Background}{11}{}%
+\contentsline {subsection}{\numberline {2.1}SLAM Overview}{11}{}%
+\contentsline {subsubsection}{\numberline {2.1.1}The SLAM Pipeline}{11}{}%
+\contentsline {subsubsection}{\numberline {2.1.2}Keypoint-Based Visual SLAM}{12}{}%
+\contentsline {subsubsection}{\numberline {2.1.3}Extensions to Core SLAM}{12}{}%
+\contentsline {subsection}{\numberline {2.2}Additional Fields of Research}{12}{}%
+\contentsline {subsubsection}{\numberline {2.2.1}Directional Probability}{12}{}%
+\contentsline {section}{\numberline {3}Related Work}{13}{}%
+\contentsline {subsection}{\numberline {3.1}Point Removal Optimizations}{13}{}%
+\contentsline {subsubsection}{\numberline {3.1.1}Semantics Based Implementations}{13}{}%
+\contentsline {subsubsection}{\numberline {3.1.2}Probability Based Optimizations}{13}{}%
+\contentsline {section}{\numberline {4}Implementation}{14}{}%
+\contentsline {subsubsection}{\numberline {4.0.1}REWORDING}{14}{}%
+\contentsline {section}{\numberline {5}Experimental Analysis}{20}{}%
+\contentsline {subsection}{\numberline {5.1}Dataset Creation}{20}{}%
+\contentsline {subsubsection}{\numberline {5.1.1}Hardware}{20}{}%
+\contentsline {subsubsection}{\numberline {5.1.2}Structure}{20}{}%
+\contentsline {subsubsection}{\numberline {5.1.3}Dataset Overview}{20}{}%
+\contentsline {subsection}{\numberline {5.2}Evaluation Metrics}{20}{}%
+\contentsline {subsection}{\numberline {5.3}SLAM System Configurations}{20}{}%
+\contentsline {subsubsection}{\numberline {5.3.1}Parameter Tuning}{20}{}%
+\contentsline {subsection}{\numberline {5.4}Results}{20}{}%
+\contentsline {subsubsection}{\numberline {5.4.1}Quantitative Evaluation}{20}{}%
+\contentsline {subsubsection}{\numberline {5.4.2}Qualitative Evaluation}{20}{}%
+\contentsline {subsubsection}{\numberline {5.4.3}Ablation Study}{20}{}%
+\contentsline {section}{\numberline {6}Discussion}{21}{}%
+\contentsline {section}{\numberline {7}Conclusion and Future Work}{22}{}%
+\contentsline {section}{Appendices}{23}{}%
+\contentsline {subsection}{Algorithm Implementations}{23}{}%
+\contentsline {subsection}{Full Results}{23}{}%
