@@ -65,7 +65,7 @@ Package: setspace 2022/12/04 v6.7b set line spacing
 ) (c:/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-06-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count286
-) (./thesis.aux (./src/Introduction.aux) (./src/Background.aux) (./src/RelatedWork.aux) (./src/Implementation.aux) (./src/Analysis.aux) (./src/Discussion.aux) (./src/Conclusion.aux) (./src/Appendices.aux))
+) (./thesis.aux (./src/1_Introduction.aux) (./src/Background.aux) (./src/RelatedWork.aux) (./src/Implementation.aux) (./src/Analysis.aux) (./src/Discussion.aux) (./src/Conclusion.aux) (./src/Appendices.aux))
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
@@ -161,9 +161,9 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
 
 [4]
-\openout2 = `src/Introduction.aux'.
+\openout2 = `src/1_Introduction.aux'.
 
- (./src/Introduction.tex (./src/Introduction/1_Motivation.tex
+ (./src/1_Introduction.tex (./src/1_Introduction/1_Motivation.tex
 
 [5
 
@@ -171,9 +171,9 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
 [6])
 
-[7] (./src/Introduction/2_Objectives.tex) (./src/Introduction/3_Contribution.tex
+[7] (./src/1_Introduction/2_Objectives.tex) (./src/1_Introduction/3_Contribution.tex
 
-[8]) (./src/Introduction/4_RoadMap.tex))
+[8]) (./src/1_Introduction/4_RoadMap.tex))
 
 [9]
 \openout2 = `src/Background.aux'.
@@ -255,7 +255,7 @@ Overfull \hbox (96.67613pt too wide) in paragraph at lines 3--5
 
 
 
-] (./thesis.aux (./src/Introduction.aux) (./src/Background.aux) (./src/RelatedWork.aux) (./src/Implementation.aux) (./src/Analysis.aux) (./src/Discussion.aux) (./src/Conclusion.aux) (./src/Appendices.aux))
+] (./thesis.aux (./src/1_Introduction.aux) (./src/Background.aux) (./src/RelatedWork.aux) (./src/Implementation.aux) (./src/Analysis.aux) (./src/Discussion.aux) (./src/Conclusion.aux) (./src/Appendices.aux))
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-06-09>
@@ -267,7 +267,7 @@ L3 programming layer <2025-06-09>
 ### bottom level 
 Here is how much of TeX's memory you used:
  2160 strings out of 469826
- 37607 string characters out of 5483777
+ 37715 string characters out of 5483777
  439932 words of memory out of 5000000
  30410 multiletter control sequences out of 15000+600000
  633559 words of font info for 62 fonts, out of 8000000 for 9000
