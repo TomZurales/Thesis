@@ -6,7 +6,6 @@ The ISS is a challenging place to perform robot navigation tasks. The primary st
 
 It was the intention of the project to run keypoint based visual SLAM on board the Astrobees, allowing them the capabilities to create and update their own maps and eliminating the need for astronaut intervention. In order to be useful for ISS operations, the SLAM algorithm had to output its map and localization estimates in the established ISS coordinate frame\cite{PLACEHOLDER}. To accomplish this, the decision was made early on to build off of a SLAM system which included the ability to load and merge previously generated maps. Assuming the system was able to localize in the pregenerated map and merge its new data into it, the coordinate frame would be preserved between mapping runs. 
 
-
 \subsubsection{Problem Statement}
 
 A primary assumption in SLAM is that the environment remains static \cite{PLACEHOLDER}.
