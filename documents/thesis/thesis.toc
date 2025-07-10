@@ -1,6 +1,6 @@
 \contentsline {section}{\numberline {1}Introduction}{5}{}%
 \contentsline {subsection}{\numberline {1.1}Motivation}{5}{}%
-\contentsline {subsubsection}{\numberline {1.1.1}Problem Statement}{6}{}%
+\contentsline {subsubsection}{\numberline {1.1.1}Problem Statement}{5}{}%
 \contentsline {subsubsection}{\numberline {1.1.2}Research Questions}{6}{}%
 \contentsline {subsection}{\numberline {1.2}Objectives and Scope}{9}{}%
 \contentsline {subsection}{\numberline {1.3}Contribution}{9}{}%
@@ -32,6 +32,7 @@
 \contentsline {subsubsection}{\numberline {5.4.3}Ablation Study}{20}{}%
 \contentsline {section}{\numberline {6}Discussion}{21}{}%
 \contentsline {section}{\numberline {7}Conclusion and Future Work}{22}{}%
-\contentsline {section}{Appendices}{23}{}%
-\contentsline {subsection}{Algorithm Implementations}{23}{}%
-\contentsline {subsection}{Full Results}{23}{}%
+\contentsline {section}{References}{23}{}%
+\contentsline {section}{Appendices}{24}{}%
+\contentsline {subsection}{Algorithm Implementations}{24}{}%
+\contentsline {subsection}{Full Results}{24}{}%

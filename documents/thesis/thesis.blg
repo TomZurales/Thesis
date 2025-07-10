@@ -1,0 +1,16 @@
+[0] Config.pm:308> INFO - This is Biber 2.20
+[0] Config.pm:311> INFO - Logfile is 'thesis.blg'
+[96] biber-MSWIN64:340> INFO - === 
+[131] Biber.pm:420> INFO - Reading 'thesis.bcf'
+[228] Biber.pm:994> INFO - Found 2 citekeys in bib section 0
+[242] Biber.pm:4463> INFO - Processing section 0
+[255] Biber.pm:4654> INFO - Looking for bibtex file 'http://127.0.0.1:23119/better-bibtex/export?/library;id:1/collection;key:GT493ARA/Thesis.biblatex' for section 0
+[255] Utils.pm:168> INFO - Data source 'http://127.0.0.1:23119/better-bibtex/export?/library;id:1/collection;key:GT493ARA/Thesis.biblatex' is a remote BibTeX data source - fetching ...
+[390] bibtex.pm:1713> INFO - LaTeX decoding ...
+[446] bibtex.pm:1519> INFO - Found BibTeX data source 'C:\Users\TomZu\AppData\Local\Temp\biber_tmp_l1Mq\biber_remote_data_source_rqkwA.bib'
+[489] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[489] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[489] Biber.pm:4283> INFO - Sorting list 'nty/global//global/global/global' of type 'entry' with template 'nty' and locale 'en-US'
+[489] Biber.pm:4289> INFO - No sort tailoring available for locale 'en-US'
+[492] bbl.pm:676> INFO - Writing 'thesis.bbl' with encoding 'UTF-8'
+[493] bbl.pm:779> INFO - Output to thesis.bbl
