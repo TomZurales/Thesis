@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  10 JUL 2025 09:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  10 JUL 2025 09:19
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -312,7 +312,7 @@ Package: blx-case-expl3 2024/03/21 v3.20 expl3 case changing code for biblatex
 ))
 \@quotelevel=\count414
 \@quotereset=\count415
- (./thesis.aux (./src/1_Introduction.aux) (./src/2_Background.aux) (./src/3_RelatedWork.aux) (./src/4_Implementation.aux) (./src/5_Analysis.aux) (./src/6_Discussion.aux) (./src/7_Conclusion.aux) (./src/Appendices.aux))
+ (./thesis.aux (./src/1_Introduction.aux) (./src/2_Background.aux) (./src/3_RelatedWork.aux) (./src/4_Implementation.aux) (./src/5_Analysis.aux) (./src/6_Discussion.aux) (./src/7_Conclusion.aux) (./src/8_Appendices.aux))
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
@@ -414,43 +414,45 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 2.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 2.
-)
+
+
+[3])
 \tf@toc=\write4
 \openout4 = `thesis.toc'.
 
 
 
-[3]
+[4]
 \openout2 = `src/1_Introduction.aux'.
 
  (./src/1_Introduction.tex (./src/1_Introduction/1_Motivation.tex
 
-[4
+[5
 
 ]
 
-[5]
-
 [6]
 
-[7])
+[7]
 
-[8] (./src/1_Introduction/2_Objectives.tex) (./src/1_Introduction/3_Contribution.tex)
+[8])
 
-[9] (./src/1_Introduction/4_RoadMap.tex))
+[9] (./src/1_Introduction/2_Objectives.tex) (./src/1_Introduction/3_Contribution.tex)
 
-[10]
+[10] (./src/1_Introduction/4_RoadMap.tex))
+
+[11]
 \openout2 = `src/2_Background.aux'.
 
  (./src/2_Background.tex
 
-[11
+[12
 
 
 
 ])
 
-[12]
+[13]
 \openout2 = `src/3_RelatedWork.aux'.
 
  (./src/3_RelatedWork.tex
@@ -460,49 +462,69 @@ Overfull \hbox (96.67613pt too wide) in paragraph at lines 4--6
 
 )
 
-[13
+[14
 
 
 
 ]
 \openout2 = `src/4_Implementation.aux'.
 
+ (./src/4_Implementation.tex
 
-No file src/4_Implementation.tex.
-\openout2 = `src/5_Analysis.aux'.
-
-No file src/5_Analysis.tex.
-\openout2 = `src/6_Discussion.aux'.
-
-No file src/6_Discussion.tex.
-\openout2 = `src/7_Conclusion.aux'.
-
-No file src/7_Conclusion.tex.
-
-
-[14
-
-
-
-
-
-
-
-
-
-
-
+[15
 
 
 
 ]
-\openout2 = `src/Appendices.aux'.
 
- (./src/Appendices.tex)
+[16]
 
-[15
+[17]
 
-] (./thesis.aux (./src/1_Introduction.aux) (./src/2_Background.aux) (./src/3_RelatedWork.aux) (./src/4_Implementation.aux) (./src/5_Analysis.aux) (./src/6_Discussion.aux) (./src/7_Conclusion.aux) (./src/Appendices.aux))
+[18]
+
+[19])
+
+[20]
+\openout2 = `src/5_Analysis.aux'.
+
+ (./src/5_Analysis.tex)
+
+[21
+
+
+
+]
+\openout2 = `src/6_Discussion.aux'.
+
+ (./src/6_Discussion.tex)
+
+[22
+
+
+
+]
+\openout2 = `src/7_Conclusion.aux'.
+
+ (./src/7_Conclusion.tex)
+
+[23
+
+
+
+]
+
+[24
+
+
+]
+\openout2 = `src/8_Appendices.aux'.
+
+ (./src/8_Appendices.tex)
+
+[25
+
+] (./thesis.aux (./src/1_Introduction.aux) (./src/2_Background.aux) (./src/3_RelatedWork.aux) (./src/4_Implementation.aux) (./src/5_Analysis.aux) (./src/6_Discussion.aux) (./src/7_Conclusion.aux) (./src/8_Appendices.aux))
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-06-09>
@@ -516,18 +538,18 @@ Package logreq Info: Writing requests to 'thesis.run.xml'.
 ### semi simple group (level 1) entered at line 15 (\begingroup)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 10339 strings out of 469826
- 199498 string characters out of 5483777
- 1040647 words of memory out of 5000000
- 38514 multiletter control sequences out of 15000+600000
- 633418 words of font info for 62 fonts, out of 8000000 for 9000
+ 10358 strings out of 469826
+ 199981 string characters out of 5483777
+ 1044647 words of memory out of 5000000
+ 38522 multiletter control sequences out of 15000+600000
+ 634376 words of font info for 65 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 63i,6n,66p,1832b,1530s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on thesis.pdf (15 pages, 131463 bytes).
+ 63i,6n,66p,1912b,1541s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <c:/Users/TomZu/.texlive2025/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on thesis.pdf (25 pages, 173110 bytes).
 PDF statistics:
- 93 PDF objects out of 1000 (max. 8388607)
- 59 compressed objects within 1 object stream
+ 145 PDF objects out of 1000 (max. 8388607)
+ 94 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
