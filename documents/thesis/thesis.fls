@@ -105,9 +105,9 @@ INPUT src/5_Analysis.aux
 INPUT ./src/6_Discussion.aux
 INPUT ./src/6_Discussion.aux
 INPUT src/6_Discussion.aux
-INPUT ./src/Conclusion.aux
-INPUT ./src/Conclusion.aux
-INPUT src/Conclusion.aux
+INPUT ./src/7_Conclusion.aux
+INPUT ./src/7_Conclusion.aux
+INPUT src/7_Conclusion.aux
 INPUT ./src/Appendices.aux
 INPUT ./src/Appendices.aux
 INPUT src/Appendices.aux
