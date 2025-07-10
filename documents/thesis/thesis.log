@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  9 JUL 2025 19:01
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  10 JUL 2025 09:18
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -312,7 +312,7 @@ Package: blx-case-expl3 2024/03/21 v3.20 expl3 case changing code for biblatex
 ))
 \@quotelevel=\count414
 \@quotereset=\count415
- (./thesis.aux (./src/1_Introduction.aux) (./src/Background.aux) (./src/RelatedWork.aux) (./src/Implementation.aux) (./src/Analysis.aux) (./src/Discussion.aux) (./src/Conclusion.aux) (./src/Appendices.aux))
+ (./thesis.aux (./src/1_Introduction.aux) (./src/2_Background.aux) (./src/3_RelatedWork.aux) (./src/Implementation.aux) (./src/Analysis.aux) (./src/Discussion.aux) (./src/Conclusion.aux) (./src/Appendices.aux))
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
@@ -431,6 +431,13 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
 ]
 
+LaTeX Warning: Reference `related_work' on page 6 undefined on input line 13.
+
+
+LaTeX Warning: Reference `related_work' on page 6 undefined on input line 13.
+
+
+
 [6]
 
 [7]
@@ -442,9 +449,9 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 [10] (./src/1_Introduction/4_RoadMap.tex))
 
 [11]
-\openout2 = `src/Background.aux'.
+\openout2 = `src/2_Background.aux'.
 
- (./src/Background.tex
+ (./src/2_Background.tex
 
 [12
 
@@ -453,44 +460,37 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 ])
 
 [13]
-\openout2 = `src/RelatedWork.aux'.
+\openout2 = `src/3_RelatedWork.aux'.
 
- (./src/RelatedWork.tex
-Overfull \hbox (96.67613pt too wide) in paragraph at lines 4--6
-\OT1/cmr/m/n/12 ing the prob-lem to re-move the con-straint that the en-vi-ron-ment re-mains static. https://arxiv.org/pdf/2209.10710
- []
 
-)
+No file src/3_RelatedWork.tex.
+\openout2 = `src/Implementation.aux'.
+
+(./src/Implementation.tex
 
 [14
 
 
 
-]
-\openout2 = `src/Implementation.aux'.
-
- (./src/Implementation.tex
-
-[15
 
 
 
 ]
+
+[15]
 
 [16]
 
 [17]
 
-[18]
+[18])
 
-[19])
-
-[20]
+[19]
 \openout2 = `src/Analysis.aux'.
 
  (./src/Analysis.tex)
 
-[21
+[20
 
 
 
@@ -499,7 +499,7 @@ Overfull \hbox (96.67613pt too wide) in paragraph at lines 4--6
 
  (./src/Discussion.tex)
 
-[22
+[21
 
 
 
@@ -508,13 +508,13 @@ Overfull \hbox (96.67613pt too wide) in paragraph at lines 4--6
 
  (./src/Conclusion.tex)
 
-[23
+[22
 
 
 
 ]
 
-[24
+[23
 
 
 ]
@@ -522,13 +522,17 @@ Overfull \hbox (96.67613pt too wide) in paragraph at lines 4--6
 
  (./src/Appendices.tex)
 
-[25
+[24
 
-] (./thesis.aux (./src/1_Introduction.aux) (./src/Background.aux) (./src/RelatedWork.aux) (./src/Implementation.aux) (./src/Analysis.aux) (./src/Discussion.aux) (./src/Conclusion.aux) (./src/Appendices.aux))
+] (./thesis.aux (./src/1_Introduction.aux) (./src/2_Background.aux) (./src/3_RelatedWork.aux) (./src/Implementation.aux) (./src/Analysis.aux) (./src/Discussion.aux) (./src/Conclusion.aux) (./src/Appendices.aux))
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-06-09>
  ***********
+
+
+LaTeX Warning: There were undefined references.
+
 Package logreq Info: Writing requests to 'thesis.run.xml'.
 \openout1 = `thesis.run.xml'.
 
@@ -538,18 +542,18 @@ Package logreq Info: Writing requests to 'thesis.run.xml'.
 ### semi simple group (level 1) entered at line 15 (\begingroup)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 10358 strings out of 469826
- 199631 string characters out of 5483777
- 1044647 words of memory out of 5000000
- 38522 multiletter control sequences out of 15000+600000
+ 10355 strings out of 469826
+ 199640 string characters out of 5483777
+ 1044623 words of memory out of 5000000
+ 38521 multiletter control sequences out of 15000+600000
  634376 words of font info for 65 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 63i,6n,66p,1910b,1541s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 63i,6n,66p,1910b,1540s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <c:/Users/TomZu/.texlive2025/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on thesis.pdf (25 pages, 173110 bytes).
+Output written on thesis.pdf (24 pages, 172120 bytes).
 PDF statistics:
- 145 PDF objects out of 1000 (max. 8388607)
- 94 compressed objects within 1 object stream
+ 141 PDF objects out of 1000 (max. 8388607)
+ 91 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
