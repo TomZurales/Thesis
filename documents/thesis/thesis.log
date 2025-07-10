@@ -431,7 +431,7 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
 ]
 
-LaTeX Warning: Reference `related_work_' on page 6 undefined on input line 13.
+LaTeX Warning: Reference `related_work_dynamic' on page 6 undefined on input line 13.
 
 
 
@@ -545,7 +545,7 @@ Package logreq Info: Writing requests to 'thesis.run.xml'.
 ### bottom level 
 Here is how much of TeX's memory you used:
  10358 strings out of 469826
- 199632 string characters out of 5483777
+ 199639 string characters out of 5483777
  1044623 words of memory out of 5000000
  38522 multiletter control sequences out of 15000+600000
  634376 words of font info for 65 fonts, out of 8000000 for 9000
