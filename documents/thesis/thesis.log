@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  9 JUL 2025 18:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  9 JUL 2025 18:27
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -312,7 +312,7 @@ Package: blx-case-expl3 2024/03/21 v3.20 expl3 case changing code for biblatex
 ))
 \@quotelevel=\count414
 \@quotereset=\count415
- (./thesis.aux (./src/1_Introduction.aux) (./src/Background.aux) (./src/RelatedWork.aux) (./src/Implementation.aux) (./src/Analysis.aux) (./src/Discussion.aux) (./src/Conclusion.aux) (./src/Appendices.aux))
+ (./thesis.aux)
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
@@ -407,60 +407,86 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
 {c:/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 
-[2] (./thesis.toc
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 2.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 2.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 2.
-
-
-[3])
+[2]
+No file thesis.toc.
 \tf@toc=\write4
 \openout4 = `thesis.toc'.
 
 
 
-[4]
+[3]
 \openout2 = `src/1_Introduction.aux'.
 
- (./src/1_Introduction.tex (./src/1_Introduction/1_Motivation.tex
+ (./src/1_Introduction.tex
+./src/1_Introduction.tex:1: Undefined control sequence.
+l.1 \chapter
+            {Introduction}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-[5
+(./src/1_Introduction/1_Motivation.tex
+
+[4
 
 ]
 
+LaTeX Warning: Reference `related_work' on page 5 undefined on input line 13.
+
+
+
+[5]
+
 [6]
 
-[7]
+[7]) (./src/1_Introduction/2_Objectives.tex) (./src/1_Introduction/3_Contribution.tex
 
-[8]) (./src/1_Introduction/2_Objectives.tex) (./src/1_Introduction/3_Contribution.tex
+[8]) (./src/1_Introduction/4_RoadMap.tex))
 
-[9]) (./src/1_Introduction/4_RoadMap.tex))
-
-[10]
+[9]
 \openout2 = `src/Background.aux'.
 
  (./src/Background.tex
+./src/Background.tex:1: Undefined control sequence.
+l.1 \chapter
+            {Background}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-[11
+
+
+[10
 
 
 
 ])
 
-[12]
+[11]
 \openout2 = `src/RelatedWork.aux'.
 
  (./src/RelatedWork.tex
-Overfull \hbox (96.67613pt too wide) in paragraph at lines 4--6
-\OT1/cmr/m/n/12 ing the prob-lem to re-move the con-straint that the en-vi-ron-ment re-mains static. https://arxiv.org/pdf/2209.10710
+./src/RelatedWork.tex:1: Undefined control sequence.
+l.1 \chapter
+            {Related Work}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Overfull \hbox (114.30095pt too wide) in paragraph at lines 4--6
+\OT1/cmr/m/n/12 al-iz-ing the prob-lem to re-move the con-straint that the en-vi-ron-ment re-mains static. https://arxiv.org/pdf/2209.10710
  []
 
 )
 
-[13
+[12
 
 
 
@@ -468,65 +494,134 @@ Overfull \hbox (96.67613pt too wide) in paragraph at lines 4--6
 \openout2 = `src/Implementation.aux'.
 
  (./src/Implementation.tex
+./src/Implementation.tex:1: Undefined control sequence.
+l.1 \chapter
+            {Implementation}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-[14
+
+
+[13
 
 
 
 ]
 
+[14]
+
 [15]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 46.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 46.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 46.
+
 
 [16]
 
-[17]
+[17])
 
-[18])
-
-[19]
+[18]
 \openout2 = `src/Analysis.aux'.
 
- (./src/Analysis.tex)
+ (./src/Analysis.tex
+./src/Analysis.tex:1: Undefined control sequence.
+l.1 \chapter
+            {Experimental Analysis}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-[20
+)
+
+[19
 
 
 
 ]
 \openout2 = `src/Discussion.aux'.
 
- (./src/Discussion.tex)
+ (./src/Discussion.tex
+./src/Discussion.tex:1: Undefined control sequence.
+l.1 \chapter
+            {Discussion}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-[21
+)
+
+[20
 
 
 
 ]
 \openout2 = `src/Conclusion.aux'.
 
- (./src/Conclusion.tex)
+ (./src/Conclusion.tex
+./src/Conclusion.tex:1: Undefined control sequence.
+l.1 \chapter
+            {Conclusion and Future Work}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-[22
+)
+
+[21
 
 
 
 ]
 
-[23
+[22
 
 
 ]
 \openout2 = `src/Appendices.aux'.
 
- (./src/Appendices.tex)
+ (./src/Appendices.tex
+./src/Appendices.tex:1: Undefined control sequence.
+l.1 \chapter
+            *{Appendices}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-[24
+)
+
+[23
 
 ] (./thesis.aux (./src/1_Introduction.aux) (./src/Background.aux) (./src/RelatedWork.aux) (./src/Implementation.aux) (./src/Analysis.aux) (./src/Discussion.aux) (./src/Conclusion.aux) (./src/Appendices.aux))
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-06-09>
  ***********
+
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package biblatex Warning: Please (re)run Biber on the file:
+(biblatex)                thesis
+(biblatex)                and rerun LaTeX afterwards.
+
 Package logreq Info: Writing requests to 'thesis.run.xml'.
 \openout1 = `thesis.run.xml'.
 
@@ -536,18 +631,18 @@ Package logreq Info: Writing requests to 'thesis.run.xml'.
 ### semi simple group (level 1) entered at line 15 (\begingroup)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 10358 strings out of 469826
- 199631 string characters out of 5483777
- 1044647 words of memory out of 5000000
- 38522 multiletter control sequences out of 15000+600000
+ 10330 strings out of 469826
+ 199110 string characters out of 5483777
+ 1025786 words of memory out of 5000000
+ 38512 multiletter control sequences out of 15000+600000
  634376 words of font info for 65 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 63i,6n,66p,1910b,1541s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 63i,6n,66p,1910b,1546s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <c:/Users/TomZu/.texlive2025/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on thesis.pdf (24 pages, 171602 bytes).
+Output written on thesis.pdf (23 pages, 170414 bytes).
 PDF statistics:
- 141 PDF objects out of 1000 (max. 8388607)
- 91 compressed objects within 1 object stream
+ 138 PDF objects out of 1000 (max. 8388607)
+ 89 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
