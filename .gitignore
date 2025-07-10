@@ -9,3 +9,12 @@ imgui.ini
 /lib/
 /bin/
 /include/
+
+**/*.aux
+**/*.bbl
+**/*.bcf
+**/*.fdb_latexmk
+**/*.fls
+**/*.log
+**/*.synctex.gz
+**/*.toc
