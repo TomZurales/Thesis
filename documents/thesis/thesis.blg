@@ -1,16 +1,16 @@
 [0] Config.pm:308> INFO - This is Biber 2.20
 [0] Config.pm:311> INFO - Logfile is 'thesis.blg'
-[137] biber-MSWIN64:340> INFO - === 
-[187] Biber.pm:420> INFO - Reading 'thesis.bcf'
-[312] Biber.pm:994> INFO - Found 2 citekeys in bib section 0
-[327] Biber.pm:4463> INFO - Processing section 0
-[341] Biber.pm:4654> INFO - Looking for bibtex file 'http://127.0.0.1:23119/better-bibtex/export?/library;id:1/collection;key:GT493ARA/Thesis.biblatex' for section 0
-[342] Utils.pm:168> INFO - Data source 'http://127.0.0.1:23119/better-bibtex/export?/library;id:1/collection;key:GT493ARA/Thesis.biblatex' is a remote BibTeX data source - fetching ...
-[532] bibtex.pm:1713> INFO - LaTeX decoding ...
-[590] bibtex.pm:1519> INFO - Found BibTeX data source 'C:\Users\TomZu\AppData\Local\Temp\biber_tmp_GxNv\biber_remote_data_source_wT4mK.bib'
-[636] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[636] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[636] Biber.pm:4283> INFO - Sorting list 'nty/global//global/global/global' of type 'entry' with template 'nty' and locale 'en-US'
-[636] Biber.pm:4289> INFO - No sort tailoring available for locale 'en-US'
-[639] bbl.pm:676> INFO - Writing 'thesis.bbl' with encoding 'UTF-8'
-[641] bbl.pm:779> INFO - Output to thesis.bbl
+[122] biber-MSWIN64:340> INFO - === 
+[176] Biber.pm:420> INFO - Reading 'thesis.bcf'
+[293] Biber.pm:994> INFO - Found 2 citekeys in bib section 0
+[307] Biber.pm:4463> INFO - Processing section 0
+[322] Biber.pm:4654> INFO - Looking for bibtex file 'http://127.0.0.1:23119/better-bibtex/export?/library;id:1/collection;key:GT493ARA/Thesis.biblatex' for section 0
+[322] Utils.pm:168> INFO - Data source 'http://127.0.0.1:23119/better-bibtex/export?/library;id:1/collection;key:GT493ARA/Thesis.biblatex' is a remote BibTeX data source - fetching ...
+[592] bibtex.pm:1713> INFO - LaTeX decoding ...
+[670] bibtex.pm:1519> INFO - Found BibTeX data source 'C:\Users\TomZu\AppData\Local\Temp\biber_tmp_oKbZ\biber_remote_data_source_kZiO4.bib'
+[731] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[731] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[731] Biber.pm:4283> INFO - Sorting list 'nty/global//global/global/global' of type 'entry' with template 'nty' and locale 'en-US'
+[731] Biber.pm:4289> INFO - No sort tailoring available for locale 'en-US'
+[734] bbl.pm:676> INFO - Writing 'thesis.bbl' with encoding 'UTF-8'
+[735] bbl.pm:779> INFO - Output to thesis.bbl
