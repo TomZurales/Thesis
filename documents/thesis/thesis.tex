@@ -3,6 +3,9 @@
 \usepackage{graphicx}
 \usepackage[margin=1in]{geometry}
 \usepackage{setspace}
+\usepackage[backend=biber]{biblatex}
+
+\addbibresource[location=remote]{http://127.0.0.1:23119/better-bibtex/export?/library;id:1/collection;key:GT493ARA/Thesis.biblatex}
 
 \title{Thesis}
 \author{Tom Zurales}
@@ -25,18 +28,21 @@
 
 \include{src/1_Introduction}
 
-\include{src/Background}
+\include{src/2_Background}
 
-\include{src/RelatedWork}
+\include{src/3_RelatedWork}
 
-\include{src/Implementation}
+\include{src/4_Implementation}
 
-\include{src/Analysis}
+\include{src/5_Analysis}
 
-\include{src/Discussion}
+\include{src/6_Discussion}
 
-\include{src/Conclusion}
+\include{src/7_Conclusion}
 
-\include{src/Appendices}
+\addcontentsline{toc}{section}{References}
+\printbibliography
+
+\include{src/8_Appendices}
 
 \end{document}
