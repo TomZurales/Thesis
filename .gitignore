@@ -1,20 +1,25 @@
+*.log
+*.aux
+*.bbl
+*.bbl-SAVE-ERROR
+*.bcf
+*.blg
+*.pdf
+*.run.xml
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+*.toc
+
 .vscode/
 build/
 datasets/**/
 venv/
 __pycache__/
 
-
 imgui.ini
 /lib/
 /bin/
 /include/
 
-**/*.aux
-**/*.bbl
-**/*.bcf
-**/*.fdb_latexmk
-**/*.fls
-**/*.log
-**/*.synctex.gz
-**/*.toc
