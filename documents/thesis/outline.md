@@ -23,6 +23,7 @@
   * Visual Map Point Culling
     * Semantic Based Methods
     * Probability Based Methods
+  * Lifelong SLAM
 * Implementation
   * Modeling Historical Directional Observability for 3D Map Points
     * Method Overview
