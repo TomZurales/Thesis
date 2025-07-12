@@ -2,34 +2,38 @@
   * Motivation
     * Problem Statement
     * Research Questions
-  * Objectives
+  * Objectives and Scope
   * Contribution
   * Road Map
 * Background
-  * Keypoint Based Visual SLAM
-    * Differences with other SLAM modalities
-    * Data Pipeline
-    * Common Enhancements
-      * RANSAC
-      * Bag of Words Based Loop Closure
-    * Description of ORB SLAM3
-  * Related Work
-    * Localization in Pre-generated Maps
-      * AstroLoc
-      * Map Updating Methodologies
-    * Visual Map Point Clulling
-      * Semantic Based Methods
-      * Probability Based Methods
-    * Directional Statistics
-      * Von Meiser Fisher Distribution
+  * SLAM Background
+    * Keypoint-Based Visual SLAM
+      * Differences with Other SLAM Modalities
+      * Data Pipeline
+      * Common Enhancements
+        * Loop Closure
+        * Map Management
+    * ORB_SLAM3 Overview
+  * Directional Statistics
+    * Von Mises-Fisher Distribution
+* Related Work
+  * Localization in Pre-generated Maps
+    * AstroLoc
+    * Map Updating Methodologies
+  * Visual Map Point Culling
+    * Semantic Based Methods
+    * Probability Based Methods
 * Implementation
-  * A Method for modeling the historical directional observability of a 3D map points
+  * Modeling Historical Directional Observability for 3D Map Points
     * Method Overview
     * Implementation Details
-    * Integration with ORB_SLAM3
-      * Implementing Interfaces
+    * ORB-SLAM3 Integration
+      * Interfaces
       * Point Removal
-      * Serialization Integration 
+      * Serialization
+  * Experimentation Methodology
+    * System Configuration
+    * Parameter Tuning
   * Dataset Creation
     * Hardware
       * 3D printed mount for camera, lidar, and Jetson
@@ -37,17 +41,19 @@
     * Software 
       * Co-registration
       * Annotating Areas for Point Removal
-  * Experimentation Methodology
-    * System Configuration
-    * Parameter Tuneing
 * Analysis
   * Evaluation Metrics
     * Performance Comparisons
     * Map Quality Comparisons
   * Results
-    * Quantitave Evaluation
+    * Quantitative Evaluation
     * Qualitative Evaluation
-    * Effects of Parameter Tuneing
-
+    * Effects of Parameter Tuning
 * Discussion
+  * Performance Comparison
+  * Computational Load Comparison
+  * Limitations
 * Conclusion
+  * Contribution Summary
+  * Results Summary
+  * Future Directions
