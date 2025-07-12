@@ -23,3 +23,8 @@ imgui.ini
 /bin/
 /include/
 
+*.aux
+*.fdb_latexmk
+*.log
+*.synctex.gz
+*.toc
