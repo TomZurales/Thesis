@@ -8,6 +8,7 @@
 * Background
   * SLAM Background
     * paragraph - What is SLAM, what are its goals, what are its use cases?
+    * paragraph - Quick discussion of SLAM modalities to motivate discussion on keypoint SLAM.
     * Keypoint-Based Visual SLAM
       * paragraph - Defining characteristics of Keypoint-Based Visual SLAM; using image features, and determining motion through keypoint correspondences
       * Differences with Other SLAM Modalities
