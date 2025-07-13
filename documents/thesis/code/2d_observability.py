@@ -117,7 +117,7 @@ plt.plot(x_line_clipped, y_line_clipped, 'k--', linewidth=2, alpha=0.8)
 
 plt.xlabel('X')
 plt.ylabel('Y')
-plt.title('Random Gaussians (Negative: Right of Line & Below y=0)')
+plt.title('Car Path with Measurements (Avoiding Quadrant I)')
 plt.xlim(-3, 3)
 plt.ylim(-3, 3)
 plt.axis('equal')
