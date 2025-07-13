@@ -21,27 +21,52 @@ Z = np.zeros_like(X)
 num_gaussians = 100
 sigma = 0.45  # Gaussian spread
 
-# Generate random positions
+# Generate random positions along a path (like a car driving)
 np.random.seed(42)  # For reproducible results
-random_x = np.random.uniform(-3, 3, num_gaussians)
-random_y = np.random.uniform(-3, 3, num_gaussians)
 
-# Reroll any Gaussians that fall in quadrant I (x > 0 and y > 0)
-quadrant_I_mask = (random_x > 0) & (random_y > 0)
-num_rerolls = np.sum(quadrant_I_mask)
+# Start position (outside quadrant I)
+start_x, start_y = -2.0, -2.0
+path_x = [start_x]
+path_y = [start_y]
 
-while num_rerolls > 0:
-    # Generate new positions for those in quadrant I
-    new_x = np.random.uniform(-3, 3, num_rerolls)
-    new_y = np.random.uniform(-3, 3, num_rerolls)
+# Generate path parameters
+num_steps = num_gaussians - 1
+step_size = 0.3  # How far the car moves each step
+turn_probability = 0.3  # Probability of changing direction
+current_direction = np.random.uniform(0, 2*np.pi)  # Random initial direction
+
+for i in range(num_steps):
+    # Occasionally change direction (simulating turns)
+    if np.random.random() < turn_probability:
+        current_direction += np.random.uniform(-np.pi/2, np.pi/2)
     
-    # Replace the positions
-    random_x[quadrant_I_mask] = new_x
-    random_y[quadrant_I_mask] = new_y
+    # Calculate next position
+    next_x = path_x[-1] + step_size * np.cos(current_direction)
+    next_y = path_y[-1] + step_size * np.sin(current_direction)
     
-    # Check again for any still in quadrant I
-    quadrant_I_mask = (random_x > 0) & (random_y > 0)
-    num_rerolls = np.sum(quadrant_I_mask)
+    # Check boundaries and avoid quadrant I
+    # If we hit a boundary or enter quadrant I, turn around
+    if (next_x > 3 or next_x < -3 or next_y > 3 or next_y < -3 or 
+        (next_x > 0 and next_y > 0)):
+        # Turn around (reverse direction with some randomness)
+        current_direction += np.pi + np.random.uniform(-np.pi/4, np.pi/4)
+        next_x = path_x[-1] + step_size * np.cos(current_direction)
+        next_y = path_y[-1] + step_size * np.sin(current_direction)
+        
+        # Clamp to boundaries if still outside
+        next_x = np.clip(next_x, -3, 3)
+        next_y = np.clip(next_y, -3, 3)
+        
+        # If still in quadrant I, force to a safe location
+        if next_x > 0 and next_y > 0:
+            next_x = -0.5
+            next_y = -0.5
+    
+    path_x.append(next_x)
+    path_y.append(next_y)
+
+random_x = np.array(path_x)
+random_y = np.array(path_y)
 
 # Calculate slope for the dotted line (from origin to point_pose)
 slope = point_pose[1] / point_pose[0]  # y/x
