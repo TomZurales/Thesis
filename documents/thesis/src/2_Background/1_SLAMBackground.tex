@@ -6,7 +6,8 @@ SLAM refers to the joint problem of simultaneously generating a map of an enviro
 % Quick discussion of SLAM modalities to motivate discussion on keypoint SLAM.
 The complement of sensors in a SLAM system defines its 'sensor modality'. This selection has great effect on the system's accuracy and robustness, and plays a part in determining the types of environment in which the system will perform well or struggle.
 
-\subsubsection{Keypoint-Based Visual SLAM}\newline
+\subsubsection{Keypoint-Based Visual SLAM}
+\newline
 
 % Defining characteristics of Keypoint-Based Visual SLAM; using image features, and determining motion through keypoint correspondences
 Keypoint-based visual SLAM refers to implementations which utilize keypoints extracted from images as the primary source of information for mapping and localization. Keypoints are sparse, distinctive visual features that can be reliably and repeatedly detected and differentiated between image frames. Keypoints are used to establish correspondences between successive image frames, allowing the motion of the camera to be estimated by determining transformations that explain the observed changes in keypoint positions.
