@@ -74,7 +74,7 @@
     * Software Tools
       * LiDAR-Visual Co-registration
       * Point Annotation for Ground Truth Disappearance
-  * Experimentation Methodology
+  * Experimentation Setup
     * Evaluation Pipeline and Tooling
     * Parameter Tuning Strategy
     * SLAM Configuration and Baselines
