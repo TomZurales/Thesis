@@ -18,7 +18,7 @@ Z = np.zeros_like(X)
 # Grid parameters
 grid_size = 10
 spacing = 6 / (grid_size - 1)  # Spacing to fit in the -3 to 3 range
-sigma = 0.4  # Larger sigma for more spread
+sigma = 0.25  # Larger sigma for more spread
 
 # Create grid centers
 grid_centers_x = np.linspace(-3, 3, grid_size)
