@@ -27,7 +27,7 @@
       * Map Management
     * Keypoint-Based Visual SLAM
       * paragraph - Defining characteristics of Keypoint-Based Visual SLAM; using image features, and determining motion through keypoint correspondences
-      * paragraph - Revisitation of the SLAM data pipeline from the perspective of keypoint-based visual SLAM
+      * paragraph - Revisitation of the SLAM data pipeline from the perspective of keypoint-based visual SLAM; talk about initialization through 2D-2D correspondences, pose estimation through 2D-3D correspondences
       * paragraph - Revisitation of how enhancements are implemented in keypoint based visual slam
       * ORB_SLAM3 Overview
     * ORB-SLAM3
