@@ -6,12 +6,7 @@ SLAM refers to the joint problem of simultaneously generating a map of an enviro
 % Quick discussion of SLAM modalities to motivate discussion on keypoint SLAM.
 The complement of sensors in a SLAM system defines its 'sensor modality'. This selection has great effect on the system's accuracy and robustness, and plays a part in determining the types of environment in which the system will perform well or struggle.
 
-\subsubsection{Keypoint-Based Visual SLAM}
-
-% Defining characteristics of Keypoint-Based Visual SLAM; using image features, and determining motion through keypoint correspondences
-Keypoint-based visual SLAM refers to implementations which utilize keypoints extracted from images as the primary source of information for mapping and localization. Keypoints are sparse, distinctive visual features that can be reliably and repeatedly detected and differentiated between image frames. Keypoints are used to establish correspondences between successive image frames, allowing the motion of the camera to be estimated by determining transformations that explain the observed changes in keypoint positions.
-
-\paragraph{Sensor Modality Comparison}
+\subsubsection{A Comparison of SLAM Sensor Modalities}
 
 % Quick description of other SLAM sensor modalities; LIDAR, RGBD, etc
 While more esoteric implementations exist, the primary sensor of a SLAM system is typically a camera sensor, Light Detection and Ranging (LiDAR) sensor, or a combination camera + depth (RGBD) sensor. LiDAR sensors take direct 3D distance measurements of the environment by measuring the return time of emitted lasers. These sensors produce highly accurate 3D maps in the form of point clouds, but do not collect visual information from the environment. In contrast, RGBD sensors utilize a combination of an image sensor and an array of distance sensors to generate an RGB image co-registered with a depth map. Again, these sensors take direct 3D measurements of the environment (often at a lower resolution that pure LiDAR), but also have access to the visual data of the environment.
@@ -22,9 +17,12 @@ Unlike LiDAR and RGBD sensors, cameras are incapable of directly measuring 3D di
 % Discussion of the advantages and disadvantages of other sensor modalities
 Direct 3D measurements simplify the SLAM problem greatly when compared to pure visual methods. However, there are advantages and disadvantages to each sensor modality, and therefore the selection of which to use in a given situation will depend heavily on the requirements of the platform running SLAM, and the environment in which it will operate. LIDAR offers accurate 3D geometry measurements, robust to lighting conditions, but struggle in environments with low geometric complexity (Eg. a long rectangular hallway) or reflective objects. This modality is not practical in many applications due to its cost, size and power requirements. Additionally, LiDAR sensors (excluding solid state LIDAR) often rotate rapidly which produces a torque moment that can be difficult to manage in small robot platforms. These sensors offer significant performance to platforms which can use them, but do not take advantage of the rich visual information of the environment. The RGBD sensor combines an RGB camera with a co-registered array of depth sensors or a solid state LiDAR. These sensors have the ability to take direct 3D measurements of the environment within their field of view, and can utilize visual features to provide semantic identification, object tracking, image segmentation, etc. There are many options for RGBD cameras, offering the flexibility to select a sensor which will meet power, size and weight requirements, leaving cost as the primary disadvantage. The camera modality is by far the cheapest and most flexible, making it ideal for small robotic platforms and VR/AR applications. The trade-off comes in the form of additional software complexity and compute requirements to produce 3D estimates from 2D data. The camera sensor modality works best in environments with high visual texture, and will struggle to produce accurate measurements in low light conditions.
 
-
-
 \paragraph{Comparison of Key Point and Direct Methods}
+
+\subsubsection{Keypoint-Based Visual SLAM}
+
+% Defining characteristics of Keypoint-Based Visual SLAM; using image features, and determining motion through keypoint correspondences
+Keypoint-based visual SLAM refers to implementations which utilize keypoints extracted from images as the primary source of information for mapping and localization. Keypoints are sparse, distinctive visual features that can be reliably and repeatedly detected and differentiated between image frames. Keypoints are used to establish correspondences between successive image frames, allowing the motion of the camera to be estimated by determining transformations that explain the observed changes in keypoint positions.
 
 % Description of direct method
 
