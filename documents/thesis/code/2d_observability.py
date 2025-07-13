@@ -66,7 +66,7 @@ plt.plot(x_line_clipped, y_line_clipped, 'k--', linewidth=2, alpha=0.8)
 
 plt.xlabel('X')
 plt.ylabel('Y')
-plt.title('10x10 Grid of Gaussians (Negative in Quadrants II & IV)')
+plt.title('Random Gaussians (Negative: Right of Line & Below y=0)')
 plt.xlim(-3, 3)
 plt.ylim(-3, 3)
 plt.axis('equal')
