@@ -9,27 +9,24 @@
   * SLAM Background
     * paragraph - What is SLAM, what are its goals, what are its use cases?
     * paragraph - Quick discussion of SLAM modalities to motivate discussion on keypoint SLAM.
-    * Keypoint-Based Visual SLAM
-      * paragraph - Defining characteristics of Keypoint-Based Visual SLAM; using image features, and determining motion through keypoint correspondences
       * Sensor Modality Comparison
         * paragraph - Quick description of other SLAM sensor modalities; LIDAR, RGBD, etc
         * paragraph - Quick description of other visual modalities; stereo, mutli-camera
-        * paragraph - Discussion of the advantages and disadvantages of other sensor modalities
-      * Comparison of Key Point and Direct Methods
-        * paragraph - Description of direct method
-        * paragraph - Description of keypoint method
-        * paragraph - comparison
-      * Data Pipeline
-        * paragraph - Discuss data acquisition and keypoint extraction
-        * paragraph - data association, point pose estimation
-        * paragraph - Camera pose estimation
+        * paragraph - Description of direct and keypoint method, and a quick comparison
+        * paragraph - Comparison sensor modalities
+    * SLAM Data Pipeline
+      * paragraph - Data Acquisition
+      * paragraph - data association
+      * paragraph - Pose Estimation
+    * Keypoint-Based Visual SLAM
+      * paragraph - Defining characteristics of Keypoint-Based Visual SLAM; using image features, and determining motion through keypoint correspondences
       * Common Enhancements
         * Loop Closure
           * paragraph - 
         * Bundle Adjustment
         * Map Management
     * ORB_SLAM3 Overview
-  * Directional Statistics
+  * Directional Statistics Background
     * Von Mises-Fisher Distribution
 * Related Work
   * Localization in Pre-generated Maps
