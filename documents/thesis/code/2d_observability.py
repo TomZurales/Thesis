@@ -28,7 +28,7 @@ for i, center_x in enumerate(grid_centers_x):
     for j, center_y in enumerate(grid_centers_y):
         # Determine if this should be negative based on quadrant
         # Negative in quadrant II (x < 0, y > 0) and quadrant IV (x > 0, y < 0)
-        if (center_x < 0 and center_y > 0) or (center_x > 0 and center_y < 0):
+        if (center_x < 0 and center_y > 0):
             sign = -1
         else:
             sign = 1
