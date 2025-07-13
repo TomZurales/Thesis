@@ -14,29 +14,31 @@ def gaussian_2d(x, y, center_x=0, center_y=0, sigma=1.0):
     return np.exp(-((x - center_x)**2 + (y - center_y)**2) / (2 * sigma**2))
 
 # Calculate the Gaussian values
-# Create a 10x10 grid of Gaussians centered around the origin
+# Create randomly positioned Gaussians
 Z = np.zeros_like(X)
 
-# Grid parameters
-grid_size = 10
-spacing = 6 / (grid_size - 1)  # Spacing to fit in the -3 to 3 range
-sigma = 0.25  # Larger sigma for more spread
+# Random generation parameters
+num_gaussians = 100
+sigma = 0.25  # Gaussian spread
 
-# Create grid centers
-grid_centers_x = np.linspace(-3, 3, grid_size)
-grid_centers_y = np.linspace(-3, 3, grid_size)
+# Generate random positions
+np.random.seed(42)  # For reproducible results
+random_x = np.random.uniform(-3, 3, num_gaussians)
+random_y = np.random.uniform(-3, 3, num_gaussians)
 
-for i, center_x in enumerate(grid_centers_x):
-    for j, center_y in enumerate(grid_centers_y):
-        # Determine if this should be negative based on quadrant
-        # Negative in quadrant II (x < 0, y > 0) and quadrant IV (x > 0, y < 0)
-        if (center_x < 0 and center_y > 0):
-            sign = 1
-        else:
-            sign = -1
-        
-        # Add this Gaussian to the total
-        Z += sign * gaussian_2d(X, Y, center_x=center_x, center_y=center_y, sigma=sigma)
+# Calculate slope for the dotted line (from origin to point_pose)
+slope = point_pose[1] / point_pose[0]  # y/x
+
+for center_x, center_y in zip(random_x, random_y):
+    # Determine if this should be negative based on:
+    # - Right of the dotted line (y < slope * x) AND below y=0
+    if center_y < slope * center_x and center_y < 0:
+        sign = -1
+    else:
+        sign = 1
+    
+    # Add this Gaussian to the total
+    Z += sign * gaussian_2d(X, Y, center_x=center_x, center_y=center_y, sigma=sigma)
 
 # Create the plot
 plt.figure(figsize=(8, 6))
