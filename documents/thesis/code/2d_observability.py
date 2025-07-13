@@ -22,7 +22,6 @@ num_gaussians = 100
 sigma = 0.45  # Gaussian spread
 
 # Generate random positions
-np.random.seed(42)  # For reproducible results
 random_x = np.random.uniform(-3, 3, num_gaussians)
 random_y = np.random.uniform(-3, 3, num_gaussians)
 
