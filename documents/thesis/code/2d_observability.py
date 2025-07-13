@@ -2,6 +2,8 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
+point_pose = (-1.5, 2.35)
+
 # Create a 2D grid
 x = np.linspace(-3, 3, 100)
 y = np.linspace(-3, 3, 100)
