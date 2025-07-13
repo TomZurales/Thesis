@@ -33,9 +33,9 @@ for center_x, center_y in zip(random_x, random_y):
     # Determine if this should be negative based on:
     # - Right of the dotted line (y < slope * x) AND below y=0
     if center_y < slope * center_x and center_y < 0:
-        sign = -1
-    else:
         sign = 1
+    else:
+        sign = -1
     
     # Add this Gaussian to the total
     Z += sign * gaussian_2d(X, Y, center_x=center_x, center_y=center_y, sigma=sigma)
