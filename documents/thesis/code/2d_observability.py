@@ -47,7 +47,7 @@ plt.colorbar(contour, label='Combined Gaussian Value')
 from matplotlib.patches import Rectangle, Circle
 rect = Rectangle((0, 0), 3, 3, facecolor='grey')
 plt.gca().add_patch(rect)
-point = Circle((-1.5, 3.0-0.05), 0.05, color='black')
+point = Circle(point_pose, 0.05, color='black')
 plt.gca().add_patch(point)
 
 plt.xlabel('X')
