@@ -18,8 +18,8 @@ def gaussian_2d(x, y, center_x=0, center_y=0, sigma=1.0):
 Z = np.zeros_like(X)
 
 # Random generation parameters
-num_gaussians = 100
-sigma = 0.45  # Gaussian spread
+num_gaussians = 300  # Increased from 100 for better coverage
+sigma = 0.35  # Slightly reduced to prevent too much overlap
 
 # Generate random positions along a path (like a car driving)
 
