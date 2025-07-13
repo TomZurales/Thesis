@@ -18,7 +18,6 @@ Z = gaussian_2d(X, Y)
 plt.figure(figsize=(8, 6))
 contour = plt.contourf(X, Y, Z, levels=200, cmap='Blues')
 plt.colorbar(contour, label='Gaussian Value')
-plt.contour(X, Y, Z, levels=10, colors='black', alpha=0.3, linewidths=0.5)
 
 plt.xlabel('X')
 plt.ylabel('Y')
