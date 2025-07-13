@@ -56,7 +56,11 @@ slope = point_pose[1] / point_pose[0]  # y/x
 # Create x values from point_pose[0] to the right edge of the plot
 x_line = np.linspace(point_pose[0], 3, 100)
 y_line = slope * x_line
-plt.plot(x_line, y_line, 'k--', linewidth=2, alpha=0.8)
+# Clip the line to stay within the y-axis bounds
+mask = (y_line >= -3) & (y_line <= 3)
+x_line_clipped = x_line[mask]
+y_line_clipped = y_line[mask]
+plt.plot(x_line_clipped, y_line_clipped, 'k--', linewidth=2, alpha=0.8)
 
 plt.xlabel('X')
 plt.ylabel('Y')
