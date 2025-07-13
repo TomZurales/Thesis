@@ -75,9 +75,9 @@
       * LiDAR-Visual Co-registration
       * Point Annotation for Ground Truth Disappearance
   * Experimentation Setup
-    * Evaluation Pipeline and Tooling
-    * Parameter Tuning Strategy
-    * SLAM Configuration and Baselines
+    * SLAM Configuration (e.g. ORB-SLAM3 settings, sensors)
+    * Parameter Exposure and Logging
+    * Dataset Management Tools
 * Analysis
   * Evaluation Metrics
     * Performance Comparisons
