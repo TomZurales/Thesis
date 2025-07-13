@@ -22,7 +22,6 @@ num_gaussians = 100
 sigma = 0.45  # Gaussian spread
 
 # Generate random positions along a path (like a car driving)
-np.random.seed(42)  # For reproducible results
 
 # Start position (outside quadrant I)
 start_x, start_y = -2.0, -2.0
