@@ -69,7 +69,7 @@ plt.colorbar(contour, label='Combined Gaussian Value')
 
 # Draw black rectangle from (0,0) to (3,3)
 from matplotlib.patches import Rectangle, Circle
-rect = Rectangle((0, 0), 3, 3, facecolor='none')
+rect = Rectangle((0, 0), 3, 3, facecolor='white')
 # Manually draw only the left and bottom edges (not on plot border)
 plt.plot([0, 0], [0, 3], 'k-', linewidth=1)  # Left edge
 plt.plot([0, 3], [0, 0], 'k-', linewidth=1)  # Bottom edge
