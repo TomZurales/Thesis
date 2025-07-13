@@ -99,6 +99,10 @@ plt.gca().add_patch(rect)
 point = Circle(point_pose, 0.05, color='black')
 plt.gca().add_patch(point)
 
+# Plot the car's path
+plt.plot(random_x, random_y, 'g-', linewidth=1, alpha=0.6, label='Car Path')
+plt.scatter(random_x[::5], random_y[::5], c='green', s=15, alpha=0.8, zorder=5)  # Show every 5th measurement point
+
 # Plot dotted line through origin and point_pose, only for x >= point_pose[0]
 # Calculate slope of line through origin and point_pose
 slope = point_pose[1] / point_pose[0]  # y/x
