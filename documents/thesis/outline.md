@@ -46,6 +46,9 @@
 * Implementation
   * Method Overview
     * Directional Observability of Map Points
+      * paragraph - define what we mean by directional observability; a mapping between observation unit direction vector and seen/not seen binary observations
+      * paragraph - Justify why distance needs to be accounted for, use a diagram to show that by including distance, we can account for occlusions in the model
+      * paragraph - Say what we are trying to build; a model which can produce a probability that a point will be seen given an observation direction and a distance
     * Observability Shell Representations
       * Finite Shell (e.g., icosahedral partitioning)
       * Continuous Shell (e.g., von Mises–Fisher kernel) (if I get to it)
