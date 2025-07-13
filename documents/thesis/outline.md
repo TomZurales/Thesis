@@ -11,10 +11,12 @@
     * paragraph - Quick discussion of SLAM modalities to motivate discussion on keypoint SLAM.
     * Keypoint-Based Visual SLAM
       * paragraph - Defining characteristics of Keypoint-Based Visual SLAM; using image features, and determining motion through keypoint correspondences
-      * Differences with Other SLAM Modalities
+      * Sensor Modality Comparison
         * paragraph - Quick description of other SLAM sensor modalities; LIDAR, RGBD, etc
-        * paragraph - Quick description of other visual methods; dense SLAM
-        * paragraph - Discussion of the advantages and disadvantages of other modalities in relation to keypoint based visual SLAM
+        * paragraph - Quick description of other visual modalities; stereo, mutli-camera
+        * paragraph - Discussion of the advantages and disadvantages of other sensor modalities
+      * Comparison of Key Point and Direct Methods
+        * paragraph - Comparison of ke
       * Data Pipeline
         * paragraph - Discuss data acquisition and keypoint extraction
         * paragraph - data association, point pose estimation
