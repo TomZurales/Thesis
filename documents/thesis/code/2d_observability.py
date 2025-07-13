@@ -32,10 +32,19 @@ path_y = [start_y]
 # Generate path parameters
 num_steps = num_gaussians - 1
 step_size = 0.3  # How far the car moves each step
-turn_probability = 0.3  # Probability of changing direction
+turn_probability = 0.4  # Increased probability of changing direction
 current_direction = np.random.uniform(0, 2*np.pi)  # Random initial direction
 
 for i in range(num_steps):
+    # Encourage exploration by biasing direction towards unexplored areas
+    current_x, current_y = path_x[-1], path_y[-1]
+    
+    # Add bias towards center and upper regions if stuck in lower areas
+    if current_y < -1:  # If in lower half, bias upward
+        current_direction += np.random.uniform(-np.pi/6, np.pi/3)  # Slight upward bias
+    elif current_x < -1 and current_y < 1:  # If in bottom-left, bias toward upper areas
+        current_direction += np.random.uniform(-np.pi/4, np.pi/2)
+    
     # Occasionally change direction (simulating turns)
     if np.random.random() < turn_probability:
         current_direction += np.random.uniform(-np.pi/2, np.pi/2)
@@ -48,8 +57,16 @@ for i in range(num_steps):
     # If we hit a boundary or enter quadrant I, turn around
     if (next_x > 3 or next_x < -3 or next_y > 3 or next_y < -3 or 
         (next_x > 0 and next_y > 0)):
-        # Turn around (reverse direction with some randomness)
-        current_direction += np.pi + np.random.uniform(-np.pi/4, np.pi/4)
+        # Turn around with more varied directions
+        if next_x > 0 and next_y > 0:  # Entering quadrant I
+            # Turn strongly away from quadrant I
+            current_direction = np.random.choice([
+                np.pi + np.random.uniform(-np.pi/4, np.pi/4),  # Go left
+                3*np.pi/2 + np.random.uniform(-np.pi/4, np.pi/4)  # Go down
+            ])
+        else:  # Hit boundary
+            current_direction += np.pi + np.random.uniform(-np.pi/3, np.pi/3)
+        
         next_x = path_x[-1] + step_size * np.cos(current_direction)
         next_y = path_y[-1] + step_size * np.sin(current_direction)
         
@@ -57,10 +74,10 @@ for i in range(num_steps):
         next_x = np.clip(next_x, -3, 3)
         next_y = np.clip(next_y, -3, 3)
         
-        # If still in quadrant I, force to a safe location
+        # If still in quadrant I, force to a safe location with variety
         if next_x > 0 and next_y > 0:
-            next_x = -0.5
-            next_y = -0.5
+            safe_locations = [(-2.0, 2.0), (-0.5, -0.5), (-2.5, 0.5), (-1.0, 2.5)]
+            next_x, next_y = safe_locations[i % len(safe_locations)]
     
     path_x.append(next_x)
     path_y.append(next_y)
