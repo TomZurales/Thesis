@@ -99,8 +99,21 @@ plt.gca().add_patch(rect)
 point = Circle(point_pose, 0.05, color='black')
 plt.gca().add_patch(point)
 
-# Plot the car's path
-plt.plot(random_x, random_y, 'g-', linewidth=1, alpha=0.6, label='Car Path')
+# Plot the car's path with spline interpolation
+from scipy.interpolate import UnivariateSpline
+
+# Create parameter for spline (distance along path)
+t = np.arange(len(random_x))
+# Create splines for x and y coordinates
+spline_x = UnivariateSpline(t, random_x, s=0.5)  # s controls smoothness
+spline_y = UnivariateSpline(t, random_y, s=0.5)
+
+# Generate smooth path
+t_smooth = np.linspace(0, len(random_x)-1, 300)
+smooth_x = spline_x(t_smooth)
+smooth_y = spline_y(t_smooth)
+
+plt.plot(smooth_x, smooth_y, 'g-', linewidth=2, alpha=0.8, label='Car Path')
 plt.scatter(random_x[::5], random_y[::5], c='green', s=15, alpha=0.8, zorder=5)  # Show every 5th measurement point
 
 # Plot dotted line through origin and point_pose, only for x >= point_pose[0]
