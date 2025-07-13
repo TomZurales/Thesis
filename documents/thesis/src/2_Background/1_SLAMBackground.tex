@@ -19,23 +19,8 @@ Visual methods can again be broken down into direct and keypoint-based methodolo
 % Discussion of the advantages and disadvantages of other sensor modalities
 Direct 3D measurements simplify the SLAM problem greatly when compared to pure visual methods. However, there are advantages and disadvantages to each sensor modality, and therefore the selection of which to use in a given situation will depend heavily on the requirements of the platform running SLAM, and the environment in which it will operate. LIDAR offers accurate 3D geometry measurements, robust to lighting conditions, but struggle in environments with low geometric complexity (Eg. a long rectangular hallway) or reflective objects. This modality is not practical in many applications due to its cost, size and power requirements. Additionally, LiDAR sensors (excluding solid state LIDAR) often rotate rapidly which produces a torque moment that can be difficult to manage in small robot platforms. These sensors offer significant performance to platforms which can use them, but do not take advantage of the rich visual information of the environment. The RGBD sensor combines an RGB camera with a co-registered array of depth sensors or a solid state LiDAR. These sensors have the ability to take direct 3D measurements of the environment within their field of view, and can utilize visual features to provide semantic identification, object tracking, image segmentation, etc. There are many options for RGBD cameras, offering the flexibility to select a sensor which will meet power, size and weight requirements, leaving cost as the primary disadvantage. The camera modality is by far the cheapest and most flexible, making it ideal for small robotic platforms and VR/AR applications. The trade-off comes in the form of additional software complexity and compute requirements to produce 3D estimates from 2D data. The camera sensor modality works best in environments with high visual texture, and will struggle to produce accurate measurements in low light conditions.
 
-\subsubsection{The SLAM Data Pipeline}
-The general path that sensor data takes through a SLAM system can be thought of as a pipeline, seen in Figure \ref{fig:general_slam_pipeline}. The details of each stage are dependent on the selected sensor modality, and on various implementation details, but the core stages are described below.
-
-1. \textbf{Data Acquisition}\newline
-Data is collected from the sensors. Preprocessing steps may be applied based on sensor modality before being passed on. This preprocessing can include filtering, smoothing, temporal alignment between sensors, etc.
-
-2. \textbf{Data Association}\newline
-Data is collected from the sensors. Preprocessing steps may be applied based on sensor modality before being passed on. This preprocessing can include filtering, smoothing, temporal alignment between sensors, etc.
-
-3. \textbf{Pose Estimation}\newline
-Data is collected from the sensors. Preprocessing steps may be applied based on sensor modality before being passed on. This preprocessing can include filtering, smoothing, temporal alignment between sensors, etc.
-
-4. \textbf{Mapping}\newline
-Data is collected from the sensors. Preprocessing steps may be applied based on sensor modality before being passed on. This preprocessing can include filtering, smoothing, temporal alignment between sensors, etc.
-
-5. \textbf{Optimization}\newline
-Data is collected from the sensors. Preprocessing steps may be applied based on sensor modality before being passed on. This preprocessing can include filtering, smoothing, temporal alignment between sensors, etc.
+\subsubsection{The General SLAM Data Pipeline}
+The general path that sensor data takes through a SLAM system can be thought of as a pipeline, seen in Figure \ref{fig:general_slam_pipeline}. The details of each stage are dependent on the selected sensor modality, and on various implementation decisions, so the pipeline will be refined going forward to focus on the modality utilized by this research.
 
 \begin{figure}[h!]
     \includegraphics[width=\textwidth]{resources/placeholder.jpeg}
@@ -43,7 +28,7 @@ Data is collected from the sensors. Preprocessing steps may be applied based on 
     \label{fig:general_slam_pipeline}
 \end{figure}
 
-\subsection{Enhancements}
+\subsubsection{Enhancements to the General SLAM Pipeline}
 
 \subsubsection{Keypoint-Based Visual SLAM}
 
