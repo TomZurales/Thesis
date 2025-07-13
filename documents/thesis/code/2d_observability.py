@@ -42,9 +42,10 @@ contour = plt.contourf(X, Y, Z, levels=200, cmap='RdBu_r')
 plt.colorbar(contour, label='Combined Gaussian Value')
 
 # Draw black rectangle from (0,0) to (3,3)
-from matplotlib.patches import Rectangle
+from matplotlib.patches import Rectangle, Circle
 rect = Rectangle((0, 0), 3, 3, facecolor='grey')
 plt.gca().add_patch(rect)
+point = Circle((0, 0), 0.1, color='black')
 
 plt.xlabel('X')
 plt.ylabel('Y')
