@@ -143,6 +143,7 @@ plt.ylabel('Y')
 plt.title('Random Gaussians (Negative: Right of Line & Below y=0)')
 plt.xlim(-3, 3)
 plt.ylim(-3, 3)
+plt.margins(x=0)  # Remove x-axis margins
 plt.axis('equal')
 plt.grid(True, alpha=0.3)
 plt.show()
