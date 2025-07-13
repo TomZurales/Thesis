@@ -32,7 +32,7 @@ slope = point_pose[1] / point_pose[0]  # y/x
 for center_x, center_y in zip(random_x, random_y):
     # Determine if this should be negative based on:
     # - Right of the dotted line (y < slope * x) AND below y=0
-    if center_y < slope * center_x and center_y < 0:
+    if center_y > slope * center_x and center_y < 0:
         sign = 1
     else:
         sign = -1
