@@ -47,7 +47,7 @@ plt.colorbar(contour, label='Combined Gaussian Value')
 
 # Draw black rectangle from (0,0) to (3,3)
 from matplotlib.patches import Rectangle, Circle
-rect = Rectangle((0, 0), 3, 3, facecolor='grey')
+rect = Rectangle((0, 0), 3, 3, facecolor='white', edgecolor='black', linewidth=1.5)
 plt.gca().add_patch(rect)
 point = Circle(point_pose, 0.05, color='black')
 plt.gca().add_patch(point)
