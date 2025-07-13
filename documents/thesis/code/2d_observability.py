@@ -50,6 +50,14 @@ plt.gca().add_patch(rect)
 point = Circle(point_pose, 0.05, color='black')
 plt.gca().add_patch(point)
 
+# Plot dotted line through origin and point_pose, only for x >= point_pose[0]
+# Calculate slope of line through origin and point_pose
+slope = point_pose[1] / point_pose[0]  # y/x
+# Create x values from point_pose[0] to the right edge of the plot
+x_line = np.linspace(point_pose[0], 3, 100)
+y_line = slope * x_line
+plt.plot(x_line, y_line, 'k--', linewidth=2, alpha=0.8)
+
 plt.xlabel('X')
 plt.ylabel('Y')
 plt.title('10x10 Grid of Gaussians (Negative in Quadrants II & IV)')
