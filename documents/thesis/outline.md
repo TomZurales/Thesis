@@ -22,7 +22,7 @@
       * paragraph - Optimization
     * Common Enhancements
       * Loop Closure
-        * paragraph - 
+      * Relocalization
       * Bundle Adjustment
       * Map Management
     * Keypoint-Based Visual SLAM
@@ -37,30 +37,47 @@
     * Von Mises-Fisher Distribution
 * Related Work
   * Localization in Pre-generated Maps
-    * AstroLoc
+    * Localizers
     * Map Updating Methodologies
   * Visual Map Point Culling
     * Semantic Based Methods
     * Probability Based Methods
   * Lifelong SLAM
 * Implementation
-  * Modeling Historical Directional Observability for 3D Map Points
-    * Method Overview
-    * Implementation Details
-    * ORB-SLAM3 Integration
-      * Interfaces
-      * Point Removal
-      * Serialization
-  * Experimentation Methodology
-    * System Configuration
-    * Parameter Tuning
+  * Method Overview
+    * Concept of Directional Observability
+    * Spherical Shell Representations
+      * Continuous Shell (e.g., von Mises–Fisher kernel)
+      * Finite Shell (e.g., icosahedral partitioning)
+    * Existence Probability and Update Rule
+      * Observations
+      * Non-observations
+    * Application to Point Pruning and Selection
+  * System Implementation
+    * Directional Shell Data Structures
+      * Storage Format (texture, face array, etc.)
+      * Update Function Implementation
+    * Confidence Accumulation and Decay
+    * Existence Probability Calculation
+    * Selection Weighting for RANSAC / Loop Closure
+  * ORB-SLAM3 Integration
+    * Interfaces and Module Boundaries
+      * Tracking / MapPoint API changes
+      * New fields in MapPoint / KeyFrame
+    * Directional Update Hookpoints
+    * Point Removal Strategy
+    * Serialization and Persistence
   * Dataset Creation
-    * Hardware
-      * 3D printed mount for camera, lidar, and Jetson
-      * Diagram of Coordinate Frames
-    * Software 
-      * Co-registration
-      * Annotating Areas for Point Removal
+    * Hardware Setup
+      * 3D Printed Mount for Camera, LiDAR, and Jetson
+      * Diagram and Explanation of Coordinate Frames
+    * Software Tools
+      * LiDAR-Visual Co-registration
+      * Point Annotation for Ground Truth Disappearance
+  * Experimentation Methodology
+    * Evaluation Pipeline and Tooling
+    * Parameter Tuning Strategy
+    * SLAM Configuration and Baselines
 * Analysis
   * Evaluation Metrics
     * Performance Comparisons
