@@ -1,17 +1,29 @@
 \subsection{SLAM}
 
 % What is SLAM? What are its goals? What are its use cases?
-SLAM refers to the joint problem of simultaneously generating a map of an environment and estimating the position of an observer within that map based on sensor observations. The benefit of SLAM is the ability to operate with no information, instead incrementally creating and updating the map of the environment.
+SLAM refers to the joint problem of simultaneously generating a map of an environment and estimating the position of an observer within that map based on sensor observations. The benefit of SLAM is the ability to operate with no a-priori information, incrementally creating and updating the map of the environment. This is in contrast to pure localization which requires foreknowledge of the environment where it is operating. The ability to map and localize in arbitrary environment has applications in robotics, alternate and virtual reality, self-driving vehicles, and many other fields. Environmental observations can be collected through a variety of sensors, the selection of which depends heavily on the system's requirements, and the intended environment of operation.
 
 % Quick discussion of SLAM modalities to motivate discussion on keypoint SLAM.
-There are many sensors which are useful for SLAM, each having their own strengths and weaknesses depending on the situation. The decision of which sensor modality to use in a given situation depends on the performance requirements of the system, and the environmental conditions where the system will be operating.
+The complement of sensors in a SLAM system defines its 'sensor modality'. This selection has great effect on the system's accuracy and robustness, and plays a part in determining the types of environment in which the system will perform well or struggle.
 
 \subsubsection{Keypoint-Based Visual SLAM}
 
 % Definition and high-level overview
-Keypoint-based visual SLAM refers to the subset of SLAM systems which utilize keypoints extracted from images as the primary source of information for mapping and localization. Keypoints are distinctive visual features that can be reliably and repeatedly detected and differentiated in different image frames. Keypoints are used to establish correspondences between successive image frames, allowing the motion of the camera to be estimated by determining transformations that explain the observed changes in keypoint positions.
+Keypoint-based visual SLAM refers to implementations which utilize keypoints extracted from images as the primary source of information for mapping and localization. Keypoints are distinctive visual features that can be reliably and repeatedly detected and differentiated in different image frames. Keypoints are used to establish correspondences between successive image frames, allowing the motion of the camera to be estimated by determining transformations that explain the observed changes in keypoint positions.
 
-% 
+\paragraph{Comparison with Other Sensor Modalities}
+
+% Quick description of other SLAM sensor modalities; LIDAR, RGBD, etc
+While more esoteric implementations exist, the primary sensor in a SLAM system tends to fall into one of three categories:
+
+1. LIDAR
+
+2. Camera
+
+3. RGBD
+
+% Quick description of other visual methods; dense SLAM
+Visual SLAM can be further broken down by additional implementation details.
 
 % Use Cases and Applications
 
