@@ -25,7 +25,7 @@
       * Map Management
     * Keypoint-Based Visual SLAM
       * paragraph - Defining characteristics of Keypoint-Based Visual SLAM; using image features, and determining motion through keypoint correspondences
-    * ORB_SLAM3 Overview
+      * ORB_SLAM3 Overview
   * Directional Statistics Background
     * Von Mises-Fisher Distribution
 * Related Work
