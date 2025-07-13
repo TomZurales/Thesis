@@ -19,7 +19,7 @@ Z = np.zeros_like(X)
 
 # Random generation parameters
 num_gaussians = 100
-sigma = 0.25  # Gaussian spread
+sigma = 0.35  # Gaussian spread
 
 # Generate random positions
 np.random.seed(42)  # For reproducible results
