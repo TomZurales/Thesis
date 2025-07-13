@@ -43,7 +43,7 @@ plt.colorbar(contour, label='Combined Gaussian Value')
 
 # Draw black rectangle from (0,0) to (3,3)
 from matplotlib.patches import Rectangle
-rect = Rectangle((0, 0), 3, 3, facecolor='black')
+rect = Rectangle((0, 0), 3, 3, facecolor='grey')
 plt.gca().add_patch(rect)
 
 plt.xlabel('X')
