@@ -46,9 +46,9 @@
 * Implementation
   * Method Overview
     * Concept of Directional Observability
-    * Spherical Shell Representations
-      * Continuous Shell (e.g., von Mises–Fisher kernel)
+    * Shell Representations
       * Finite Shell (e.g., icosahedral partitioning)
+      * Continuous Shell (e.g., von Mises–Fisher kernel) (if I get to it)
     * Existence Probability and Update Rule
       * Observations
       * Non-observations
