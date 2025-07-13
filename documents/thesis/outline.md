@@ -45,8 +45,8 @@
   * Lifelong SLAM
 * Implementation
   * Method Overview
-    * Concept of Directional Observability
-    * Shell Representations
+    * Directional Observability of Map Points
+    * Observability Shell Representations
       * Finite Shell (e.g., icosahedral partitioning)
       * Continuous Shell (e.g., von Mises–Fisher kernel) (if I get to it)
     * Existence Probability and Update Rule
