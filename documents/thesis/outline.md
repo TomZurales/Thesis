@@ -18,13 +18,13 @@
       * paragraph - Data Acquisition
       * paragraph - data association
       * paragraph - Pose Estimation
+    * Common Enhancements
+      * Loop Closure
+        * paragraph - 
+      * Bundle Adjustment
+      * Map Management
     * Keypoint-Based Visual SLAM
       * paragraph - Defining characteristics of Keypoint-Based Visual SLAM; using image features, and determining motion through keypoint correspondences
-      * Common Enhancements
-        * Loop Closure
-          * paragraph - 
-        * Bundle Adjustment
-        * Map Management
     * ORB_SLAM3 Overview
   * Directional Statistics Background
     * Von Mises-Fisher Distribution
