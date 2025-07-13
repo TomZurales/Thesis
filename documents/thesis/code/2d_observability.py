@@ -21,26 +21,76 @@ Z = np.zeros_like(X)
 num_gaussians = 100
 sigma = 0.45  # Gaussian spread
 
-# Generate random positions
-random_x = np.random.uniform(-3, 3, num_gaussians)
-random_y = np.random.uniform(-3, 3, num_gaussians)
+# Generate random positions with better distribution
+np.random.seed(42)  # For reproducible results
+
+# Use Poisson disk sampling for more even distribution
+def generate_poisson_disk_samples(width, height, min_distance, max_attempts=30):
+    """Generate points with minimum distance constraint for more even distribution"""
+    points = []
+    
+    # Start with a random first point
+    first_point = np.array([np.random.uniform(-width/2, width/2), 
+                           np.random.uniform(-height/2, height/2)])
+    points.append(first_point)
+    
+    # Generate more points
+    while len(points) < num_gaussians:
+        # Try to place a new point
+        for _ in range(max_attempts):
+            new_point = np.array([np.random.uniform(-width/2, width/2), 
+                                 np.random.uniform(-height/2, height/2)])
+            
+            # Check if it's far enough from existing points
+            if all(np.linalg.norm(new_point - existing) >= min_distance 
+                   for existing in points):
+                points.append(new_point)
+                break
+        else:
+            # If we can't place a point, reduce the minimum distance
+            min_distance *= 0.9
+    
+    return np.array(points)
+
+# Generate well-distributed points
+min_distance = 0.4  # Minimum distance between points
+points = generate_poisson_disk_samples(6, 6, min_distance)
+random_x = points[:, 0]
+random_y = points[:, 1]
 
 # Reroll any Gaussians that fall in quadrant I (x > 0 and y > 0)
 quadrant_I_mask = (random_x > 0) & (random_y > 0)
-num_rerolls = np.sum(quadrant_I_mask)
 
-while num_rerolls > 0:
-    # Generate new positions for those in quadrant I
-    new_x = np.random.uniform(-3, 3, num_rerolls)
-    new_y = np.random.uniform(-3, 3, num_rerolls)
-    
-    # Replace the positions
-    random_x[quadrant_I_mask] = new_x
-    random_y[quadrant_I_mask] = new_y
-    
-    # Check again for any still in quadrant I
-    quadrant_I_mask = (random_x > 0) & (random_y > 0)
+while np.any(quadrant_I_mask):
+    # For points in quadrant I, generate new positions outside quadrant I
     num_rerolls = np.sum(quadrant_I_mask)
+    
+    for i in range(num_rerolls):
+        # Find a valid position outside quadrant I
+        valid_position = False
+        attempts = 0
+        while not valid_position and attempts < 100:
+            new_x = np.random.uniform(-3, 3)
+            new_y = np.random.uniform(-3, 3)
+            
+            # Check if it's outside quadrant I and far enough from other points
+            if not (new_x > 0 and new_y > 0):
+                new_point = np.array([new_x, new_y])
+                existing_points = np.column_stack([random_x, random_y])
+                
+                if all(np.linalg.norm(new_point - existing) >= min_distance * 0.5
+                       for j, existing in enumerate(existing_points) 
+                       if not quadrant_I_mask[j]):
+                    # Find the first point in quadrant I and replace it
+                    idx = np.where(quadrant_I_mask)[0][i]
+                    random_x[idx] = new_x
+                    random_y[idx] = new_y
+                    valid_position = True
+            
+            attempts += 1
+    
+    # Update the mask
+    quadrant_I_mask = (random_x > 0) & (random_y > 0)
 
 # Calculate slope for the dotted line (from origin to point_pose)
 slope = point_pose[1] / point_pose[0]  # y/x
