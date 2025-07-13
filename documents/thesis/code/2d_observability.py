@@ -22,21 +22,54 @@ num_gaussians = 300  # Increased from 100 for better coverage
 sigma = 0.35  # Slightly reduced to prevent too much overlap
 
 # Generate random positions along a path (like a car driving)
+np.random.seed(42)  # For reproducible results
 
 # Start position (outside quadrant I)
 start_x, start_y = -2.0, -2.0
 path_x = [start_x]
 path_y = [start_y]
 
+# Track visited areas for exploration bias
+visited_areas = []
+
 # Generate path parameters
 num_steps = num_gaussians - 1
-step_size = 0.3  # How far the car moves each step
-turn_probability = 0.4  # Increased probability of changing direction
+step_size = 0.25  # Slightly smaller steps for more detailed exploration
+turn_probability = 0.5  # Higher probability of changing direction
 current_direction = np.random.uniform(0, 2*np.pi)  # Random initial direction
 
 for i in range(num_steps):
     # Encourage exploration by biasing direction towards unexplored areas
     current_x, current_y = path_x[-1], path_y[-1]
+    
+    # Check if current area has been visited before
+    current_area = (round(current_x, 1), round(current_y, 1))
+    if current_area not in visited_areas:
+        visited_areas.append(current_area)
+    
+    # Calculate affinity for different directions based on exploration
+    best_direction = current_direction
+    min_visits = float('inf')
+    
+    # Sample 8 directions and pick the one leading to least visited area
+    for test_dir in np.linspace(0, 2*np.pi, 8, endpoint=False):
+        test_x = current_x + step_size * 3 * np.cos(test_dir)  # Look ahead
+        test_y = current_y + step_size * 3 * np.sin(test_dir)
+        test_area = (round(test_x, 1), round(test_y, 1))
+        
+        # Skip if it would lead to quadrant I or out of bounds
+        if (test_x > 0 and test_y > 0) or test_x > 3 or test_x < -3 or test_y > 3 or test_y < -3:
+            continue
+            
+        # Count visits to this area
+        visits = visited_areas.count(test_area)
+        if visits < min_visits:
+            min_visits = visits
+            best_direction = test_dir
+    
+    # Mix exploration bias with some randomness
+    if np.random.random() < 0.6:  # 60% chance to use exploration bias
+        current_direction = best_direction + np.random.uniform(-np.pi/4, np.pi/4)
     
     # Add bias towards center and upper regions if stuck in lower areas
     if current_y < -1:  # If in lower half, bias upward
@@ -75,7 +108,7 @@ for i in range(num_steps):
         
         # If still in quadrant I, force to a safe location with variety
         if next_x > 0 and next_y > 0:
-            safe_locations = [(-2.0, 2.0), (-0.5, -0.5), (-2.5, 0.5), (-1.0, 2.5)]
+            safe_locations = [(-2.0, 2.0), (-0.5, -0.5), (-2.5, 0.5), (-1.0, 2.5), (-2.8, 1.0), (-0.2, 2.8)]
             next_x, next_y = safe_locations[i % len(safe_locations)]
     
     path_x.append(next_x)
