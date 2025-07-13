@@ -99,10 +99,10 @@ for center_x, center_y in zip(random_x, random_y):
     # Add this Gaussian to the total
     Z += sign * gaussian_2d(X, Y, center_x=center_x, center_y=center_y, sigma=sigma)
 
-# Normalize Z to the range [-1, 1]
-Z_min = np.min(Z)
-Z_max = np.max(Z)
-Z = 2 * (Z - Z_min) / (Z_max - Z_min) - 1
+# # Normalize Z to the range [-1, 1]
+# Z_min = np.min(Z)
+# Z_max = np.max(Z)
+# Z = 2 * (Z - Z_min) / (Z_max - Z_min) - 1
 
 # Create the plot
 plt.figure(figsize=(8, 6))
