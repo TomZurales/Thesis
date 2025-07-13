@@ -16,7 +16,9 @@
         * paragraph - Quick description of other visual modalities; stereo, mutli-camera
         * paragraph - Discussion of the advantages and disadvantages of other sensor modalities
       * Comparison of Key Point and Direct Methods
-        * paragraph - Comparison of ke
+        * paragraph - Description of direct method
+        * paragraph - Description of keypoint method
+        * paragraph - comparison
       * Data Pipeline
         * paragraph - Discuss data acquisition and keypoint extraction
         * paragraph - data association, point pose estimation
