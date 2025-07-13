@@ -26,6 +26,23 @@ np.random.seed(42)  # For reproducible results
 random_x = np.random.uniform(-3, 3, num_gaussians)
 random_y = np.random.uniform(-3, 3, num_gaussians)
 
+# Reroll any Gaussians that fall in quadrant I (x > 0 and y > 0)
+quadrant_I_mask = (random_x > 0) & (random_y > 0)
+num_rerolls = np.sum(quadrant_I_mask)
+
+while num_rerolls > 0:
+    # Generate new positions for those in quadrant I
+    new_x = np.random.uniform(-3, 3, num_rerolls)
+    new_y = np.random.uniform(-3, 3, num_rerolls)
+    
+    # Replace the positions
+    random_x[quadrant_I_mask] = new_x
+    random_y[quadrant_I_mask] = new_y
+    
+    # Check again for any still in quadrant I
+    quadrant_I_mask = (random_x > 0) & (random_y > 0)
+    num_rerolls = np.sum(quadrant_I_mask)
+
 # Calculate slope for the dotted line (from origin to point_pose)
 slope = point_pose[1] / point_pose[0]  # y/x
 
