@@ -18,10 +18,10 @@
     * paragraph - An implementation of the library in ORB-SLAM 3 to demonstrate its effectiveness.
     * paragraph - A set of datasets and experimental results demonstrating how the library improves SLAM performance.
   * Road Map
-    * paragraph - Outline the background section, discuss SLAM and directional statistics
-    * paragraph - Outline the related work section, discuss existing map point culling methods
-    * paragraph - Outline the implementation section
-    * paragraph - Outline the analysis section.
+    * paragraph - Outline Chapter 2
+    * paragraph - Outline Chapter 3
+    * paragraph - Outline Chapter 4
+    * paragraph - Outline Chapter 5
 * Background
   * SLAM Background
     * paragraph - What is SLAM, what are its goals, what are its use cases?
