@@ -43,7 +43,7 @@ The icosahedron was selected for the discrete shell because it contains the high
 
 For the purposes of the mathematical formulation of the update and query functions, the geometric details of the icosahedral shell are not relevant. The specifics of the geometric construction used in this work are discussed in Section \ref{sec:icos_construction}.
 
-Let $M=\{mp_i\}_{i=0}^{n_{mp}}$ represent a map $M$ containing $n_{mp}$ map points. We define $S_i=\{F_{i,j}\}_{j=1}^{20}$ to represent the icosahedral shell $S$ attached to $mp_i$, containing 20 faces $F_{i,{1..20}}$. Finally, we define $F_{i,j}=(d_{i,j}, p_{i,j})$ where $d_{i,j}\in\mathbb{R}^+$ represents the maximum distance through which $mp_i$ has been observed through face $F_j$, and $p_{i,j}\in[0,1]$ represents the probability of observing $mp_i$ through face $F_j$.
+Let $M=\{mp_i\}_{i=0}^{n_{mp}}$ represent a map $M$ containing $n_{mp}$ map points. We define $S_i=\{F_{i,j}\}_{j=1}^{20}$ to represent the icosahedral shell $S$ attached to $mp_i$, containing 20 faces $F_{i,{1..20}}$. Finally, we define $F_{i,j}=(d_{i,j}, p_{i,j})$ where $d_{i,j}\in\mathbb{R}^+$ represents the maximum distance through which $mp_i$ has been observed through face $F_{i,j}$, and $p_{i,j}\in[0,1]$ represents the probability of observing $mp_i$ through face $F_j$.
 
 Additionally, we require a function $\phi:\mathbb{S}^2\rightarrow\{1..20\}$ which maps unit vectors to the face through which they point. This function can be defined as follows:
 $$
@@ -55,7 +55,7 @@ With these constructs in hand, we can define the update and query functions for 
 
 \subparagraph{Update Function Formulation}
 
-The update function operates on observational inputs of the form $\{\boldsymbol{v}\in\mathbb{S}^2\times d\in\mathbb{R}^+\times o\in\{0, 1\}\}$. If the observation is successful ($o = 1$)
+The update function operates on observational inputs of the form $\{\boldsymbol{v}\in\mathbb{S}^2\times d\in\mathbb{R}^+\times o\in\{0, 1\}\}$. If the observation is successful ($o = 1$), $n_{seen}$ is incremented for $F_{i,j}$
 
 \subparagraph{Query Function Formulation}
 
