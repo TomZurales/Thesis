@@ -146,5 +146,5 @@ plt.ylim(-3, 3)
 plt.axis('equal')
 plt.grid(True, alpha=0.3)
 plt.tight_layout(pad=0)  # Remove padding around the plot
-plt.subplots_adjust(left=0, right=0, top=0, bottom=0)  # Adjust subplot margins
+plt.subplots_adjust(left=0.01, right=0.01, top=0.01, bottom=0.01)  # Adjust subplot margins
 plt.show()
