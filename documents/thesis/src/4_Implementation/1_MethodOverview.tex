@@ -4,9 +4,9 @@
 
 % define what we mean by viewpoint aware observability; a mapping between observation unit direction vector and seen/not seen binary observations
 
-The concept of viewpoint-aware observability is at the core of this research. Essentially, we require a mapping from a unit vector and a distance to a binary observability output.
+Let's step back for a moment recall the goal of this research. We are attempting to identify previously observed map points which are no longer observable in the map. Viewpoint-aware observability is a function characterized by a unit direction vector $\mathbf{v}$
 $$
-    \mathbb{S}^2\rightarrow\{0,1\}
+    \mathbb{S}^2\crosspro\rightarrow\{0,1\}
 $$
 
 % Justify why distance needs to be accounted for, use a diagram to show that by including distance, we can account for occlusions in the model
