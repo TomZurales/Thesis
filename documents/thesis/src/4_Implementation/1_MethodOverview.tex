@@ -29,7 +29,7 @@ The model must perform two functions: updates and queries. Updates modify the mo
 
 \subsubsection{Observability Shell Representations}
 
-The observability of a map point can be conceptualized as a unit sphere surrounding each map point. This shell is the structure used to store metadata regarding the point's observability, defining values for
+We model the viewpoint-aware observability of each map point using a geometric shell representation. This shell is the structure which encodes the directional observation history of the point and is incrementally updated as new observations are processed. The shell can be implemented using a multitude of geometric constructs, and in both continuous and discrete modalities. This work proposes two observability shell representations: a discrete version implemented on an icosahedral shell, and a continuous version implemented on a spherical shell. For both structures, update and query functions are provided.
 
 \subsubsection{Existence Probability and Update Rule}
 
