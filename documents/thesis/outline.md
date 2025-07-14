@@ -3,13 +3,13 @@
   * Motivation
     * paragraph - Describe what inspired this work, and what problem it is trying to solve.
     * paragraph - Describe why the problems with long-term slam are important, and what benefits solving them would bring.
-    * Problem Statement
-      * paragraph - Describe the problems with existing SLAM systems, and why they struggle over long periods of time
-      * paragraph - Describe the problems with existing map point culling methods, and why they struggle in certain situations
-    * Research Questions
-      * paragraph - Is a viewpoint-aware model of map point existence an effective way to detect and cull outdated map points?
-      * paragraph - What are the effects of this model on SLAM performance?
-      * paragraph - Can this be implemented in a lightweight way capable of running on low-compute power platforms?
+  * Problem Statement
+    * paragraph - Describe the problems with existing SLAM systems, and why they struggle over long periods of time
+    * paragraph - Describe the problems with existing map point culling methods, and why they struggle in certain situations
+  * Research Questions
+    * paragraph - Is a viewpoint-aware model of map point existence an effective way to detect and cull outdated map points?
+    * paragraph - What are the effects of this model on SLAM performance?
+    * paragraph - Can this be implemented in a lightweight way capable of running on low-compute power platforms?
   * Objectives and Scope
     * paragraph - Define the scope of this work, focusing exclusively on map reuse between runs of SLAM in semi-static environments.
     * paragraph - Define the objectives of the model; to be lightweight and effective at identifying outdated map points, and to be usable in real-time slam systems.
