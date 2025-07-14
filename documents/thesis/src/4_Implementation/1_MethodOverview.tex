@@ -43,7 +43,7 @@ The icosahedron was selected for the discrete shell because it contains the high
 
 For the purposes of the mathematical derivation of the update and query functions, the construction of the Icosahedral shell is arbitrary. The specifics of the geometric construction used in this work are discussed in Section \ref{sec:icos_construction}.
 
-Let $M=\{mp_i\}_{i=0}^{n_{mp}}$ represent a map $M$ containing $n_{mp}$ map points. We define $S_i=\{F_{i:j}\}_{j=1}^{20}$ to represent the icosahedral shell $S$ attached to $mp_i$, containing 20 faces $F_{i:{1..20}}$. Finally, we define $F_{i:j}=(d_{i:j}, p_{i:j})$ where $d_{i:j}\in\mathbb{R}^+$ represents the maximum distance through which $mp_i$ has been observed through face $F_j$, and $p_{i:j}\in[0,1]$ represents the probability of observing $mp_i$ through face $F_j$.
+Let $M=\{mp_i\}_{i=0}^{n_{mp}}$ represent a map $M$ containing $n_{mp}$ map points. We define $S_i=\{F_{i,j}\}_{j=1}^{20}$ to represent the icosahedral shell $S$ attached to $mp_i$, containing 20 faces $F_{i:{1..20}}$. Finally, we define $F_{i:j}=(d_{i,j}, p_{i,j})$ where $d_{i,j}\in\mathbb{R}^+$ represents the maximum distance through which $mp_i$ has been observed through face $F_j$, and $p_{i,j}\in[0,1]$ represents the probability of observing $mp_i$ through face $F_j$.
 
 
 \subsubsection{Existence Probability and Update Rule}
