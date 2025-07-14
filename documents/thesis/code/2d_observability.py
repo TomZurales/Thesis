@@ -143,7 +143,8 @@ plt.ylabel('Y')
 plt.title('Random Gaussians (Negative: Right of Line & Below y=0)')
 plt.xlim(-3, 3)
 plt.ylim(-3, 3)
-plt.margins(x=0)  # Remove x-axis margins
 plt.axis('equal')
 plt.grid(True, alpha=0.3)
+plt.tight_layout(pad=0)  # Remove padding around the plot
+plt.subplots_adjust(left=0.1, right=0.95, top=0.9, bottom=0.1)  # Adjust subplot margins
 plt.show()
