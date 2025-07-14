@@ -55,7 +55,10 @@ With these constructs in hand, we can define the update and query functions for 
 
 \subparagraph{Update Function Formulation}
 
-The update function operates on observational inputs of the form $\{\boldsymbol{v}\in\mathbb{S}^2\times d\in\mathbb{R}^+\times o\in\{0, 1\}\}$. If the observation is successful ($o = 1$), $n_{seen}$ is incremented for $F_{i,j}$
+The update function operates on observational inputs of the form $\{\boldsymbol{v}\in\mathbb{S}^2\times d\in\mathbb{R}^+\times o\in\{0, 1\}\}$. If the observation is successful ($o = 1$), $n_{seen}$ is incremented for $F_{i,j}$, and $p_{i,j}$ is recalculated using the formula
+$$
+    p_{i,j}=\frac{n_{seen}}{n_{seen}+n_{unseen}}
+$$
 
 \subparagraph{Query Function Formulation}
 
