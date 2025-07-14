@@ -45,7 +45,10 @@ For the purposes of the mathematical formulation of the update and query functio
 
 Let $M=\{mp_i\}_{i=0}^{n_{mp}}$ represent a map $M$ containing $n_{mp}$ map points. We define $S_i=\{F_{i,j}\}_{j=1}^{20}$ to represent the icosahedral shell $S$ attached to $mp_i$, containing 20 faces $F_{i,{1..20}}$. Finally, we define $F_{i,j}=(d_{i,j}, p_{i,j})$ where $d_{i,j}\in\mathbb{R}^+$ represents the maximum distance through which $mp_i$ has been observed through face $F_j$, and $p_{i,j}\in[0,1]$ represents the probability of observing $mp_i$ through face $F_j$.
 
-Additionally, we require a function $\phi:\mathbb{S}^2\rightarrow\{1..20\}$ which maps unit vectors to the face through which they point. This function can be defined as
+Additionally, we require a function $\phi:\mathbb{S}^2\rightarrow\{1..20\}$ which maps unit vectors to the face through which they point. This function can be defined as follows:
+$$
+
+$$
 
 With these constructs in hand, we can define the update and query functions for the icosahedral shell.
 
