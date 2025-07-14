@@ -11,12 +11,7 @@
 \usepackage{titlesec}
 
 % Redefine \paragraph to behave like a block-level heading (with line break)
-\titleformat{\paragraph}[block]
-  {\normalfont\normalsize\bfseries}  % Format: normal font, normal size, bold
-  {\theparagraph}                    % Numbering
-  {1em}                              % Spacing between number and title
-  {}                                 % Code before the title
-  []
+\titleformat{\paragraph}[block]{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}[]
 
 % Redefine \subparagraph to behave similarly, smaller and indented
 \titleformat{\subparagraph}[block]{\normalfont\normalsize\itshape}{\thesubparagraph}{1em}{}[]
