@@ -1,6 +1,6 @@
 \subsection{Method Overview}
 
-This section details our method for achieving the goals laid out in Section \ref{objectives}. We are attempting to identify map points which, while previously viewed, are no longer observable due to environmental changes. To that end, we assign a probability of existence value to each map point which we update over time. When a point is observed from a particular viewpoint, the confidence in that point's existence increases. However, if we fail to observe a map point from a viewpoint where it \textit{should} have been visible, we must instead decrease the confidence in the map points existence. Determining whether a map point should be observable from a given viewpoint is not trivial, necessitating the modeling of observability as a function of viewpoint.
+This section details our method for achieving the goals laid out in Section \ref{objectives}. The primary objective is to identify map points which, while previously viewed, are no longer visible due to environmental changes. To address this, we assign an incrementally updated probability of existence value to each map point. Observations of a map point increase our overall confidence in its existence. Conversely, failed observations of a map point from a viewpoint where it \textit{should} have been visible lower our confidence in its existence. Determining whether a map point should be observable from a given viewpoint is not trivial, necessitating the modeling of observability as a function of viewpoint.
 
 \subsubsection{Viewpoint-Aware Observability of Map Points}
 
