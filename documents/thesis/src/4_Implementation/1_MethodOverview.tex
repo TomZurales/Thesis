@@ -18,10 +18,11 @@ The inclusion of distance in the model is necessary to handle occlusions in the 
 
 % Say what we are trying to build; a model which can produce a probability that a point will be seen given an observation direction and a distance
 
-A model which is capable of doing what we need it to perform two functions: updates and queries. Updates modify the model's internal representation of a map point's observability, while queries ask \"What is the probability that I see the map point from this position and orientation?\". The goal of the model is to provide answers to queries which are as accurate as possible to the point's actual observability. With perfect knowledge of the map point's observability across the domain of viewpoints, every query response would be a 0 or a 1, however, this would require infinite observations to produce. Instead, we implement the model probabilistically, allowing a finite number of observations to estimate the point's observability across the domain.
+The model must perform two functions: updates and queries. Updates modify the model's internal representation of a map point's observability, while queries ask \"What is the probability that I see the map point from this viewpoint?\". The goal of the model is to provide answers to queries which are as accurate as possible based on the updates received up until that point. With perfect knowledge of the map point's observability across the domain of viewpoints, every query response would be a 0 or a 1, however, this would require infinite observations to produce. Instead, we implement the model probabilistically, allowing a finite number of observations to estimate the point's observability across the domain, and returning a probability of observation in the range \[0, 1\]. Figure \ref{2d_observability} provides a simplified 2D representation of a map point $\boldsymbol{p}$'s ideal observability.
 
 \subsubsection{Observability Shell Representations}
-With perfect foreknowledge of a map point's observability, the model could be implemented
+
+The observability of a map point can be conceptualized as a unit sphere surrounding each map point. This shell is the structure used to store metadata regarding the point's observability, defining values for
 
 \subsubsection{Existence Probability and Update Rule}
 
