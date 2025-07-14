@@ -116,6 +116,9 @@ plt.figure(figsize=(8, 6))
 contour = plt.contourf(X, Y, Z, levels=200, cmap='RdBu_r')
 plt.colorbar(contour, label='Combined Gaussian Value')
 
+# Add small dots at each Gaussian center
+plt.scatter(random_x, random_y, c='black', s=8, alpha=0.7, zorder=5)
+
 # Draw black rectangle from (0,0) to (3,3)
 from matplotlib.patches import Rectangle, Circle
 rect = Rectangle((0, 0), 3, 3, facecolor='white')
