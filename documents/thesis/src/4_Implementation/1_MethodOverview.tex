@@ -1,10 +1,12 @@
 \subsection{Method Overview}
 
+Let's step back for a moment recall the goal of this research. We are attempting to identify previously observed map points which are no longer observable in the map. This can be accomplished by updating each map point's overall probability of existence using a Bayesian update step.
+
 \subsubsection{Viewpoint-Aware Observability of Map Points}
 
 % define what we mean by viewpoint aware observability; a mapping between observation unit direction vector and seen/not seen binary observations
 
-Let's step back for a moment recall the goal of this research. We are attempting to identify previously observed map points which are no longer observable in the map. Viewpoint-aware observability is a function characterized by a unit direction vector $\mathbf{v}\in\mathbb{S}^2$ and a distance $d\in\mathbb{R}^+$
+Viewpoint-aware observability is a function characterized by a unit direction vector $\mathbf{v}\in\mathbb{S}^2$ and a distance $d\in\mathbb{R}^+$
 $$
     \mathbb{S}^2\rightarrow\{0,1\}
 $$
