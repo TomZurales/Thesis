@@ -1,10 +1,25 @@
 * Introduction
+  * paragraph - describe the entire thesis in a few sentences. What is the problem, solution and results?
   * Motivation
+    * paragraph - Describe what inspired this work, and what problem it is trying to solve.
     * Problem Statement
+      * paragraph - Describe the problems with existing SLAM systems, and why they struggle over long periods of time
+      * paragraph - Describe the problems with existing map point culling methods, and why they struggle in certain situations
     * Research Questions
+      * paragraph - Is a viewpoint-aware model of map point existence an effective way to detect and cull outdated map points?
+      * paragraph - What are the effects of this model on SLAM performance?
   * Objectives and Scope
+    * paragraph - Define the scope of this work, focusing exclusively on map reuse between runs of SLAM in semi-static environments.
+    * paragraph - Define the objectives of the model; to be lightweight and effective at identifying outdated map points, and to be usable in real-time slam systems.
   * Contribution
+    * paragraph - The library: a lightweight, viewpoint aware model of map point existence, designed to be utilized in keypoint-based visual SLAM systems.
+    * paragraph - An implementation of the library in ORB-SLAM 3 to demonstrate its effectiveness.
+    * paragraph - A set of datasets and experimental results demonstrating how the library improves SLAM performance.
   * Road Map
+    * paragraph - Outline the background section, discuss SLAM and directional statistics
+    * paragraph - Outline the related work section, discuss existing map point culling methods
+    * paragraph - Outline the implementation section
+    * paragraph - Outline the analysis section. 
 * Background
   * SLAM Background
     * paragraph - What is SLAM, what are its goals, what are its use cases?
