@@ -1,6 +1,6 @@
 \subsection{Method Overview}
 
-Let's step back for a moment recall the goal of this research. We are attempting to identify previously observed map points which are no longer observable in the map. This can be accomplished by updating each map point's overall probability of existence using a Bayesian update step.
+Let's step back for a moment recall the goal of this research. We are attempting to identify map points which, while previously viewed, are no longer observable due to environmental changes. To that end, we assign a probability of existence value to each map point which we update over time. When a point is observed from a particular viewpoint, the confidence in that point's existence increases. However, if we fail to observe a map point from a viewpoint where it \i{should} have been visible
 
 \subsubsection{Viewpoint-Aware Observability of Map Points}
 
