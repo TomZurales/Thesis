@@ -33,8 +33,15 @@ We model the viewpoint-aware observability of each map point using a geometric s
 
 The discrete icosahedral shell allows the full observation history to be integrated into a set of discrete bins, requiring constant additional space per map point. On the other hand, the continuous model stores data for each observation, meaning the space requirements increase with time. This growth can be bounded by limiting the number of stored observations, for example using a fixed size queue.
 
+Below we introduce the mathematical formulation for both the discrete and continuous shells. For each modality, the mathematics behind the update and query functions are defined and discussed.
+
 \paragraph{Discrete Icosahedral Shell}
-The discrete icosahedral shell is implemented
+
+The icosahedron was selected for the discrete shell because it contains the highest face count of the convex Platonic solids. This provides 20 bins across the domain of viewpoints, each with identical coverage of the domain.
+
+\subparagraph{Icosahedral Shell Construction}
+
+For the purposes of the mathematical derivation of the update and query functions, the construction of the Icosahedral shell is arbitrary. The specific construction used in this work will be discussed in Section \ref{icos_construction}
 
 \subsubsection{Existence Probability and Update Rule}
 
