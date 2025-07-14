@@ -59,9 +59,11 @@ The observation function operates on observational inputs of the form $\{\boldsy
 $$
     p_{i,j}=\frac{n_{seen}}{n_{seen}+n_{unseen}}
 $$
-On the other hand, if the observation is unsuccessful, we first determine if the point is observable from this distance and viewpoint. If it is not, no update actions are taken. Otherwise, we increment
+On the other hand, if the observation is unsuccessful, we first determine if the point is observable from this distance and viewpoint. If it is not, no further actions are taken. This failed observation is likely due to a real, physical occlusion in the environment.
 
 \subparagraph{Query Function Formulation}
+
+\paragraph{The Continuous Shell Representation}
 
 
 \subsubsection{Existence Probability and Update Rule}
