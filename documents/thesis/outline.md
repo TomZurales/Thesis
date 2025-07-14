@@ -1,22 +1,24 @@
 * Introduction
-  * paragraph - describe the entire thesis in a few sentences. What is the problem, solution and results?
+  * paragraph - The problem with map reuse in long term SLAM, the solution using a viewpoint-aware model of map point observability, and the results of the work.
   * Motivation
-    * paragraph - Describe what inspired this work, and what problem it is trying to solve.
-    * paragraph - Describe why the problems with long-term slam are important, and what benefits solving them would bring.
+    * paragraph - Describe the project that inspired this work; astrobee map reuse on the ISS.
+    * paragraph - Describe how issues with long-term SLAM prevent wide usage in dynamic environments; maps can be used for other tasks
+    * paragraph - Describe what benefits we can gain from solving these problems; more robustness, better maps, more accurate localization, etc.
   * Problem Statement
-    * paragraph - Describe the problems with existing SLAM systems, and why they struggle over long periods of time
-    * paragraph - Describe the problems with existing map point culling methods, and why they struggle in certain situations
+    * paragraph - Describe why current SLAM systems struggle to operate over long periods of time; map size increase, outdated map points leading to localization errors, bad loop closures...
+    * paragraph - Describe the problems with existing map point culling methods, and why they are bad for low-compute platforms
   * Research Questions
     * paragraph - Is a viewpoint-aware model of map point existence an effective way to detect and cull outdated map points?
     * paragraph - What are the effects of this model on SLAM performance?
     * paragraph - Can this be implemented in a lightweight way capable of running on low-compute power platforms?
   * Objectives and Scope
     * paragraph - Define the scope of this work, focusing exclusively on map reuse between runs of SLAM in semi-static environments.
-    * paragraph - Define the objectives of the model; to be lightweight and effective at identifying outdated map points, and to be usable in real-time slam systems.
+    * paragraph - Define the objectives of the model; to be lightweight and effective at identifying outdated map points, and to be usable in real-time SLAM systems.
+    * paragraph - Define the objectives of the implementation, not to hurt performance in static environments, and to improve performance with previously generated maps in semi-static environments.
   * Contribution
-    * paragraph - The library: a lightweight, viewpoint aware model of map point existence, designed to be utilized in keypoint-based visual SLAM systems.
-    * paragraph - An implementation of the library in ORB-SLAM 3 to demonstrate its effectiveness.
-    * paragraph - A set of datasets and experimental results demonstrating how the library improves SLAM performance.
+    * paragraph - The library: a lightweight, viewpoint-aware model of map point existence, designed to be utilized in keypoint-based visual SLAM systems.
+    * paragraph - The SLAM implementation: An implementation of the library in ORB-SLAM 3 to demonstrate its effectiveness.
+    * paragraph - The datasets: A set of datasets and experimental results demonstrating how the library improves SLAM performance.
   * Road Map
     * paragraph - Outline Chapter 2
     * paragraph - Outline Chapter 3
@@ -45,7 +47,7 @@
     * Keypoint-Based Visual SLAM
       * paragraph - Defining characteristics of Keypoint-Based Visual SLAM; using image features, and determining motion through keypoint correspondences
       * paragraph - Revisitation of the SLAM data pipeline from the perspective of keypoint-based visual SLAM; talk about initialization through 2D-2D correspondences, pose estimation through 2D-3D correspondences
-      * paragraph - Revisitation of how enhancements are implemented in keypoint based visual slam
+      * paragraph - Revisitation of how enhancements are implemented in keypoint based visual SLAM
     * ORB-SLAM3
       * paragraph - an implementation of keypoint based visual SLAM with many enhancements built in
       * paragraph - Justification for why it's a good research platform
