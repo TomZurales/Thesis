@@ -1,0 +1,27 @@
+\subsection{Method Overview}
+
+\subsubsection{Viewpoint-Aware Observability of Map Points}
+
+% define what we mean by viewpoint aware observability; a mapping between observation unit direction vector and seen/not seen binary observations
+
+The concept of viewpoint-aware observability is at the core of this research. Essentially, we require a mapping from a unit vector and a distance to a binary observability output.
+
+$$
+    \boldsymbol{f:}\mathbb{S}^2\rightarrow\{0,1\}
+$$
+
+% Justify why distance needs to be accounted for, use a diagram to show that by including distance, we can account for occlusions in the model
+
+This model of observability does not account for occlusions. Therefore, we instead utilize the function
+$$
+    \mathbb{S}
+$$
+
+% Say what we are trying to build; a model which can produce a probability that a point will be seen given an observation direction and a distance
+
+
+\subsubsection{Observability Shell Representations}
+
+\subsubsection{Existence Probability and Update Rule}
+
+\subsubsection{Application to Point Pruning and Selection}
