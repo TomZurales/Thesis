@@ -18,7 +18,7 @@ The inclusion of distance in the model is necessary to handle occlusions in the 
 
 % Say what we are trying to build; a model which can produce a probability that a point will be seen given an observation direction and a distance
 
-The model operates in two stages: the update stage, and the query stage. Updates modify the model's internal representation of a map point's observability, while queries ask \"What is the probability that I see the map point from this viewpoint?\". The update function operates on observation data in the form $\boldsymbol{o} = \{\boldsymbol{v}\in\mathbb{S}^2\times d\in\mathbb{R}^+\times o\in\{0, 1\}\}$, where $\boldsymbol{v}$ represents the unit vector pointing from the map point to the observer, $d$ represents the distance between the map point and the observer, and $o$ represents whether the map point was seen or not. The query function operates on a similar set of parameters, excluding the observation success, represented as $\boldsymbol{q} = \{\boldsymbol{v}\in\mathbb{S}^2\times d\in\mathbb{R}^+\}$. The goal of the model is to provide answers to queries which are as accurate as possible based on the updates received up until that point. With perfect knowledge of the map point's observability across the domain of viewpoints, every query response would be a 0 or a 1, however, this would require infinite observations to produce. Instead, we implement the model probabilistically, allowing a finite number of observations to estimate the point's observability across the domain, and returning a probability of observation in the range [0, 1]. Figure \ref{fig:2d_observability} provides a simplified 2D representation of a map point $\boldsymbol{p}$'s ideal observability.
+The model operates in two stages: the observation stage, and the query stage. Observations modify the model's internal representation of a map point's observability, while queries ask \"What is the probability that I see the map point from this viewpoint?\". The observation function operates on observation data in the form $\boldsymbol{o} = \{\boldsymbol{v}\in\mathbb{S}^2\times d\in\mathbb{R}^+\times o\in\{0, 1\}\}$, where $\boldsymbol{v}$ represents the unit vector pointing from the map point to the observer, $d$ represents the distance between the map point and the observer, and $o$ represents whether the map point was seen or not. The query function operates on a similar set of parameters, excluding the observation success, represented as $\boldsymbol{q} = \{\boldsymbol{v}\in\mathbb{S}^2\times d\in\mathbb{R}^+\}$. The goal of the model is to provide answers to queries which are as accurate as possible based on the observations received up until that point. With perfect knowledge of the map point's observability across the domain of viewpoints, every query response would be a 0 or a 1, however, this would require infinite observations to produce. Instead, we implement the model probabilistically, allowing a finite number of observations to estimate the point's observability across the domain, and returning a probability of observation in the range [0, 1]. Figure \ref{fig:2d_observability} provides a simplified 2D representation of a map point $\boldsymbol{p}$'s ideal observability.
 
 \begin{figure}[htbp]
     \centering
@@ -29,11 +29,11 @@ The model operates in two stages: the update stage, and the query stage. Updates
 
 \subsubsection{Observability Shell Representations}
 
-We model the viewpoint-aware observability of each map point using a geometric shell representation. This shell structure encodes the directional observation history of the point and is incrementally updated as new observations are processed. The shell can be implemented using various geometric constructs, and in both continuous and discrete modalities. This work proposes two observability shell representations: a discrete version implemented on an icosahedral shell, and a continuous version implemented on a spherical shell. For both structures, update and query functions are provided.
+We model the viewpoint-aware observability of each map point using a geometric shell representation. This shell structure encodes the directional observation history of the point and is incrementally updated as new observations are processed. The shell can be implemented using various geometric constructs, and in both continuous and discrete modalities. This work proposes two observability shell representations: a discrete version implemented on an icosahedral shell, and a continuous version implemented on a spherical shell. For both structures, observation and query functions are provided.
 
 The discrete icosahedral shell allows the full observation history to be integrated into a set of discrete bins, requiring constant additional space per map point. On the other hand, the continuous model stores data for each observation, meaning the space requirements increase with time. This growth can be bounded by limiting the number of stored observations, for example using a fixed size queue.
 
-Below we introduce the mathematical formulation for both the discrete and continuous shells. For each modality, the mathematics behind the update and query functions are defined and discussed.
+Below we introduce the mathematical formulation for both the discrete and continuous shells. For each modality, the mathematics behind the observation and query functions are defined and discussed.
 
 \paragraph{Discrete Icosahedral Shell}
 
@@ -41,7 +41,7 @@ The icosahedron was selected for the discrete shell because it contains the high
 
 \subparagraph{Icosahedral Shell Formulation}
 
-For the purposes of the mathematical formulation of the update and query functions, the geometric details of the icosahedral shell are not relevant. The specifics of the geometric construction used in this work are discussed in Section \ref{sec:icos_construction}.
+For the purposes of the mathematical formulation of the observation and query functions, the geometric details of the icosahedral shell are not relevant. The specifics of the geometric construction used in this work are discussed in Section \ref{sec:icos_construction}.
 
 Let $M=\{mp_i\}_{i=0}^{n_{mp}}$ represent a map $M$ containing $n_{mp}$ map points. We define $S_i=\{F_{i,j}\}_{j=1}^{20}$ to represent the icosahedral shell $S$ attached to $mp_i$, containing 20 faces $F_{i,{1..20}}$. Finally, we define $F_{i,j}=(d_{i,j}, p_{i,j})$ where $d_{i,j}\in\mathbb{R}^+$ represents the maximum distance through which $mp_i$ has been observed through face $F_{i,j}$, and $p_{i,j}\in[0,1]$ represents the probability of observing $mp_i$ through face $F_j$.
 
@@ -51,14 +51,15 @@ $$
 $$
 where $\boldsymbol{f}_{i,j}$ represents the unit vector pointing from $mp_i$ to the centroid of face $F_{i,j}$.
 
-With these constructs in hand, we can define the update and query functions for the icosahedral shell.
+With these constructs in hand, we can define the observation and query functions for the icosahedral shell.
 
-\subparagraph{Update Function Formulation}
+\subparagraph{Observation Function Formulation}
 
-The update function operates on observational inputs of the form $\{\boldsymbol{v}\in\mathbb{S}^2\times d\in\mathbb{R}^+\times o\in\{0, 1\}\}$. If the observation is successful ($o = 1$), $n_{seen}$ is incremented for $F_{i,j}$, and $p_{i,j}$ is recalculated using the formula
+The observation function operates on observational inputs of the form $\{\boldsymbol{v}\in\mathbb{S}^2\times d\in\mathbb{R}^+\times o\in\{0, 1\}\}$. If the observation is successful ($o = 1$), $n_{seen}$ is incremented for $F_{i,j}$, and $p_{i,j}$ is recalculated using the formula
 $$
     p_{i,j}=\frac{n_{seen}}{n_{seen}+n_{unseen}}
 $$
+On the other hand, if the observation is unsuccessful, we first determine if the point is observable from this distance and viewpoint. If it is not, no update actions are taken. Otherwise, we increment
 
 \subparagraph{Query Function Formulation}
 
