@@ -1,0 +1,16 @@
+\subsection{Objectives and Scope}
+\label{objectives}
+
+% Define the scope of this work, focusing exclusively on map reuse between runs of SLAM in semi-static environments.
+
+% Define the objectives of the model; to be lightweight and effective at identifying outdated map points, and to be usable in real-time SLAM systems.
+
+% Define the objectives of the implementation, not to hurt performance in static environments, and to improve performance with previously generated maps in semi-static environments.
+
+This research
+
+This research intends to build upon the previously developed probability models, in order to distill the update step of each map point's probability of existence into a simple Bayesian update step. The goals for this model are as follows:
+
+1. To utilize constant additional space for each map point
+2. To complete the update step in constant time
+3. To resist updating confidence levels with redundant data
