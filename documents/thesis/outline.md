@@ -2,8 +2,8 @@
   * paragraph - The problem with map reuse in long term SLAM, the solution using a viewpoint-aware model of map point observability, and the results of the work.
   * Motivation
     * paragraph - Describe the project that inspired this work; astrobee map reuse on the ISS.
-    * paragraph - Describe how issues with long-term SLAM prevent wide usage in dynamic environments; maps can be used for other tasks
-    * paragraph - Describe what benefits we can gain from solving these problems; more robustness, better maps, more accurate localization, etc.
+    * paragraph - Describe what bad things happen when SLAM systems fail
+    * paragraph - Describe why the robotics world would benefit from SLAM systems that can operate over long periods of time in changing environments.
   * Problem Statement
     * paragraph - Describe why current SLAM systems struggle to operate over long periods of time; map size increase, outdated map points leading to localization errors, bad loop closures...
     * paragraph - Describe the problems with existing map point culling methods, and why they are bad for low-compute platforms
