@@ -7,12 +7,8 @@ This research is intended to improve keypoint-based visual SLAM performance in s
 
 % Define the objectives of the model; to be lightweight and effective at identifying outdated map points, and to be usable in real-time SLAM systems.
 
+The objective of the model is to produce an accurate method of representing the global observability of each map point in a map. The model should be lightweight, requiring only small amounts of additional space per map point. The model should integrate all observational data into its understanding of the map point's observability, while rejecting redundant data. Identification of map points which are outdated should be fast and accurate. Map points which remain visible should be robustly maintained.
+
 % Define the objectives of the implementation, not to hurt performance in static environments, and to improve performance with previously generated maps in semi-static environments.
 
-This research
-
-This research intends to build upon the previously developed probability models, in order to distill the update step of each map point's probability of existence into a simple Bayesian update step. The goals for this model are as follows:
-
-1. To utilize constant additional space for each map point
-2. To complete the update step in constant time
-3. To resist updating confidence levels with redundant data
+This model will be integrated into ORB-SLAM3 for testing purposes, ensuring we meet the implementation objectives of speed, accuracy and improvement. The model should not introduce significant increases in compute requirements. Additionally, performance in static environments should remain the same regardless of model implementation. However, under the specific scenerio of map reuse in a changing environment, performance (as meausred by trajectiory accuracy to ground truth) should be improved.
