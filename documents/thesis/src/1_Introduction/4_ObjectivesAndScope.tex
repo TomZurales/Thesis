@@ -3,6 +3,8 @@
 
 % Define the scope of this work, focusing exclusively on map reuse between runs of SLAM in semi-static environments.
 
+This research is intended to improve keypoint-based visual SLAM performance in situations where a pre-generated map is loaded to lock in a known coordinate frame, and in changing environments. The key distinction from other operation modes is the repeated operations in the same environment, with an expectation of the maintenence of large scale static features, but without the expectation for smaller visual features to remain the same between runs. This is accomplished through the introduction of a viewpoint-aware probabilistic model for the existence of map points. This research studies the effects of removing map points from pre-generated maps using this model, and the downstream effects on optimization, relocalization and map accuracy.
+
 % Define the objectives of the model; to be lightweight and effective at identifying outdated map points, and to be usable in real-time SLAM systems.
 
 % Define the objectives of the implementation, not to hurt performance in static environments, and to improve performance with previously generated maps in semi-static environments.
