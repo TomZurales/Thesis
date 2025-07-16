@@ -1,13 +1,21 @@
 \subsection{Research Questions}
 
+Through the implementation of a viewpoint-aware model for map point culling and testing within changing environments, the following questions are addressed.
+
 % Is a viewpoint-aware model of map point existence an effective way to detect and cull outdated map points?
+
+1. Is a viewpoint-aware model of map point existence an effective way to detect and cull outdated map points from pre-generated SLAM maps?
+
+Successfully answering this question will require implementation of the keypoint elimination model, and benchmarking the time it takes to cull known outdated map points, comparing against other keypoint elimination metrics from the literature.
 
 % What are the effects of this model on SLAM performance?
 
+2. When integrated into an existing SLAM system, does the model perform keypoint culling without significant detrimental effects on the system's performance metrics?
+
+The answer to this question requires comparing both the unmodified and modified SLAM outputs against ground truth trajectories. This requires the creation and utilization of datasets designed to challenge existing SLAM systems while exercising the need for keypoint elimination from reused maps.
+
 % Can this be implemented in a lightweight way capable of running on low-compute power platforms?
 
-This thesis investigates whether a probabilistic model of map point existence utilizing directional data on map point observability can be used to identify and remove outdated 3D map points in keypoint-based visual SLAM systems. Specifically, this work seeks to answer the following research questions:
+3. Can the model be integrated into an existing SLAM system in such a way that it does not significantly increase compute requirements to run the system?
 
-1. Can outdated map points be reliably identified using a directionally aware probability model where each map point maintains a record of its directional observability?
-
-2. How does the inclusion of such a model impact the robustness and accuracy of a SLAM system's localization in environments exhibiting various levels of dynamic change?
+This is implementation specific, but the answer to this question can be found by benchmarking the completion times for key functions in both the modified and unmodified systems.
