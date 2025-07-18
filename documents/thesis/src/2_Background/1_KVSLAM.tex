@@ -14,7 +14,7 @@ Map points represent the extrapolation of keypoints into 3D space. Two views of 
 The sparse map is the collection of all map points, acting as a 3D representation of the environment. It is used to localize new frames by finding a transformation that aligns the currently seen keypoints with the existing map points. This 2D-3D alignment is accomplished through an optimization process which iteratively refines the camera transform to minimize the reprojection error between the matched features.
 
 % Explain how data flows through a keypoint-based visual SLAM system, from sensor input to map and pose output.
-With these structures in hand, we can describe the pipeline which data follows through a generic KV-SLAM system. A graphical representation of the pipeline can be seen in Figure \ref{fig:kv_slam_pipeline}. For each image (or group of images in stereo or multi-camera systems), visual features are extracted, and descriptors assigned, producing a set of keypoints for the current frame. Assuming no current map exists, we repeat this data acquisition until two frames with both enough common keypoints and sufficient 
+With these structures in hand, we can describe the pipeline which data follows through a generic KV-SLAM system. A graphical representation of the pipeline can be seen in Figure \ref{fig:kv_slam_pipeline}. For each image (or group of images in stereo or multi-camera systems), visual features are extracted, and descriptors assigned, producing a set of keypoints for the current frame. Assuming no current map exists, we repeat this data acquisition until two frames with both enough common keypoints and sufficient paralax (camera motion)
 
 \begin{figure}[htbp]
     \centering
