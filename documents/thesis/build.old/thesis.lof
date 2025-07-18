@@ -1,5 +1,0 @@
-\contentsline {figure}{\numberline {1}{\ignorespaces Data flow through a general SLAM system}}{15}{}%
-\contentsline {figure}{\numberline {2}{\ignorespaces Data flow through an enhanced general SLAM system}}{15}{}%
-\contentsline {figure}{\numberline {3}{\ignorespaces Data flow through a Keypoint-Based Visual SLAM system}}{16}{}%
-\contentsline {figure}{\numberline {4}{\ignorespaces Data flow through an enhanced Keypoint-Based Visual SLAM system}}{17}{}%
-\contentsline {figure}{\numberline {5}{\ignorespaces A simplified 2D representation of a map point's ideal observability pattern. The point is observable from certain viewing directions (shown in green) but occluded from others (shown in red).}}{20}{}%
