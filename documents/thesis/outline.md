@@ -32,8 +32,8 @@
     * paragraph - What is SLAM, what are its goals, what are its use cases?
     * paragraph - What are the defining characteristics of keypoint based visual SLAM as opposed to other SLAM methods?
     * paragraph - Explain how data flows through a keypoint-based visual SLAM system, from sensor input to map and pose output.
-    * paragraph - High level overview of the challenges of KV-SLAM
     * paragraph - Describe the structure of a map in kvSKAM, including keyframes, map points, and their relationships.
+    * paragraph - High level overview of the challenges of KV-SLAM
     * paragraph - Describe the role of map points in SLAM, include how they are used for localization, loop closure, and map reuse.
     * Explain why having a good set of map points is important for SLAM performance, and how outdated or irrelevant map points can lead to localization errors, and slower performance.
     * ORB-SLAM3
