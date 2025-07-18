@@ -1,7 +1,7 @@
 \subsection{Keypoint-Based Visual SLAM}
 
 % What is SLAM? What are its goals? What are its use cases?
-SLAM refers to the joint problem of simultaneously generating a map of an environment and estimating the position of an observer within that map based on sensor observations. With research beginning in the 1980s \cite{smithEstimatingUncertainSpatial1988}, SLAM has become a de facto standard in robotics for tasks which require operations within unfamiliar environments. Through careful selection of sensors, SLAM systems can operate in a wide variety of environments, from indoor office spaces to densely forrested 
+SLAM refers to the joint problem of simultaneously generating a map of an environment and estimating the position of an observer within that map based on sensor observations. With research beginning in the 1980s \cite{smithEstimatingUncertainSpatial1988}, SLAM has become a de facto standard in robotics for tasks which require operations within unfamiliar environments. Through careful selection of sensors, SLAM systems can operate in a wide variety of environments, from indoor office spaces to densely 
 
 % Quick discussion of SLAM modalities to motivate discussion on keypoint SLAM.
 The complement of sensors in a SLAM system defines its 'sensor modality'. This selection has great effect on the system's accuracy and robustness, and plays a part in determining the types of environment in which the system will perform well or struggle. This research is focused on keypoint-based visual SLAM (KV-SLAM), witch utilizes one or more cameras as the primary source of measurement. KV-SLAM is one of the more complicated sensor modalities to implement, so a brief discussion on the costs and benefits of the various sensor modalities is warranted.
