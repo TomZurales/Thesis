@@ -15,7 +15,7 @@ The sparse map is the collection of all map points, acting as a 3D representatio
 
 % Explain how data flows through a keypoint-based visual SLAM system, from sensor input to map and pose output.
 With these structures in hand, we can describe the pipeline which data follows through a generic KV-SLAM system. A graphical representation of the pipeline can be seen in Figure \ref{fig:kv_slam_pipeline}. For each image (or group of images in stereo or multi-camera systems), visual features are extracted, and descriptors assigned, producing a set of keypoints for the current frame. Assuming no current map exists, we repeat this data acquisition until the following conditions are met:
-1. Two frames 
+1. Two frames must contain 
 
 \begin{figure}[htbp]
     \centering
