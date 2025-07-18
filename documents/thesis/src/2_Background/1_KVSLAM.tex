@@ -9,7 +9,7 @@ However, there are challenges associated with SLAM. Despite numerous advancement
 Because there is no fixed reference to compare against, SLAM systems can suffer from sensor error accumulation, leading to inaccurate maps and poses over time \cite{cadenaPresentFutureSimultaneous2016}.
 
 % What are the defining characteristics of keypoint based visual SLAM as opposed to other SLAM methods?
-This research targets Keypoint-Based Visual SLAM (KV-SLAM), a specific modality of SLAM characterized by its use of one or more cameras as the primary sensor, and the use of keypoints as opposed to raw pixel data as the primary data structure for constructing the map. Table \ref{tab:slam_sensor_modalities} provides a comparison of the strengths and weaknesses of the various sensor modalities used in SLAM. As can be seen, KV-SLAM is not the obvious choice, as it does not produce direct 3D measurements of the environment, instead relying on 
+This research targets Keypoint-Based Visual SLAM (KV-SLAM), a specific modality of SLAM characterized by its use of one or more cameras as the primary sensor, and the use of keypoints as opposed to raw pixel data as the primary data structure for constructing the map. Table \ref{tab:slam_sensor_modalities} provides a comparison of the strengths and weaknesses of the various sensor modalities used in SLAM. As can be seen, KV-SLAM is not the obvious choice, as it does not produce direct 3D measurements of the environment, instead relying on estimation and optimization to create a map. 
 
 \begin{table}[ht!]
     \centering
