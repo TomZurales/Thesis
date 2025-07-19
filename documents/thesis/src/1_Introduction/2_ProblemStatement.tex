@@ -1,5 +1,7 @@
 \subsection{Problem Statement}
 
+
+
 % Describe what causes SLAM to struggle in long-term, multi-session operations in changing environments
 
 The concept of multi-session operations involves a SLAM system which only operates intermittently. The primary use case for this class of system would be for care taking operations in environments which are only sometimes inhabited by people, E.g. factories during business hours. The benefits of this operating method is that the SLAM system can avoid operating during highly dynamic times, with the trade-off being that the environment may be significantly changed between sessions. Map reuse allows the system to avoid starting from zero at the beginning of every session by loading a previously generated map as a starting point. The issue is the same as what was seen on the Astrobee. Localizing within this initial map is critical, but environmental changes between when the map was generated and the current session degrade the system's ability to perform relocalization. The specifics of relocalization will be discussed in Section
