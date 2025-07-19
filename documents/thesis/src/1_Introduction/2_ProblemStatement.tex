@@ -1,6 +1,7 @@
 \subsection{Problem Statement}
 
-A future use case of stochastic KV-SLAM would be for operations in environments which are intermittently occupied, e.g. factories, warehouses, office buildings, etc. The benefit of this method is that the robot can avoid operating during highly dynamic times, with the trade-off being that the environment may be significantly changed between sessions of operation. 
+% 
+A future use case of stochastic KV-SLAM would be for operations in environments which are intermittently occupied, e.g. factories, warehouses, office buildings, etc. The benefit of this method is that the robot can avoid operating during highly dynamic times, with the trade-off being that the environment may be significantly changed between sessions of operation.
 
 % Map reuse allows the system to avoid starting from zero at the beginning of every session by loading a previously generated map as a starting point. The issue is the same as what was seen on the Astrobee. Localizing within this initial map is critical, but environmental changes between when the map was generated and the current session degrade the system's ability to perform relocalization. The specifics of relocalization will be discussed in Section
 
@@ -13,7 +14,7 @@ Despite the challenges and risks associated with failure, research into improvin
 
 % Describe what causes SLAM to struggle in long-term, multi-session operations in changing environments
 
-The concept of multi-session operations involves a SLAM system which only operates intermittently. The primary use case for this class of system would be for care taking operations in environments which are only sometimes inhabited by people, E.g. factories during business hours. 
+The concept of multi-session operations involves a SLAM system which only operates intermittently. The primary use case for this class of system would be for care taking operations in environments which are only sometimes inhabited by people, E.g. factories during business hours.
 
 % Describe the problems with existing map point culling methods, and why they are bad for low-compute platforms
 Numerous methods for identifying and filtering non-static data from SLAM systems have been implemented to great success, allowing SLAM to perform well in highly dynamic environments. These implementations will be discussed in detail in Section \ref{sec:related_work}. A common theme amongst many of the best performing systems is the utilization of a learning model for identifying dynamic objects in an image frame, and ignoring any image features detected on them. This is effective, as it generates a map consisting entirely of what should be static objects, unlikely to change or move. The downside of this methodology is that it requires compute resources capable of running image segmentation and semantic identification in real time and in parallel with the other SLAM processes. Other methods of dynamic data removal utilize probability modeling, treating each image feature as an element which has some probability of existing. These methods have also seen success in improving operations in dynamic environments, but are also limited. Of the implementations which will be discussed in Section \ref{related_work}, not all maintain an understanding of the directions from which a point is observable, and none maintain a full history of a points directional observability. This can lead to points being culled from the map while they are temporarily obscured, or maintained long after they should have been culled.
