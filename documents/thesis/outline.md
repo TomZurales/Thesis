@@ -3,8 +3,6 @@
   * Problem context
     * paragraph - Talk about time on the astrobee project and the problems encountered
     * paragraph - Key takeaways - We need map reuse for performant stochastic operation, oudated maps are a problem for localization
-    * paragraph - Describe why the robotics world would benefit from SLAM systems that can operate over long periods of time in changing environments.
-    * paragraph - Explain what we mean by long term, multi-session SLAM; The ability to reuse maps between runs of SLAM in a semi-static environment.
   * Problem Statement
     * paragraph - Describe what bad things happen when SLAM systems fail
     * paragraph - Describe why current SLAM systems struggle to operate over long periods of time; map size increase, outdated map points leading to localization errors, bad loop closures, etc.
@@ -100,4 +98,6 @@
 * Conclusion
   * Contribution Summary
   * Results Summary
+    * paragraph - Describe why the robotics world would benefit from SLAM systems that can operate over long periods of time in changing environments.
+    * paragraph - Explain what we mean by long term, multi-session SLAM; The ability to reuse maps between runs of SLAM in a semi-static environment.
   * Future Directions
