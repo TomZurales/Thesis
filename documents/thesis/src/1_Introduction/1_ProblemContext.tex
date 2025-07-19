@@ -6,7 +6,7 @@ The International Space Station (ISS) has three robotic passengers on board. The
 
 A project was proposed to augment Astrobee's navigation stack with a keypoint-based visual SLAM system. The idea behind this change was to have the SLAM system load an initial map from the previous sortie, localize within this map, then update the map with the latest visual features from the environment. At the end of the sortie, the updated map could be saved off for use in the next mission \cite{zuralesCollaborativeSensingMapping2024}. For this research, we will call this operational concept of iteratively updating previous maps between operations \textit{stochastic SLAM}. Testing showed that the same issues encountered by the localizer effected the SLAM system as well when attempting to utilize older initial maps. The conjecture stemming from these results was that for reused maps to be useful, they must not only be updated with the latest visual features, but they must also cull features which have become outdated.
 
-Several lessons were learned from the Astrobee work
+Several lessons were learned from the Astrobee work which motivate the research presented here. First, 
 
 % Describe what bad things happen when SLAM systems fail
 
