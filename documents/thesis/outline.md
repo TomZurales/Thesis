@@ -98,6 +98,6 @@
 * Conclusion
   * Contribution Summary
   * Results Summary
+  * Future Directions
     * paragraph - Describe why the robotics world would benefit from SLAM systems that can operate over long periods of time in changing environments.
     * paragraph - Explain what we mean by long term, multi-session SLAM; The ability to reuse maps between runs of SLAM in a semi-static environment.
-  * Future Directions
