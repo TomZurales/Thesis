@@ -3,7 +3,7 @@
   * Problem context
     * paragraph - Talk about time on the astrobee project and the problems encountered
     * paragraph - Key takeaways - We need map reuse for performant stochastic operation, oudated maps are a problem for localization
-  * 
+  * Definitions
   * Problem Statement
     * paragraph - Describe what bad things happen when SLAM systems fail
     * paragraph - Describe why current SLAM systems struggle to operate over long periods of time; map size increase, outdated map points leading to localization errors, bad loop closures, etc.
