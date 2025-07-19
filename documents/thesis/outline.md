@@ -1,7 +1,7 @@
 * Introduction
   * paragraph - The problem with map reuse in long term SLAM, the solution using a viewpoint-aware model of map point observability, and the results of the work.
   * Problem context
-    * paragraph - Describe the project that inspired this work; astrobee map reuse on the ISS.
+    * paragraph - Talk about time on the astrobee project
     * paragraph - Describe what bad things happen when SLAM systems fail
     * paragraph - Describe why the robotics world would benefit from SLAM systems that can operate over long periods of time in changing environments.
     * paragraph - Explain what we mean by long term, multi-session SLAM; The ability to reuse maps between runs of SLAM in a semi-static environment.
