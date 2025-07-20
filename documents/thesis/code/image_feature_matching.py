@@ -19,8 +19,18 @@ def main():
         print("Error: Could not load one or both images")
         sys.exit(1)
     
-    # Initialize ORB detector with more keypoints
-    orb = cv2.ORB_create(nfeatures=500)
+    # Initialize ORB detector with better spatial distribution
+    orb = cv2.ORB_create(
+        nfeatures=500,
+        scaleFactor=1.2,        # Better scale invariance
+        nlevels=8,              # More pyramid levels for better distribution
+        edgeThreshold=31,       # Larger edge threshold to spread features
+        firstLevel=0,
+        WTA_K=2,
+        scoreType=cv2.ORB_HARRIS_SCORE,  # Use Harris corner score for better quality
+        patchSize=31,           # Larger patch size
+        fastThreshold=20        # Lower threshold to find more features
+    )
     
     # Detect keypoints and descriptors
     kp1, des1 = orb.detectAndCompute(img1, None)
