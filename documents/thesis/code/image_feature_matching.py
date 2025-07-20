@@ -19,8 +19,8 @@ def main():
         print("Error: Could not load one or both images")
         sys.exit(1)
     
-    # Initialize ORB detector with limited keypoints
-    orb = cv2.ORB_create(nfeatures=10)
+    # Initialize ORB detector with more keypoints
+    orb = cv2.ORB_create(nfeatures=500)
     
     # Detect keypoints and descriptors
     kp1, des1 = orb.detectAndCompute(img1, None)
