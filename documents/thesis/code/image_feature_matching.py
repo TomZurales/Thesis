@@ -61,7 +61,7 @@ def main():
     
     print(f"Found {len(kp1)} keypoints in image 1")
     print(f"Found {len(kp2)} keypoints in image 2")
-    print(f"Found {len(matches)} matches")
+    print(f"Found {len(good_matches)} good matches out of {len(matches)} total matches")
     print("Saved keypoint and match images")
 
 if __name__ == "__main__":
