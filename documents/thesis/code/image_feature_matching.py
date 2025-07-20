@@ -48,8 +48,8 @@ def main():
     img1_kp = cv2.drawKeypoints(img1, kp1, None, color=(0,255,0), flags=0)
     img2_kp = cv2.drawKeypoints(img2, kp2, None, color=(0,255,0), flags=0)
     
-    # Draw matches
-    img_matches = cv2.drawMatches(img1, kp1, img2, kp2, matches[:10], None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
+    # Draw matches (limit to top 50 for clarity)
+    img_matches = cv2.drawMatches(img1, kp1, img2, kp2, good_matches[:50], None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
     
     # Save images
     base1 = os.path.splitext(os.path.basename(img1_path))[0]
