@@ -15,7 +15,7 @@ This research has two primary objectives. The first is the implementation a nove
 
 As this system is intended to be run as part of real-time SLAM operations, no function performed by the model can take longer than the delta time between image frames. Ideally, each function should be significantly faster than this to allow for all SLAM system operations to complete as well.
 
-This goal also refers to the speed of identifying outdated map points, meaning a point which is outdated should be identified and culled with a 
+This goal also refers to the speed of identifying outdated map points, meaning a point which is outdated should be identified and culled with a minimal number of observations.
 
 \subparagraph{Goal 2: Size}
 
