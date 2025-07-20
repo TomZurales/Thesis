@@ -4,6 +4,8 @@
 The objective of this research is to integrate historical viewpoint-dependent observability into the decision of whether to flag a map point as outdated. The applications of this integration are wide, but for this research, we focus on the specific use case of eliminating outdated map points from reused keypoint-based visual SLAM maps in stochastic SLAM operations.
 
 
+
+
 % Define the scope of this work, focusing exclusively on map reuse between runs of SLAM in semi-static environments.
 
 This research is intended to improve keypoint-based visual SLAM performance in situations where a pre-generated map is loaded to lock in a known coordinate frame, and in changing environments. The key distinction from other operation modes is the repeated operations in the same environment, with an expectation of the maintenance of large scale static features, but without the expectation for smaller visual features to remain the same between runs. This is accomplished through the introduction of a viewpoint-aware probabilistic model for the existence of map points. This research studies the effects of removing map points from pre-generated maps using this model, and the downstream effects on optimization, relocalization and map accuracy.
