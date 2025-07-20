@@ -16,13 +16,13 @@ The first implementations of KV-SLAM came in the early 2000s \cite{seMobileRobot
 
 An image feature is the combination of a keypoint and a feature descriptor \cite{loweObjectRecognitionLocal1999}. Keypoints are locations in an image which are (ideally) invariant to lighting, scale, translation, and rotation\cite{shiGoodFeaturesTrack1994}, while descriptors are a data vector that acts as the unique fingerprint for the feature. Keypoints are located, and their descriptors generated in a process called feature extraction.
 
-The output of feature extraction is a set of image features, which when combined are significantly smaller than the image from which they were extracted. Figure \ref{fig:keypoint_extraction} shows the output of the ORB feature extractor, along with how the features extracted between two images can be 
+The output of feature extraction is a set of image features, which when combined are significantly smaller than the image from which they were extracted. Figure \ref{fig:keypoint_extraction} shows the output of the ORB feature extractor, along with how the features extracted between two images can be matched by their descriptors.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.8\textwidth]{resources/slam_family_tree.png}
     \caption[SLAM Family Tree]{Overview of the relationships between popular SLAM modalities.}
-    \label{fig:slam_family_tree}
+    \label{fig:keypoint_extraction}
 \end{figure}
 
 \subsubsection{RANSAC}
