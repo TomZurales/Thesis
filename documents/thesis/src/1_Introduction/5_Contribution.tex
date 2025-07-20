@@ -11,5 +11,5 @@ The VAMPE library is a C++ implementation of the viewpoint-aware probability she
 ORB-SLAM3, an extremely popular KV-SLAM implementation, is modified to utilize the VAMPE library for estimating the probability of map point existence within the global map. These probabilistic estimations are then used in the selection of keypoints for culling operations, regularly removing points which drop below a certain threshold, and for improving relocalization operations through an updated RANSAC implementation which weights high probability map points above low.
 
 % The datasets: A set of datasets and experimental results demonstrating how the library improves SLAM performance.
-\subsubsection{Stochastic Change Datasets}
+\subsubsection{Episodic Change Datasets}
 The datasets provided are recorded using an OAK-D stereo camera, rigidly mounted with a Unitree L2 LIDAR. The LIDAR is used to produce a highly accurate ground-truth, co-registered to the camera's view. IMU data is provided for both the camera and LIDAR. A map is provided for each dataset, generated using an unmodified implementation of ORB-SLAM3, and co-registered to the ground truth. Bounding boxes within this frame are provided representing keypoints known to change between runs.
