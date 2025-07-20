@@ -1,3 +1,15 @@
 \subsection{Objectives and Scope}
 \label{objectives}
 
+The objective of this research is to accurately identify outdated map points in reused keypoint-based visual SLAM maps by integrating point-level directional observability into the update step of map point confidence. 
+% Define the scope of this work, focusing exclusively on map reuse between runs of SLAM in semi-static environments.
+
+This research is intended to improve keypoint-based visual SLAM performance in situations where a pre-generated map is loaded to lock in a known coordinate frame, and in changing environments. The key distinction from other operation modes is the repeated operations in the same environment, with an expectation of the maintenance of large scale static features, but without the expectation for smaller visual features to remain the same between runs. This is accomplished through the introduction of a viewpoint-aware probabilistic model for the existence of map points. This research studies the effects of removing map points from pre-generated maps using this model, and the downstream effects on optimization, relocalization and map accuracy.
+
+% Define the objectives of the model; to be lightweight and effective at identifying outdated map points, and to be usable in real-time SLAM systems.
+
+The objective of the model is to produce an accurate method of representing the global observability of each map point in a map. The model should be lightweight, requiring only small amounts of additional space per map point. The model should integrate all observational data into its understanding of the map point's observability, while rejecting redundant data. Identification of map points which are outdated should be fast and accurate. Map points which remain visible should be robustly maintained.
+
+% Define the objectives of the implementation, not to hurt performance in static environments, and to improve performance with previously generated maps in semi-static environments.
+
+This model will be integrated into ORB-SLAM3 for testing purposes, ensuring we meet the implementation objectives of speed, accuracy and improvement. The model should not introduce significant increases in compute requirements. Additionally, performance in static environments should remain the same regardless of model implementation. However, under the specific scenario of map reuse in a changing environment, performance (as measured by trajectory accuracy to ground truth) should be improved.
