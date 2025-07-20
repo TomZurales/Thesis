@@ -27,11 +27,22 @@ def main():
     kp2, des2 = orb.detectAndCompute(img2, None)
     
     # Create BFMatcher
-    bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+    bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False)
     
-    # Match descriptors
-    matches = bf.match(des1, des2)
-    matches = sorted(matches, key=lambda x: x.distance)
+    # Match descriptors (get 2 best matches for each descriptor)
+    matches = bf.knnMatch(des1, des2, k=2)
+    
+    # Apply Lowe's ratio test to filter good matches
+    good_matches = []
+    for match_pair in matches:
+        if len(match_pair) == 2:
+            m, n = match_pair
+            # Keep matches where the distance ratio is less than 0.75
+            if m.distance < 0.75 * n.distance:
+                good_matches.append(m)
+    
+    # Sort matches by distance
+    good_matches = sorted(good_matches, key=lambda x: x.distance)
     
     # Draw keypoints on individual images
     img1_kp = cv2.drawKeypoints(img1, kp1, None, color=(0,255,0), flags=0)
