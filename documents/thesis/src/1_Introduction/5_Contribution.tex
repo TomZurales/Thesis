@@ -7,7 +7,7 @@ Through this research, we contribute three things to the subject of long-term ma
 The VAMPE library is a C++ implementation of the viewpoint-aware probability shell, with hooks for simple integration into any existing KV-SLAM implementation. Implementations for both a discrete viewpoint shell (implemented as an icosahedron) and a continuous viewpoint shell (implemented on a sphere) are made available.
 
 % The SLAM implementation: An implementation of the library in ORB-SLAM 3 to demonstrate its effectiveness.
-
+\subsubsection{ORB-SLAM3_VAMPE}
 ORB-SLAM3, an extremely popular KV-SLAM implementation, is modified to utilize the VAMPE library for estimating the probability of map point existence within the global map. These probabilistic estimations are then used in the selection of keypoints for culling operations, regularly removing points which drop below a certain threshold, and for improving relocalization operations through an updated RANSAC implementation which weights high probability map points above low.
 
 % The datasets: A set of datasets and experimental results demonstrating how the library improves SLAM performance.
