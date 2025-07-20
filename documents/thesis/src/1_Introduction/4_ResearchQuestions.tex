@@ -6,21 +6,3 @@
 
 
 \subsubsection*{Question 3. Can the change detection model be integrated into an existing KV-SLAM system in a way that meets the goals of Objective 2?}
-
-% Is a viewpoint-aware model of map point existence an effective way to detect and cull outdated map points?
-
-1. Is a viewpoint-aware model of map point existence an effective way to detect and cull outdated map points from pre-generated SLAM maps?
-
-Successfully answering this question will require implementation of the keypoint elimination model, and benchmarking the time it takes to cull known outdated map points, comparing against other keypoint elimination metrics from the literature.
-
-% What are the effects of this model on SLAM performance?
-
-2. When integrated into an existing SLAM system, does the model perform keypoint culling without significant detrimental effects on the system's performance metrics?
-
-The answer to this question requires comparing both the unmodified and modified SLAM outputs against ground truth trajectories. This requires the creation and utilization of datasets designed to challenge existing SLAM systems while exercising the need for keypoint elimination from reused maps.
-
-% Can this be implemented in a lightweight way capable of running on low-compute power platforms?
-
-3. Can the model be integrated into an existing SLAM system in such a way that it does not significantly increase compute requirements to run the system?
-
-This is implementation specific, but the answer to this question can be found by benchmarking the completion times for key functions in both the modified and unmodified systems.
