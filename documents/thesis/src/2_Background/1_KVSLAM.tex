@@ -48,7 +48,7 @@ It should be noted that RANSAC requires a low proportion of outliers in the data
 
 In the context of KV-SLAM, tracking refers to the process of estimating the real-time position and orientation of the camera, while mapping refers to the process of generating a 3D map of the environment. Methods like the eight-point algorithm can be used to simultaneously calculate the transformation and depths between two images taken from different viewpoints using their 2D-2D feature correspondences \cite{longuet-higginsComputerAlgorithmReconstructing1981}\cite{hartleyDefenseEightpointAlgorithm1997}. This is primarily used for map initialization, before any 3D map points have been established. Once a set of 3D map points have been established, tracking can be achieved using the Perspective-n-Point (PnP) algorithm \cite{fischlerRandomSampleConsensus1981}, with mapping utilizing triangulation to generate new map points \cite{davisonRealtimeSimultaneousLocalisation2003}.
 
-Incorrect 2D-2D and 2D-3D correspondences degrade the performance of the tracking and mapping processes. To account for outliers in the correspondences, RANSAC is used to perform the estimations of transformations and 3D depths
+Incorrect 2D-2D and 2D-3D correspondences degrade the performance of the tracking and mapping processes. To account for outliers in the correspondences, RANSAC is used to estimate the transformations and 3D depths 
 
 \subsubsection{Loop Closure and Relocalization}
 
