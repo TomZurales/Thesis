@@ -32,8 +32,30 @@ coefficients = np.polyfit(selected_x, selected_y, 1)
 slope, intercept = coefficients
 
 # Generate line points for plotting
-x_line = np.linspace(0, max(x_coords), 100)
+x_line = np.linspace(0, 10, 100)
 y_line = slope * x_line + intercept
+
+# Calculate distance from each point to the line
+# Line equation: ax + by + c = 0, where a = -slope, b = 1, c = -intercept
+# Distance = |ax + by + c| / sqrt(a^2 + b^2)
+a = -slope
+b = 1
+c = -intercept
+
+distances = []
+for x, y in zip(x_coords, y_coords):
+    distance = abs(a * x + b * y + c) / np.sqrt(a**2 + b**2)
+    distances.append(distance)
+
+# Determine colors based on distance to line
+colors = []
+for i, distance in enumerate(distances):
+    if i in selected_indices:
+        colors.append('red')  # Selected points remain red
+    elif distance <= 0.5:
+        colors.append('green')  # Points within 0.5 of line are green
+    else:
+        colors.append('blue')  # Other points remain blue
 
 # Create the scatter plot
 plt.figure(figsize=(8, 8))
