@@ -29,7 +29,7 @@ The purpose of feature extraction is to reduce the large input image data to a s
 
 \subsubsection{Robust Estimation and RANSAC}
 
-Image feature matching is a noisy process, meaning the correspondences between features in different images will not always be correct. This is especially true when the environment contains repetitive patterns. To address this, 
+Image feature matching is a noisy process, meaning the correspondences between features in different images will not always be correct. This is especially true when the environment contains repetitive patterns. To address this, robust estimation techniques are used to filter outliers from the data. The 
 
 Given a set of 2D image features and their associated 3D map points in a world frame, it is possible to determine the unique transformation which places the camera in the world frame relative to the map points \cite{longuet-higginsComputerAlgorithmReconstructing1981}. This algorithm is known as Perspective-n-Point (PnP), and is the mechanism for localizing 2D images within the 3D map in KV-SLAM. Additionally, through methods like the eight point algorithm \cite{hartleyDefenseEightpointAlgorithm1997}, the relative camera transformation between two images, and the depths of the jointly observed points can be determined. This 2D-2D correspondence is the basis for map initialization. But as shown above, the process of extracting and matching image features is noisy, and will contain outlier data, meaning that incorrect correspondences between point can lead to an incorrect solution or no solution being found. The solution to this issue is the Random Sample Consensus algorithm.
 
