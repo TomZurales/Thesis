@@ -123,7 +123,7 @@ ax1.grid(True, alpha=0.3)
 ax1.tick_params(axis='both', which='major', labelsize=12)
 ax1.set_xlim(0, 10)
 ax1.set_ylim(0, 10)
-ax1.set_title('Raw Data with ', fontsize=18)
+ax1.set_title('Raw Data with Best Fit', fontsize=18)
 
 # Plot 2: Current analysis (seed 42)
 ax2.scatter(x_coords, y_coords, s=20, alpha=0.7, c=colors2)
