@@ -43,3 +43,10 @@ The RANSAC algorithm is very easy to understand visually. Let's imagine a sensor
 \subsubsection{KV-SLAM Subprocesses}
 
 It is difficult to conceptualize modern SLAM as a pipeline from inputs to outputs. While implementations differ significantly, KV-SLAM can be better understood as a collection of tightly coupled concurrent processes. Figure \ref{fig:subprocesses} shows a block diagram of the processes and layers of a modern SLAM system.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{resources/subprocesses.png}
+    \caption[2D RANSAC Example]{A demonstration of how RANSAC determines model parameters through iterative random sampling and model application.}
+    \label{fig:ransac}
+\end{figure}
