@@ -132,7 +132,7 @@ legend_elements = [
     Line2D([0], [0], marker='o', color='w', markerfacecolor='green', markersize=8, label='Points that Fit Model'),
     Line2D([0], [0], marker='o', color='w', markerfacecolor='blue', markersize=8, label='Outliers')
 ]
-fig.legend(handles=legend_elements, loc='lower center', ncol=3, bbox_to_anchor=(0.5, 0.05), fontsize=18)
+fig.legend(handles=legend_elements, loc='lower center', ncol=3, bbox_to_anchor=(0.5, 0.0), fontsize=18)
 
 # Adjust layout to make room for legend
 plt.subplots_adjust(bottom=0.15)
