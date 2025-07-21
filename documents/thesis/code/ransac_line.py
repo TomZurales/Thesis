@@ -59,10 +59,8 @@ for i, distance in enumerate(distances):
 
 # Create the scatter plot
 plt.figure(figsize=(8, 8))
-# Plot all points in blue
-plt.scatter(x_coords, y_coords, s=20, alpha=0.7, c='blue')
-# Plot selected points in red
-plt.scatter(selected_x, selected_y, s=20, c='red', alpha=0.9)
+# Plot all points with their assigned colors
+plt.scatter(x_coords, y_coords, s=20, alpha=0.7, c=colors)
 # Plot line of best fit
 plt.plot(x_line, y_line, 'red', linewidth=2, alpha=0.8)
 plt.grid(True, alpha=0.3)
