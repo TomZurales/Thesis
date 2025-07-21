@@ -7,6 +7,7 @@ def generate_point():
         x = np.random.uniform(0, 10)
         y = np.random.uniform(0, 10)
     else:
+        # linear data
         
     return x, y
 
