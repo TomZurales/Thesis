@@ -85,6 +85,25 @@ def get_valid_line_and_colors(x_coords, y_coords, initial_seed, min_green=None, 
     # If no valid solution found, return the last attempt
     return x_line, y_line, colors, green_count
 
+# Create best fit line for all data (first plot)
+all_coefficients = np.polyfit(x_coords, y_coords, 1)
+all_slope, all_intercept = all_coefficients
+all_x_line = np.linspace(0, 10, 100)
+all_y_line = all_slope * all_x_line + all_intercept
+
+# Calculate colors for all data points based on best fit line
+all_a = -all_slope
+all_b = 1
+all_c = -all_intercept
+
+all_colors = []
+for x, y in zip(x_coords, y_coords):
+    distance = abs(all_a * x + all_b * y + all_c) / np.sqrt(all_a**2 + all_b**2)
+    if distance <= 0.5:
+        all_colors.append('green')  # Points within 0.5 of line are green
+    else:
+        all_colors.append('blue')   # Other points are blue
+
 # Middle plot: reselect if more than 30 green points
 x_line2, y_line2, colors2, green_count2 = get_valid_line_and_colors(x_coords, y_coords, 42, max_green=30)
 
