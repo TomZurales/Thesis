@@ -8,7 +8,8 @@ def generate_point():
         y = np.random.uniform(0, 10)
     else:
         # linear data
-        
+        x = np.random.uniform(0, 10)
+        y = x
     return x, y
 
 # Generate 100 data points
