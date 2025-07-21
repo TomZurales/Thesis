@@ -2,7 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def generate_point():
-    if rand
+    if random.uniform(0, 1) < 0.2:
+        # Generate a point with a specific distribution
+        x = np.random.uniform(0, 10)
+        y = np.random.uniform(0, 10)
+    else:
     """
     Function to generate a single X,Y coordinate.
     Implement your own logic here.
