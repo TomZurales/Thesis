@@ -42,7 +42,7 @@ The RANSAC algorithm is very easy to understand visually. Let's imagine a sensor
     \label{fig:ransac}
 \end{figure}
 
-\subsubsection{KV-SLAM Subprocesses}
+\subsubsection{Tracking and Mapping}
 
 It is difficult to conceptualize modern SLAM as a pipeline from inputs to outputs. While implementations differ significantly, KV-SLAM can be better understood as a collection of tightly coupled concurrent processes. Figure \ref{fig:subprocesses} shows a block diagram of the layers and subprocesses of a modern KV-SLAM system. A complete understanding of each subprocess is not necessary, so we offer a high level overview here, with additional detail given to processes which can be improved through the implementation of the viewpoint-aware point removal method.
 
