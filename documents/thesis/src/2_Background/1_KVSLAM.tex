@@ -33,7 +33,7 @@ Image feature matching is a noisy process, meaning the correspondences between f
 
 RANSAC is an iterative algorithm that estimates model parameters from a dataset containing outliers. It works by randomly selecting a subset of the data, fitting the model to this subset, and then counting the number of inliers that fit the model within a certain threshold. The process is repeated until a model is found that matches a sufficient number of inliers, or a maximum number of iterations is reached.
 
-Figure \ref{fig:ransac} provides a visual representation of the process RANSAC takes to fit data with outliers. If one were to sample linear data with a noisy sensor that sometimes produces outliers, the output may look like the left most plot of the figure. As can be seen, the best fit for all the data is far from correct due to the outliers. By iteratively selecting a random sample of the input data, fitting the model to this sample, and counting the number of inliers, RANSAC can find a solution which explains the highest proportion of the observations.
+Figure \ref{fig:ransac} provides a visual representation of the process RANSAC takes to fit data with outliers. If one were to sample linear data with a noisy sensor that sometimes produces outliers, the output may look like the left most plot of the figure. As can be seen, the best fit line is severely skewed by the outliers. By iteratively selecting a random sample of the input data, fitting the model to this sample, and counting the number of inliers, RANSAC can find a solution which explains the highest proportion of the observations.
 
 \begin{figure}[!ht]
     \centering
