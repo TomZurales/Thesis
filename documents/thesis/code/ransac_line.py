@@ -103,6 +103,7 @@ ax1.grid(True, alpha=0.3)
 ax1.tick_params(axis='both', which='major')
 ax1.set_xlim(0, 10)
 ax1.set_ylim(0, 10)
+ax1.set_title('Raw Data')
 
 # Plot 2: Current analysis (seed 42)
 ax2.scatter(x_coords, y_coords, s=20, alpha=0.7, c=colors2)
@@ -111,6 +112,7 @@ ax2.grid(True, alpha=0.3)
 ax2.tick_params(axis='both', which='major')
 ax2.set_xlim(0, 10)
 ax2.set_ylim(0, 10)
+ax2.set_title('Random Sample with Low Consensus')
 
 # Plot 3: Different random selection (seed 123)
 ax3.scatter(x_coords, y_coords, s=20, alpha=0.7, c=colors3)
@@ -119,6 +121,7 @@ ax3.grid(True, alpha=0.3)
 ax3.tick_params(axis='both', which='major')
 ax3.set_xlim(0, 10)
 ax3.set_ylim(0, 10)
+ax3.set_title('Random Sample with High Consensus')
 
 plt.tight_layout()
 
