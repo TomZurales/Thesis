@@ -2,16 +2,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def generate_point():
-    while
-    if np.random.uniform(0, 1) < 0.2:
-        # Generate a point with a specific distribution
-        x = np.random.uniform(0, 10)
-        y = np.random.uniform(0, 10)
-    else:
-        # linear data
-        val = np.random.uniform(0, 10)
-        x = val + np.random.normal(val, 1)
-        y = val + np.random.normal(val, 1)
+    while x > 10 or y > 10:
+        if np.random.uniform(0, 1) < 0.2:
+            # Generate a point with a specific distribution
+            x = np.random.uniform(0, 10)
+            y = np.random.uniform(0, 10)
+        else:
+            # linear data
+            val = np.random.uniform(0, 10)
+            x = val + np.random.normal(val, 1)
+            y = val + np.random.normal(val, 1)
     return x, y
 
 # Generate 100 data points
