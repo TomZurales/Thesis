@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def generate_point():
-    
+    while
     if np.random.uniform(0, 1) < 0.2:
         # Generate a point with a specific distribution
         x = np.random.uniform(0, 10)
