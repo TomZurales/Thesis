@@ -91,6 +91,9 @@ x_line2, y_line2, colors2, green_count2 = get_valid_line_and_colors(x_coords, y_
 # Right plot: reselect if less than 60 green points
 x_line3, y_line3, colors3, green_count3 = get_valid_line_and_colors(x_coords, y_coords, 123, min_green=60)
 
+print(f"Middle plot: {green_count2} green points (≤30 required)")
+print(f"Right plot: {green_count3} green points (≥60 required)")
+
 # Create the three side-by-side plots
 fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(18, 6))
 
