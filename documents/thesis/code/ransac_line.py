@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def generate_point():
+    x = 100
+    y = 100
     while x > 10 or y > 10:
         if np.random.uniform(0, 1) < 0.2:
             # Generate a point with a specific distribution
