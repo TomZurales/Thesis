@@ -12,8 +12,8 @@ def generate_point():
         else:
             # linear data
             val = np.random.uniform(0, 10)
-            x = val + np.random.normal(val, 1)
-            y = val + np.random.normal(val, 1)
+            x = val + np.random.normal(val, .1)
+            y = val + np.random.normal(val, .1)
     return x, y
 
 # Generate 100 data points
