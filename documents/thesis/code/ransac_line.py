@@ -7,7 +7,7 @@ def generate_point():
         x = np.random.uniform(0, 10)
         y = np.random.uniform(0, 10)
     else:
-
+        
     return x, y
 
 # Generate 100 data points
