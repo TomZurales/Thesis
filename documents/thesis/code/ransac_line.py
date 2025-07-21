@@ -105,10 +105,10 @@ for x, y in zip(x_coords, y_coords):
         all_colors.append('blue')   # Other points are blue
 
 # Middle plot: reselect if more than 30 green points
-x_line2, y_line2, colors2, green_count2 = get_valid_line_and_colors(x_coords, y_coords, 42, max_green=30)
+x_line2, y_line2, colors2, green_count2 = get_valid_line_and_colors(x_coords, y_coords, 42, max_green=25)
 
 # Right plot: reselect if less than 60 green points
-x_line3, y_line3, colors3, green_count3 = get_valid_line_and_colors(x_coords, y_coords, 123, min_green=60)
+x_line3, y_line3, colors3, green_count3 = get_valid_line_and_colors(x_coords, y_coords, 123, min_green=70)
 
 print(f"Middle plot: {green_count2} green points (≤30 required)")
 print(f"Right plot: {green_count3} green points (≥60 required)")
