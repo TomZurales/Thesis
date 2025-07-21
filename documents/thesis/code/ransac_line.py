@@ -152,7 +152,7 @@ plt.tight_layout()
 from matplotlib.lines import Line2D
 legend_elements = [
     Line2D([0], [0], marker='o', color='w', markerfacecolor='red', markersize=8, label='Random Sample'),
-    Line2D([0], [0], marker='o', color='w', markerfacecolor='green', markersize=8, label='Points that Fit Model'),
+    Line2D([0], [0], marker='o', color='w', markerfacecolor='green', markersize=8, label='Good Data / Inliers'),
     Line2D([0], [0], marker='o', color='w', markerfacecolor='blue', markersize=8, label='Outliers')
 ]
 fig.legend(handles=legend_elements, loc='lower center', ncol=3, bbox_to_anchor=(0.5, 0.02))
