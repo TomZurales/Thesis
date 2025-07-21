@@ -16,7 +16,7 @@ The first implementations of KV-SLAM came in the early 2000s \cite{seMobileRobot
 
 An image feature is the combination of a keypoint and a feature descriptor \cite{loweObjectRecognitionLocal1999}. Keypoints are locations in an image which are designed to be invariant to lighting, scale, translation, and rotation, while descriptors are a data vector that acts as a unique fingerprint for a feature. Keypoints are located, and their descriptors generated in a process called feature extraction.
 
-Image features can be matched between frames uing their 
+Image features can be matched between frames using their descriptors. 
 
 The output of feature extraction is a set of image features, which when combined are significantly smaller than the image from which they were extracted. Figure \ref{fig:feature_extraction_and_matching} shows the output of the ORB feature extractor on two input images.
 
