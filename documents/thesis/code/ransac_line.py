@@ -58,9 +58,38 @@ def create_line_and_colors(x_coords, y_coords, seed_value):
     
     return x_line, y_line, colors
 
-# Create data for second and third plots
-x_line2, y_line2, colors2 = create_line_and_colors(x_coords, y_coords, 42)
-x_line3, y_line3, colors3 = create_line_and_colors(x_coords, y_coords, 123)
+# Create data for second and third plots with reselection logic
+def get_valid_line_and_colors(x_coords, y_coords, initial_seed, min_green=None, max_green=None):
+    """Get line and colors, reselecting if green point count doesn't meet criteria"""
+    seed = initial_seed
+    attempts = 0
+    max_attempts = 1000
+    
+    while attempts < max_attempts:
+        x_line, y_line, colors = create_line_and_colors(x_coords, y_coords, seed)
+        green_count = colors.count('green')
+        
+        # Check if criteria are met
+        valid = True
+        if min_green is not None and green_count < min_green:
+            valid = False
+        if max_green is not None and green_count > max_green:
+            valid = False
+        
+        if valid:
+            return x_line, y_line, colors, green_count
+        
+        seed += 1
+        attempts += 1
+    
+    # If no valid solution found, return the last attempt
+    return x_line, y_line, colors, green_count
+
+# Middle plot: reselect if more than 30 green points
+x_line2, y_line2, colors2, green_count2 = get_valid_line_and_colors(x_coords, y_coords, 42, max_green=30)
+
+# Right plot: reselect if less than 60 green points
+x_line3, y_line3, colors3, green_count3 = get_valid_line_and_colors(x_coords, y_coords, 123, min_green=60)
 
 # Create the three side-by-side plots
 fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(18, 6))
