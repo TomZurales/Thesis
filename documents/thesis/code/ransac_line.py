@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def generate_point():
+    if rand
     """
     Function to generate a single X,Y coordinate.
     Implement your own logic here.
