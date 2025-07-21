@@ -9,7 +9,7 @@ def generate_point():
     else:
         # linear data
         val = np.random.uniform(0, 10)
-        x = val + np.random.(0, 10)
+        x = val + np.random.normal(0, 10)
         y = x
     return x, y
 
