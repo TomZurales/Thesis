@@ -51,7 +51,7 @@ def create_line_and_colors(x_coords, y_coords, seed_value):
     for i, distance in enumerate(distances):
         if i in selected_indices:
             colors.append('red')  # Selected points remain red
-        elif distance <= 0.6:
+        elif distance <= 0.5:
             colors.append('green')  # Points within 0.5 of line are green
         else:
             colors.append('blue')  # Other points remain blue
