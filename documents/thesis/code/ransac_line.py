@@ -118,7 +118,7 @@ fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(18, 6))
 
 # Plot 1: All points with best fit line
 ax1.scatter(x_coords, y_coords, s=20, alpha=0.7, c=all_colors)
-ax1.plot(all_x_line, all_y_line, 'black', linewidth=2, alpha=0.8)
+ax1.plot(all_x_line, all_y_line, 'red', linewidth=2, alpha=0.8)
 ax1.grid(True, alpha=0.3)
 ax1.tick_params(axis='both', which='major', labelsize=12)
 ax1.set_xlim(0, 10)
