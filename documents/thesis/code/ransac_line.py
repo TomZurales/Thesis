@@ -60,7 +60,65 @@ def create_line_and_colors(x_coords, y_coords, seed_value):
 
 # Create data for second and third plots
 x_line2, y_line2, colors2 = create_line_and_colors(x_coords, y_coords, 42)
-x_line3, y_line3, colors3 = create_line_and_colors(x_coords, y_coords, 123)
+
+# For third plot, create best fit line using only the "good data" points
+# We need to regenerate with the same seed to identify which points are "good data"
+np.random.seed(42)  # Use same seed as original data generation
+good_data_x = []
+good_data_y = []
+all_x = []
+all_y = []
+
+for _ in range(100):
+    x = 100
+    y = 100
+    while x > 10 or y > 10:
+        if np.random.uniform(0, 1) < 0.2:
+            # Outlier data
+            x = np.random.uniform(0, 10)
+            y = np.random.uniform(0, 10)
+            is_good_data = False
+        else:
+            # Good data
+            val = np.random.uniform(0, 10)
+            x = val + np.random.normal(val, .15)
+            y = val + np.random.normal(val, .25)
+            is_good_data = True
+    
+    all_x.append(x)
+    all_y.append(y)
+    if is_good_data:
+        good_data_x.append(x)
+        good_data_y.append(y)
+
+# Fit line through good data points only
+coefficients_good = np.polyfit(good_data_x, good_data_y, 1)
+slope_good, intercept_good = coefficients_good
+x_line3 = np.linspace(0, 10, 100)
+y_line3 = slope_good * x_line3 + intercept_good
+
+# Create colors for third plot: green for good data, blue for outliers
+colors3 = []
+good_idx = 0
+outlier_idx = 0
+np.random.seed(42)  # Reset seed to match generation order
+for i in range(100):
+    x_temp = 100
+    y_temp = 100
+    while x_temp > 10 or y_temp > 10:
+        if np.random.uniform(0, 1) < 0.2:
+            # Outlier data
+            x_temp = np.random.uniform(0, 10)
+            y_temp = np.random.uniform(0, 10)
+            colors3.append('blue')
+            break
+        else:
+            # Good data
+            val = np.random.uniform(0, 10)
+            x_temp = val + np.random.normal(val, .15)
+            y_temp = val + np.random.normal(val, .25)
+            colors3.append('green')
+            break
 
 # Create the three side-by-side plots
 fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(18, 6))
