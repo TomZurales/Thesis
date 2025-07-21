@@ -121,7 +121,7 @@ ax3.grid(True, alpha=0.3)
 ax3.tick_params(axis='both', which='major', labelsize=12)
 ax3.set_xlim(0, 10)
 ax3.set_ylim(0, 10)
-ax3.set_title('Random Sample with High Consensus', fontsize=14)
+ax3.set_title('Random Sample with High Consensus', fontsize=18)
 
 plt.tight_layout()
 
