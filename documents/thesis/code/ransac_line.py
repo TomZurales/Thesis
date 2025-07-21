@@ -45,6 +45,6 @@ plt.scatter(selected_x, selected_y, s=20, c='red', alpha=0.9)
 plt.plot(x_line, y_line, 'red', linewidth=2, alpha=0.8)
 plt.grid(True, alpha=0.3)
 plt.tick_params(axis='both', which='major')
-plt.xlim(0, None)  # Ensure positive x
-plt.ylim(0, None)  # Ensure positive y
+plt.xlim(0, 10)  # Lock x-axis to 0-10
+plt.ylim(0, 10)  # Lock y-axis to 0-10
 plt.show()
