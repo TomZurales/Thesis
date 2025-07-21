@@ -98,7 +98,7 @@ print(f"Right plot: {green_count3} green points (≥60 required)")
 fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(18, 6))
 
 # Plot 1: All points in blue
-ax1.scatter(x_coords, y_coords, s=20, alpha=0.7, c='black')
+ax1.scatter(x_coords, y_coords, s=20, alpha=0.7, c='blue')
 ax1.grid(True, alpha=0.3)
 ax1.tick_params(axis='both', which='major', labelsize=12)
 ax1.set_xlim(0, 10)
