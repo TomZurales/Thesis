@@ -2,19 +2,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def generate_point():
-    if random.uniform(0, 1) < 0.2:
+    if np.random.uniform(0, 1) < 0.2:
         # Generate a point with a specific distribution
         x = np.random.uniform(0, 10)
         y = np.random.uniform(0, 10)
     else:
-    """
-    Function to generate a single X,Y coordinate.
-    Implement your own logic here.
-    Should return a tuple (x, y) where both x and y are positive.
-    """
-    # Placeholder implementation - replace with your own
-    x = np.random.uniform(0, 10)
-    y = np.random.uniform(0, 10)
+
     return x, y
 
 # Generate 100 data points
