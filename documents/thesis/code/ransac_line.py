@@ -6,11 +6,11 @@ def generate_point():
     y = 100
     while x > 10 or y > 10:
         if np.random.uniform(0, 1) < 0.2:
-            # Generate a point with a specific distribution
+            # Outlier data
             x = np.random.uniform(0, 10)
             y = np.random.uniform(0, 10)
         else:
-            # linear data
+            # Good data
             val = np.random.uniform(0, 10)
             x = val + np.random.normal(val, .15)
             y = val + np.random.normal(val, .25)
