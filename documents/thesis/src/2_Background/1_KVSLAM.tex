@@ -55,4 +55,4 @@ The frontend is responsible for coarse motion estimates and map point generation
 
 The backend is responsible for integrating the coarse motion estimates and map points from the frontend into the larger context of the global map and trajectory. There will always be some error in the motion and map point estimations from the frontend, so the backend adjusts various elements of the global estimate such as frame positions, map point positions, and camera parameters to minimize the overall error within the global estimation in an optimization process called bundle adjustment \cite{triggsBundleAdjustmentModern2000a}. The backend processes tend to run at a slower rate than the frontend, focusing on providing global consistency that the frontend cannot produce alone.
 
-Within this model, the VD-OMR 
+Within this model, the VD-OMR system being researched would 
