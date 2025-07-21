@@ -58,40 +58,8 @@ def main():
     img1_kp = cv2.drawKeypoints(img1, kp1, None, color=(0,255,0), flags=0)
     img2_kp = cv2.drawKeypoints(img2, kp2, None, color=(0,255,0), flags=0)
     
-    # Create combined image with border
-    border_width = 20
-    h1, w1 = img1.shape
-    h2, w2 = img2.shape
-    combined_height = max(h1, h2)
-    combined_width = w1 + w2 + border_width
-    
-    # Create white border between images
-    combined_img = np.zeros((combined_height, combined_width), dtype=np.uint8)
-    combined_img[:h1, :w1] = img1
-    combined_img[:, w1:w1+border_width] = 255  # White border
-    combined_img[:h2, w1+border_width:] = img2
-    
-    # Convert to color for drawing matches
-    combined_img_color = cv2.cvtColor(combined_img, cv2.COLOR_GRAY2BGR)
-    
-    # Adjust keypoint coordinates for the second image
-    kp2_adjusted = []
-    for kp in kp2:
-        adjusted_kp = cv2.KeyPoint(kp.pt[0] + w1 + border_width, kp.pt[1], kp.size, kp.angle, kp.response, kp.octave, kp.class_id)
-        kp2_adjusted.append(adjusted_kp)
-    
-    # Draw matches manually on the combined image
-    img_matches = combined_img_color.copy()
-    for i, match in enumerate(good_matches[:50]):
-        # Get keypoint coordinates
-        pt1 = tuple(map(int, kp1[match.queryIdx].pt))
-        pt2 = tuple(map(int, (kp2[match.trainIdx].pt[0] + w1 + border_width, kp2[match.trainIdx].pt[1])))
-        
-        # Draw line connecting the matches
-        color = tuple(map(int, np.random.randint(0, 255, 3)))  # Random color for each match
-        cv2.line(img_matches, pt1, pt2, color, 1)
-        cv2.circle(img_matches, pt1, 3, color, -1)
-        cv2.circle(img_matches, pt2, 3, color, -1)
+    # Draw matches (limit to top 50 for clarity)
+    img_matches = cv2.drawMatches(img1, kp1, img2, kp2, good_matches[:50], None, flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
     
     # Save images
     base1 = os.path.splitext(os.path.basename(img1_path))[0]
