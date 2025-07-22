@@ -65,7 +65,7 @@ Loop closure is a technique used to correct drift during large scale KV-SLAM ope
 
 Relocalization is used when the SLAM system is "lost", meaning a map of the environment exists, but the location of the camera within this map is unknown. This can happen for many reasons such as going through an area with low visual texture, dim lighting, or temporary obstruction of the camera by a moving object. To recover, the SLAM system looks for positions within the map which are visually similar to the current image. If a strong candidate position is found, the system attempts to find a valid pose for the image in the map using PnP and RANSAC.
 
-Both of these operations rely on the ability to recognize visual similarity between the current image and the map. But as stated previous, the image data is discarded, meaning visual similarity must be recognized another way. In KV-SLAM systems, this is normally accomplished using the 
+Both of these operations rely on the ability to recognize visual similarity between the current image and the map. But as stated previous, the image data is discarded, meaning visual similarity must be recognized another way. In KV-SLAM systems, this is normally accomplished using the Bag of Words model
 
 \subsubsection{Map Reuse}
 
