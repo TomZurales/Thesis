@@ -18,7 +18,7 @@ An image feature is the combination of a keypoint and a feature descriptor \cite
 
 Image features can be matched between frames using their descriptors. For many features such as SIFT \cite{loweObjectRecognitionLocal1999}, SURF \cite{baySURFSpeededRobust2006}, and ORB \cite{rubleeORBEfficientAlternative2011}, the descriptor is a vector of floating point values, calculated from pixel values surrounding the keypoint, which can be compared using a distance metric such as Euclidean distance or Hamming distance.
 
-The purpose of feature extraction is to reduce the large input image data to a small set of easily detectable and trackable features, allowing the . Figure \ref{fig:feature_extraction_and_matching} shows the output of the ORB feature extractor on two input images, and the matching features between the two images. The capability to match the same set of points across multiple viewpoints is core to how 3D map points are estimated from multiple 2D images.
+The purpose of feature extraction is to reduce the large input image data to a small set of easily detectable and trackable features, allowing the huge majority of the image data to be disgarded. Figure \ref{fig:feature_extraction_and_matching} shows the output of the ORB feature extractor on two input images, and the matching features between the two images. The capability to match the same set of points across multiple viewpoints is core to how 3D map points are estimated from multiple 2D images.
 
 \begin{figure}[!ht]
     \centering
@@ -63,7 +63,7 @@ Loop closure is a technique used to correct drift during large scale KV-SLAM ope
     \label{fig:loop_closure}
 \end{figure}
 
-Relocalization is used when the SLAM system is "lost", meaning a map of the environment exists, but the location of the camera within this map is unknown. This can happen for many reasons such as going through an area with low visual texture, dim lighting, or temporary obstruction of the camera by a moving object. To recover, the SLAM system looks for positions within the map which are visually similar to the current image. If a strong candidate position is found, the system attempts to find a valid pose for the image in the map using PnP and RANSAC. 
+Relocalization is used when the SLAM system is "lost", meaning a map of the environment exists, but the location of the camera within this map is unknown. This can happen for many reasons such as going through an area with low visual texture, dim lighting, or temporary obstruction of the camera by a moving object. To recover, the SLAM system looks for positions within the map which are visually similar to the current image. If a strong candidate position is found, the system attempts to find a valid pose for the image in the map using PnP and RANSAC.
 
 Both of these operations rely on the ability to recognize visual similarity between the current image and the map. But as stated previous
 
