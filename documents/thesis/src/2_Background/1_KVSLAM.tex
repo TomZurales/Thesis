@@ -63,7 +63,7 @@ Loop closure is a technique used to correct drift during large scale KV-SLAM ope
     \label{fig:loop_closure}
 \end{figure}
 
-Relocalization is used when the SLAM system is "lost", meaning a map of the environment exists, but the location of the camera within this map is unknown. This can happen for many reasons such as going through an area with low visual texture, dim lighting, or temporary obstruction of the camera by a moving object. To recover, the SLAM system looks for positions within the map which are visually similar to the current image. If a strong candidate position is found, the system attempts to find a 
+Relocalization is used when the SLAM system is "lost", meaning a map of the environment exists, but the location of the camera within this map is unknown. This can happen for many reasons such as going through an area with low visual texture, dim lighting, or temporary obstruction of the camera by a moving object. To recover, the SLAM system looks for positions within the map which are visually similar to the current image. If a strong candidate position is found, the system attempts to find a valid pose for the current image 
 
 \subsubsection{Map Reuse}
 
