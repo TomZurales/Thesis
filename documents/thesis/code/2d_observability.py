@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 fig, ax = plt.subplots(subplot_kw=dict(projection='polar'))
 
 # Add blue background from π/4 to 7π/4
-theta_fill = np.linspace(7*np.pi/4, np.pi/4, , 100)
+theta_fill = np.linspace(7*np.pi/4, np.pi/4, 100)
 r_fill = np.ones_like(theta_fill)
 ax.fill_between(theta_fill, 0, r_fill, alpha=0.6, color='blue')
 
