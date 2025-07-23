@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 # Create figure and polar subplot
 fig, ax = plt.subplots(subplot_kw=dict(projection='polar'))
 
-# Add blue background from π/4 to 7π/4 where r < 0.4
+# Add blue background from π/4 to 7π/4
 theta_fill = np.linspace(np.pi/4, 7*np.pi/4, 100)
-r_fill = 0.4 * np.ones_like(theta_fill)
+r_fill = np.ones_like(theta_fill)
 ax.fill_between(theta_fill, 0, r_fill, alpha=0.6, color='blue')
 
 # Plot point at center
