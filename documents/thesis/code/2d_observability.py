@@ -18,11 +18,41 @@ theta_full = np.linspace(0, 2*np.pi, 360)
 
 # For each angle, determine if there's a wall
 wall_distance = np.full_like(theta_full, 1.0)  # Default to edge of plot
-# Set wall distance to 0.4 for angles between 7π/4 and π/4 (crossing through 0)
+
+# The wall blocks everything from 7π/4 to π/4, wrapping around through 0
+# We need to handle the wrap-around properly
 for i, theta in enumerate(theta_full):
     # Check if angle is in the range 7π/4 to π/4 (crossing 0)
+    # This covers the angular range where the wall creates a shadow
     if theta >= 7*np.pi/4 or theta <= np.pi/4:
+        # For angles where the wall exists, everything beyond 0.4 is blocked
         wall_distance[i] = 0.4
+    else:
+        # For angles where there's no physical wall, we need to check
+        # if the line of sight intersects the wall segment
+        # The wall is a chord from (7π/4, 0.4) to (π/4, 0.4)
+        # Any ray from center in the "shadow" region should be blocked at distance 0.4
+        
+        # Convert wall endpoints to Cartesian for easier calculation
+        x1 = 0.4 * np.cos(7*np.pi/4)  # Wall start point
+        y1 = 0.4 * np.sin(7*np.pi/4)
+        x2 = 0.4 * np.cos(np.pi/4)    # Wall end point  
+        y2 = 0.4 * np.sin(np.pi/4)
+        
+        # Ray direction for current angle
+        ray_x = np.cos(theta)
+        ray_y = np.sin(theta)
+        
+        # Check if ray intersects the wall chord
+        # Using parametric line intersection
+        denom = (x2-x1)*ray_y - (y2-y1)*ray_x
+        if abs(denom) > 1e-10:  # Lines are not parallel
+            t = ((x2-x1)*(-y1) - (y2-y1)*(-x1)) / denom
+            s = (ray_x*(-y1) - ray_y*(-x1)) / denom
+            
+            # Check if intersection is on both the ray (t>0) and wall segment (0<=s<=1)
+            if t > 0 and 0 <= s <= 1:
+                wall_distance[i] = t  # Distance to wall intersection
 
 # Create blue region (center to wall)
 r_blue_inner = np.zeros_like(theta_full)
