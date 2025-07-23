@@ -9,6 +9,11 @@ fig, ax = plt.subplots(subplot_kw=dict(projection='polar'))
 ax.plot(0, 0, 'ro', markersize=8, label='p')
 ax.text(0, 0.1, 'p', ha='center', va='bottom', fontsize=12)
 
+# Draw straight black line from 7π/4 to π/4 at distance 0.4
+theta_line = [7 * np.pi / 4, np.pi / 4]
+r_line = [0.4, 0.4]
+ax.plot(theta_line, r_line, 'k-', linewidth=2)
+
 # Set up the plot
 ax.set_ylim(0, 1)
 ax.set_yticklabels([])  # Remove radial distance labels
