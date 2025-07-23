@@ -32,12 +32,7 @@ The inclusion of distance in the model is necessary to handle occlusions in the 
 
 The model operates in two stages: the observation stage, and the query stage. Observations modify the model's internal representation of a map point's observability, while queries ask \"What is the probability that I see the map point from this viewpoint?\". The observation function operates on observation data in the form $\boldsymbol{o} = \{\boldsymbol{v}\in\mathbb{S}^2\times d\in\mathbb{R}^+\times o\in\{0, 1\}\}$, where $\boldsymbol{v}$ represents the unit vector pointing from the map point to the observer, $d$ represents the distance between the map point and the observer, and $o$ represents whether the map point was seen or not. The query function operates on a similar set of parameters, excluding the observation success, represented as $\boldsymbol{q} = \{\boldsymbol{v}\in\mathbb{S}^2\times d\in\mathbb{R}^+\}$. The goal of the model is to provide answers to queries which are as accurate as possible based on the observations received up until that point. With perfect knowledge of the map point's observability across the domain of viewpoints, every query response would be a 0 or a 1, however, this would require infinite observations to produce. Instead, we implement the model probabilistically, allowing a finite number of observations to estimate the point's observability across the domain, and returning a probability of observation in the range [0, 1]. Figure \ref{fig:2d_observability} provides a simplified 2D representation of a map point $\boldsymbol{p}$'s ideal observability.
 
-\begin{figure}[!ht]
-    \centering
-    % TODO: Add actual figure content
-    \caption{A simplified 2D representation of a map point's ideal observability pattern. The point is observable from certain viewing directions (shown in green) but occluded from others (shown in red).}
-    \label{fig:2d_observability}
-\end{figure}
+
 
 \subsubsection{Observability Shell Representations}
 
