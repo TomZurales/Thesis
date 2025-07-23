@@ -7,9 +7,7 @@ fig, ax = plt.subplots(subplot_kw=dict(projection='polar'))
 
 # Plot point at center
 ax.plot(0, 0, 'ro', markersize=8, label='p')
-ax.text(0, 0.1, '$p$', ha='center', va='bottom', fontsize=12)
-
-theta = np.arange(0, 2 * np.pi, 0.01)
+ax.text(0, 0.1, 'p', ha='center', va='bottom', fontsize=12)
 
 # Set up the plot
 ax.set_ylim(0, 1)
@@ -20,7 +18,5 @@ ax.set_thetagrids(np.degrees(np.linspace(0, 2*np.pi, 8, endpoint=False)),
                   labels=radian_labels)
 ax.set_title('Radial Plot')
 ax.grid(True)
-
-plt.fill_between(theta, 0, 1, color='lightgray', alpha=0.5)
 
 plt.show()
