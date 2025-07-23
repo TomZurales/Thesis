@@ -21,6 +21,6 @@ ax.set_thetagrids(np.degrees(np.linspace(0, 2*np.pi, 8, endpoint=False)),
 ax.set_title('Radial Plot')
 ax.grid(True)
 
-plt.fill
+plt.fill_between(theta, 0, 1, color='lightgray', alpha=0.5)
 
 plt.show()
