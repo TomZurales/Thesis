@@ -21,4 +21,6 @@ ax.set_thetagrids(np.degrees(np.linspace(0, 2*np.pi, 8, endpoint=False)),
 ax.set_title('Radial Plot')
 ax.grid(True)
 
+plt.fill
+
 plt.show()
