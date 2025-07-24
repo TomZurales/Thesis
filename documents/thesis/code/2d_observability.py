@@ -212,6 +212,14 @@ obs.draw_samples(ax2, samples)
 # obs.draw_knn_model(ax2, 1, samples)
 ax2.set_title("Sampled Observability")
 
+# Add legend for observation samples
+from matplotlib.lines import Line2D
+legend_elements = [
+    Line2D([0], [0], marker='+', color='blue', linestyle='None', markersize=8, label='Positive Observation'),
+    Line2D([0], [0], marker='+', color='red', linestyle='None', markersize=8, label='Negative Observation')
+]
+ax2.legend(handles=legend_elements, loc='upper right')
+
 # # Right plot: Binned model
 # ax3.plot(0, 0, "ro", markersize=8, label="p")
 # ax3.text(0, 0.1, "$p$", ha="center", va="bottom", fontsize=12)
