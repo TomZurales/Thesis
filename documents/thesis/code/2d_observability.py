@@ -167,7 +167,7 @@ class Observability2D:
 
 # Create figure with side-by-side polar subplots
 fig, (ax1, ax2) = plt.subplots(
-    1, 2, subplot_kw=dict(projection="polar"), figsize=(12, 8)
+    1, 2, subplot_kw=dict(projection="polar"), figsize=(12, 7)
 )
 
 obs = Observability2D()
