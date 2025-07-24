@@ -216,7 +216,7 @@ ax2.set_title("Sampled Observability")
 from matplotlib.lines import Line2D
 legend_elements = [
     Line2D([0], [0], marker='+', color='blue', linestyle='None', markersize=8, label='Positive Observation'),
-    Line2D([0], [0], marker='+', color='red', linestyle='None', markersize=8, label='Negative Observation')
+    Line2D([0], [0], marker='-', color='red', linestyle='None', markersize=8, label='Negative Observation')
 ]
 ax2.legend(handles=legend_elements, loc='upper right')
 
