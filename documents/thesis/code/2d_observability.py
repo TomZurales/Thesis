@@ -183,7 +183,7 @@ obs.add_barrier(Barrier(Point(0.4, np.pi / 4, True), Point(0.4, -np.pi / 4, True
 obs.add_barrier(Barrier(Point(0.4, np.pi / 4, True), Point( 0.4, 3 *np.pi / 4,True)))
 
 samples = []
-num_samples = 100
+num_samples = 50
 for _ in range(num_samples):
     r = np.random.uniform(0.1, 1)
     theta = np.random.uniform(0, 2 * np.pi)
