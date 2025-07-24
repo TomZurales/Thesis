@@ -179,7 +179,8 @@ obs = Observability2D()
 #     theta2 = np.random.uniform(0, 2 * np.pi)
 #     obs.add_barrier(Barrier(Point(r1, theta1, True), Point(r2, theta2, True)))
 
-obs.add_barrier
+obs.add_barrier(Barrier(Point(0.5, 0, True), Point(0.5, np.pi, True)))
+obs.add_
 
 samples = []
 num_samples = 100
