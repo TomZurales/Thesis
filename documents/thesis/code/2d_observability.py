@@ -191,7 +191,7 @@ for _ in range(num_samples):
 
 # Left plot: Real observability
 ax1.plot(0, 0, "ro", markersize=8, label="p", color="black")
-ax1.text(-np.pi/4, 0.08, "$p$", ha="left", va="top", fontsize=12)
+ax1.text(-np.pi/4, 0.05, "$p$", ha="left", va="top", fontsize=12)
 obs.draw_barriers(ax1)
 obs.draw_real_observability(ax1)
 ax1.set_title("True Observability")
@@ -206,7 +206,7 @@ ax1.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.05, 1.0
 
 # Right plot: KNN model
 ax2.plot(0, 0, "ro", markersize=8, label="p", color="black")
-ax2.text(-np.pi/4, 0.08, "$p$", ha="left", va="top", fontsize=12)
+ax2.text(-np.pi/4, 0.05, "$p$", ha="left", va="top", fontsize=12)
 obs.draw_barriers(ax2)
 obs.draw_samples(ax2, samples)
 # obs.draw_knn_model(ax2, 1, samples)
