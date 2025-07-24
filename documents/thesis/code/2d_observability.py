@@ -191,7 +191,7 @@ ax1.plot(0, 0, "ro", markersize=8, label="p")
 ax1.text(0, 0.1, "$p$", ha="center", va="bottom", fontsize=12)
 obs.draw_barriers(ax1)
 obs.draw_real_observability(ax1)
-ax1.set_title("Real Observability")
+ax1.set_title("True Observability")
 
 # Right plot: KNN model
 ax2.plot(0, 0, "ro", markersize=8, label="p")
