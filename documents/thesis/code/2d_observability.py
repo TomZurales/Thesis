@@ -180,7 +180,7 @@ for _ in range(5):
     obs.add_barrier(Barrier(Point(r1, theta1, True), Point(r2, theta2, True)))
 
 samples = []
-num_samples = 1000
+num_samples = 100
 for _ in range(num_samples):
     r = np.random.uniform(0.1, 1)
     theta = np.random.uniform(0, 2 * np.pi)
