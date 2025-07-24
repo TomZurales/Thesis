@@ -221,7 +221,7 @@ ax2.set_title("KNN Model (k=5)")
 #     ax.plot(p.theta, p.r, "o", color=color)
 
 # Set up all plots
-for ax in [ax1, ax2, ax3]:
+for ax in [ax1, ax2]:
     ax.set_ylim(0, 1)
     ax.set_yticklabels([])  # Remove radial distance labels
     # Create radian labels as fractions of pi
