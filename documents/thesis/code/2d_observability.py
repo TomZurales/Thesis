@@ -202,7 +202,7 @@ legend_elements = [
     Patch(facecolor='blue', alpha=0.3, label='Observable'),
     Patch(facecolor='red', alpha=0.3, label='Not Observable')
 ]
-ax1.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.25, 1.15))
+ax1.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.1, 1.1))
 
 # Right plot: KNN model
 ax2.plot(0, 0, "ro", markersize=8, label="p", color="black")
@@ -218,7 +218,7 @@ legend_elements = [
     Line2D([0], [0], marker='+', color='blue', linestyle='None', markersize=8, label='Positive Observation'),
     Line2D([0], [0], marker='_', color='red', linestyle='None', markersize=8, label='Negative Observation')
 ]
-ax2.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.1, 1.15))
+ax2.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.1, 1.1))
 
 # # Right plot: Binned model
 # ax3.plot(0, 0, "ro", markersize=8, label="p")
