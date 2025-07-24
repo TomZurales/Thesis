@@ -191,7 +191,7 @@ for _ in range(num_samples):
 
 # Left plot: Real observability
 ax1.plot(0, 0, "ro", markersize=8, label="p", color="black")
-ax1.text(0, 0.1, "$p$", ha="center", va="bottom", fontsize=12)
+ax1.text(-np.pi/4, 0.08, "$p$", ha="left", va="top", fontsize=12)
 obs.draw_barriers(ax1)
 obs.draw_real_observability(ax1)
 ax1.set_title("True Observability")
