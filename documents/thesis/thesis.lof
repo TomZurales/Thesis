@@ -1,0 +1,7 @@
+\contentsline {figure}{\numberline {1}{\ignorespaces OMR Method Comparison}}{12}{}%
+\contentsline {figure}{\numberline {2}{\ignorespaces SLAM Family Tree}}{20}{}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Image Feature Extraction and Matching}}{21}{}%
+\contentsline {figure}{\numberline {4}{\ignorespaces 2D RANSAC Example}}{22}{}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Loop Closure Example}}{24}{}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Simplified ORB-SLAM3 Operational Diagram}}{25}{}%
+\contentsline {figure}{\numberline {7}{\ignorespaces A simplified 2D representation of a map point's ideal observability pattern. The point is observable from certain viewing directions (shown in green) but occluded from others (shown in red).}}{29}{}%
