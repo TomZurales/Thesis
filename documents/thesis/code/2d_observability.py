@@ -218,7 +218,7 @@ legend_elements = [
     Line2D([0], [0], marker='+', color='blue', linestyle='None', markersize=8, label='Positive Observation'),
     Line2D([0], [0], marker='-', color='red', linestyle='None', markersize=8, label='Negative Observation')
 ]
-ax2.legend(handles=legend_elements, loc='upper right')
+ax2.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.25, 1.15))
 
 # # Right plot: Binned model
 # ax3.plot(0, 0, "ro", markersize=8, label="p")
