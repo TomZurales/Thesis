@@ -172,12 +172,13 @@ fig, (ax1, ax2) = plt.subplots(
 
 obs = Observability2D()
 # Add 5 random barriers
-for _ in range(5):
-    r1 = np.random.uniform(0.1, 1)
-    theta1 = np.random.uniform(0, 2 * np.pi)
-    r2 = np.random.uniform(0.1, 1)
-    theta2 = np.random.uniform(0, 2 * np.pi)
-    obs.add_barrier(Barrier(Point(r1, theta1, True), Point(r2, theta2, True)))
+# for _ in range(5):
+#     r1 = np.random.uniform(0.1, 1)
+#     theta1 = np.random.uniform(0, 2 * np.pi)
+#     r2 = np.random.uniform(0.1, 1)
+#     theta2 = np.random.uniform(0, 2 * np.pi)
+#     obs.add_barrier(Barrier(Point(r1, theta1, True), Point(r2, theta2, True)))
+
 
 samples = []
 num_samples = 100
