@@ -196,6 +196,14 @@ obs.draw_barriers(ax1)
 obs.draw_real_observability(ax1)
 ax1.set_title("True Observability")
 
+# Add legend for observability regions
+from matplotlib.patches import Patch
+legend_elements = [
+    Patch(facecolor='blue', alpha=0.3, label='Observable'),
+    Patch(facecolor='red', alpha=0.3, label='Not Observable')
+]
+ax1.legend(handles=legend_elements, loc='upper right')
+
 # Right plot: KNN model
 ax2.plot(0, 0, "ro", markersize=8, label="p", color="black")
 ax2.text(0, 0.1, "$p$", ha="center", va="bottom", fontsize=12)
