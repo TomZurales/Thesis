@@ -198,7 +198,7 @@ ax2.plot(0, 0, "ro", markersize=8, label="p")
 ax2.text(0, 0.1, "$p$", ha="center", va="bottom", fontsize=12)
 obs.draw_barriers(ax2)
 obs.draw_samples(ax2, samples)
-obs.draw_knn_model(ax2, 1, samples)
+# obs.draw_knn_model(ax2, 1, samples)
 ax2.set_title("KNN Model (k=5)")
 
 # # Right plot: Binned model
