@@ -59,6 +59,7 @@ class Barrier:
 
 class Sample:
     p: Point
+    seen: bool
     uniqueness: float
     confidence: float = 0.5
 
