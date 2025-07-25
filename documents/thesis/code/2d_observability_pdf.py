@@ -60,7 +60,7 @@ class Barrier:
 class Sample:
     p: Point
     uniqueness: float
-    
+    confidence: float = 0.5
 
 class Observability2D:
     barriers: list[Barrier] = []
