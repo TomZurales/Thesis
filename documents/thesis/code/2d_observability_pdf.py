@@ -167,8 +167,8 @@ class Observability2D:
 
     def draw_samples(self, ax, samples: list[Sample]):
         for sample in samples:
-            if self.check_visibility(sample):
-                ax.plot(sample.theta, sample.r, marker="+", color="blue")
+            if self.check_visibility(sample.p):
+                ax.plot(sample.p.theta, sample.p.r, marker="+", color="blue")
             else:
                 ax.plot(sample.theta, sample.r, marker="_", color="red")
 
