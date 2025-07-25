@@ -185,7 +185,7 @@ class MPO:
         else:
             temp_samples = self.samples.copy()
             # Recalculate uniqueness and confidence for every point
-            
+            # Uniqueness = distance to nearest 
     
 
 
