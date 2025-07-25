@@ -250,5 +250,31 @@ for ax in [ax1, ax2]:
     )
     ax.grid(True)
 
+# Function to add a random observation
+def add_random_observation():
+    r = np.random.uniform(0.1, 1)
+    theta = np.random.uniform(0, 2 * np.pi)
+    new_sample = Point(r, theta, True)
+    samples.append(new_sample)
+    
+    # Add the new sample to the right plot
+    if obs.check_visibility(new_sample):
+        ax2.plot(new_sample.theta, new_sample.r, marker="+", color="blue")
+    else:
+        ax2.plot(new_sample.theta, new_sample.r, marker="_", color="red")
+    
+    # Refresh the plot
+    fig.canvas.draw()
+    print(f"Added observation at r={r:.3f}, θ={theta:.3f} ({'visible' if obs.check_visibility(new_sample) else 'occluded'})")
+
+# Event handler for key presses
+def on_key_press(event):
+    if event.key == 'enter':
+        add_random_observation()
+
+# Connect the event handler
+fig.canvas.mpl_connect('key_press_event', on_key_press)
+
 plt.tight_layout()
+print("Press Enter to add random observations. Close the window to exit.")
 plt.show()
