@@ -178,7 +178,8 @@ class MPO:
     existence = 0.0
 
     def add_sample(self, sample: Sample):
-        if len(self.samples) == 0 and sample.see
+        if len(self.samples) == 0 and not sample.seen:
+            continue
     
 
 
