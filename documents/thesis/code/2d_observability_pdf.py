@@ -175,7 +175,7 @@ class MPO:
     model = Observability2D()
     existence = 0.0
 
-    
+    def
 
 
 # Create figure with side-by-side polar subplots
