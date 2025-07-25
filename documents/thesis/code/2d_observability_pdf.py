@@ -187,7 +187,18 @@ class MPO:
             # Recalculate uniqueness and confidence for every point
             # Uniqueness = distance to nearest similar observation, either seen or not seen
             for i, sample in enumerate(temp_samples):
+                # Calculate uniqueness based on distance to nearest sample
+                distances = [
+                    np.sqrt((sample.p.x - other.p.x) ** 2 + (sample.p.y - other.p.y) ** 2)
+                    for j, other in enumerate(temp_samples) if i != j
+                ]
+                if distances:
+                    sample.uniqueness = min(distances)
+                else:
+                    sample.uniqueness = 0.0
                 
+                # Confidence can be adjusted based on how many samples are seen
+                sample.confidence = 1.0 if sample.seen else 0.5
     
 
 
