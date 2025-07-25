@@ -177,7 +177,8 @@ class MPO:
     model = Observability2D()
     existence = 0.0
 
-    def add_sample(self, ):
+    def add_sample(self, sample: Sample):
+        if
     
 
 
