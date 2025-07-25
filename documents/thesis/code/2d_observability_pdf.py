@@ -256,7 +256,7 @@ def add_random_observation():
     theta = np.random.uniform(0, 2 * np.pi)
     new_sample = Point(r, theta, True)
 
-
+    
 
     samples.append(new_sample)
     
