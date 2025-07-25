@@ -171,6 +171,7 @@ class Observability2D:
                 ax.plot(sample.theta, sample.r, marker="_", color="red")
 
 class MPO:
+    samples: list[Sample] = []
     
 
 # Create figure with side-by-side polar subplots
