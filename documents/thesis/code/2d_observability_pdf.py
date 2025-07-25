@@ -2,7 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 
-
+class Sample:
+    p: Point
 
 # Represents a point in cartesian and polar coordinates. Theta in radians
 class Point:
