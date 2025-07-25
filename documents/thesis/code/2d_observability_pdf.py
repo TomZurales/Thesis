@@ -170,7 +170,7 @@ class Observability2D:
             if self.check_visibility(sample.p):
                 ax.plot(sample.p.theta, sample.p.r, marker="+", color="blue")
             else:
-                ax.plot(sample.theta, sample.r, marker="_", color="red")
+                ax.plot(sample.p.theta, sample.p.r, marker="_", color="red")
 
 class MPO:
     samples: list[Sample] = []
