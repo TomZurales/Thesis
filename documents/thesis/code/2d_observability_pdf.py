@@ -216,8 +216,6 @@ obs = Observability2D()
 obs.add_barrier(Barrier(Point(0.4, np.pi / 4, True), Point(0.4, -np.pi / 4, True)))
 obs.add_barrier(Barrier(Point(0.4, np.pi / 4, True), Point( 0.4, 3 *np.pi / 4,True)))
 
-samples = []
-
 # Left plot: Real observability
 ax1.plot(0, 0, "ro", markersize=8, label="p", color="black")
 ax1.text(-np.pi/4, 0.03, "$p$", ha="left", va="top", fontsize=12)
