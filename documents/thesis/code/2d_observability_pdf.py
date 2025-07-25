@@ -2,9 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 
-class Sample:
-    p: Point
-
 # Represents a point in cartesian and polar coordinates. Theta in radians
 class Point:
     x: float
@@ -60,6 +57,8 @@ class Barrier:
         # u should be between 0 and 1 for line segment 2 (p1 to p2)
         return 0 <= t <= 1 and 0 <= u <= 1
 
+class Sample:
+    p: Point
 
 class Observability2D:
     barriers: list[Barrier] = []
