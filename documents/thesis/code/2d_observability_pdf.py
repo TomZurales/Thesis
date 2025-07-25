@@ -255,6 +255,9 @@ def add_random_observation():
     r = np.random.uniform(0.1, 1)
     theta = np.random.uniform(0, 2 * np.pi)
     new_sample = Point(r, theta, True)
+
+
+
     samples.append(new_sample)
     
     # Add the new sample to the right plot
