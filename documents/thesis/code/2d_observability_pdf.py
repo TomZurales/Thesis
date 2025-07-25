@@ -179,7 +179,7 @@ class MPO:
 
     def add_sample(self, sample: Sample):
         if len(self.samples) == 0 and not sample.seen:
-            continue
+            return
     
 
 
