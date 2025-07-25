@@ -185,7 +185,8 @@ class MPO:
         else:
             # Update everything based on new point
             for sample in self.samples:
-                
+                dists = [
+                    np.sqrt((sample.p.x - s.p.x) ** 2 + (sample.p.y - s.p.y) ** 2)
     
 
 
