@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 
 
+
 # Represents a point in cartesian and polar coordinates. Theta in radians
 class Point:
     x: float
@@ -256,7 +257,7 @@ def add_random_observation():
     theta = np.random.uniform(0, 2 * np.pi)
     new_sample = Point(r, theta, True)
 
-    
+
 
     samples.append(new_sample)
     
