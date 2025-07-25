@@ -59,6 +59,7 @@ class Barrier:
 
 class Sample:
     p: Point
+    
 
 class Observability2D:
     barriers: list[Barrier] = []
