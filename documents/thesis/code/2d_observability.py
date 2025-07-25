@@ -199,8 +199,8 @@ ax1.set_title("True Observability")
 # Add legend for observability regions
 from matplotlib.patches import Patch
 legend_elements = [
-    Patch(facecolor='blue', alpha=0.3, label='Observable'),
-    Patch(facecolor='red', alpha=0.3, label='Not Observable')
+    Patch(facecolor='blue', alpha=0.8, label='Observable'),
+    Patch(facecolor='red', alpha=0.8, label='Not Observable')
 ]
 ax1.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.05, 1.05))
 
