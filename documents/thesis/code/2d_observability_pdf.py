@@ -185,7 +185,7 @@ class MPO:
         else:
             # Update everything based on new point
             for sample in self.samples:
-                sample
+                
     
 
 
