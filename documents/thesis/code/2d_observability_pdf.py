@@ -196,9 +196,6 @@ class MPO:
                     sample.uniqueness = min(distances)
                 else:
                     sample.uniqueness = 0.0
-                
-                # Confidence can be adjusted based on how many samples are seen
-                sample.confidence = 1.0 if sample.seen else 0.5
     
 
 
