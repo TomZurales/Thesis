@@ -172,7 +172,7 @@ class Observability2D:
 
 class MPO:
     samples: list[Sample] = []
-    model
+    model = Observability2D
     existence = 0
 
 
