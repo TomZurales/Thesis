@@ -205,7 +205,7 @@ fig, (ax1, ax2) = plt.subplots(
 )
 
 obs = Observability2D()
-mpo
+mpo = MPO()
 # Add 5 random barriers
 # for _ in range(5):
 #     r1 = np.random.uniform(0.1, 1)
