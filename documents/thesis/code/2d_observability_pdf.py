@@ -177,11 +177,11 @@ class MPO:
     model = Observability2D()
     existence = 0.0
 
-    def add_sample(self, sample: Sample):
-        if len(self.samples) == 0 and not sample.seen:
+    def add_sample(self, s: Sample):
+        if len(self.samples) == 0 and not s.seen:
             return
         if len(self.samples) < 100:
-            self.samples.append(sample)
+            self.samples.append(s)
         else:
             # Update everything based on new point
             for sample in self.samples:
