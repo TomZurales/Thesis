@@ -182,6 +182,8 @@ class MPO:
             return
         if len(self.samples) < 100:
             self.samples.append(sample)
+        else:
+            
     
 
 
