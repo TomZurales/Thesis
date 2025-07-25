@@ -190,7 +190,7 @@ class MPO:
                 # Calculate uniqueness based on distance to nearest sample
                 distances = [
                     np.sqrt((sample.p.x - other.p.x) ** 2 + (sample.p.y - other.p.y) ** 2)
-                    for j, other in enumerate(temp_samples) if i != j and 
+                    for j, other in enumerate(temp_samples) if i != j and sample.
                 ]
                 if distances:
                     sample.uniqueness = min(distances)
