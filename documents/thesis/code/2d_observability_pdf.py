@@ -170,6 +170,8 @@ class Observability2D:
             else:
                 ax.plot(sample.theta, sample.r, marker="_", color="red")
 
+class MPO:
+    
 
 # Create figure with side-by-side polar subplots
 fig, (ax1, ax2) = plt.subplots(
