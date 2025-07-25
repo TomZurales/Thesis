@@ -63,8 +63,9 @@ class Sample:
     uniqueness: float
     confidence: float = 0.5
 
-    def __init__(self, p: Point):
+    def __init__(self, p: Point, seen: bool):
         self.p = p
+        self.seen = seen
 
 class Observability2D:
     barriers: list[Barrier] = []
@@ -176,7 +177,7 @@ class MPO:
     model = Observability2D()
     existence = 0.0
 
-    def add_sample:
+    def add_sample(self, ):
     
 
 
