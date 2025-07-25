@@ -178,7 +178,7 @@ class MPO:
     existence = 0.0
 
     def add_sample(self, sample: Sample):
-        if
+        if len
     
 
 
