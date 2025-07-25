@@ -165,7 +165,7 @@ class Observability2D:
         # Plot the observability map
         ax.contourf(Theta, R, Z, levels=50, cmap=self.custom_cmap, alpha=0.7)
 
-    def draw_samples(self, ax, samples: list[Point]):
+    def draw_samples(self, ax, samples: list[Sample]):
         for sample in samples:
             if self.check_visibility(sample):
                 ax.plot(sample.theta, sample.r, marker="+", color="blue")
