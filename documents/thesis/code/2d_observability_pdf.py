@@ -183,7 +183,9 @@ class MPO:
         if len(self.samples) < 100:
             self.samples.append(s)
         else:
-            # De
+            
+            # Recalculate uniqueness and confidence for every point
+        
     
 
 
