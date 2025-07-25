@@ -62,6 +62,8 @@ class Sample:
     uniqueness: float
     confidence: float = 0.5
 
+    def __init__
+
 class Observability2D:
     barriers: list[Barrier] = []
 
