@@ -172,7 +172,9 @@ class Observability2D:
 
 class MPO:
     samples: list[Sample] = []
-    existence = 
+    model
+    existence = 0
+
 
 # Create figure with side-by-side polar subplots
 fig, (ax1, ax2) = plt.subplots(
