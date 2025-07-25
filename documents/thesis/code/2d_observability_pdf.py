@@ -59,6 +59,7 @@ class Barrier:
 
 class Sample:
     p: Point
+    uniqueness: float
     
 
 class Observability2D:
