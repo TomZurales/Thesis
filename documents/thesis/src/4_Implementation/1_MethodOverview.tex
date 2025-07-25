@@ -59,4 +59,14 @@ where $\theta\in[0,2\pi)$ represents the azimuth, $\phi\in\left[-\frac{\pi}{2},\
 
 \subsubsection{Modeling Historical Observability of Map Points}
 
-The goal of the model is to estimate the observability of 
+The goal of the model is to estimate the global observability of a point using a finite set of $n$ observations $\boldsymbol{O} = \{o_0,\dots,o_n\}$, and a current viewpoint $v=\{\theta,\phi,d\}$. Observations take the form $o_n=\{\theta_n,\phi_n,d_n,seen_n\}$, so the model can be written
+$$
+    m(\boldsymbol{O},\theta,\phi,d)\to[0,1]
+$$
+
+Therefore, the model function will be selected with the goal of minimizing the objective function
+$$
+    \iiint |m(\boldsymbol{O},\theta,\phi,d) - v(\theta,\phi,d)| \,d\theta\,d\phi\,dd
+$$
+
+Three implementations of the model $m$ will be implemented, and will have their parameters optimized in simulation. Each will be tested on the datasets produced for this research. With perfect sampling,
