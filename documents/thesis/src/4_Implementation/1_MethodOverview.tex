@@ -47,7 +47,7 @@ The update step can be expressed as
 
 For the purposes of KV-SLAM, map features can be conceptualized as static, infinitesimally small points in 3D space. Because they have no width or height, a map feature can never be partially obscured, and are immune to perspective. This means that the visibility of a map feature can be represented by the function
 $$
-    v:(\theta,\phi,d):[0,2\pi)\times\left[-\frac{\pi}{2},\frac{\pi}{2}\right]\times[0,\infty)\to{0,1}
+    v:(\theta,\phi,d):[0,2\pi)\times\left[-\frac{\pi}{2},\frac{\pi}{2}\right]\times[0,\infty)\to\{0,1\}
 $$
 where $\theta\in[0,2\pi)$ represents the azimuth, $\phi\in\left[-\frac{\pi}{2},\frac{\pi}{2}\right]$ represents the elevation, and $d\in[0,\infty)$ represents the distance between the map feature and the observer. This visibility function returns 1 if the point is observable from the input viewpoint, and 0 if it is not. From this, observations can be defined as $o=\{\theta,\phi,v(\theta,\phi)\}\in[0,2\pi)\times\left[-\frac{\pi}{2},\frac{\pi}{2}\right]\times\{0,1\}$.
 
