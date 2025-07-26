@@ -75,6 +75,6 @@ $$
 Additionally, the models are constrained by the goals laid out in Section \ref{sec:objectives} for speed and size of the model. The integrated version which will be described in Section \ref{sec:orb_slam3_integration} must run in real time, meaning inserting new observations should be fast. Additionally, as the model parameters will be stored in memory during operations, and written to disk for map reuse, the additional space required by the model must be minimized. Each of the three models described will be compared for speed, size, and accuracy, and the parameters to each model will be tuned using non-linear optimization to determine the best possible parameterization. With these goals in mind, the model implementations can now be described. These models were selected based on their ease of implementation and simple methodology. This is not the complete set of possible implementations, and are not guaranteed to be the optimal solution to modeling historical map point observability while maximizing accuracy and minimizing time and storage usage.
 
 \paragraph{K-Nearest Neighbors Model}
-A simple method for modeling the 
+A simple method for modeling the observability 
 \paragraph{Binned Model}
 \paragraph{Continuous Model}
