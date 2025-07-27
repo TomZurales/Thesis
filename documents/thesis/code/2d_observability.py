@@ -248,12 +248,6 @@ for ax in [ax1, ax2]:
     ax.set_thetagrids(
         np.degrees(np.linspace(0, 2 * np.pi, 8, endpoint=False)), labels=radian_labels
     )
-    # Set yticks with only the last one labeled as d_max
-    yticks = ax.get_yticks()
-    ytick_labels = [''] * len(yticks)
-    if len(yticks) > 0:
-        ytick_labels[-1] = r'$d_{max}$'
-    ax.set_yticklabels(ytick_labels)
     ax.grid(True)
 
 plt.tight_layout()
