@@ -207,12 +207,12 @@ legend_elements = [
 ax1.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.05, 1.05))
 
 # Right plot: KNN model
-ax2.plot(0, 0, "o", markersize=8, label="p", color="black")
-ax2.text(-np.pi/4, 0.03, "$p$", ha="left", va="top", fontsize=12)
-obs.draw_barriers(ax2)
-obs.draw_samples(ax2, samples)
-# obs.draw_knn_model(ax2, 1, samples)
-ax2.set_title("Sampled Observability")
+# ax2.plot(0, 0, "o", markersize=8, label="p", color="black")
+# ax2.text(-np.pi/4, 0.03, "$p$", ha="left", va="top", fontsize=12)
+# obs.draw_barriers(ax2)
+# obs.draw_samples(ax2, samples)
+# # obs.draw_knn_model(ax2, 1, samples)
+# ax2.set_title("Sampled Observability")
 
 # Add legend for observation samples
 from matplotlib.lines import Line2D
@@ -220,7 +220,7 @@ legend_elements = [
     Line2D([0], [0], marker='+', color='blue', linestyle='None', markersize=8, label='Positive Observation'),
     Line2D([0], [0], marker='_', color='red', linestyle='None', markersize=8, label='Negative Observation')
 ]
-ax2.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.05, 1.05))
+# ax2.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.05, 1.05))
 
 # # Right plot: Binned model
 # ax3.plot(0, 0, "ro", markersize=8, label="p")
@@ -242,7 +242,7 @@ ax2.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.05, 1.0
 #     ax.plot(p.theta, p.r, "o", color=color)
 
 # Set up all plots
-for ax in [ax1, ax2]:
+for ax in [ax1]:
     ax.set_ylim(0, 1.05)
     ax.set_yticklabels([])  # Remove radial distance labels
     # Move d_max label slightly down and to the left
