@@ -15,7 +15,7 @@ The proposed existence estimation framework iteratively updates an existence pro
     \label{fig:existence_estimation_framework}
 \end{figure}
 
-The framework consists of two components: the observability model, and the existence probability updater. The observability model estimates the probability of a point being seen from a given viewpoint $P(seen), and updates its internal representation to integrate new observations. The existence probability updater performs a Bayesian update of the point's existence probability using the prior existence probability, the estimated visibility probability, and the new observation's outcome. This approach ensures that negative observations from previously highly observable viewpoints impact the existence probability more strongly than those from more uncertain viewpoints.
+The framework consists of two components: the observability model, and the existence probability updater. The observability model estimates the probability of a point being seen from a given viewpoint $P(S), and updates its internal representation to integrate new observations. The existence probability updater performs a Bayesian update of the point's existence probability using the prior existence probability, the estimated visibility probability, and the new observation's outcome. This approach ensures that negative observations from previously highly observable viewpoints impact the existence probability more strongly than those from more uncertain viewpoints.
 
 \subsubsection{The Bayesian Update Step}
 
