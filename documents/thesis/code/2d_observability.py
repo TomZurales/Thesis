@@ -243,7 +243,6 @@ ax2.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.05, 1.0
 # Set up all plots
 for ax in [ax1, ax2]:
     ax.set_ylim(0, 1.05)
-    # ax.get_yticklabels()
     ax.set_yticklabels([])  # Remove radial distance labels
     # Move d_max label slightly down and to the left
     ax.text(np.pi/6, 0.9, '$d_{max}$', ha='center', va='center', fontsize=10)
