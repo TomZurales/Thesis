@@ -243,6 +243,7 @@ ax2.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.05, 1.0
 for ax in [ax1, ax2]:
     ax.set_ylim(0, 1.05)
     y_labels = ax.get_yticklabels()
+    print(y_labels)
     for i in range(len(y_labels)):
         y_labels[i] = y_labels[i - 1] if i > 0 else r"$d_{max}$"
     ax.set_yticklabels(y_labels)  # Remove radial distance labels
