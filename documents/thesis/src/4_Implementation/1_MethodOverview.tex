@@ -6,7 +6,14 @@
 
 \subsubsection{The Existence Estimation Framework}
 
-The existence estimation framework intends to iteratively update a confidence estimate for each map point in a reused KV-SLAM map using historical observability priors and current observations to accurately update the confidence value. The framework can be split into two stages as shown in Figure \ref{fig:existence_estimation_framework}. 
+The existence estimation framework intends to iteratively update a confidence estimate for each map point in a reused KV-SLAM map using historical observability priors and current observations to accurately update the confidence value. The framework can be split into two stages as shown in Figure \ref{fig:existence_estimation_framework}.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{resources/global_observability_p.png}
+    \caption[2D Global Observability]{A 2D representation of the global observability of a map point $p$ near two orthogonal obstructions.}
+    \label{fig:global_observability_p}
+\end{figure}
 
 \subsubsection{The Bayesian Update Step}
 
