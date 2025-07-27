@@ -245,7 +245,7 @@ for ax in [ax1, ax2]:
     ax.set_ylim(0, 1.05)
     ax.set_yticklabels([])  # Remove radial distance labels
     # Move d_max label slightly down and to the left
-    ax.text(np.pi/6 - 0.1, 1, '$d_{max}$', ha='center', va='center', fontsize=10)
+    ax.text(np.pi/6 - 0.2, 1, '$d_{max}$', ha='center', va='center', fontsize=10)
     # Create radian labels as fractions of pi
     radian_labels = ["0", "π/4", "π/2", "3π/4", "π", "5π/4", "3π/2", "7π/4"]
     ax.set_thetagrids(
