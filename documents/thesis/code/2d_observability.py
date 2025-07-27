@@ -248,7 +248,7 @@ for ax in [ax1, ax2]:
             y_labels[i] = r"$d_{max}$"
         else:
             y_labels[i] = ""
-    ax.set_yticklabels()  # Remove radial distance labels
+    ax.set_yticklabels(y_labels)  # Remove radial distance labels
     # Create radian labels as fractions of pi
     radian_labels = ["0", "π/4", "π/2", "3π/4", "π", "5π/4", "3π/2", "7π/4"]
     ax.set_thetagrids(
