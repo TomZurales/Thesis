@@ -192,7 +192,7 @@ for _ in range(num_samples):
     samples.append(Point(r, theta, True))
 
 # Left plot: Real observability
-ax1.plot(0, 0, "ro", markersize=8, label="p", color="black")
+ax1.plot(0, 0, "o", markersize=8, label="p", color="black")
 ax1.text(-np.pi/4, 0.03, "$p$", ha="left", va="top", fontsize=12)
 obs.draw_barriers(ax1)
 obs.draw_real_observability(ax1)
