@@ -95,5 +95,5 @@ $$
 
 The models described above are lacking one critical component. Currently, if a model's estimation function returns 1, it is stating that it is fully confident that if the map point exists, it will be seen from the given viewpoint. Therefore, a single negative observation of a point which has always been observable would immediately drop $P(E)$ to zero. To combat this, a constant dampening factor could be implemented such that
 \[
-P(E) = 
+    P(E) = \delta
 \]
