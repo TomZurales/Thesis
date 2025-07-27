@@ -51,13 +51,13 @@ Map points are conceptualized as static, infinitesimally small points in 3D Eucl
 $$
     observable_p(\boldsymbol{v})\to\{0,1\}
 $$
-where $\boldsymbol{v} = \{\theta,\phi,d\}$ represents the azimuth, elevation, and distance from the observer to $p$ respectively. This function returns 1 if $p$ is observed from $\boldsymbol{v}$, and 0 if it is not. From this, an observation of point $p$ can be defined as a vector $\boldsymbol{o}_p=\{\boldsymbol{v},observable_p(\boldsymbol{v})\}$, and a set of $n$ observations of $p$ as $\boldsymbol{O}_p=\{\boldsymbol{o}_{p0},\dots,\boldsymbol{o}_{pn}\}$. For illustrative purposes, figures in the remainder of this thesis may use a simplified 2D representation of these definitions, where $\boldsymbol{v}^{2D}=\{\theta,d\}$. Figure \ref{fig:global_observability_p} shows such a plot representing the global observability of a map point $p$, and the effects of obstructions on the observability.
+where $\boldsymbol{v} = \{\theta,\phi,d\}$ represents the azimuth, elevation, and distance from the observer to $p$ respectively. This function returns 1 if $p$ is observed from $\boldsymbol{v}$, and 0 if it is not. From this, an observation of point $p$ can be defined as a vector $\boldsymbol{o}_p=\{\boldsymbol{v},observable_p(\boldsymbol{v})\}$, and a set of $n$ observations of $p$ as $\boldsymbol{O}_p=\{\boldsymbol{o}_{p0},\dots,\boldsymbol{o}_{pn}\}$. For illustrative purposes, figures in the remainder of this thesis may use a simplified 2D representation of these definitions, where $\boldsymbol{v}^{2D}=\{\theta,d\}$. Figure \ref{fig:global_observability_p} shows such a plot representing the global observability of a map point $p$, and the effects of obstructions on observability.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.7\textwidth]{resources/global_observability_p.png}
     \caption[2D Global Observability]{A 2D representation of the global observability of a map point $p$ near two orthogonal obstructions.}
-    \label{fig:2d_observability}
+    \label{fig:global_observability_p}
 \end{figure}
 
 The left plot of Figure \ref{fig:2d_observability} represents the output of a simplified 2D version of the observability function across the domain of $\theta\times d$, and the effects of obstructions on the observability. However, to generate such a plot from sensor data would require infinite observations spanning the full domain of $\theta\times d$. Instead, the system must operate on a finite set of observations as shown in the plot on the right. As described above, the Bayesian update step requires a model function $m$, the output of which is the probability of observing the point from a given position based on the historical observability of the map point. There are many possible implementations for the model, with the three implementations tested described below.
