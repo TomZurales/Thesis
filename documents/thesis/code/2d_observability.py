@@ -244,11 +244,7 @@ for ax in [ax1, ax2]:
     ax.set_ylim(0, 1.05)
     y_labels = ax.get_yticklabels()
     for i in range(len(y_labels)):
-        pass
-        # if i == len(y_labels) - 1:
-        #     y_labels[i].s = "$d_{max}$"
-        # else:
-        #     y_labels[i].s = ""
+        y
     ax.set_yticklabels(y_labels)  # Remove radial distance labels
     # Create radian labels as fractions of pi
     radian_labels = ["0", "π/4", "π/2", "3π/4", "π", "5π/4", "3π/2", "7π/4"]
