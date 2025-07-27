@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.text import Text
 
+np.random.seed(42)  # For reproducibility
 
 # Represents a point in cartesian and polar coordinates. Theta in radians
 class Point:
