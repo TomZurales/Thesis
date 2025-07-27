@@ -207,7 +207,7 @@ legend_elements = [
 ax1.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.05, 1.05))
 
 # Right plot: KNN model
-ax2.plot(0, 0, "ro", markersize=8, label="p", color="black")
+ax2.plot(0, 0, "o", markersize=8, label="p", color="black")
 ax2.text(-np.pi/4, 0.03, "$p$", ha="left", va="top", fontsize=12)
 obs.draw_barriers(ax2)
 obs.draw_samples(ax2, samples)
