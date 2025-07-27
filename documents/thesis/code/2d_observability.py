@@ -244,6 +244,7 @@ for ax in [ax1, ax2]:
     ax.set_ylim(0, 1.05)
     y_labels = ax.get_yticklabels()
     for i in range(len(y_labels)):
+        pass
         # if i == len(y_labels) - 1:
         #     y_labels[i].s = "$d_{max}$"
         # else:
