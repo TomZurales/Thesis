@@ -242,13 +242,8 @@ ax2.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.05, 1.0
 # Set up all plots
 for ax in [ax1, ax2]:
     ax.set_ylim(0, 1.05)
-    # Get current ytick positions
-    yticks = ax.get_yticks()
-    y_labels = ["" for _ in yticks]
-    if len(y_labels) > 0:
-        y_labels[-1] = r"$d_{max}$"
-    ax.set_yticks(yticks)
-    ax.set_yticklabels(y_labels)  # Remove radial distance labels
+    y_labels = ax.get_yticklabels()
+    ax.set_yticklabels([])  # Remove radial distance labels
     # Create radian labels as fractions of pi
     radian_labels = ["0", "π/4", "π/2", "3π/4", "π", "5π/4", "3π/2", "7π/4"]
     ax.set_thetagrids(
