@@ -73,7 +73,7 @@ where $\boldsymbol{v} = \{\theta,\phi,d\}$ represents the azimuth, elevation, an
     \label{fig:global_observability_p}
 \end{figure}
 
-It should be noted that within Euclidean space, a map point which is occluded along a vector ${\theta,\phi} will also be occluded from any viewpoint $\boldsymbol{v}' = \{\theta, \phi, d'\}$ where $d'>d$. Therefore, any positive observation from a direction which was previously observed to be occluded must be the result of either a false positive, or the removal of the occlusion.
+It should be noted that within Euclidean space, a map point which is occluded along a vector ${\theta,\phi}$ at a distance $d$ will also be occluded from any viewpoint $\boldsymbol{v}' = \{\theta, \phi, d'\}$ where $d'>d$. Therefore, any positive observation from a direction which was previously observed to be occluded must be the result of either a false positive, or the removal of the occlusion.
 
 The left plot of Figure \ref{fig:2d_observability} represents the output of a simplified 2D version of the observability function across the domain of $\theta\times d$, and the effects of obstructions on the observability. However, to generate such a plot from sensor data would require infinite observations spanning the full domain of $\theta\times d$. Instead, the system must operate on a finite set of observations as shown in the plot on the right. As described above, the Bayesian update step requires a model function $m$, the output of which is the probability of observing the point from a given position based on the historical observability of the map point. There are many possible implementations for the model, with the three implementations tested described below.
 
