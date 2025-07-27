@@ -4,6 +4,9 @@
 
 % The objective is to identify map points which, while previously viewed, are no longer visible due to environmental changes. To address this, we assign an incrementally updated probability of existence value to each map point. Observations of a map point increase our overall confidence in its existence. Conversely, failure to observe a map point from a viewpoint where it \textit{should} have been visible lowers our confidence in its existence. Determining whether a map point should be observable from a given viewpoint is not trivial, motivating the need for a viewpoint-aware observability model. The purpose of the model is to integrate historical observability data to estimate observability across all possible viewpoints. Each map point is attached to its own model.
 
+\subsubsection{Definitions and Constructs}
+
+
 \subsubsection{The Existence Estimation Framework}
 
 The proposed existence estimation framework iteratively updates an existence probability for a KV-SLAM map point using historical observability priors and current observations. As shown in Figure \ref{fig:existence_estimation_framework}, the framework consumes new observational data, and outputs an updated estimate of the point's probability of existence.
