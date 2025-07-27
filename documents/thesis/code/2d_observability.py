@@ -196,7 +196,7 @@ ax1.plot(0, 0, "o", markersize=8, label="p", color="black")
 ax1.text(-np.pi/4, 0.03, "$p$", ha="left", va="top", fontsize=12)
 obs.draw_barriers(ax1)
 obs.draw_real_observability(ax1)
-ax1.set_title("True Observability")
+ax1.set_title("Observability of map point $p$")
 
 # Add legend for observability regions
 from matplotlib.patches import Patch
