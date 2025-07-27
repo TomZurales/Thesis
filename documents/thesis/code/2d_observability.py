@@ -245,7 +245,7 @@ for ax in [ax1, ax2]:
     y_labels = ax.get_yticklabels()
     for i in range(len(y_labels)):
         if i == len(y_labels) - 1:
-            y_labels[i][2] = r"$d_{max}$"
+            y_labels[i] = "$d_{max}$"
         else:
             y_labels[i] = ""
     ax.set_yticklabels(y_labels)  # Remove radial distance labels
