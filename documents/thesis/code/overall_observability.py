@@ -182,7 +182,7 @@ obs = Observability2D()
 #     obs.add_barrier(Barrier(Point(r1, theta1, True), Point(r2, theta2, True)))
 
 obs.add_barrier(Barrier(Point(0.2, np.pi / 4, True), Point(0.2, -np.pi / 4, True)))
-obs.add_barrier(Barrier(Point(0.2, np.pi / 4, True), Point( 0.2, 3 *np.pi / 4,True)))
+# obs.add_barrier(Barrier(Point(0.2, np.pi / 4, True), Point( 0.2, 3 *np.pi / 4,True)))
 
 samples = []
 num_samples = 50
