@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.
 
 
 # Represents a point in cartesian and polar coordinates. Theta in radians
