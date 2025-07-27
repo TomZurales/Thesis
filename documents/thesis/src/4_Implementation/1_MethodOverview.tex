@@ -51,7 +51,7 @@ Map points are conceptualized as static, infinitesimally small points in 3D Eucl
 $$
     observable_p(\boldsymbol{v})\to\{0,1\}
 $$
-where $\boldsymbol{v} = \{\theta,\phi,d\}$  represents the azimuth, elevation, and distance between $p$ and the observer. This function returns 1 if $p$$ is observed from the input viewpoint, and 0 if it is not. From this, an observation can be defined as a vector $o=\{\theta,\phi,v(\theta,\phi)\}\in[0,2\pi)\times\left[-\frac{\pi}{2},\frac{\pi}{2}\right]\times\{0,1\}$.
+where $\boldsymbol{v} = \{\theta,\phi,d\}$  represents the azimuth, elevation, and distance between $p$ and the observer. This function returns 1 if $p$$ is observed from $\boldsymbol{v}$, and 0 if it is not. From this, an observation can be defined as a vector $o=\{\theta,\phi,v(\theta,\phi)\}\in[0,2\pi)\times\left[-\frac{\pi}{2},\frac{\pi}{2}\right]\times\{0,1\}$.
 
 \begin{figure}[!ht]
     \centering
