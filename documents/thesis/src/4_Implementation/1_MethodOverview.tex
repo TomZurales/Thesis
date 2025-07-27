@@ -66,7 +66,7 @@ It should be noted that within Euclidean space, a map point which is occluded fr
     \operatorname{barrier}_p(\boldsymbol{u}) = \argmin_d \operatorname{observable}_p(\boldsymbol{u}, d)
 \]
 
-
+This 
 
 The left plot of Figure \ref{fig:2d_observability} represents the output of a simplified 2D version of the observability function across the domain of $\theta\times d$, and the effects of obstructions on the observability. However, to generate such a plot from sensor data would require infinite observations spanning the full domain of $\theta\times d$. Instead, the system must operate on a finite set of observations as shown in the plot on the right. As described above, the Bayesian update step requires a model function $m$, the output of which is the probability of observing the point from a given position based on the historical observability of the map point. There are many possible implementations for the model, with the three implementations tested described below.
 
