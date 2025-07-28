@@ -19,33 +19,32 @@ A simple method for modeling the observability is the use of a K-nearest-neighbo
 \end{singlespace}
 
 \begin{singlespace}
-\end{singlespace}
-\begin{algorithm}[H]
-    \caption{KNN Query}
-    \label{alg:query}
-    \begin{algorithmic}
-        \Require Viewpoint $v = (\theta, \phi, d)$
-        \Require Previous observations $[(\theta_0, \phi_0, d_0, \text{seen}_0),\dots,(\theta_n, \phi_n, d_n, \text{seen}_n)]$
-        \Require Parameters $k$, \texttt{max\_angle}
-        \Ensure Estimated probability of seeing the point from $v$
+    \begin{algorithm}[H]
+        \caption{KNN Query}
+        \label{alg:query}
+        \begin{algorithmic}
+            \Require Viewpoint $v = (\theta, \phi, d)$
+            \Require Previous observations $[(\theta_0, \phi_0, d_0, \text{seen}_0),\dots,(\theta_n, \phi_n, d_n, \text{seen}_n)]$
+            \Require Parameters $k$, \texttt{max\_angle}
+            \Ensure Estimated probability of seeing the point from $v$
 
-        \State $candidates \gets [\;]$
-        \ForAll{$obs \in observations$}
-        \State $obs\_view \gets (\theta_i, \phi_i, d_i)$
-        \If{$\texttt{angular\_dist}(v, obs\_view) \leq \texttt{max\_angle}$}
-        \State $dist \gets \texttt{euclidean\_dist}(v, obs\_view)$
-        \State $candidates.\texttt{append}((dist, obs))$
-        \EndIf
-        \EndFor
-        \State Sort $candidates$ by $dist$ in ascending order
-        \State $k\_neighbors \gets$ first $\min(k, \texttt{length}(candidates))$ entries
-        \If{$\texttt{length}(k\_neighbors) = 0$}
-        \State \Return $0.5$
-        \EndIf
-        \State $n\_seen \gets$ count of entries in $k\_neighbors$ where $\text{seen} = \text{True}$
-        \State \Return $n\_seen / \texttt{length}(k\_neighbors)$
-    \end{algorithmic}
-\end{algorithm}
+            \State $candidates \gets [\;]$
+            \ForAll{$obs \in observations$}
+            \State $obs\_view \gets (\theta_i, \phi_i, d_i)$
+            \If{$\texttt{angular\_dist}(v, obs\_view) \leq \texttt{max\_angle}$}
+            \State $dist \gets \texttt{euclidean\_dist}(v, obs\_view)$
+            \State $candidates.\texttt{append}((dist, obs))$
+            \EndIf
+            \EndFor
+            \State Sort $candidates$ by $dist$ in ascending order
+            \State $k\_neighbors \gets$ first $\min(k, \texttt{length}(candidates))$ entries
+            \If{$\texttt{length}(k\_neighbors) = 0$}
+            \State \Return $0.5$
+            \EndIf
+            \State $n\_seen \gets$ count of entries in $k\_neighbors$ where $\text{seen} = \text{True}$
+            \State \Return $n\_seen / \texttt{length}(k\_neighbors)$
+        \end{algorithmic}
+    \end{algorithm}
 \end{singlespace}
 
 Parameters to Optimize: $[n, k, \tau]$
