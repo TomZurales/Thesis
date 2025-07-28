@@ -31,7 +31,7 @@ A simple method for modeling the observability is the use of a K-nearest-neighbo
         \State \Return $0.5$
         \EndIf
         \State $n\_seen \gets$ count of entries in $k\_neighbors$ where $\text{seen} = \text{True}$
-        \State \Return $positives / \texttt{length}(k\_neighbors)$
+        \State \Return $n\_seen / \texttt{length}(k\_neighbors)$
     \end{algorithmic}
 \end{algorithm}
 
