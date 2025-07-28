@@ -1,10 +1,11 @@
 \subsection{Road Map}
 
-% Outline Chapter 2
-% Outline Chapter 3
-% Outline Chapter 4
-% Outline Chapter 5
+Chapter \ref{sec:background} provides a high level overview of the concepts core to this research. Inner workings of KV-SLAM. Relocalization. RANSAC. Map Point Culling. Directional Statistics.
 
-Chapter X of this thesis discusses the background of the general SLAM problem, covering the history, use cases, and general pipeline utilized by SLAM systems. This is followed by a deeper dive into keypoint-based visual SLAM, the sensor modality targeted by this research. We provide a brief survey of widely utilized extensions to the core SLAM algorithm which target deficiencies in the core pipeline. Finally, we discuss fields outside the scope of SLAM which provide insight and methodology into this research.
+Chapter \ref{sec:related_work} digs deeper into research related to the concepts of improving long-term SLAM operations, detecting and removing extraneous data from SLAM maps, and \dots
 
-Chapter X discusses works related to this research, specifically focusing on extensions targeting improved performance in dynamic situations, with additional focus given to those methods which utilize point removal optimizations.
+Chapter \ref{sec:implementation} discusses the implementation details of a viewpoint-dependent historical observability model, the creation of a point removal system which implements this model, and its integration into ORB-SLAM3. Additionally, the hardware and software backing the collection and co-registration of the SLAM datasets is detailed.
+
+Chapter \ref{sec:analysis} covers the tests performed on the observability model, the point confidence estimator, and the integrated SLAM system. Tests are performed in simulation to establish initial parameters, and on generated datasets to compare real world and simulated performance.
+
+Chapter \ref{sec:conclusion} aggregates the results from chapter \ref{sec:analysis}, and evaluates them against the defined objectives of this research to determine whether this method is an effective solution to the problems discussed so far. Areas which require further study are discussed.

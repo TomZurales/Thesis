@@ -1,71 +1,119 @@
 \subsection{Method Overview}
 
-This section details our method for achieving the goals laid out in Section \ref{objectives}. The primary objective is to identify map points which, while previously viewed, are no longer visible due to environmental changes. To address this, we assign an incrementally updated probability of existence value to each map point. Observations of a map point increase our overall confidence in its existence. Conversely, failure to observe a map point from a viewpoint where it \textit{should} have been visible lowers our confidence in its existence. Determining whether a map point should be observable from a given viewpoint is not trivial, motivating the need for a viewpoint-aware observability model. The purpose of the model is to integrate historical observability data to estimate observability across all possible viewpoints.
+% This section details the methods researched for modeling historical map point observability, and explores how it may be used to identify outdated map points. The methods explored here will be tested and benchmarked in Section \ref{sec:analysis} to determine if the objectives laid out in Section \ref{sec:objectives} are successfully achieved.
 
-\subsubsection{Viewpoint-Aware Observability of Map Points}
+% The objective is to identify map points which, while previously viewed, are no longer visible due to environmental changes. To address this, we assign an incrementally updated probability of existence value to each map point. Observations of a map point increase our overall confidence in its existence. Conversely, failure to observe a map point from a viewpoint where it \textit{should} have been visible lowers our confidence in its existence. Determining whether a map point should be observable from a given viewpoint is not trivial, motivating the need for a viewpoint-aware observability model. The purpose of the model is to integrate historical observability data to estimate observability across all possible viewpoints. Each map point is attached to its own model.
 
-% define what we mean by viewpoint aware observability; a mapping between observation unit direction vector and seen/not seen binary observations
+\subsubsection{The Existence Estimation Framework}
 
-We define viewpoint aware observability as a function
-\begin{align*}
-    \boldsymbol{f:}\mathbb{S}^2\times\mathbb{R}^+\rightarrow\{0,1\}
-\end{align*}
-where $\mathbf{v}\in\mathbb{S}^2$ is a unit direction vector pointing from the map point to the observer, and $d\in\mathbb{R}^+$ is the Euclidean distance between the point and observer. The function $\boldsymbol{f}(\mathbf{v}, d)\rightarrow\{0,1\}$ returns 1 if the map point is considered visible from that viewpoint, and 0 otherwise.
+The proposed existence estimation framework iteratively updates the existence probability for a KV-SLAM map point using historical observability priors and current observations. As shown in Figure \ref{fig:existence_estimation_framework}, the framework consumes new observational data, and outputs an updated estimate of the point's probability of existence.
 
-% Justify why distance needs to be accounted for, use a diagram to show that by including distance, we can account for occlusions in the model
-
-The inclusion of distance in the model is necessary to handle occlusions in the environment. Figure \ref{fig:enhanced_general_slam_pipeline} shows a situation. By integrating distance data into the model, we can accurately determine whether an observation warrants modifying the point's probability of existence, or if it should be considered occluded.
-
-% Say what we are trying to build; a model which can produce a probability that a point will be seen given an observation direction and a distance
-
-The model operates in two stages: the observation stage, and the query stage. Observations modify the model's internal representation of a map point's observability, while queries ask \"What is the probability that I see the map point from this viewpoint?\". The observation function operates on observation data in the form $\boldsymbol{o} = \{\boldsymbol{v}\in\mathbb{S}^2\times d\in\mathbb{R}^+\times o\in\{0, 1\}\}$, where $\boldsymbol{v}$ represents the unit vector pointing from the map point to the observer, $d$ represents the distance between the map point and the observer, and $o$ represents whether the map point was seen or not. The query function operates on a similar set of parameters, excluding the observation success, represented as $\boldsymbol{q} = \{\boldsymbol{v}\in\mathbb{S}^2\times d\in\mathbb{R}^+\}$. The goal of the model is to provide answers to queries which are as accurate as possible based on the observations received up until that point. With perfect knowledge of the map point's observability across the domain of viewpoints, every query response would be a 0 or a 1, however, this would require infinite observations to produce. Instead, we implement the model probabilistically, allowing a finite number of observations to estimate the point's observability across the domain, and returning a probability of observation in the range [0, 1]. Figure \ref{fig:2d_observability} provides a simplified 2D representation of a map point $\boldsymbol{p}$'s ideal observability.
-
-\begin{figure}[htbp]
+\begin{figure}[!ht]
     \centering
-    % TODO: Add actual figure content
-    \caption{A simplified 2D representation of a map point's ideal observability pattern. The point is observable from certain viewing directions (shown in green) but occluded from others (shown in red).}
-    \label{fig:2d_observability}
+    \includegraphics[width=0.7\textwidth]{resources/existence_estimation_framework.png}
+    \caption[Existence Estimation Framework]{A flowchart representing the flow of data through the proposed Existence Estimation Framework.}
+    \label{fig:existence_estimation_framework}
 \end{figure}
 
-\subsubsection{Observability Shell Representations}
+The framework consists of two components: the observability model, and the existence probability updater. The observability model estimates the probability of a point being seen from a given viewpoint $P(S^{\boldsymbol{v}}|E)$, and updates its internal representation to integrate new observations. The existence probability updater performs a Bayesian update of the point's existence probability using the prior existence probability $P(E)$, the model estimate $P(S^{\boldsymbol{v}}|E)$, and the new observation's outcome $S$ or $\lnot S$. This approach ensures that negative observations from previously highly observable viewpoints impact the existence probability more strongly than those from more uncertain viewpoints.
 
-We model the viewpoint-aware observability of each map point using a geometric shell representation. This shell structure encodes the directional observation history of the point and is incrementally updated as new observations are processed. The shell can be implemented using various geometric constructs, and in both continuous and discrete modalities. This work proposes two observability shell representations: a discrete version implemented on an icosahedral shell, and a continuous version implemented on a spherical shell. For both structures, observation and query functions are provided.
+\subsubsection{The Bayesian Update Step}
 
-The discrete icosahedral shell allows the full observation history to be integrated into a set of discrete bins, requiring constant additional space per map point. On the other hand, the continuous model stores data for each observation, meaning the space requirements increase with time. This growth can be bounded by limiting the number of stored observations, for example using a fixed size queue.
+The system updates its confidence for a map point's existence based on environmental observations. This update follows Bayes' theorem, and can therefore be implemented to utilize Bayesian statistics. The events of interest are:
+\begin{itemize}
+    \item $E$: The event that the map point exists
+    \item $S^{\boldsymbol{v}}$: The event that the map point is seen from viewpoint $\boldsymbol{v}$
+\end{itemize}
 
-Below we introduce the mathematical formulation for both the discrete and continuous shells. For each modality, the mathematics behind the observation and query functions are defined and discussed.
+where $\boldsymbol{v} = \{\theta,\phi,d\}$, representing azimuth, elevation and distance from the observer to the point respectively. To formalize, our system updates $P(E) = P(E|S^{\boldsymbol{v}})$ given a positive observation, and $P(E) = P(E|\neg S^{\boldsymbol{v}})$ given a negative observation.
 
-\paragraph{Discrete Icosahedral Shell}
+Applying Bayes' theorem, the derived update function is
+\[
+    P(E) = \begin{cases}
+        \frac{P(S^{\boldsymbol{v}}|E)P(E)}{P(S^{\boldsymbol{v}})}           & \text{given }S^{\boldsymbol{v}}      \\
+        \frac{P(\neg S^{\boldsymbol{v}}|E)P(E)}{P(\neg S^{\boldsymbol{v}})} & \text{given }\neg S^{\boldsymbol{v}}
+    \end{cases}
+\]
 
-The icosahedron was selected for the discrete shell because it contains the highest face count of the convex Platonic solids. This provides 20 bins across the domain of viewpoints, each with identical coverage of the domain.
-
-\subparagraph{Icosahedral Shell Formulation}
-
-For the purposes of the mathematical formulation of the observation and query functions, the geometric details of the icosahedral shell are not relevant. The specifics of the geometric construction used in this work are discussed in Section \ref{sec:icos_construction}.
-
-Let $M=\{mp_i\}_{i=0}^{n_{mp}}$ represent a map $M$ containing $n_{mp}$ map points. We define $S_i=\{F_{i,j}\}_{j=1}^{20}$ to represent the icosahedral shell $S$ attached to $mp_i$, containing 20 faces $F_{i,{1..20}}$. Finally, we define $F_{i,j}=(d_{i,j}, p_{i,j})$ where $d_{i,j}\in\mathbb{R}^+$ represents the maximum distance through which $mp_i$ has been observed through face $F_{i,j}$, and $p_{i,j}\in[0,1]$ represents the probability of observing $mp_i$ through face $F_j$.
-
-Additionally, we require a function $\phi:\mathbb{S}^2\rightarrow\{1..20\}$ which maps unit vectors to the face through which they point. This function can be defined as follows:
+Additionally, the marginal probability $P(S^{\boldsymbol{v}})$ is
 $$
-    \phi(\mathbf{v}\in\mathbb{S}^2) = \underset{j\in\{1..20\}}{\arg\max}(\mathbf{v} \cdot \boldsymbol{f}_{i,j})
+    P(S^{\boldsymbol{v}}) = P(S^{\boldsymbol{v}}|E)P(E) + P(S^{\boldsymbol{v}}|\neg E)P(\neg E)
 $$
-where $\boldsymbol{f}_{i,j}$ represents the unit vector pointing from $mp_i$ to the centroid of face $F_{i,j}$.
 
-With these constructs in hand, we can define the observation and query functions for the icosahedral shell.
-
-\subparagraph{Observation Function Formulation}
-
-The observation function operates on observational inputs of the form $\{\boldsymbol{v}\in\mathbb{S}^2\times d\in\mathbb{R}^+\times o\in\{0, 1\}\}$. If the observation is successful ($o = 1$), $n_{seen}$ is incremented for $F_{i,j}$, and $p_{i,j}$ is recalculated using the formula
+The probability of a false observation of a non-existent map point is small, but non-zero. The probability of a false match increases in low-light and in low texture environments. The value $\varepsilon$ is assigned to represent this probability, and will be experimentally determined in Section \ref{sec:existence_confidence_eval}.
 $$
-    p_{i,j}=\frac{n_{seen}}{n_{seen}+n_{unseen}}
+    \varepsilon = P(S^{\boldsymbol{v}}|\neg E) \approx 0
 $$
-On the other hand, if the observation is unsuccessful, we first determine if the point is observable from this distance and viewpoint. If it is not, no further actions are taken. This failed observation is likely due to a real, physical occlusion in the environment.
 
-\subparagraph{Query Function Formulation}
+Finally, assuming the existence of a model function $m$ which estimates the probability of observing the point from a given viewpoint $\boldsymbol{v}$
+$$
+    m(\boldsymbol{v}) \approx P(S^{\boldsymbol{v}}|E)
+$$
 
-\paragraph{The Continuous Shell Representation}
+The update step can be expressed as
+\[
+    P(E) = \begin{cases}
+        \frac{m(\boldsymbol{v})P(E)}{m(\boldsymbol{v})P(E) + \varepsilon(1-P(E))}             & \text{given }S^{\boldsymbol{v}}      \\
+        \frac{(1-m(\boldsymbol{v}))P(E)}{(1-m(\boldsymbol{v}))P(E) + (1-\varepsilon)(1-P(E))} & \text{given }\neg S^{\boldsymbol{v}}
+    \end{cases}
+\]
 
+\subsubsection{The Observability of Map Points}
 
-\subsubsection{Existence Probability and Update Rule}
+Map points are conceptualized as static, infinitesimally small points in 3D Euclidean space. Let the observability of a map point $p$ from a viewpoint $\boldsymbol{v} = \{\theta,\phi,d\}\in[0,2\pi)\times\left[-\frac{\pi}{2},\frac{\pi}{2}\right]\times[0,d_{max})$ be represented by the function
+$$
+    \operatorname{observable}_p : V \to \{0, 1\}
+$$
+where $\boldsymbol{v} = \{\theta,\phi,d\}$ represents the azimuth, elevation, and distance from the observer to $p$ respectively. This function returns 1 if $p$ is observed from $\boldsymbol{v}$, and 0 if it is not. From this, an observation of point $p$ can be defined as a vector $\boldsymbol{o}_p=\{\boldsymbol{v},observable_p(\boldsymbol{v})\}$, and a set of $n$ observations of $p$ as $\boldsymbol{O}_p=\{\boldsymbol{o}_{p0},\dots,\boldsymbol{o}_{pn}\}$. For illustrative purposes, figures in the remainder of this thesis may use a simplified 2D representation of these definitions, where $\boldsymbol{v}^{2D}=\{\theta,d\}$. Figure \ref{fig:global_observability_p} shows such a plot representing the global observability of a map point $p$, and the effects of obstructions on observability.
 
-\subsubsection{Application to Point Pruning and Selection}
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{resources/global_observability_p.png}
+    \caption[2D Global Observability]{A 2D representation of the global observability of a map point $p$ near two orthogonal obstructions.}
+    \label{fig:global_observability_p}
+\end{figure}
+
+The generation of such a plot would require the generation and storage of infinite observations taken from across the domain of viewpoints. The objectives defined in Section \ref{sec:objectives} state that the model's size should be constant and small. Therefore, the models described below must operate either on some fixed, finite number of observations, or on a constant sizes set of metadata.
+
+\subsubsection{Observability Modeling}
+
+The observability model performs two functions: estimation of the probability of the map point being seen from a given viewpoint, and the integration of new observations into its internal representation. The estimation function $\operatorname{m}_p$ takes a viewpoint as an argument, and returns the model's estimate of $P(S^{\boldsymbol{v}}|E)$. The update function takes an observation as an argument, and returns nothing. The goal of any model implementation is to minimize the objective function
+$$
+    \int |\operatorname{m}_p(\boldsymbol{v}) - \operatorname{observable}_p(\boldsymbol{v})| \,dV
+$$
+representing the total error between the model's estimate, and the true observability of a point $p$.
+
+\paragraph{K-Nearest Neighbors Model}
+
+A simple method for modeling the observability is the use of a K-nearest-neighbors clustering method. In this model, the estimation is the number of positive observations in the k-nearest observations divided by k. The replacement strategy utilizes feedback from the existence estimator, replacing the nearest observation with the new observation if $\Delta P(E) > \tau$ where $\tau$ is a threshold found through optimization.
+
+Parameters to Optimize: $[n, k, \tau]$
+
+\paragraph{Binned Model}
+
+In this model, each observation is assigned to a bin based on the unit direction of observation. Each bin stores the maximum distance from which it was observed, total number of observations within that distance, and the number of positive observations within that distance. The estimate is the number of positive observations within the distance divided by the total number of observations, or 0 if the observation occurs outside the observability shell.
+
+\paragraph{Continuous Model}
+
+\subsubsection{Overall Observability}
+
+The models described above are lacking one critical component. Currently, if a model's estimation function returns 1, it is stating that it is fully confident that if the map point exists, it will be seen from the given viewpoint. Therefore, a single negative observation of a point which has always been observable would immediately drop $P(E)$ to zero. To combat this, a damping factor $\delta \in [0,1]$ could be added such that
+\[
+    P(E) = \begin{cases}
+        \delta \frac{m(\boldsymbol{v})P(E)}{m(\boldsymbol{v})P(E) + \varepsilon(1-P(E))}             & \text{given }S^{\boldsymbol{v}}      \\
+        \delta \frac{(1-m(\boldsymbol{v}))P(E)}{(1-m(\boldsymbol{v}))P(E) + (1-\varepsilon)(1-P(E))} & \text{given }\neg S^{\boldsymbol{v}}
+    \end{cases}
+\]
+allowing the maximum impact of new observations to be tuned through careful selection of $\delta$. However, this fails to account for the overall observability of the map point. Consider the case shown in Figure \ref{fig:overall_observability}. Clearly, a negative observation within the observable region of the left plot should have a smaller impact on $P(E)$ than a negative observation within the observable region of the right plot.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{resources/overall_observability.png}
+    \caption[Overall Observability]{A 2D representation of the global observability of a map point $p$ with high overall observability (left) and low overall observability (right).}
+    \label{fig:overall_observability}
+\end{figure}
+
+Overall observability represents the proportion of viewpoints from which the map point is observable to the total number of viewpoints. This knowledge is integrated into the existence estimator using an additional parameter $q$. This new parameter is updated based on the difference between the model's estimate, and the true observation, operating on the idea that if the model estimates that a point will not be seen from a viewpoint, but it is, then integration of that information should improve the overall observability of the map point. Conversely, if the model predicts that a point will be seen, but it is not, then the overall observability of the point goes down.
+$$
+    q = \rho(o - m(v))
+$$
