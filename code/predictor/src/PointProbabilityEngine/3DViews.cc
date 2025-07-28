@@ -65,16 +65,16 @@ void PointProbabilityEngine::init3DView()
     ShaderManager *sm = ShaderManager::getInstance();
     // Add our shaders for the camera view
     sm->addShader("solid_color_3d",
-                  "/home/tom/workspace/thesis/code/src/Graphics/shaders/vertex/solid_color_3d.glsl",
-                  "/home/tom/workspace/thesis/code/src/Graphics/shaders/fragment/solid_color_3d.glsl");
+                  "/home/tom/workspace/thesis/code/predictor/src/Graphics/shaders/vertex/solid_color_3d.glsl",
+                  "/home/tom/workspace/thesis/code/predictor/src/Graphics/shaders/fragment/solid_color_3d.glsl");
     sm->addShader("heatmap_3d",
-                  "/home/tom/workspace/thesis/code/src/Graphics/shaders/vertex/solid_color_3d.glsl",
-                  "/home/tom/workspace/thesis/code/src/Graphics/shaders/fragment/heatmap_3d.glsl");
+                  "/home/tom/workspace/thesis/code/predictor/src/Graphics/shaders/vertex/solid_color_3d.glsl",
+                  "/home/tom/workspace/thesis/code/predictor/src/Graphics/shaders/fragment/heatmap_3d.glsl");
 
     // Add our shaders for the static view
     sm->addShader("static_solid_color_3d",
-                  "/home/tom/workspace/thesis/code/src/Graphics/shaders/vertex/static_solid_color_3d.glsl",
-                  "/home/tom/workspace/thesis/code/src/Graphics/shaders/fragment/solid_color_3d.glsl");
+                  "/home/tom/workspace/thesis/code/predictor/src/Graphics/shaders/vertex/static_solid_color_3d.glsl",
+                  "/home/tom/workspace/thesis/code/predictor/src/Graphics/shaders/fragment/solid_color_3d.glsl");
 
     sm->setProjectionMatrix(glm::perspective(glm::radians(45.0f), 1.0f, 0.01f, 100.0f));
     sm->setChangeOfBasis(glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, -1.0f, 1.0f)));
