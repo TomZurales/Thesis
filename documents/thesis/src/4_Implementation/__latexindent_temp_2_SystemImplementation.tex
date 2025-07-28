@@ -1,0 +1,92 @@
+\subsection{Observability Model Implementation}
+
+The implementations explored in this thesis serve as representative examples of various methods for modeling map point observability. While not an exhaustive exploration of all possible methods or implementations, these examples provide a foundation for future research.
+
+Each model described below is initialized with a vector of inputs representing various tunable parameters for the model. The final selection of these inputs will be tuned through an optimization process described in Section \ref{sec:parameter_tuning}. Each model provides functions for querying the models estimate of $P(S^{\boldsymbol{v}}|E)$ for a given viewpoint $\boldsymbol{v}$, and for integrating new observations $\boldsymbol{o}$ into the internal representation, taking an optional feedback parameter depending on the implementation.
+
+\paragraph{K-Nearest Neighbors Model}
+
+A simple method for modeling the observability is the use of a K-nearest-neighbors clustering method. This model estimate $P(S^{\boldsymbol{v}}|E)$ to be the proportion of positive observations near $\boldsymbol{v}$ to the total number of nearby observations.
+
+\begin{singlespace}
+    \paragraph{Parameters}
+    \begin{itemize}
+        \item $k$: The maximum number of neighboring observations used to estimate $P(S^{\boldsymbol{v}}|E)$
+        \item $n$: The maximum number of observations that can be stored in the internal representation
+        \item $a_{max}$: The maximum allowable angle between a query viewpoint and an observation to be considered a neighboring
+        \item $feedback\_threshold$: The minimum feedback value needed to force the integration of a new observation
+    \end{itemize}
+\end{singlespace}
+
+\begin{singlespace}
+    \begin{algorithm}[H]
+        \caption{KNN Query}
+        \label{alg:knn_query}
+        \begin{algorithmic}
+            \Require Viewpoint $v = (\theta, \phi, d)$
+            \Require Previous observations $[(\theta_0, \phi_0, d_0, \text{seen}_0),\dots,(\theta_n, \phi_n, d_n, \text{seen}_n)]$
+            \Require Parameters $k$, \texttt{max\_angle}
+            \Ensure Estimated probability of seeing the point from $v$
+
+            \State $candidates \gets [\;]$
+            \ForAll{$obs \in observations$}
+            \State $obs\_view \gets (\theta_i, \phi_i, d_i)$
+            \If{$\texttt{angular\_dist}(v, obs\_view) \leq \texttt{max\_angle}$}
+            \State $dist \gets \texttt{euclidean\_dist}(v, obs\_view)$
+            \State $candidates.\texttt{append}((dist, obs))$
+            \EndIf
+            \EndFor
+            \State Sort $candidates$ by $dist$ in ascending order
+            \State $k\_neighbors \gets$ first $\min(k, \texttt{length}(candidates))$ entries
+            \If{$\texttt{length}(k\_neighbors) = 0$}
+            \State \Return $0.5$
+            \EndIf
+            \State $n\_seen \gets$ count of entries in $k\_neighbors$ where $\text{seen} = \text{True}$
+            \State \Return $n\_seen / \texttt{length}(k\_neighbors)$
+        \end{algorithmic}
+    \end{algorithm}
+\end{singlespace}
+
+\begin{singlespace}
+    \begin{algorithm}[H]
+        \caption{KNN Integrate Observation}
+        \label{alg:knn_integrate}
+        \begin{algorithmic}
+            \Require Observation $o = (\theta, \phi, d, seen)$
+            \Require Previous observations $[(\theta_0, \phi_0, d_0, \text{seen}_0),\dots,(\theta_n, \phi_n, d_n, \text{seen}_n)]$
+            \Require Parameters $k$, \texttt{max\_angle}
+            \Ensure Estimated probability of seeing the point from $v$
+
+            \State $candidates \gets [\;]$
+            \ForAll{$obs \in observations$}
+            \State $obs\_view \gets (\theta_i, \phi_i, d_i)$
+            \If{$\texttt{angular\_dist}(v, obs\_view) \leq \texttt{max\_angle}$}
+            \State $dist \gets \texttt{euclidean\_dist}(v, obs\_view)$
+            \State $candidates.\texttt{append}((dist, obs))$
+            \EndIf
+            \EndFor
+            \State Sort $candidates$ by $dist$ in ascending order
+            \State $k\_neighbors \gets$ first $\min(k, \texttt{length}(candidates))$ entries
+            \If{$\texttt{length}(k\_neighbors) = 0$}
+            \State \Return $0.5$
+            \EndIf
+            \State $n\_seen \gets$ count of entries in $k\_neighbors$ where $\text{seen} = \text{True}$
+            \State \Return $n\_seen / \texttt{length}(k\_neighbors)$
+        \end{algorithmic}
+    \end{algorithm}
+\end{singlespace}
+
+Parameters to Optimize: $[n, k, \tau]$
+
+\paragraph{Binned Model}
+
+In this model, each observation is assigned to a bin based on the unit direction of observation. Each bin stores the maximum distance from which it was observed, total number of observations within that distance, and the number of positive observations within that distance. The estimate is the number of positive observations within the distance divided by the total number of observations, or 0 if the observation occurs outside the observability shell.
+
+\paragraph{Continuous Model}
+
+\subsubsection{Icosahedral Shell Implementation}
+\label{sec:icos_construction}
+
+\subsection{Bayesian Update Implementation}
+
+\subsection{Existence Estimation Framework Implementation}
