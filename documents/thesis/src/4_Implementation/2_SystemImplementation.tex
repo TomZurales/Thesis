@@ -22,7 +22,7 @@ A simple method for modeling the observability is the use of a K-nearest-neighbo
         \State $obs\_view \gets (\theta_i, \phi_i, d_i)$
         \If{$\texttt{angular\_dist}(v, obs\_view) \leq \texttt{max\_angle}$}
         \State $dist \gets \texttt{euclidean\_dist}(v, obs\_view)$
-        \State $candidates.\texttt{append}((dist, \text{seen}))$
+        \State $candidates.\texttt{append}((dist, obs))$
         \EndIf
         \EndFor
         \State Sort $candidates$ by $dist$ in ascending order
