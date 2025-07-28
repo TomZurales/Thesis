@@ -12,7 +12,7 @@ A simple method for modeling the observability is the use of a K-nearest-neighbo
     \begin{algorithm}[H]
         \caption{Query Viewpoint Probability}
         \label{alg:query}
-        \begin{small}
+        \begin{tiny}
             \begin{algorithmic}
                 \Require Viewpoint $v = (\theta, \phi, d)$
                 \Require Previous observations $(\theta_i, \phi_i, d_i, \text{seen}_i)$
@@ -35,7 +35,7 @@ A simple method for modeling the observability is the use of a K-nearest-neighbo
                 \State $n\_seen \gets$ count of entries in $k\_neighbors$ where $\text{seen} = \text{True}$
                 \State \Return $n\_seen / \texttt{length}(k\_neighbors)$
             \end{algorithmic}
-        \end{small}
+        \end{tiny}
     \end{algorithm}
 \end{minipage}
 
