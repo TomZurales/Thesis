@@ -8,23 +8,30 @@ Each model described below is initialized with a vector of inputs representing v
 
 A simple method for modeling the observability is the use of a K-nearest-neighbors clustering method. In this model, the estimation is the number of positive observations in the k-nearest observations divided by k. The replacement strategy utilizes feedback from the existence estimator, replacing the nearest observation with the new observation if $\Delta P(E) > \tau$ where $\tau$ is a threshold found through optimization.
 
-\begin{algorithm}
-    \caption{An algorithm with caption}\label{alg:cap}
-    \begin{algorithmic}
-        \Require $n \geq 0$
-        \Ensure $y = x^n$
-        \State $y \gets 1$
-        \State $X \gets x$
-        \State $N \gets n$
-        \While{$N \neq 0$}
-        \If{$N$ is even}
-        \State $X \gets X \times X$
-        \State $N \gets \frac{N}{2}$  \Comment{This is a comment}
-        \ElsIf{$N$ is odd}
-        \State $y \gets y \times X$
-        \State $N \gets N - 1$
-        \EndIf
-        \EndWhile
+\begin{algorithm}[H]
+    \caption{Query Viewpoint Probability}
+    \label{alg:query}
+    \begin{algorithmic}[1]
+        \REQUIRE Viewpoint $v = (\theta, \phi)$
+        \REQUIRE Global list of observations $(\theta_i, \phi_i, \text{is\_positive}_i)$
+        \REQUIRE Global parameters $k$, $\texttt{max\_angle}$
+        \ENSURE Probability of existence based on nearest neighbors
+
+        \STATE $candidates \gets [\;]$
+        \FORALL{$obs \in observations$}
+        \STATE $obs\_view \gets (\theta_i, \phi_i)$
+        \IF{$\texttt{angular\_dist}(v, obs\_view) \leq \texttt{max\_angle}$}
+        \STATE $dist \gets \texttt{euclidean\_dist}(v, obs\_view)$
+        \STATE $candidates.\texttt{append}((dist, \text{is\_positive}_i))$
+        \ENDIF
+        \ENDFOR
+        \STATE Sort $candidates$ by $dist$ in ascending order
+        \STATE $k\_neighbors \gets$ first $\min(k, \texttt{length}(candidates))$ entries of $candidates$
+        \IF{$\texttt{length}(k\_neighbors) = 0$}
+        \RETURN $0.5$
+        \ENDIF
+        \STATE $positives \gets$ count of entries in $k\_neighbors$ where $\text{is\_positive} = \text{True}$
+        \RETURN $positives / \texttt{length}(k\_neighbors)$
     \end{algorithmic}
 \end{algorithm}
 
