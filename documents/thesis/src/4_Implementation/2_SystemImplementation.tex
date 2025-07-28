@@ -2,7 +2,7 @@
 
 The implementations explored in this thesis serve as representative examples of various methods for modeling map point observability. While not an exhaustive exploration of all possible methods or implementations, these examples provide a foundation for future research.
 
-Each model described below is initialized with a vector of inputs representing various tunable parameters for the model. The final selection of these inputs will be tuned through an optimization process described in Section \ref{sec:parameter_tuning}. Each model provides functions for querying the models estimate of $P(S^{\boldsymbol{v}}|E)$ for a given viewpoint $\boldsymbol{v}$, integrating new observations into the internal representation, and optionally, receiving feedback from the Existence Probability Estimator.
+Each model described below is initialized with a vector of inputs representing various tunable parameters for the model. The final selection of these inputs will be tuned through an optimization process described in Section \ref{sec:parameter_tuning}. Each model provides functions for querying the models estimate of $P(S^{\boldsymbol{v}}|E)$ for a given viewpoint $\boldsymbol{v}$ based , integrating new observations into the internal representation, and optionally, receiving feedback from the Existence Probability Estimator.
 
 \paragraph{K-Nearest Neighbors Model}
 
