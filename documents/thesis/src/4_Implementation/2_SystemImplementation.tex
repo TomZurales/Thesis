@@ -63,7 +63,7 @@ A simple method for modeling the observability is the use of a K-nearest-neighbo
             \State{\Return}
             \EndIf
             \If{$o.\text{seen} = \text{True}}
-                \State{$observations$.\texttt{append}($o$)}
+                \State{$observations$.\texttt{replace_nearest_not_seen}($o$)}
         \end{algorithmic}
     \end{algorithm}
 \end{singlespace}
