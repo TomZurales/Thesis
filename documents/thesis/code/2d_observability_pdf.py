@@ -1,9 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
-from matplotlib.text import Text
-
-np.random.seed(42)  # For reproducibility
 
 # Represents a point in cartesian and polar coordinates. Theta in radians
 class Point:
@@ -60,6 +57,15 @@ class Barrier:
         # u should be between 0 and 1 for line segment 2 (p1 to p2)
         return 0 <= t <= 1 and 0 <= u <= 1
 
+class Sample:
+    p: Point
+    seen: bool
+    uniqueness: float
+    confidence: float = 0.5
+
+    def __init__(self, p: Point, seen: bool):
+        self.p = p
+        self.seen = seen
 
 class Observability2D:
     barriers: list[Barrier] = []
@@ -159,20 +165,47 @@ class Observability2D:
         # Plot the observability map
         ax.contourf(Theta, R, Z, levels=50, cmap=self.custom_cmap, alpha=0.7)
 
-    def draw_samples(self, ax, samples: list[Point]):
+    def draw_samples(self, ax, samples: list[Sample]):
         for sample in samples:
-            if self.check_visibility(sample):
-                ax.plot(sample.theta, sample.r, marker="+", color="blue")
+            if self.check_visibility(sample.p):
+                ax.plot(sample.p.theta, sample.p.r, marker="+", color="blue")
             else:
-                ax.plot(sample.theta, sample.r, marker="_", color="red")
+                ax.plot(sample.p.theta, sample.p.r, marker="_", color="red")
+
+class MPO:
+    samples: list[Sample] = []
+    model = Observability2D()
+    existence = 0.0
+
+    def add_sample(self, s: Sample):
+        if len(self.samples) == 0 and not s.seen:
+            return
+        if len(self.samples) < 100:
+            self.samples.append(s)
+        else:
+            temp_samples = self.samples.copy()
+            # Recalculate uniqueness and confidence for every point
+            # Uniqueness = distance to nearest similar observation, either seen or not seen
+            for i, sample in enumerate(temp_samples):
+                # Calculate uniqueness based on distance to nearest sample
+                distances = [
+                    np.sqrt((sample.p.x - other.p.x) ** 2 + (sample.p.y - other.p.y) ** 2)
+                    for j, other in enumerate(temp_samples) if i != j and sample.seen == other.seen
+                ]
+                if distances:
+                    sample.uniqueness = min(distances)
+                else:
+                    sample.uniqueness = 0.0
+    
 
 
 # Create figure with side-by-side polar subplots
-fig, ax1 = plt.subplots(
-    1, 1, subplot_kw=dict(projection="polar"), figsize=(7, 8)
+fig, (ax1, ax2) = plt.subplots(
+    1, 2, subplot_kw=dict(projection="polar"), figsize=(14, 8)
 )
 
 obs = Observability2D()
+mpo = MPO()
 # Add 5 random barriers
 # for _ in range(5):
 #     r1 = np.random.uniform(0.1, 1)
@@ -184,19 +217,12 @@ obs = Observability2D()
 obs.add_barrier(Barrier(Point(0.4, np.pi / 4, True), Point(0.4, -np.pi / 4, True)))
 obs.add_barrier(Barrier(Point(0.4, np.pi / 4, True), Point( 0.4, 3 *np.pi / 4,True)))
 
-samples = []
-num_samples = 50
-for _ in range(num_samples):
-    r = np.random.uniform(0.1, 1)
-    theta = np.random.uniform(0, 2 * np.pi)
-    samples.append(Point(r, theta, True))
-
 # Left plot: Real observability
-ax1.plot(0, 0, "o", markersize=8, label="p", color="black")
+ax1.plot(0, 0, "ro", markersize=8, label="p", color="black")
 ax1.text(-np.pi/4, 0.03, "$p$", ha="left", va="top", fontsize=12)
 obs.draw_barriers(ax1)
 obs.draw_real_observability(ax1)
-ax1.set_title("Global Observability of Map Point $p$")
+ax1.set_title("True Observability")
 
 # Add legend for observability regions
 from matplotlib.patches import Patch
@@ -207,12 +233,12 @@ legend_elements = [
 ax1.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.05, 1.05))
 
 # Right plot: KNN model
-# ax2.plot(0, 0, "o", markersize=8, label="p", color="black")
-# ax2.text(-np.pi/4, 0.03, "$p$", ha="left", va="top", fontsize=12)
-# obs.draw_barriers(ax2)
-# obs.draw_samples(ax2, samples)
-# # obs.draw_knn_model(ax2, 1, samples)
-# ax2.set_title("Sampled Observability")
+ax2.plot(0, 0, "ro", markersize=8, label="p", color="black")
+ax2.text(-np.pi/4, 0.03, "$p$", ha="left", va="top", fontsize=12)
+obs.draw_barriers(ax2)
+obs.draw_samples(ax2, mpo.samples)
+# obs.draw_knn_model(ax2, 1, samples)
+ax2.set_title("Sampled Observability")
 
 # Add legend for observation samples
 from matplotlib.lines import Line2D
@@ -220,7 +246,7 @@ legend_elements = [
     Line2D([0], [0], marker='+', color='blue', linestyle='None', markersize=8, label='Positive Observation'),
     Line2D([0], [0], marker='_', color='red', linestyle='None', markersize=8, label='Negative Observation')
 ]
-# ax2.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.05, 1.05))
+ax2.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1.05, 1.05))
 
 # # Right plot: Binned model
 # ax3.plot(0, 0, "ro", markersize=8, label="p")
@@ -242,11 +268,9 @@ legend_elements = [
 #     ax.plot(p.theta, p.r, "o", color=color)
 
 # Set up all plots
-for ax in [ax1]:
-    ax.set_ylim(0, 1.05)
+for ax in [ax1, ax2]:
+    ax.set_ylim(0, 1)
     ax.set_yticklabels([])  # Remove radial distance labels
-    # Move d_max label slightly down and to the left
-    ax.text(np.pi/6 - 0.15, 0.99, '$d_{max}$', ha='center', va='center', fontsize=10)
     # Create radian labels as fractions of pi
     radian_labels = ["0", "π/4", "π/2", "3π/4", "π", "5π/4", "3π/2", "7π/4"]
     ax.set_thetagrids(
@@ -254,5 +278,34 @@ for ax in [ax1]:
     )
     ax.grid(True)
 
+# Function to add a random observation
+def add_random_observation():
+    r = np.random.uniform(0.1, 1)
+    theta = np.random.uniform(0, 2 * np.pi)
+    new_sample = Point(r, theta, True)
+
+
+
+    samples.append(new_sample)
+    
+    # Add the new sample to the right plot
+    if obs.check_visibility(new_sample):
+        ax2.plot(new_sample.theta, new_sample.r, marker="+", color="blue")
+    else:
+        ax2.plot(new_sample.theta, new_sample.r, marker="_", color="red")
+    
+    # Refresh the plot
+    fig.canvas.draw()
+    print(f"Added observation at r={r:.3f}, θ={theta:.3f} ({'visible' if obs.check_visibility(new_sample) else 'occluded'})")
+
+# Event handler for key presses
+def on_key_press(event):
+    if event.key == 'enter':
+        add_random_observation()
+
+# Connect the event handler
+fig.canvas.mpl_connect('key_press_event', on_key_press)
+
 plt.tight_layout()
+print("Press Enter to add random observations. Close the window to exit.")
 plt.show()

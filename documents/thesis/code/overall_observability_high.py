@@ -181,8 +181,8 @@ obs = Observability2D()
 #     theta2 = np.random.uniform(0, 2 * np.pi)
 #     obs.add_barrier(Barrier(Point(r1, theta1, True), Point(r2, theta2, True)))
 
-obs.add_barrier(Barrier(Point(0.4, np.pi / 4, True), Point(0.4, -np.pi / 4, True)))
-obs.add_barrier(Barrier(Point(0.4, np.pi / 4, True), Point( 0.4, 3 *np.pi / 4,True)))
+obs.add_barrier(Barrier(Point(0.2, np.pi / 4, True), Point(0.2, -np.pi / 4, True)))
+# obs.add_barrier(Barrier(Point(0.2, np.pi / 4, True), Point( 0.2, 3 *np.pi / 4,True)))
 
 samples = []
 num_samples = 50
@@ -196,7 +196,7 @@ ax1.plot(0, 0, "o", markersize=8, label="p", color="black")
 ax1.text(-np.pi/4, 0.03, "$p$", ha="left", va="top", fontsize=12)
 obs.draw_barriers(ax1)
 obs.draw_real_observability(ax1)
-ax1.set_title("Global Observability of Map Point $p$")
+ax1.set_title("High Overall Observability")
 
 # Add legend for observability regions
 from matplotlib.patches import Patch

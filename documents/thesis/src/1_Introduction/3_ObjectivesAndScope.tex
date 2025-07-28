@@ -1,0 +1,57 @@
+\subsection{Objectives and Scope}
+\label{sec:objectives}
+
+The research presented in this thesis was inspired by and is limited in scope to map reuse in episodic keypoint-based visual SLAM operations. Limiting the scope does mean that some relevant topics will not be explored in depth, but will be mentioned in Section \ref{sec:future_work} as potential areas for follow-on research. The justification for the scope selection is given here.
+
+The methods presented in this research will not work for all SLAM systems, or on all SLAM generated maps. While change detection techniques do exist for dense maps \cite{PLACEHOLDERa}, the method presented here would not be suitable, as it relies on locating the same map features at different points in time. Dense maps identify matching positions through geometric correspondence, as opposed to feature descriptors. This applies to LiDAR-based SLAM systems as well, as no descriptor is generated for each point. The method which will be presented relies on the capability to apply and persist metadata to a particular map point, something which is not possible without point descriptors, leaving keypoint-based visual SLAM as the only option for this work.
+
+The focus map reuse and the episodic operating model can be motivated by the use cases discussed previously. On the ISS, the ideal navigation system would be a self-updating localizer than a SLAM system. The primary difference being that a localizer utilizes the same map and reference frame for all operations, while a SLAM system generates and use its own map. SLAM's features are extremely useful for exploration of unknown areas, but less so for repeated operations in known areas. The combination of map reuse and the episodic operating model allow the system to act as a self-updating localizer, maintaining a map which is up-to-date with the last observed state of the world, while preserving as much previously collected data as possible. Within this scope, we can define the objectives of this research.
+
+This research has two primary objectives. The first is the implementation a novel map point removal method which considers the historical point-level viewpoint-dependent observability of map points into the decision to keep or discard points. The second is the integration of this map point removal method into an existing KV-SLAM system. Both objectives have several sub-goals, which are detailed below.
+
+\subsubsection*{Objective 1: Implementation of a Viewpoint-Dependent Outdated Map Point Removal Method (VD-MPR)}
+\label{sec:objective_1}
+\subparagraph{Goal 1: Speed}
+
+As this system is intended to be run as part of real-time SLAM operations, no function performed by the model can take longer than the delta time between image frames. Ideally, each function should be significantly faster than this to allow for all SLAM system operations to complete as well.
+
+This goal also refers to the speed of identifying outdated map points, meaning a point which is outdated should be identified and culled with a minimal number of observations.
+
+\subparagraph{Goal 2: Size}
+
+To run well on resource constrained hardware, additional space requirements (ram and disk) must be kept low. The space complexity of the system should be constant, and not a function of the number of map points or observations.
+
+\subparagraph{Goal 3: Accuracy}
+
+The system must only identify points as outdated once sufficient evidence of them being out of date has been collected. The system should be robust to falsely identifying active map points as outdated and outdated map points as active.
+
+\subsubsection*{Objective 2: Integration into an Existing KV-SLAM System}
+
+To verify the performance and effectiveness of the VD-MPR method, it must be implemented into an exiting SLAM system, and benchmarked in various scenarios.
+
+\subparagraph{Goal 1: Maintain Performance in the General Case}
+
+This research is focused on outdated map reuse, and therefore should not affect the performance of the SLAM system when not reusing an outdated map. The modified system should perform identically to the base system in this case.
+
+\subparagraph{Goal 2: Improve Performance When Using Outdated Maps}
+
+To be called successful, the SLAM implementation should perform better than the base system when using an outdated initial map. The criteria for better performance are defined in Section \ref{sec:eval_metrics}.
+
+\subparagraph{Goal 3: Maintain Computational Requirements}
+
+If the goals of Objective 1 are met, integration of the map point removal method should not cause the computational requirements of the system to increase significantly.
+
+\bigskip
+\noindent With these objectives in hand, we can now define a set of questions which, when answered, will determine whether the goals of the objectives have been successfully achieved.
+
+% % Define the scope of this work, focusing exclusively on map reuse between runs of SLAM in semi-static environments.
+
+% This research is intended to improve keypoint-based visual SLAM performance in situations where a pre-generated map is loaded to lock in a known coordinate frame, and in changing environments. The key distinction from other operation modes is the repeated operations in the same environment, with an expectation of the maintenance of large scale static features, but without the expectation for smaller visual features to remain the same between runs. This is accomplished through the introduction of a viewpoint-aware probabilistic model for the existence of map points. This research studies the effects of removing map points from pre-generated maps using this model, and the downstream effects on optimization, relocalization and map accuracy.
+
+% % Define the objectives of the model; to be lightweight and effective at identifying outdated map points, and to be usable in real-time SLAM systems.
+
+% The objective of the model is to produce an accurate method of representing the global observability of each map point in a map. The model should be lightweight, requiring only small amounts of additional space per map point. The model should integrate all observational data into its understanding of the map point's observability, while rejecting redundant data. Identification of map points which are outdated should be fast and accurate. Map points which remain visible should be robustly maintained.
+
+% % Define the objectives of the implementation, not to hurt performance in static environments, and to improve performance with previously generated maps in semi-static environments.
+
+% This model will be integrated into ORB-SLAM3 for testing purposes, ensuring we meet the implementation objectives of speed, accuracy and improvement. The model should not introduce significant increases in compute requirements. Additionally, performance in static environments should remain the same regardless of model implementation. However, under the specific scenario of map reuse in a changing environment, performance (as measured by trajectory accuracy to ground truth) should be improved.
