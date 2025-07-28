@@ -17,8 +17,8 @@ A simple method for modeling the observability is the use of a K-nearest-neighbo
         \Require Global parameters $k$, $\texttt{max\_angle}$
         \Ensure Probability of existence based on nearest neighbors
 
-        \STATE $candidates \gets [\;]$
-        \FORALL{$obs \in observations$}
+        \State $candidates \gets [\;]$
+        \forall{$obs \in observations$}
         \STATE $obs\_view \gets (\theta_i, \phi_i)$
         \IF{$\texttt{angular\_dist}(v, obs\_view) \leq \texttt{max\_angle}$}
         \STATE $dist \gets \texttt{euclidean\_dist}(v, obs\_view)$
