@@ -13,25 +13,25 @@ A simple method for modeling the observability is the use of a K-nearest-neighbo
     \label{alg:query}
     \begin{algorithmic}[1]
         \Require Viewpoint $v = (\theta, \phi)$
-        \Require Global list of observations $(\theta_i, \phi_i, \text{is\_positive}_i)$
-        \Require Global parameters $k$, $\texttt{max\_angle}$
-        \Ensure Probability of existence based on nearest neighbors
+        \Require Global observations $(\theta_i, \phi_i, \text{is\_positive}_i)$
+        \Require $k$, \texttt{max\_angle}
+        \Ensure Probability of existence
 
         \State $candidates \gets [\;]$
-        \forall{$obs \in observations$}
-        \STATE $obs\_view \gets (\theta_i, \phi_i)$
-        \IF{$\texttt{angular\_dist}(v, obs\_view) \leq \texttt{max\_angle}$}
-        \STATE $dist \gets \texttt{euclidean\_dist}(v, obs\_view)$
-        \STATE $candidates.\texttt{append}((dist, \text{is\_positive}_i))$
-        \ENDIF
-        \ENDFOR
-        \STATE Sort $candidates$ by $dist$ in ascending order
-        \STATE $k\_neighbors \gets$ first $\min(k, \texttt{length}(candidates))$ entries of $candidates$
-        \IF{$\texttt{length}(k\_neighbors) = 0$}
-        \RETURN $0.5$
-        \ENDIF
-        \STATE $positives \gets$ count of entries in $k\_neighbors$ where $\text{is\_positive} = \text{True}$
-        \RETURN $positives / \texttt{length}(k\_neighbors)$
+        \ForAll{$obs \in observations$}
+        \State $obs\_view \gets (\theta_i, \phi_i)$
+        \If{$\texttt{angular\_dist}(v, obs\_view) \leq \texttt{max\_angle}$}
+        \State $dist \gets \texttt{euclidean\_dist}(v, obs\_view)$
+        \State $candidates.\texttt{append}((dist, \text{is\_positive}_i))$
+        \EndIf
+        \EndFor
+        \State Sort $candidates$ by $dist$
+        \State $k\_neighbors \gets$ first $\min(k, \texttt{length}(candidates))$ entries
+        \If{$\texttt{length}(k\_neighbors) = 0$}
+        \State \Return $0.5$
+        \EndIf
+        \State $positives \gets$ count of positives in $k\_neighbors$
+        \State \Return $positives / \texttt{length}(k\_neighbors)$
     \end{algorithmic}
 \end{algorithm}
 
