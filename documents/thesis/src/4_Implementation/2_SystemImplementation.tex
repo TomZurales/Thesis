@@ -63,7 +63,7 @@ A simple method for modeling the observability is the use of a K-nearest-neighbo
             \State{\Return}
             \EndIf
             \If{$o.\text{seen} = \text{True}$}
-            \State{$observations$.\texttt{replace\_nearest\_not\_seen}($o$)} \Comment{Replaces the nearest }
+            \State{$observations$.\texttt{replace\_nearest\_not\_seen}($o$)} \Comment{Replaces the nearest observation where $o$}
             \Else
             \State{$observations$.\texttt{replace\_nearest\_seen}($o$)}
             \EndIf
