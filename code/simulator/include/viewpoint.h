@@ -1,7 +1,6 @@
 #pragma once
 
 #include <math.h>
-#include <random>
 
 class Viewpoint
 {
@@ -16,13 +15,9 @@ public:
 
     static Viewpoint random()
     {
-        static thread_local std::random_device rd;
-        static thread_local std::mt19937 gen(rd());
-        static thread_local std::uniform_real_distribution<float> uniform(0.0f, 1.0f);
-        
-        float theta = uniform(gen) * 2 * M_PI; // Random angle in [0, 2π]
-        float phi = uniform(gen) * M_PI - M_PI/2; // Random angle in [-π/2, π/2]
-        float d = uniform(gen) * 10;           // Random distance in [0, 10]
+        float theta = (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * 2 * M_PI;
+        float phi = (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * M_PI - M_PI / 2;
+        float d = (static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) * 10;
         return Viewpoint(theta, phi, d);
     }
 };

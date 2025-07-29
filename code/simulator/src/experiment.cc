@@ -9,23 +9,11 @@ void Experiment::addModel(ModelInterface *model)
 
 void Experiment::run()
 {
-    run(false); // Default behavior: initialize models
-}
-
-void Experiment::run(bool skipInitialization)
-{
     std::cout << "Running experiment with " << models.size() << " models." << std::endl;
 
-    if (!skipInitialization)
+    for (auto &model : models)
     {
-        for (auto &model : models)
-        {
-            model->initialize({2.0f, 500.0f, M_PI_4, 0.1f});
-        }
-    }
-    else
-    {
-        std::cout << "Using pre-initialized model parameters." << std::endl;
+        model->initialize({2.0f, 500.0f, M_PI_4, 0.1f});
     }
 
     World w;

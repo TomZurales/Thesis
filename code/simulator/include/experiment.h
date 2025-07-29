@@ -17,6 +17,6 @@ class Experiment
 
 public:
     void addModel(ModelInterface *model);
+
     void run();
-    void run(bool skipInitialization);
 };
