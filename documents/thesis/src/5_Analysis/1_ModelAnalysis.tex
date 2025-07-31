@@ -1,5 +1,12 @@
 \subsection{Model Optimization and Analysis}
 
-As mentioned in Section \ref{sec:implementation}, observability models are initialized with an implementation-dependent vector of parameters that represent various tunable factors within the model. The setting of these parameters significantly influences the model's effectiveness. Therefore, they must be optimized across a range of representative scenarios to minimize the discrepancy between the estimated and actual observability of the map point. 
+As mentioned in Section \ref{sec:implementation}, observability models take a fixed parameter vector as input, representing various tunable factors within the model. The settings of these parameters correctly significantly influences the model's computational load, space requirements, and correctness. Therefore, they must be optimized across a range of representative scenarios to minimize the discrepancy between the estimated and actual observability of the map point.
+
+Models are characterized by the following:
+\begin{itemize}
+  \item n\_min - Number of observations needed to reach error below a certain threshold
+  \item e\_global - The summed global error from all possible viewpoints between the model and the true observability
+  \item n\_del - The number of observations after the point disappears for P(E) to drop below E\_min
+\end{itemize}
 
 \subsubsection{}
