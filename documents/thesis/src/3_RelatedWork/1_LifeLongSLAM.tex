@@ -1,22 +1,3 @@
 \subsection{Lifelong SLAM}
 
-The term Lifelong SLAM has varied definitions throughout the literature, but common themes of robustness to dynamic change, and long-term operation can be seen. For simplicity, this research adopts the definition provided by Shi et al. \cite{shiAreWeReady2020}, describing lifelong SLAM as the ability for a robot to generate, maintain, and localize within a map of a particular environment over an extended period of time. This is in contradistinction to the standard SLAM operating model, which tends to require short timeframes due to the assumption of a static environment. Unlike standard SLAM, lifelong SLAM is expected to operate despite environmental changes such as moved objects, lighting changes, dynamic objects within sensor view, etc. Some topics which fall under the umbrella of lifelong SLAM field have already been discussed, such map reuse. An exploration of previous lifelong SLAM work is provided below, grouped by the specific challenge addressed by the research.
-
-\subsubsection{Place Recognition}
-
-As previously discussed, the ability to recognize previously visited areas allows a SLAM system to perform important operations like relocalization and loop closure, increasing robustness and reducing global map error. Place recognition in standard SLAM is already nontrivial, requiring methods to efficiently identify similarity between historical data and current sensor readings. Peng et al. identified four major challenges in the extension of place recognition to lifelong SLAM. These challenges are:
-\begin{itemize}
-    \item Appearance Change -
-    \item Viewpoint Difference -
-    \item Generalization Ability -
-    \item Efficiency and Robustness - 
-\end{itemize}
-
-ORB-SLAM3 performs place recognition with a visual bag-of-words approach, producing a hierarchical database of localized frames based on the visual features observed within the frame \cite{camposORBSLAM3AccurateOpenSource2021}\cite{galvez-lopezBagsBinaryWords2012}. This database is queried with visual features observed by the camera, providing candidate positions identified by visual similarity. However, as implemented, ORB-SLAM3's place recognition does not fulfil the objectives of lifelong SLAM. While the system may successfully place recognize despite some dynamic changes, no effort is made to recognize these changes or update internal representations based on observations, leading to failures in dynamic situations.
-
-
-
-\subsubsection{Map Reuse}
-\subsubsection{Map Maintenance}
-\subsubsection{Change Detection}
-\subsubsection{Dynamic Object Detection}
+The term Lifelong SLAM has varied definitions throughout the literature, but common themes of robustness to dynamic change, and long-term operation can be seen. For simplicity, this research adopts the definition provided by Shi et al. \cite{shiAreWeReady2020}, describing lifelong SLAM as the ability for a robot to generate, maintain, and localize within a map of a particular environment over an extended period of time. This is in contradistinction to the standard SLAM operating model, which tends to require short timeframes due to the assumption of a static environment. Unlike standard SLAM, lifelong SLAM is expected to operate despite environmental changes such as moved objects, lighting changes, dynamic objects within sensor view, etc. Some topics which fall under the umbrella of lifelong SLAM field have already been discussed, such map reuse and place recognition, but in this section, 
