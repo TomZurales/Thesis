@@ -22,7 +22,7 @@ Change detection in SLAM refers to identifying discrepencies between current sen
 Girardeau-Montaut et al. \cite{girardeau-montautCHANGEDETECTIONPOINTS2005} implemented point cloud change detection for laser scans of industrial sites using iterative closest point (ICP) \cite{arunLeastSquaresFittingTwo1987}
 \cite{beslMethodRegistration3D1992} to align scans, using Hausdorff distance \cite{aspertMESHMeasuringErrors2002} to identify areas of change. Lin et al. \cite{linPointCloudChange2022} extended this to stereo camera SLAM in their system PPCA-VINS, which detects changes between a prior point cloud and current point measurements. The method of aligning point clouds and measuring disparity is effective, but requires both point clouds to be of similar scale and density to achieve optimal alignment. Additionally, these methods do not attempt to model global point observability, meaning features which still exist could be deleted.
 
-Many modern methods utilize a learning-based approach 
+Many modern methods utilize a learning-based approach to align 
 
 \subsection{Dynamic Rejection}
 
