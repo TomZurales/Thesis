@@ -10,6 +10,8 @@ Some implmenetations have similar goals to this research, but differ significant
 
 As previously discussed, place recognition refers to the ability to realize when an agent has entered a previously visited area. In KV-SLAM, this is regularly accomplished using a bag-of-words approach on binary feature discriptors extracted from localized images \cite{camposORBSLAM3AccurateOpenSource2021}. However, the extracted features can change significantly over time due to lighting changes, moved objects, viewpoint, etc. Milford et al. improved robustness to time-of-day and weather variation by matching sequences of whole-images comparisons rather than relying on a single image or feature-based matches. However, this approach requires alignment between the image sequence and the reference trajectory, effectively requiring similar speed and direction of travel. Naseer et al. \cite{naseerVisionbasedMarkovLocalization2015} extended sequence-based place recognition by computing a full probability distribution over possible locations, relaxing the need for trajectory alignment. Both of these approches are sensitive to viewpoint variation, and can fail when the camera trajectory differs significantly from previously observed trajectories.
 
+Many recent implementations 
+
 \subsection{Change Detection for Map Maintenance}
 
 Change detection in SLAM refers to identifying discrepencies between current sensor observations and the existing map. This functionality supports operations like relocalization and place recognition by acting as the mechanism through which outdated map data is identified.
