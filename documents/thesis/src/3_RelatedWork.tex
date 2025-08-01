@@ -20,7 +20,7 @@ While the methods discussed here do allow for place recognition to succeed dispi
 Change detection in SLAM refers to identifying discrepencies between current sensor observations and the existing map. This functionality supports operations like relocalization and place recognition by acting as the mechanism through which outdated map data is identified so it can be updated. The implementation of change detection depends heavily on sensor modality and map representation.
 
 Girardeau-Montaut et al. \cite{girardeau-montautCHANGEDETECTIONPOINTS2005} implemented point cloud change detection for laser scans of industrial sites using iterative closest point (ICP) \cite{arunLeastSquaresFittingTwo1987}
-\cite{beslMethodRegistration3D1992} to align scans, using Hausdorff distance \cite{aspertMESHMeasuringErrors2002} to identify areas of change. PPCA-VINS \cite{linPointCloudChange2022} extended this to stereo camera SLAM  
+\cite{beslMethodRegistration3D1992} to align scans, using Hausdorff distance \cite{aspertMESHMeasuringErrors2002} to identify areas of change. PPCA-VINS \cite{linPointCloudChange2022} extended this concept to stereo visual SLAM 
 
 \subsection{Dynamic Rejection}
 
