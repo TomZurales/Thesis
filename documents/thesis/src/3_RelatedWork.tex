@@ -1,7 +1,11 @@
 \section{Related Work}
 \label{sec:related_work}
 
-At its core, this research is 
+This chapter contextualizes this thesis within the broader body of SLAM research. The topics discussed are selected for their relevance to two previously outlined objectives: the identification and removal of data that could cause instability, and the improvement of SLAM performance over long time horizons. While the goals of this research align with the topics of semantic rejection and lifelong SLAM, the methods applied are more closely related to change detection, point stability and re-observability confidence. The following sections explore the key ideas from these topics, and relate them to the proposed research.
+
+Some implmenetations have similar goals to this research, but differ significantly in implementation. However, they are worth mentioning as important advancements towards lifelong SLAM.
+% Moving object removal, 
+
 \subsection{Place Recognition over Long Time Horizons}
 
 As previously discussed, place recognition refers to the ability to determine when an agent has entered a previously visited area. In KV-SLAM, this is commonly achieved using a bag-of-words approach over binary feature discriptors extracted extracted from camera images \cite{camposORBSLAM3AccurateOpenSource2021}. However, these features can vary significantly over time due to changes in lighting, weather, scene layout, or viewpoint. Chen et al. \cite{chenDeepLearningFeatures2017} propose using deep-learning to identify features which are invariant to conditions and viewpoint, however they are still sensitive to geometric changes.
@@ -20,3 +24,4 @@ Change detection in SLAM refers to identifying discrepencies between current sen
 
 \input{src/3_RelatedWork/1_LifeLongSLAM}
 Lázaro et al. 
+\input{src/3_RelatedWork/4_ChangeDetection}
