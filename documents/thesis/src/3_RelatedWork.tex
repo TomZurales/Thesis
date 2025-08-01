@@ -3,6 +3,8 @@
 
 This section contextualizes the proposed research within the larger body of SLAM research. At its core, this thesis falls under the umbrella of lifelong SLAM. Lifelong SLAM has varied definitions throughout the literature, but for simplicity, this research adopts the definition provided by Shi et al. \cite{shiAreWeReady2020}, describing lifelong SLAM as the ability for a robot to generate, maintain, and localize within a map of a particular environment over an extended period of time. This is in contradistinction to the standard SLAM operating model, which tends to require short timeframes due to the assumption of a static environment. Unlike standard SLAM, lifelong SLAM is expected to operate despite environmental changes such as moved objects, lighting changes, dynamic objects within sensor view, etc. This research falls under the topic of map maintenance, but has downstream effects on other operations related to lifelong SLAM.
 
+
+
 \subsection{Place Recognition over Long Time Horizons}
 
 As previously discussed, place recognition refers to the ability to determine when an agent has entered a previously visited area. In KV-SLAM, this is commonly achieved using a bag-of-words approach over binary feature discriptors extracted extracted from camera images \cite{camposORBSLAM3AccurateOpenSource2021}. However, these features can vary significantly over time due to changes in lighting, weather, scene layout, or viewpoint. Chen et al. \cite{chenDeepLearningFeatures2017} propose using deep-learning to identify features which are invariant to conditions and viewpoint, however they are still sensitive to geometric changes.
