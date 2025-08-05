@@ -4,6 +4,9 @@ from observation import Observation
 from constants import ObservationState
 from viewpoint import Viewpoint
 from plotting import RepresentativeObservationsPlot
+from world import World
+import random
+import time
 
 class knn(Model):
     observations: list[Observation]
@@ -61,3 +64,26 @@ class knn(Model):
                 return
         self.observations.remove(max_obs)
         self.observations.append(o)
+    
+    @staticmethod
+    def objective(args: tuple) -> tuple[float, float, int]:
+        world_num, k, n, a_max, feedback_threshold = args
+        world = World(world_num)
+        model = knn([k, n, a_max, feedback_threshold])
+        times = []
+        for _ in range(1000):
+            vp = Viewpoint.random()
+            while world.observe(vp).state == ObservationState.INVALID:
+                vp = Viewpoint.random()
+            obs = world.observe(vp)
+            
+            start_time = time.time()
+            model.integrate(obs, random.gauss(mu=feedback_threshold))
+            end_time = time.time()
+            times.append(end_time - start_time)
+            
+        avg_time = sum(times) / len(times)
+        global_error = world.global_error(model)
+        size = 3*n
+        
+        return (global_error, avg_time, size)

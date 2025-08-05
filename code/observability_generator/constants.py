@@ -12,7 +12,10 @@ MAX_CONVERGENCE_ITERATIONS: int = 1000
 WORLDS_FILE_PATH: str = 'data/worlds.csv'
 VIEWPOINTS_FILE_PATH: str = 'data/viewpoints.csv'
 
+N_MIN_OBSERVATIONS_TO_DELETE: int = 50
 N_GLOBAL_OBSERVATIONS: int = 1000
+
+DELETE_THRESHOLD: float = 0.1
 
 class ObservationState(Enum):
     NOT_SEEN = 0.0

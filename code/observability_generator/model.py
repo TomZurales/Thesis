@@ -15,3 +15,8 @@ class Model:
             
     def display(self):
         print(f"Model: {self.name}, Parameters: {self.parameters}")
+    
+    @staticmethod
+    def objective(args: tuple) -> tuple[float, float, int]:
+        """Args[0] must be world number. Returns global error after 1000 iterations, average loop time, and size."""
+        return (0.0, 0.0, 0)
