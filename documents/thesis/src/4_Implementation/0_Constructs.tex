@@ -1,19 +1,72 @@
-\subsection{Useful Constructs}
+\subsection{Definitions and Functions}
 
-Future sections explore the mathematical backing and implementation of the proposed system, motivating the creation of a section of definitions and constructs which can be referenced going forward.
+Future sections explore the mathematical backing and implementation of the proposed system. Therefore, useful definitions and constructs are defined here to provide a reference going forward.
 
-\subsubsection{Geometric}
+\newcommand{\viewpoint}{\ensuremath{v}}
+\newcommand{\viewpointdomain}[0]{\ensuremath{V}}
+\newcommand{\dmin}[0]{\ensuremath{d_{min}}}
+\newcommand{\dmax}[0]{\ensuremath{d_{max}}}
+\newcommand{\observation}[0]{\ensuremath{o}}
+\newcommand{\observations}[1]{\ensuremath{\boldsymbol{O}^{#1}}}
+\newcommand{\pe}[0]{\ensuremath{P(E)}}
+\newcommand{\estpe}[0]{\ensuremath{\hat{P}(E)}}
+\newcommand{\ps}[0]{\ensuremath{P(S,v)}}
+\newcommand{\psge}[0]{\ensuremath{P(S,v|E)}}
+\newcommand{\estpsge}[0]{\ensuremath{\hat{P}(S,v|E)}}
+\newcommand{\psgne}[0]{\ensuremath{P(S,v|\lnot E)}}
+\newcommand{\pegs}[0]{\ensuremath{P(E|S,v)}}
+\newcommand{\pegns}[0]{\ensuremath{P(E|\lnot S,v)}}
+\newcommand{\falsepos}[0]{\ensuremath{\varepsilon_{\text{pos}}}}
+\newcommand{\falseneg}[0]{\ensuremath{\varepsilon_{\text{neg}}}}
+\newcommand{\damping}[0]{\ensuremath{\alpha}}
+\newcommand{\observability}[0]{\ensuremath{\rho}}
+\newcommand{\observabilityupdate}[0]{\ensuremath{\eta}}
+\newcommand{\state}[0]{\ensuremath{s}}
+\newcommand{\feedback}[0]{\ensuremath{\beta}}
+\newcommand{\params}[1]{\ensuremath{\boldsymbol{\theta}_{#1}}}
+\newcommand{\param}[2]{\ensuremath{\theta_{#1,#2}}}
+\newcommand{\model}[0]{\ensuremath{\texttt{model}}}
+\newcommand{\modelinst}[1]{\ensuremath{\text{Model}^{#1}}}
+\newcommand{\epe}[0]{\ensuremath{\text{EPE}}}
+\newcommand{\vbee}[0]{\ensuremath{\text{VBEE}}}
+\newcommand{\knn}[0]{\ensuremath{\text{KNN}}}
+\newcommand{\binned}[0]{\ensuremath{\text{Binned}}}
+\newcommand{\initialize}[1]{\ensuremath{\operatorname{Initialize}(#1)}}
+\newcommand{\estimate}[1]{\ensuremath{\operatorname{Estimate}(#1)}}
+\newcommand{\integrate}[1]{\ensuremath{\operatorname{Integrate}(#1)}}
+\newcommand{\update}[1]{\ensuremath{\operatorname{Update}(#1)}}
+\newcommand{\query}[0]{\ensuremath{\operatorname{Query}()}}
+\newcommand{\athreshold}[0]{\ensuremath{\tau_{\text{angle}}}}
+\newcommand{\feedbackthreshold}[0]{\ensuremath{\tau_{\text{\feedback}}}}
+\newcommand{\existsthreshold}[0]{\ensuremath{\tau_{\text{E}}}}
 
-\defitem{$d$}{A distance in the domain $d\in R^+$}\newline
-\defitem{$V$}{The domain of all possible 3D viewpoints $V:\mathbb{S}^2\times\mathbb{R}^+$}\newline
-\defitem{$\boldsymbol{v}$}{A viewpoint in the domain $\boldsymbol{v}\in V$}\newline
-\defitem{$\boldsymbol{o}$}{An observation of the map point in the domain $\boldsymbol{o}\in V\times\{0,1\}$ where 0 represents an observation where the map point was not seen, and 1 represents an observation where the point was seen}\newline
-\defitem{$\boldsymbol{O}$}{A vector of $n$ observations in the form $\boldsymbol{O} = \{\boldsymbol{o}_0,\dots,\boldsymbol{o}_n\}$}
+\paragraph{Definitions}
+\defitem{$\dmin$ and $\dmax$}{The minimum and maximum distances at which a map point may be considered in view of the camera}
+\defitem{$\viewpoint$}{A viewpoint in the domain $\viewpoint\in\mathbb{S}^2\times\left[\dmin, \dmax\right]\rightarrow\mathbb{R}^3$}
+\defitem{$\observation$}{An observation of the map point such that $\observation = (\viewpoint, \state)$, where $\viewpoint$ represents the viewpoint, and $\state\in\{0.0, 1.0\}$ represents the observation state of whether the point was seen (1.0) or not seen (0.0) from viewpoint $\viewpoint$}
+\defitem{$\observations{n}$}{A vector of $n$ observations in the form $\{\observation_0,\dots,\observation_n\}$}
+\defitem{$\pe$}{The probability that the map point exists}
+\defitem{$\ps$}{The probability that the point is seen from a given viewpoint $\viewpoint$}
+\defitem{$\falseneg$}{An error value representing the probability of a false negative (not observing a map point when it is actually observable)}
+\defitem{$\falsepos$}{An error value representing the probability of a false positive (observing a map point when it is actually unobservable)}
+\defitem{$\damping$}{The damping coefficient applied to updates of $\pe$}
+\defitem{$\observability_t$}{The estimated overall observability of the map point at time $t$}
+\defitem{$\observabilityupdate$}{The damping coefficient applied to updates of $\observability$}
+\defitem{$\feedback$}{The feedback propegated from the Bayesian update step back to the observability model, calculated as $\estpe_t - \estpe_{t-1}$}
+\defitem{$\model$}{A generic field for an observability model implementation, such as $\knn$ or $\binned$}
+\defitem{$\modelinst{*}$}{An instance of a generic observability model, such as $\modelinst{\knn}$ or $\modelinst{\binned}$}
+\defitem{$\epe$}{An instance of the existence probability estimator}
+\defitem{$\vbee$}{An instance of the viewpoint-based existence estimator, which contains an instance of the existence probability estimator and an instance of an observability model}
+\defitem{$\params{\model}$}{A model-dependent vector of parameters in the form $$\{\param{\model}{1},\dots,\param{\model}{n}\}$$ where $n$ is the number of parameters for the model}
+\defitem{$\params{\epe}$}{A vector of parameters for the existence probability estimator in the form $$\{\falseneg,\falsepos\}$$ representing the false positive and negative rates respectively}
+\defitem{$\params{\vbee}$}{A vector of parameters for the viewpoint-based existence estimator in the form $$\{\model,\estpe_0,\damping,\observability_0,\observabilityupdate\}$$ representing the model type, initial existence probability, damping coefficient, initial observability, and observability update coefficient respectively}
 
-\subsubsection{Probabilistic}
-
-\defitem{$E$}{The event that the map point exists}\newline
-\defitem{$P(E)$}{The probability that the map point exists}\newline
-\defitem{$S^{\boldsymbol{v}}$}{The event that the map point is seen from the given viewpoint $\boldsymbol{v}$}\newline
-\defitem{$P(S^{\boldsymbol{v}})$}{The probability that the point is seen from the given viewpoint $\boldsymbol{v}$}
-
+\paragraph{Functions}
+\defitem{$\vbee.\initialize{\params{\vbee},\params{\model},\params{\epe}}$}{A function which initializes the viewpoint-based existence estimator}
+\defitem{$\vbee.\update{\observation}$}{A function which updates the viewpoint-based existence estimator with a new observation $\observation$, returning the updated existence probability $\estpe$}
+\defitem{$\vbee.\query{}$}{A function which queries the viewpoint-based existence estimator for the current estimate of the map point's existence probability $\estpe$}
+\defitem{$\modelinst{\model}.\initialize{\params{\model}}$}{A function which initializes an observability model with parameters $\params{\model}$}
+\defitem{$\modelinst{*}.\estimate{\viewpoint}$}{A function which returns the observability model's estimated probability of seeing the map point from viewpoint $\viewpoint$, given the point exists $$\estimate{\viewpoint}=\estpsge$$}
+\defitem{$\modelinst{*}.\integrate{\observation, \feedback}$}{A function which integrates a new observation $o$ into the observability model's internal representation, utilizing feedback $\feedback$ to respond to the direction and magnitude of the change in existence probability}
+\defitem{$\epe.\initialize{\params{\epe}}$}{A function which initializes the existence probability estimator with parameters $\params{\epe}$}
+\defitem{$\epe.\update{\observation, \estpe_t, \estpsge}$}{A function which updates the map point's existence probability $\estpe_{t+1}$ based on the new observation $\observation$, the prior existence probability estimate $\estpe_t$, and the current model estimate $\estpsge$, returning the updated existence probability}

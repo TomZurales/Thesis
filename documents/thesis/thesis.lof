@@ -4,6 +4,7 @@
 \contentsline {figure}{\numberline {4}{\ignorespaces 2D RANSAC Example}}{22}{}%
 \contentsline {figure}{\numberline {5}{\ignorespaces Loop Closure Example}}{24}{}%
 \contentsline {figure}{\numberline {6}{\ignorespaces Simplified ORB-SLAM3 Operational Diagram}}{25}{}%
-\contentsline {figure}{\numberline {7}{\ignorespaces Existence Estimation Framework}}{30}{}%
-\contentsline {figure}{\numberline {8}{\ignorespaces 2D Global Observability}}{33}{}%
-\contentsline {figure}{\numberline {9}{\ignorespaces Overall Observability}}{34}{}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Existence Estimation Framework}}{33}{}%
+\contentsline {figure}{\numberline {8}{\ignorespaces 2D Global Observability}}{35}{}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Overall Observability}}{37}{}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Damping Coefficient Selection Results.}}{48}{}%

@@ -1,2 +1,54 @@
 \subsection{ORB-SLAM3 Integration}
 \label{sec:orb_slam3_integration}
+
+The VBEE library is designed to be easily integrated into existing KV-SLAM systems. This section covers the integration of the VBEE library into ORB-SLAM3. As previously stated in Section \ref{sec:orb_slam3}, ORB-SLAM3 was selected due to its wide adoption, high performance, and inclusion of several SLAM extensions which have potential to benefit from outdated map point culling. Section \ref{sec:orb_slam3_integration_eval} will explore the effects of the VBEE integration on several aspects of the SLAM pipeline.
+
+Integration begins in the MapPoint class, where each map point is given an instance of the VBEE class. This allows each map point to have its viewpoint-based existence probability managed separately. Each VBEE instance is initialized with the same parameter vectors $\params{\vbee}, \params{\model},$ and $\params{\epe}$ in the MapPoint constructor, ensuring that all map points share the same configuration. The VBEE instance is then used to manage the existence probability of the map point throughout its lifetime.
+
+To update the existence probability, the MapPoint must receive positive and negative observations. Positive observations are simple to retrieve, as after a new frame has been processed, all the observed map points are available in the Frame class. The negative observations require a more complex approach, as they are not directly available. The function $\operatorname{FindMapPointsInCameraView}$, shown in Algorithm \ref{alg:map_points_in_camera_view}, is implemented in the Map class to retrieve all map points that are within he camera's view. This function uses the current camera pose, the camera's projection matrix, and the active Map instance to find all map points that would be projected into the camera's view. The function returns a vector of map points that are within the camera's view. Negative observations are then determined by checking if a map point is not in the frame's observed map points, but is in the camera's view.
+
+% TODO: This algorithm is poorly implemented, it should be rewritten to use the camera's projection matrix and the map point's position to determine if the point is in the camera's view.
+\begin{singlespace}
+    \begin{algorithm}[H]
+        \caption[Find Map Points in Camera View]{$\operatorname{FindMapPointsInCameraView}$}
+        \label{alg:map_points_in_camera_view}
+        \begin{algorithmic}
+            \Function{FindMapPointsInCameraView}{camera\_pose, projection\_matrix, map}
+            \State camera\_view\_points $\gets$ []
+            \For{map\_point in map.GetAllMapPoints()}
+            \If{IsPointInCameraView(map\_point, camera\_pose, projection\_matrix)}
+            \If{map\_point not in observed\_map\_points}
+            \State camera\_view\_points.append(map\_point)
+            \EndIf
+            \EndIf
+            \EndFor
+            \State \Return camera\_view\_points
+            \EndFunction
+        \end{algorithmic}
+    \end{algorithm}
+\end{singlespace}
+
+The main loop of ORB-SLAM3's Tracking thread is modified to update all map points in the camera's view after each frame is processed. The function $\operatorname{UpdateExistenceProbabilities}$, shown in Algorithm \ref{alg:update_existence_probabilities}, is called to update the existence probabilities of all map points in the camera's view. This function retrieves the camera's pose and projection matrix, finds all map points in the camera's view, and updates their existence probabilities based on positive and negative observations.
+
+\begin{singlespace}
+    \begin{algorithm}[H]
+        \caption[Update Existence Probabilities]{$\operatorname{UpdateExistenceProbabilities}$}
+        \label{alg:update_existence_probabilities}
+        \begin{algorithmic}
+            \Require{$frame$: Current Frame}
+            \Function{UpdateExistenceProbabilities}{}
+            \State{$all\_map\_points \gets \operatorname{FindMapPointsInCameraView}()$}
+            \State{$seen\_points \gets $ all map points observed in $frame$}
+            \State{$unseen\_points \gets$ all points in $all\_map\_points$ that are not in $seen\_points$}
+            \For{$map\_point$ in $seen\_points$}
+            \State{$observation$ $\gets$ positive observation of $map\_point$ from $camera\_pose$}
+            \State{$map\_point.\vbee.\update{observation}$}
+            \EndFor
+            \For{$map\_point$ in $unseen\_points$}
+            \State{$observation$ $\gets$ negative observation of $map\_point$ from $camera\_pose$}
+            \State{$map\_point.\vbee.\update{observation}$}
+            \EndFor
+            \EndFunction
+        \end{algorithmic}
+    \end{algorithm}
+\end{singlespace}

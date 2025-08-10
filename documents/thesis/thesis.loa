@@ -1,0 +1,7 @@
+\contentsline {algorithm}{\numberline {1}{\ignorespaces VBEE Initialization}}{39}{}%
+\contentsline {algorithm}{\numberline {2}{\ignorespaces VBEE Update}}{39}{}%
+\contentsline {algorithm}{\numberline {3}{\ignorespaces KNN Observability Estimation}}{41}{}%
+\contentsline {algorithm}{\numberline {4}{\ignorespaces KNN Model Update}}{42}{}%
+\contentsline {algorithm}{\numberline {5}{\ignorespaces Bayesian Update Step}}{43}{}%
+\contentsline {algorithm}{\numberline {6}{\ignorespaces Find Map Points in Camera View}}{44}{}%
+\contentsline {algorithm}{\numberline {7}{\ignorespaces Update Existence Probabilities}}{45}{}%
