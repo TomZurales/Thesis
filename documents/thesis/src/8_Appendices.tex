@@ -1,12 +1,13 @@
 \section*{Appendices}
 \addcontentsline{toc}{section}{Appendices}
 
-\subsection*{Algorithm Implementations}
-\addcontentsline{toc}{subsection}{Algorithm Implementations}
+\subsection{Key Algorithm Implementations}
+\label{sec:key_algorithm_impl}
+\addcontentsline{toc}{subsection}{Key Algorithm Implementations}
 
-\subsubsection{Bayesian Update Implementation}
+\subsubsection*{Bayesian Update Implementation}
 \begin{singlespace}
-  \begin{lstlisting}[language=Python, caption=Python Implementation of the Bayesian Update Step]
+    \begin{lstlisting}[language=Python, caption=Python Implementation of the Bayesian Update Step]
 def update(self, observation: Observation):
     prior = self.p_exists
 

@@ -1,7 +1,11 @@
-\contentsline {algorithm}{\numberline {1}{\ignorespaces VBEE Initialization}}{39}{}%
-\contentsline {algorithm}{\numberline {2}{\ignorespaces VBEE Update}}{39}{}%
-\contentsline {algorithm}{\numberline {3}{\ignorespaces KNN Observability Estimation}}{41}{}%
-\contentsline {algorithm}{\numberline {4}{\ignorespaces KNN Model Update}}{42}{}%
-\contentsline {algorithm}{\numberline {5}{\ignorespaces Bayesian Update Step}}{43}{}%
-\contentsline {algorithm}{\numberline {6}{\ignorespaces Find Map Points in Camera View}}{44}{}%
-\contentsline {algorithm}{\numberline {7}{\ignorespaces Update Existence Probabilities}}{45}{}%
+\contentsline {algorithm}{\numberline {1}{\ignorespaces VBEE Initialization}}{40}{}%
+\contentsline {algorithm}{\numberline {2}{\ignorespaces VBEE Update}}{40}{}%
+\contentsline {algorithm}{\numberline {3}{\ignorespaces KNN Observability Estimation}}{42}{}%
+\contentsline {algorithm}{\numberline {4}{\ignorespaces KNN Model Update}}{43}{}%
+\contentsline {algorithm}{\numberline {5}{\ignorespaces Bayesian Update Step}}{44}{}%
+\contentsline {algorithm}{\numberline {6}{\ignorespaces Find Map Points in Camera View}}{45}{}%
+\contentsline {algorithm}{\numberline {7}{\ignorespaces Update Existence Probabilities}}{46}{}%
+\contentsline {algorithm}{\numberline {8}{\ignorespaces Objective Function: $n_{converge}$}}{52}{}%
+\contentsline {algorithm}{\numberline {9}{\ignorespaces Objective Function: $\epsilon _{converge}$}}{53}{}%
+\contentsline {algorithm}{\numberline {10}{\ignorespaces Objective Function: $t_{update}$}}{54}{}%
+\contentsline {algorithm}{\numberline {11}{\ignorespaces Observability Model Objective Function}}{55}{}%

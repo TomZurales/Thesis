@@ -52,3 +52,14 @@ The main loop of ORB-SLAM3's Tracking thread is modified to update all map point
         \end{algorithmic}
     \end{algorithm}
 \end{singlespace}
+
+C++ implementations of these functions are provided in the VBEE library for ease of integration, and can be seen in Section \ref{sec:key_algorithm_impl}. With these modifications, each map point now has an existence probability estimation that is updated based on the observations received during the SLAM process. However, these probabilities are not yet used to cull outdated map points. The next section explores how culling logic is implemented into ORB-SLAM3 to utilize the existence probabilities provided by the VBEE library.
+
+\subsubsection{Culling Logic Implementation}
+\label{sec:orb_slam3_culling_logic}
+
+Map point culling normally occurs in ORB-SLAM3... %TODO
+
+\subsubsection{Serialization and Deserialization Implementation}
+
+To be useful for lifelong SLAM, the metadata produced by the VBEE library must be made available to the SLAM system when loading previously generated maps. ORB-SLAM3 provides serialization and deserialization methods for map points, which are used when saving and loading maps. These methods are extended to serialize and deserialize the necessary parameters for reconstructing the observability models for each map point, along with the current existence probability.
