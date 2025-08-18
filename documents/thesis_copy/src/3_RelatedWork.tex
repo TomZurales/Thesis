@@ -1,0 +1,37 @@
+\section{Related Work}
+\label{sec:related_work}
+
+This section contextualizes the proposed research within the larger body of SLAM research. At its core, this thesis falls under the umbrella of lifelong SLAM. Lifelong SLAM has varied definitions throughout the literature, but for simplicity, this research adopts the definition provided by Shi et al. \cite{shiAreWeReady2020}, describing lifelong SLAM as the ability for a robot to generate, maintain, and localize within a map of a particular environment over an extended period of time. This is in contradistinction to the standard SLAM operating model, which tends to assume a static environment and operate over short timeframes. Unlike standard SLAM, lifelong SLAM is expected to operate despite environmental changes such as moved objects, lighting changes, and dynamic objects within sensor view. This research falls under the topic of map maintenance, with downstream effects on other operations related to lifelong SLAM.
+
+Several research topics fall under lifelong SLAM, with those relevant to the work presented in this thesis discussed below. Because this work directly modifies the KV-SLAM map, downstream effects on other aspects of lifelong SLAM performance are discussed at the end.
+
+\subsection{Place Recognition over Long Time Horizons}
+
+As previously discussed, place recognition refers to the ability to determine when an agent has entered a previously visited area. In KV-SLAM, this is commonly achieved using a Bag-of-Words approach over binary feature descriptors extracted from camera images \cite{camposORBSLAM3AccurateOpenSource2021}. However, these features can vary significantly over time due to changes in lighting, weather, scene layout, or viewpoint. Chen et al. \cite{chenDeepLearningFeatures2017} proposed using deep learning to identify features that are invariant to conditions and viewpoint; however, they remain sensitive to geometric changes.
+
+Milford et al. improved robustness to time-of-day and weather variation by matching sequences of whole-image comparisons rather than relying on a single image or feature-based matches. However, this approach requires alignment between the image sequence and the reference trajectory, effectively requiring similar speed and direction of travel. Naseer et al. \cite{naseerVisionbasedMarkovLocalization2015} relaxed this constraint by computing a full probability distribution over possible locations, reducing the need for trajectory alignment. Both approaches are sensitive to viewpoint variation and can fail when the camera trajectory differs significantly from previously observed trajectories.
+
+Learning-based methods like NetVLAD \cite{arandjelovicNetVLADCNNArchitecture2016} assign global descriptors to places rather than features, increasing robustness to viewpoint, conditions, and dynamic clutter. HF-Net \cite{sarlinCoarseFineRobust2019} extends this idea by utilizing global descriptors for large-scale place recognition and local learned features for refinement. A common drawback of learning-based approaches is computational load, which can be significantly higher than methods that do not require a neural network.
+
+While the methods discussed here allow place recognition to succeed despite significant visual and geometric changes, in general place recognition is most effective when the internal scene representation matches the true environment. To accomplish this, the system must be able to identify and correct discrepancies between the map and the current sensor readings.
+
+\subsection{Change Detection for Map Maintenance}
+
+Change detection in SLAM refers to identifying discrepancies between current sensor observations and the existing map. This functionality supports operations like relocalization and place recognition by acting as the mechanism through which outdated map data is identified so it can be updated. The implementation of change detection depends heavily on sensor modality and map representation.
+
+Girardeau-Montaut et al. \cite{girardeau-montautCHANGEDETECTIONPOINTS2005} implemented point-cloud change detection for laser scans of industrial sites using Iterative Closest Point (ICP) \cite{arunLeastSquaresFittingTwo1987,beslMethodRegistration3D1992} to align scans, and Hausdorff distance \cite{aspertMESHMeasuringErrors2002} to identify areas of change. Lin et al. \cite{linPointCloudChange2022} extended this to stereo camera SLAM in PPCA-VINS, which detects changes between a prior point cloud and current point measurements. Aligning point clouds and measuring disparity is effective but requires the point clouds to be of similar scale and density for optimal alignment. Additionally, these methods do not model viewpoint-dependent point observability, so features that still exist may be deleted when temporarily occluded.
+
+% TODO: The following sentence was incomplete in the source; keep as a placeholder without inventing content.
+% Many modern methods utilize a learning-based approach to align and detect changes in dissimilar data types. Larsen et al. \cite{larsenChangeDetectionModel}
+
+\subsection{Dynamic Rejection}
+
+Dynamic rejection is the process of identifying dynamic objects within a scene and rejecting image features that fall on them. This requires either tracking object motion to verify the object is dynamic or performing image segmentation and semantic identification to categorize objects as either dynamic or static. Related effects can also be achieved without strict object identification using motion cues (e.g., optical flow in images or motion clustering in point clouds). These approaches aim to prevent transient features from entering the map in the first place, complementing post hoc map maintenance.
+
+\subsection{Lifelong SLAM}
+
+Lázaro et al. \cite{lazaroEfficientLongtermMapping2018} implemented map updates for long-term operation, emphasizing efficient maintenance of the map structure. Mielle et al. \cite{mielleSLAMAutocompleteCompleting2017} proposed strategies for completing and maintaining maps over extended periods, highlighting the importance of handling partial observations and drift.
+
+\subsection{Map Point Observability}
+
+Derner et al. \cite{dernerChangeDetectionUsing2021} explored change detection using visibility reasoning to decide whether features should be maintained or removed. Berrio et al. \cite{berrioUpdatingVisibilityFeaturebased2019,berrioLongtermMapMaintenance2020} studied long-term map maintenance by updating feature visibility and leveraging viewpoint cues. Alcantarilla et al. \cite{alcantarillaLearningVisibilityLandmarks2010} investigated learning landmark visibility, motivating the importance of modeling viewpoint-dependent observability at the feature level.

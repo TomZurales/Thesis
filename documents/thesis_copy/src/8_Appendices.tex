@@ -1,0 +1,62 @@
+\section*{Appendices}
+\addcontentsline{toc}{section}{Appendices}
+
+\subsection{Key Algorithm Implementations}
+\label{sec:key_algorithm_impl}
+\addcontentsline{toc}{subsection}{Key Algorithm Implementations}
+
+\subsubsection*{Bayesian Update Implementation}
+\begin{singlespace}
+    \begin{lstlisting}[language=Python, caption=Python Implementation of the Bayesian Update Step]
+def update(self, observation: Observation):
+    prior = self.p_exists
+
+    # Model estimation is clamped to [0.001, 0.999] to avoid division by zero or extreme values
+    model_estimation = clamp(self.model.predict(observation.viewpoint), 0.001, 0.999)
+
+    if observation.state == ObservationState.SEEN:
+        numerator = model_estimation * (1 - self.false_negative_rate) * prior
+        denominator = (model_estimation * (1 - self.false_negative_rate) * prior) + (
+            self.false_positive_rate * (1 - prior)
+        )
+        posterior = numerator / denominator
+
+    else:
+        numerator = (1 - (model_estimation * (1 - self.false_negative_rate))) * prior
+        denominator = (
+            (1 - (model_estimation * (1 - self.false_negative_rate))) * prior
+        ) + ((1 - self.false_positive_rate) * (1 - prior))
+        posterior = numerator / denominator
+
+    if posterior < 0 or posterior > 1:
+        raise ValueError(f"Posterior probability out of bounds: {posterior}")
+
+    # If the estimated observability of the point is lower than the actual, we increase the overall observability
+    # Otherwise we decrease it
+    self.observability = clamp(
+        self.observability
+        + (
+            self.observability_update_factor
+            * (observation.state.value - model_estimation)
+        ),
+        0.25,
+        0.75,
+    )
+
+    # The more observable the point is, the more we dampen the update
+    self.p_exists = clamp(
+        self.p_exists
+        + (posterior - prior) * (1 - self.observability) * self.damping_coefficient,
+        0.001,
+        0.999,
+    )
+
+    self.model.integrate(observation, abs(self.p_exists - prior), self.plot)
+
+    return self.p_exists
+
+  \end{lstlisting}
+\end{singlespace}
+
+\subsection*{Full Results}
+\addcontentsline{toc}{subsection}{Full Results}

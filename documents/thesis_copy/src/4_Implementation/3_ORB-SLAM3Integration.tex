@@ -1,0 +1,66 @@
+\subsection{ORB-SLAM3 Integration}
+\label{sec:orb_slam3_integration}
+
+The VBEE library (libVBEE) is designed for straightforward integration into existing KV-SLAM systems. This section covers integration into ORB-SLAM3. As noted in Section \ref{sec:orb_slam3}, ORB-SLAM3 was selected due to its wide adoption, strong performance, and inclusion of extensions that can benefit from Map Point Removal (MPR). Section \ref{sec:orb_slam3_integration_eval} evaluates the effects of the VBEE integration on several parts of the SLAM pipeline.
+
+Integration begins in the \texttt{MapPoint} class, where each map point is given an instance of \vbee. This allows each point to maintain its own viewpoint-based existence probability \(\estpe\). Each \vbee{} instance is initialized with the same parameter vectors \(\params{\vbee},\,\params{\knn},\,\params{\epe}\) in the \texttt{MapPoint} constructor so that all points share a consistent configuration. The \vbee{} instance then manages \(\estpe\) for the map point throughout its lifetime.
+
+To update \(\estpe\), the \texttt{MapPoint} must receive positive and negative observations (Observation Status \(\state \in \{1,0\}\)). Positive observations are obtained after each frame is processed (the set of points observed by the current \texttt{Frame}). Negative observations are not directly available and require an additional query. The function \(\operatorname{FindMapPointsInCameraView}\) (Algorithm \ref{alg:map_points_in_camera_view}) retrieves all map points that fall within the camera’s view given the current camera pose and projection. Negative observations are those points in view but not present among the frame’s observed points.
+
+% (Projection-based visibility test can be specialized to ORB-SLAM3's camera model.)
+\begin{singlespace}
+\begin{algorithm}[H]
+    \caption[Find Map Points in Camera View]{$\operatorname{FindMapPointsInCameraView}$}
+    \label{alg:map_points_in_camera_view}
+    \begin{algorithmic}
+        \Function{FindMapPointsInCameraView}{$camera\_pose$, $projection\_matrix$, $map$}
+            \State $in\_view \gets [\,]$
+            \For{$mp$ \textbf{in} $map.\texttt{GetAllMapPoints}()$}
+                \If{$\operatorname{IsPointInCameraView}(mp,\, camera\_pose,\, projection\_matrix)$}
+                    \State $\texttt{append}(in\_view,\, mp)$
+                \EndIf
+            \EndFor
+            \State \Return $in\_view$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+\end{singlespace}
+
+The \texttt{Tracking} thread’s main loop is extended to update all points in view after each frame. The procedure \(\operatorname{UpdateExistenceProbabilities}\) (Algorithm \ref{alg:update_existence_probabilities}) builds positive and negative observations and calls \(\vbee.\update{\cdot}\) for each point.
+
+\begin{singlespace}
+\begin{algorithm}[H]
+    \caption[Update Existence Probabilities]{$\operatorname{UpdateExistenceProbabilities}$}
+    \label{alg:update_existence_probabilities}
+    \begin{algorithmic}
+        \Require $frame$ \Comment{Current \texttt{Frame}}
+        \Function{UpdateExistenceProbabilities}{}
+            \State $camera\_pose \gets frame.\texttt{GetPose}()$
+            \State $P \gets frame.\texttt{GetProjectionMatrix}()$
+            \State $in\_view \gets \operatorname{FindMapPointsInCameraView}(camera\_pose, P, map)$
+            \State $observed \gets frame.\texttt{GetObservedMapPoints}()$ \Comment{Positive set}
+            \State $unobserved \gets in\_view \setminus observed$ \Comment{Candidates for negative observations}
+            \For{$mp$ \textbf{in} $observed$}
+                \State $\observation \gets (\,\viewpoint\!=\texttt{ViewpointFrom}(camera\_pose, mp),\; \state\!=1\,)$
+                \State $mp.\vbee.\update{\observation}$
+            \EndFor
+            \For{$mp$ \textbf{in} $unobserved$}
+                \State $\observation \gets (\,\viewpoint\!=\texttt{ViewpointFrom}(camera\_pose, mp),\; \state\!=0\,)$
+                \State $mp.\vbee.\update{\observation}$
+            \EndFor
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+\end{singlespace}
+
+C++ implementations matching these interfaces are provided in the VBEE library for ease of integration (see Section \ref{sec:key_algorithm_impl}). With these modifications, each map point maintains an updated \(\estpe\) based on streaming observations. The next section describes how \(\estpe\) is used to perform MPR.
+
+\subsubsection{Culling Logic Implementation}
+\label{sec:orb_slam3_culling_logic}
+
+% Placeholder kept minimal but consistent with terminology and symbols.
+Map point culling (MPR) in ORB-SLAM3 uses \(\estpe\) and a threshold \(\existsthreshold\). Points with \(\estpe < \existsthreshold\) are flagged for removal, subject to standard ORB-SLAM3 safeguards (e.g., minimum observations, keyframe support). Details of the selection policy and its interaction with relocalization and local mapping are provided in Section \ref{sec:key_algorithm_impl}.
+
+\subsubsection{Serialization and Deserialization Implementation}
+
+To support episodic KV-SLAM map reuse, VBEE metadata must be saved and restored with maps. ORB-SLAM3’s \texttt{MapPoint} serialization/deserialization is extended to include: \(\estpe\), \(\observability\), \(\params{\vbee}\), \(\params{\knn}\), and \(\params{\epe}\), plus the compact history required by \knn{} (bounded by \(n\)). On load, each \texttt{MapPoint} reconstructs its \vbee{} instance via \(\vbee.\initialize{\params{\vbee},\params{\knn},\params{\epe}}\) and restores its history so that subsequent \(\vbee.\update{\cdot}\) calls behave consistently across episodes.

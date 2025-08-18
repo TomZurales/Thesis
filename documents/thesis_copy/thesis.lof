@@ -1,0 +1,11 @@
+\contentsline {figure}{\numberline {1}{\ignorespaces OMR Method Comparison}}{13}{}%
+\contentsline {figure}{\numberline {2}{\ignorespaces SLAM Family Tree}}{20}{}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Image Feature Extraction and Matching}}{22}{}%
+\contentsline {figure}{\numberline {4}{\ignorespaces 2D RANSAC Example}}{23}{}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Loop Closure Example}}{24}{}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Simplified ORB-SLAM3 Operational Diagram}}{26}{}%
+\contentsline {figure}{\numberline {7}{\ignorespaces VBEE Framework}}{33}{}%
+\contentsline {figure}{\numberline {8}{\ignorespaces 2D Global Observability}}{34}{}%
+\contentsline {figure}{\numberline {9}{\ignorespaces 1000 random viewpoints of world \((2, 4, 0, 2, 0, 0)\), showing the observability of the map point at the center.}}{44}{}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Example images from each trajectory of the Episodic Visual SLAM Dataset.}}{45}{}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Damping Coefficient Selection Results.}}{53}{}%

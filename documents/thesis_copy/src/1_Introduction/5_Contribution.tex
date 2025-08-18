@@ -1,0 +1,15 @@
+\subsection{Contribution}
+
+Through this research, we contribute three things to the subject of long-term map reuse in KV-SLAM. First, we release an open-source library which provides reusable access to the implementation of the viewpoint-based existence estimation method: libVBEE (Viewpoint-Based Existence Estimation Library). Next, a modified version of ORB-SLAM3 with libVBEE integrated is released for ease of further testing and research. Finally, we provide a collection of datasets covering situations particularly challenging for episodic KV-SLAM operations for demonstration and comparison of the system's capabilities.
+
+% The library: a lightweight, viewpoint-aware model of map point existence, designed to be utilized in KV-SLAM systems.
+\subsubsection{The VBEE Library}
+libVBEE is a C++ implementation of the VBEE Framework with a K-Nearest Neighbors (KNN) Observability Model, with hooks for simple integration into existing KV-SLAM implementations.
+
+% The SLAM implementation: An implementation of the library in ORB-SLAM3 to demonstrate its effectiveness.
+\subsubsection{ORB-SLAM3 Integration with libVBEE}
+ORB-SLAM3, an extremely popular KV-SLAM implementation, is modified to utilize libVBEE for estimating each map point's existence probability within the global map. These probabilistic estimations are then used for Map Point Removal (MPR), regularly removing points which drop below a threshold, and for improving relocalization through an updated RANSAC procedure that prioritizes higher-probability map points.
+
+% The datasets: A set of datasets and experimental results demonstrating how the library improves SLAM performance.
+\subsubsection{Episodic Visual SLAM Datasets}
+The datasets provided are recorded using an OAK-D stereo camera with synchronized IMU. A map is provided for each dataset, generated using an unmodified implementation of ORB-SLAM3. Bounding boxes within this frame are provided representing keypoints known to change between runs.

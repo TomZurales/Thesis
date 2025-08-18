@@ -1,0 +1,187 @@
+\subsection{Experimental Setup}
+
+This section describes the experiments conducted to evaluate the observability model's performance and to determine the impact of the VBEE library (libVBEE) on SLAM systems. These experiments are defined here, and the results are presented in Section \ref{sec:experimental_results}.
+
+\subsubsection{Parameter Optimization}
+
+Before experimentation on the SLAM system, the parameters of the VBEE library must be tuned. Parameters are split between \vbee, the observability model, and \epe. These components are coupled through feedback, so optimization is completed in three phases. Phase 1 freezes the \vbee{} and \epe{} parameters to reasonable values and optimizes the observability model’s parameters. Phase 2 fixes the model parameters to the values found in phase 1, and tunes \vbee{} and \epe. Phase 3 jointly fine-tunes all parameters.
+
+\paragraph{Phase 1 — Observability Model Tuning}
+
+The observability model has parameters \(\params{\knn} = \{k, n, \athreshold, \feedbackthreshold\}\), which are tuned to minimize:
+
+\begin{itemize}
+    \item \(n_{\text{converge}}\): Number of observations necessary for \vbee{} to converge to a stable estimate of \(\estpe\)
+    \item \(\epsilon_{\text{converge}}\): Model error after \(n_{\text{converge}}\) observations
+    \item \(n_{\text{adapt}}\): Number of observations necessary to re-converge to a stable \(\estpe\) after a change in observability
+    \item \(\epsilon_{\text{adapt}}\): Model error after \(n_{\text{adapt}}\) observations
+    \item \(t_{\text{update}}\): Average time (ms) for one \(\estimate{\cdot}\) and one \(\integrate{\cdot}\)
+    \item \(\text{size}\): Total storage (bytes) to serialize one map point’s observability
+\end{itemize}
+
+In Phase 1, \vbee{} and \epe{} are locked to:
+\begin{align*}
+    \params{\epe}^* &= \{\falseneg = 0.1, \falsepos = 0.001\}\\
+    \params{\vbee}^* &= \{\estpe_0 = 0.9, \damping = 0.1, \observability_0 = 0.5, \observabilityupdate = 0.5\}.
+\end{align*}
+The \(\params{\knn}\) parameters are optimized using the objective functions below.
+
+\noindent\textbf{Objective \(n_{\text{converge}}\).} The function \(\operatorname{ObjectiveNConverge}\) (Algorithm \ref{alg:obj_n_converge}) measures the average number of observations needed for \(\estpe\) to stabilize across scenarios. Convergence is detected when the standard deviation over the last \(w=100\) samples drops below \(\sigma_{\text{converge}}=0.2\). If no convergence within \(m_{\text{max}}=1000\) observations, a penalty is applied.
+
+\begin{singlespace}
+\begin{algorithm}[H]
+    \caption[Objective Function: $n_{\text{converge}}$]{ObjectiveNConverge}
+    \label{alg:obj_n_converge}
+    \begin{algorithmic}[1]
+        \Require{$vbee$: \vbee{} initialized with $\params{\vbee}^*,\params{\knn}, \params{\epe}^*$}
+        \Require{$observability\_scenarios$: Observability Scenario Dataset}
+        \Function{ObjectiveNConverge}{}
+            \State $all\_n\_convergences \gets [\,]$
+            \For{$os$ \textbf{in} $observability\_scenarios$}
+                \State \texttt{reset } $vbee$ \Comment{Reset \vbee{} to initial state}
+                \State $window \gets \operatorname{Queue}()$
+                \State $n\_converge \gets -1$
+                \For{$i = 0$ \textbf{to} $m_{max}$}
+                    \State $\viewpoint \gets \texttt{random viewpoint}$
+                    \State $\state \gets os.\operatorname{Query}(\viewpoint)$
+                    \State $\observation \gets (\viewpoint,\state)$
+                    \State $\estpe \gets vbee.\update{\observation}$
+                    \State \texttt{push} $\estpe$ \texttt{onto} $window$
+                    \If{$window.\texttt{size}() > w$}
+                        \State \texttt{pop} $window$
+                        \If{$\texttt{std\_dev}(window) < \sigma_{converge}$}
+                            \State $n\_converge \gets i$
+                            \State \textbf{break}
+                        \EndIf
+                    \EndIf
+                \EndFor
+                \If{$n\_converge = -1$}
+                    \State \texttt{append} $2 \cdot m_{max}$ \texttt{to} $all\_n\_convergences$
+                \Else
+                    \State \texttt{append} $n\_converge$ \texttt{to} $all\_n\_convergences$
+                \EndIf
+            \EndFor
+            \State \Return $\texttt{average}(all\_n\_convergences)$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+\end{singlespace}
+
+\noindent\textbf{Objective \(\epsilon_{\text{converge}}\).} The function \(\operatorname{ObjectiveEConverge}\) (Algorithm \ref{alg:obj_e_converge}) computes average observability error after convergence, comparing ground truth to \(\estpsge\) over \(j=1000\) random viewpoints. Non-convergent runs are penalized.
+
+\begin{singlespace}
+\begin{algorithm}[H]
+    \caption[Objective Function: $\epsilon_{\text{converge}}$]{ObjectiveEConverge}
+    \label{alg:obj_e_converge}
+    \begin{algorithmic}
+        \Require{$vbee$: \vbee{} initialized with $\params{\vbee}^*,\params{\knn}, \params{\epe}^*$}
+        \Require{$observability\_scenarios$: Observability Scenario Dataset}
+        \Function{ObjectiveEConverge}{}
+            \State $all\_e\_convergences \gets [\,]$
+            \For{$os$ \textbf{in} $observability\_scenarios$}
+                \State \texttt{reset } $vbee$
+                \State $error \gets 0$
+                \State $window \gets \operatorname{Queue}()$
+                \For{$i = 0$ \textbf{to} $m_{max}$}
+                    \State $\viewpoint \gets \texttt{random viewpoint}$
+                    \State $\state \gets os.\operatorname{Query}(\viewpoint)$
+                    \State $\observation \gets (\viewpoint,\state)$
+                    \State $\estpe \gets vbee.\update{\observation}$
+                    \State \texttt{push} $\estpe$ \texttt{onto} $window$
+                    \If{$window.\texttt{size}() > w$}
+                        \State \texttt{pop} $window$
+                        \If{$\texttt{std\_dev}(window) < \sigma_{converge}$}
+                            \For{$j$ \textbf{times}}
+                                \State $\viewpoint \gets \texttt{random viewpoint}$
+                                \State $true \gets os.\operatorname{Query}(\viewpoint)$
+                                \State $pred \gets vbee.\texttt{model}.\estimate{\viewpoint}$ \Comment{\(\estpsge\)}
+                                \State $error \gets error + |\,true - pred\,|$
+                            \EndFor
+                            \State \textbf{break}
+                        \EndIf
+                    \EndIf
+                \EndFor
+                \If{$error = 0$}
+                    \State \texttt{append} $1000$ \texttt{to} $all\_e\_convergences$
+                \Else
+                    \State \texttt{append} $error$ \texttt{to} $all\_e\_convergences$
+                \EndIf
+            \EndFor
+            \State \Return $\texttt{average}(all\_e\_convergences)$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+\end{singlespace}
+
+\noindent\textbf{Objectives \(n_{\text{adapt}}\) and \(\epsilon_{\text{adapt}}\).} Implemented analogously to the two functions above, but with two convergence loops per scenario; between loops the active scenario is swapped with a paired scenario exhibiting significant change with partial overlap.
+
+\noindent\textbf{Objective \(t_{\text{update}}\).} The function \(\operatorname{ObjectiveTUpdate}\) (Algorithm \ref{alg:obj_t_update}) measures average time for 1000 \(\vbee.\update{\cdot}\) calls per scenario.
+
+\begin{singlespace}
+\begin{algorithm}[H]
+    \caption[Objective Function: $t_{\text{update}}$]{ObjectiveTUpdate}
+    \label{alg:obj_t_update}
+    \begin{algorithmic}
+        \Require{$vbee$: \vbee{} initialized with $\params{\vbee}^*,\params{\knn}, \params{\epe}^*$}
+        \Require{$observability\_scenarios$: Observability Scenario Dataset}
+        \Function{ObjectiveTUpdate}{}
+            \State $all\_t\_updates \gets [\,]$
+            \For{$os$ \textbf{in} $observability\_scenarios$}
+                \State \texttt{reset } $vbee$
+                \State $avg \gets 0$
+                \For{$i=1$ \textbf{to} $1000$}
+                    \State $\viewpoint \gets \texttt{random viewpoint}$
+                    \State $\state \gets os.\operatorname{Query}(\viewpoint)$
+                    \State $\observation \gets (\viewpoint,\state)$
+                    \State $t_0 \gets \texttt{now\_ms}()$
+                    \State $\estpe \gets vbee.\update{\observation}$
+                    \State $t_1 \gets \texttt{now\_ms}()$
+                    \State $avg \gets avg + (t_1 - t_0)$
+                \EndFor
+                \State \texttt{append} $(avg / 1000)$ \texttt{to} $all\_t\_updates$
+            \EndFor
+            \State \Return $\texttt{average}(all\_t\_updates)$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+\end{singlespace}
+
+\noindent\textbf{Objective \(\text{size}\).} \(\operatorname{ObjectiveSize}\) computes the total bytes required to serialize sufficient state to reconstruct a map point’s VBEE state:
+\begin{itemize}
+    \item Parameter vectors \(\params{\vbee},\params{\knn},\params{\epe}\)
+    \item Current \(\estpe\)
+    \item Current \(\observability\)
+    \item The \knn{} observation history (capacity \(n\))
+\end{itemize}
+Only the history size depends on \(\params{\knn}\). Each observation stores three floats (point-frame \(x,y,z\)) and one Boolean status. Assuming 32-bit floats, this is \(3 \times 4 + 1 = 13\) bytes per observation (practical implementations may align to 16). Thus, \(\operatorname{ObjectiveSize} = 13\,n\) (or \(16\,n\) with padding).
+
+\noindent\textbf{Multi-objective.} The combined objective returns the six criteria (Algorithm \ref{alg:obj_obs_model}) for multi-objective optimization.
+
+\begin{singlespace}
+\begin{algorithm}[H]
+    \caption{Observability Model Objective Function}
+    \label{alg:obj_obs_model}
+    \begin{algorithmic}
+        \Require{$\params{\vbee}^*, \params{\epe}^*$}
+        \Function{ObjectiveObservabilityModel}{$\params{\knn}$}
+            \State $vbee \gets \vbee.\initialize{\params{\vbee}^*, \params{\knn}, \params{\epe}^*}$
+            \State $n_{converge} \gets \operatorname{ObjectiveNConverge}()$
+            \State \texttt{reset } $vbee$
+            \State $\epsilon_{converge} \gets \operatorname{ObjectiveEConverge}()$
+            \State \texttt{reset } $vbee$
+            \State $n_{adapt} \gets \operatorname{ObjectiveNAdapt}()$
+            \State \texttt{reset } $vbee$
+            \State $\epsilon_{adapt} \gets \operatorname{ObjectiveEAdapt}()$
+            \State \texttt{reset } $vbee$
+            \State $t_{update} \gets \operatorname{ObjectiveTUpdate}()$
+            \State \texttt{reset } $vbee$
+            \State $\text{size} \gets \operatorname{ObjectiveSize}()$
+            \State \Return $(n_{converge},\epsilon_{converge},n_{adapt},\epsilon_{adapt},t_{update},\text{size})$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+\end{singlespace}
+
+The Python library Optuna \cite{akibaOptunaNextgenerationHyperparameter2019} is used for multi-objective optimization to discover Pareto-optimal \cite{censorParetoOptimalityMultiobjective1977} parameter sets.
+
+

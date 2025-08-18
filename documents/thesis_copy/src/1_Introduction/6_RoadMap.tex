@@ -1,0 +1,11 @@
+\subsection{Road Map}
+
+Chapter \ref{sec:background} provides a high-level overview of the concepts core to this research, including the inner workings of KV-SLAM, relocalization, RANSAC, Map Point Removal (MPR), and directional statistics.
+
+Chapter \ref{sec:related_work} surveys research related to improving long-term SLAM operations and detecting/removing extraneous data from SLAM maps, positioning this work within prior art.
+
+Chapter \ref{sec:implementation} discusses the implementation details of the K-Nearest Neighbors (KNN) Observability Model, the creation of an MPR system using the Existence Probability Estimator (EPE) within libVBEE, and its integration into ORB-SLAM3. Additionally, the hardware and software used for collecting the visual-inertial datasets are detailed.
+
+Chapter \ref{sec:analysis} covers tests performed on the observability model, the EPE, and the integrated SLAM system. Tests are performed in simulation to establish initial parameters, and on visual-inertial datasets to compare real-world and simulated performance.
+
+Chapter \ref{sec:conclusion} aggregates the results from Chapter \ref{sec:analysis} and evaluates them against the defined objectives to determine whether the method is an effective solution to the problems discussed. Areas requiring further study are outlined.

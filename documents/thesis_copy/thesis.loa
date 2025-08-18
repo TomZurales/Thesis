@@ -1,0 +1,11 @@
+\contentsline {algorithm}{\numberline {1}{\ignorespaces VBEE Initialization}}{37}{}%
+\contentsline {algorithm}{\numberline {2}{\ignorespaces VBEE Update}}{37}{}%
+\contentsline {algorithm}{\numberline {3}{\ignorespaces KNN Observability Estimation}}{38}{}%
+\contentsline {algorithm}{\numberline {4}{\ignorespaces KNN Model Integrate}}{39}{}%
+\contentsline {algorithm}{\numberline {5}{\ignorespaces Bayesian Update Step: $\ensuremath {\text {EPE}}.\ensuremath {\operatorname {Update}(\ensuremath {o}, \ensuremath {\hat {P}(E)}_t, \ensuremath {\hat {P}(S,v|E)})}$}}{40}{}%
+\contentsline {algorithm}{\numberline {6}{\ignorespaces Find Map Points in Camera View}}{41}{}%
+\contentsline {algorithm}{\numberline {7}{\ignorespaces Update Existence Probabilities}}{41}{}%
+\contentsline {algorithm}{\numberline {8}{\ignorespaces Objective Function: $n_{\text {converge}}$}}{47}{}%
+\contentsline {algorithm}{\numberline {9}{\ignorespaces Objective Function: $\epsilon _{\text {converge}}$}}{48}{}%
+\contentsline {algorithm}{\numberline {10}{\ignorespaces Objective Function: $t_{\text {update}}$}}{49}{}%
+\contentsline {algorithm}{\numberline {11}{\ignorespaces Observability Model Objective Function}}{50}{}%

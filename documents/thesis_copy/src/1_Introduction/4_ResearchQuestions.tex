@@ -1,0 +1,13 @@
+\subsection{Research Questions}
+
+\subsubsection*{Question 1: How can the historical, viewpoint-dependent observability of points be modeled in order to meet the objectives laid out in Objective 1?}
+
+To integrate historical, viewpoint-dependent observability into change detection, a compact point-level model is required. This work adopts a single model: the K-Nearest Neighbors (KNN) Observability Model described in Section \ref{sec:observability_models}, and evaluates it in Section \ref{sec:observability_model_eval}.
+
+\subsubsection*{Question 2: How does integrating historical observability data affect the estimation of a point's existence probability?}
+
+The KNN Observability Model is combined with the Existence Probability Estimator (EPE), which applies a Bayesian update to iteratively estimate each map point's existence probability. The resulting system is evaluated for speed, accuracy, and robustness in Section \ref{sec:existence_confidence_eval}.
+
+\subsubsection*{Question 3: Can the method be integrated into an existing KV-SLAM system in a way that meets the goals of Objective 2?}
+
+The observability-informed existence estimation is integrated into ORB-SLAM3 using libVBEE and evaluated on datasets designed to test a range of scenarios. The integration is discussed in Section \ref{sec:orb_slam3_integration}, and the evaluation is covered in Section \ref{sec:orb_slam3_integration_eval}.

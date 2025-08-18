@@ -1,0 +1,11 @@
+\subsection{ORB-SLAM3}
+\label{sec:orb_slam3}
+
+ORB-SLAM3 is a KV-SLAM implementation popular in research contexts due to its performance, open-source codebase, and use of well-documented, widely understood techniques. Figure \ref{fig:orb-slam3} shows a simplified diagram of ORB-SLAM3’s internal processes. ORB-SLAM3 supports a variety of input modalities including monocular and stereo cameras, RGB-D cameras, and IMU data. It splits work across multiple threads, allowing it to perform tracking, local mapping, loop closing, relocalization, and optimization concurrently.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{resources/orb-slam3.png}
+    \caption[Simplified ORB-SLAM3 Operational Diagram]{A simplified diagram of the inputs, outputs, and subprocesses of ORB-SLAM3.}
+    \label{fig:orb-slam3}
+\end{figure}

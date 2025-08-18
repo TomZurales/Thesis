@@ -1,0 +1,67 @@
+\subsection{Definitions and Functions}
+
+Future sections explore the mathematical backing and implementation of the proposed system. Therefore, useful definitions and constructs are defined here to provide a reference going forward.
+
+\newcommand{\viewpoint}{\ensuremath{v}}
+\newcommand{\viewpointdomain}[0]{\ensuremath{V}}
+\newcommand{\dmin}[0]{\ensuremath{d_{min}}}
+\newcommand{\dmax}[0]{\ensuremath{d_{max}}}
+\newcommand{\observation}[0]{\ensuremath{o}}
+\newcommand{\observations}[1]{\ensuremath{\boldsymbol{O}^{#1}}}
+\newcommand{\pe}[0]{\ensuremath{P(E)}}
+\newcommand{\estpe}[0]{\ensuremath{\hat{P}(E)}}
+\newcommand{\ps}[0]{\ensuremath{P(S,v)}}
+\newcommand{\psge}[0]{\ensuremath{P(S,v|E)}}
+\newcommand{\estpsge}[0]{\ensuremath{\hat{P}(S,v|E)}}
+\newcommand{\psgne}[0]{\ensuremath{P(S,v|\lnot E)}}
+\newcommand{\pegs}[0]{\ensuremath{P(E|S,v)}}
+\newcommand{\pegns}[0]{\ensuremath{P(E|\lnot S,v)}}
+\newcommand{\falsepos}[0]{\ensuremath{\varepsilon_{\text{pos}}}}
+\newcommand{\falseneg}[0]{\ensuremath{\varepsilon_{\text{neg}}}}
+\newcommand{\damping}[0]{\ensuremath{\alpha}}
+\newcommand{\observability}[0]{\ensuremath{\rho}}
+\newcommand{\observabilityupdate}[0]{\ensuremath{\eta}}
+\newcommand{\state}[0]{\ensuremath{s}}
+\newcommand{\feedback}[0]{\ensuremath{\beta}}
+\newcommand{\params}[1]{\ensuremath{\boldsymbol{\theta}_{#1}}}
+\newcommand{\param}[2]{\ensuremath{\theta_{#1,#2}}}
+\newcommand{\epe}[0]{\ensuremath{\text{EPE}}}
+\newcommand{\vbee}[0]{\ensuremath{\text{VBEE}}}
+\newcommand{\knn}[0]{\ensuremath{\text{KNN}}}
+\newcommand{\initialize}[1]{\ensuremath{\operatorname{Initialize}(#1)}}
+\newcommand{\estimate}[1]{\ensuremath{\operatorname{Estimate}(#1)}}
+\newcommand{\integrate}[1]{\ensuremath{\operatorname{Integrate}(#1)}}
+\newcommand{\update}[1]{\ensuremath{\operatorname{Update}(#1)}}
+\newcommand{\query}[0]{\ensuremath{\operatorname{Query}()}}
+\newcommand{\athreshold}[0]{\ensuremath{\tau_{\text{angle}}}}
+\newcommand{\feedbackthreshold}[0]{\ensuremath{\tau_{\text{\feedback}}}}
+\newcommand{\existsthreshold}[0]{\ensuremath{\tau_{\text{E}}}}
+
+\paragraph{Definitions}
+\defitem{$\dmin$ and $\dmax$}{The minimum and maximum distances at which a map point may be considered in view of the camera}
+\defitem{$\viewpoint$}{A viewpoint in the domain $\viewpoint\in\mathbb{S}^2\times\left[\dmin, \dmax\right]$}
+\defitem{$\observation$}{An observation of the map point such that $\observation = (\viewpoint, \state)$, where $\viewpoint$ represents the viewpoint, and $\state\in\{0.0, 1.0\}$ is the \textit{Observation Status}: positive (1.0) or negative (0.0) from viewpoint $\viewpoint$}
+\defitem{$\observations{n}$}{A vector of $n$ observations in the form $\{\observation_0,\dots,\observation_n\}$}
+\defitem{$\pe$}{The probability that the map point exists}
+\defitem{$\ps$}{The probability that the point is seen from a given viewpoint $\viewpoint$}
+\defitem{$\falseneg$}{The probability of a false negative (not observing a map point when it is actually observable)}
+\defitem{$\falsepos$}{The probability of a false positive (observing a map point when it is actually unobservable)}
+\defitem{$\damping$}{The smoothing weight applied to updates of $\pe$}
+\defitem{$\observability_t$}{The observability accumulator state of the map point at time $t$}
+\defitem{$\observabilityupdate$}{The accumulator gain applied to updates of $\observability$}
+\defitem{$\feedback$}{The feedback propagated from the Bayesian update step back to the observability model, calculated as $\estpe_t - \estpe_{t-1}$}
+\defitem{$\epe$}{An instance of the Existence Probability Estimator}
+\defitem{$\vbee$}{An instance of the VBEE framework, which contains an instance of the Existence Probability Estimator and the KNN Observability Model}
+\defitem{$\params{\epe}$}{A vector of parameters for the Existence Probability Estimator in the form $$\{\falseneg,\falsepos\}$$ representing the false negative and false positive rates, respectively}
+\defitem{$\params{\vbee}$}{A vector of parameters for VBEE in the form $$\{\estpe_0,\damping,\observability_0,\observabilityupdate\}$$ representing the initial existence probability, smoothing weight, initial observability accumulator, and accumulator gain, respectively}
+\defitem{$\params{\knn}$}{A vector of parameters for the KNN Observability Model (e.g., $$\{k,\,n,\,\athreshold,\,\feedbackthreshold\}$$), where $k$ is the number of neighbors, $n$ is the maximum history size, $\athreshold$ is the angular gating threshold, and $\feedbackthreshold$ governs when feedback is integrated}
+
+\paragraph{Functions}
+\defitem{$\vbee.\initialize{\params{\vbee},\params{\knn},\params{\epe}}$}{Initializes VBEE}
+\defitem{$\vbee.\update{\observation}$}{Updates VBEE with a new observation $\observation$, returning the updated existence probability $\estpe$}
+\defitem{$\vbee.\query{}$}{Queries VBEE for the current estimate of the map point's existence probability $\estpe$}
+\defitem{$\knn.\initialize{\params{\knn}}$}{Initializes the KNN Observability Model with parameters $\params{\knn}$}
+\defitem{$\knn.\estimate{\viewpoint}$}{Returns the estimated observability (given existence) from viewpoint $\viewpoint$: $$\estimate{\viewpoint}=\estpsge$$}
+\defitem{$\knn.\integrate{\observation, \feedback}$}{Integrates a new observation $\observation$ into the model's internal representation, utilizing feedback $\feedback$ to respond to the direction and magnitude of the change in existence probability}
+\defitem{$\epe.\initialize{\params{\epe}}$}{Initializes the Existence Probability Estimator with parameters $\params{\epe}$}
+\defitem{$\epe.\update{\observation, \estpe_t, \estpsge}$}{Updates the map point's existence probability $\estpe_{t+1}$ based on the new observation $\observation$, the prior estimate $\estpe_t$, and the current model estimate $\estpsge$, returning the updated existence probability}

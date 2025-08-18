@@ -1,0 +1,142 @@
+\subsection{System Implementation}
+
+This section describes the implementation of the \vbee{} framework from Section \ref{sec:method_overview}. Implementation details of the K-Nearest Neighbors (KNN) Observability Model, the Bayesian \epe{}, and the VBEE library (libVBEE) are provided. Pseudocode of key functions illustrates the framework.
+
+\subsubsection{Existence Estimation Framework Implementation}
+
+The viewpoint-based existence estimation framework is implemented as a C++ library, libVBEE. The VBEE library facilitates integration of \vbee{} into KV-SLAM systems by providing a standardized interface for the observability model and existence probability estimation. The library is modular, allowing parameter tuning and future model extensions. The core class exposes \(\vbee.\initialize{\cdot}\), \(\vbee.\update{\cdot}\), and \(\vbee.\query\).
+
+The initialization function in Algorithm \ref{alg:vbee_init} sets up the \vbee{} instance with the specified parameters, initializing the \knn{} model and \epe{}.
+
+\begin{singlespace}
+\begin{algorithm}[H]
+    \caption[VBEE Initialization]{VBEE Initialization: $\vbee.\initialize{\params{\vbee}, \params{\knn}, \params{\epe}}$}
+    \label{alg:vbee_init}
+    \begin{algorithmic}
+        \Require $\params{\vbee}$ \Comment{$\{\estpe_0,\damping,\observability_0,\observabilityupdate\}$}
+        \Require $\params{\knn}$ \Comment{$\{k, n, \athreshold, \feedbackthreshold\}$}
+        \Require $\params{\epe}$ \Comment{$\{\falseneg,\falsepos\}$}
+        \State \textbf{global } $\estpe,\damping,\observability,\observabilityupdate \gets \params{\vbee}$ \Comment{Unpack VBEE parameters}
+        \State \textbf{global } $model \gets \knn.\initialize{\params{\knn}}$
+        \State \textbf{global } $epe \gets \epe.\initialize{\params{\epe}}$
+    \end{algorithmic}
+\end{algorithm}
+\end{singlespace}
+
+The update function in Algorithm \ref{alg:vbee_update} integrates a new observation \(\observation\), computes an updated existence probability using the \epe{}, provides feedback \(\feedback\) to the model, and updates the observability accumulator \(\observability\).
+
+\begin{singlespace}
+\begin{algorithm}[H]
+    \caption[VBEE Update]{VBEE Update: $\vbee.\update{\observation}$}
+    \label{alg:vbee_update}
+    \begin{algorithmic}
+        \Require $\observation$ \Comment{$(\viewpoint,\state)$ with \(\state \in \{0,1\}\)}
+        \Ensure $\estpe$ \Comment{Updated existence probability}
+        \State $prior \gets \estpe$
+        \State $model\_estimate \gets model.\estimate{\observation.v}$ \Comment{Compute $\estpsge$}
+        \State $posterior \gets epe.\update{\observation, prior, model\_estimate}$ \Comment{Bayesian update}
+        \State $\estpe \gets (1-\damping)\cdot prior + \damping \cdot posterior$ \Comment{Apply smoothing weight $\damping$}
+        \State $\feedback \gets \estpe - prior$ \Comment{Feedback to model}
+        \State $model.\integrate{\observation, \feedback}$ \Comment{Update KNN internal state}
+        \State $\observability \gets \observability + \observabilityupdate \cdot (\observation.s - model\_estimate)$ \Comment{Update accumulator}
+        \State \Return $\estpe$
+    \end{algorithmic}
+\end{algorithm}
+\end{singlespace}
+
+The query function returns the current estimate \(\estpe\).
+
+\subsubsection{Observability Model Implementation}
+\label{sec:observability_models}
+
+This thesis implements and evaluates a single observability model: the K-Nearest Neighbors (KNN) Observability Model. The model estimates \(\psge\) from historical observations near the query \(\viewpoint\), with angular gating and a fixed-capacity history.
+
+Model parameters are \(\params{\knn} = \{k, n, \athreshold, \feedbackthreshold\}\), where \(k\) is the number of neighbors, \(n\) the maximum history size, \(\athreshold\) the angular gating threshold, and \(\feedbackthreshold\) the minimum feedback magnitude required to integrate an observation. Parameter tuning is described in Section \ref{sec:parameter_tuning}. The model provides \(\estimate{\viewpoint}\) and \(\integrate{\observation,\feedback}\).
+
+\paragraph{K-Nearest Neighbors (KNN) Observability Model}
+
+Upon initialization with \(\params{\knn}\), the model sets an empty history \(\observations{}_{prev} \gets \emptyset\). The estimator returns the ratio of positive statuses among the \(k\) nearest neighbors within \(\athreshold\) of \(\viewpoint\), or \(0.5\) if none are found (Algorithm \ref{alg:knn_estimate}).
+
+\begin{singlespace}
+\begin{algorithm}[H]
+    \caption[KNN Observability Estimation]{KNN $\estimate{\viewpoint}$}
+    \label{alg:knn_estimate}
+    \begin{algorithmic}
+        \Require $\observations{}_{prev}$ \Comment{Previous observations}
+        \Require $k$, $\athreshold$
+        \Ensure $\estpsge$
+        \Function{$\operatorname{Estimate}$}{$\viewpoint$}
+            \State $candidates \gets [\;]$
+            \ForAll{$o \in \observations{}_{prev}$}
+                \If{$\Delta\text{angle}(o.v,\viewpoint) \le \athreshold$}
+                    \State $\texttt{append}(candidates,\, o)$
+                \EndIf
+            \EndFor
+            \State \texttt{sort} $candidates$ by Euclidean distance to $\viewpoint$ (ascending)
+            \State $neighbors \gets$ first $\min(k, \texttt{length}(candidates))$ items of $candidates$
+            \If{$\texttt{length}(neighbors) = 0$}
+                \State \Return $0.5$
+            \EndIf
+            \State $pos \gets \sum_{o \in neighbors} o.s$ \Comment{$o.s \in \{0,1\}$}
+            \State \Return $pos / \texttt{length}(neighbors)$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+\end{singlespace}
+
+The integration policy (Algorithm \ref{alg:knn_update}) stores up to \(n\) observations. If \(|\feedback| < \feedbackthreshold\), the observation is ignored. Otherwise, the new observation replaces the nearest contradictory one to maintain a balanced local history.
+
+\begin{singlespace}
+\begin{algorithm}[H]
+    \caption[KNN Model Integrate]{KNN $\integrate{\observation, \feedback}$}
+    \label{alg:knn_update}
+    \begin{algorithmic}
+        \Require $\observations{}_{prev}$, $n$, $\feedbackthreshold$
+        \Function{$\operatorname{Integrate}$}{$\observation, \feedback$}
+            \If{$\texttt{length}(\observations{}_{prev}) < n$}
+                \State $\texttt{append}(\observations{}_{prev},\, \observation)$
+                \State \Return
+            \EndIf
+            \If{$|\feedback| < \feedbackthreshold$}
+                \State \Return \Comment{Insufficient signal to update history}
+            \EndIf
+            \If{$\observation.s = 1$} \Comment{Replace nearest negative}
+                \State $\observations{}_{prev}.\texttt{replace\_nearest\_with\_state}(\observation,\, 0)$
+            \Else \Comment{$\observation.s = 0$; replace nearest positive}
+                \State $\observations{}_{prev}.\texttt{replace\_nearest\_with\_state}(\observation,\, 1)$
+            \EndIf
+            \State \Return
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+\end{singlespace}
+
+The accuracy and performance of this model are evaluated in Section \ref{sec:observability_model_eval}.
+
+\subsubsection{Existence Probability Estimator Implementation}
+\label{sec:existence_confidence}
+
+The \epe{} estimates and updates \(\estpe\) given \(\observation\) and \(\estpsge\). It is initialized with \(\params{\epe}=\{\falseneg,\falsepos\}\). The update applies the Bayesian step with smoothing handled at the \vbee{} layer (Algorithm \ref{alg:bayesian_update_impl} returns the posterior; \vbee{} applies \(\damping\)).
+
+\begin{singlespace}
+\begin{algorithm}[H]
+    \caption{Bayesian Update Step: $\epe.\update{\observation, \estpe_t, \estpsge}$}
+    \label{alg:bayesian_update_impl}
+    \begin{algorithmic}
+        \Require Observation $\observation=(\viewpoint,\state)$, prior $\estpe_t \in [0,1]$, model estimate $\estpsge \in [0,1]$
+        \Require $\falseneg, \falsepos$ \Comment{FN and FP rates}
+        \If{$\state = 1$} \Comment{Positive (seen)}
+            \State $\tilde{p} \gets \estpsge \cdot (1-\falseneg)$
+            \State $num \gets \tilde{p}\cdot \estpe_t$
+            \State $den \gets \tilde{p}\cdot \estpe_t + \falsepos\cdot(1-\estpe_t)$
+            \State $posterior \gets \frac{num}{den}$
+        \Else \Comment{Negative (not seen)}
+            \State $\tilde{q} \gets 1 - \estpsge \cdot (1-\falseneg)$
+            \State $num \gets \tilde{q}\cdot \estpe_t$
+            \State $den \gets \tilde{q}\cdot \estpe_t + (1-\falsepos)\cdot(1-\estpe_t)$
+            \State $posterior \gets \frac{num}{den}$
+        \EndIf
+        \State \Return $posterior$
+    \end{algorithmic}
+\end{algorithm}
+\end{singlespace}
