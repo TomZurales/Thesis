@@ -1,15 +1,12 @@
 \subsection{Contribution}
 
-Through this research, we contribute three things to the subject of long-term map reuse in KV-SLAM. First, we release an open-source library which provides reusable access to the mathematical implementation of the VAMPE model. Next, a modified version of ORB-SLAM3 with the VAMPE model integrated is released for ease of further testing and research. Finally, we provide a collection of datasets covering situations particularly challenging for intermittently run KV-SLAM systems for demonstration and comparison of the system's capabilities.
+Through this research, three contributions are made to the subject of long-term map reuse in KV-SLAM. First, an open-source library is released which provides reusable access to the mathematical implementation of the VBEE framework. Next, a modified version of ORB-SLAM3 with the VBEE framework integrated is released for ease of further testing and research. Finally, a collection of stereo visual datasets is provided covering situations particularly challenging for intermittently run KV-SLAM systems, enabling demonstration and comparison of the system's capabilities.
 
-% The library: a lightweight, viewpoint-aware model of map point existence, designed to be utilized in KV-SLAM systems.
-\subsubsection{The VAMPE Library}
-The VAMPE library is a C++ implementation of the viewpoint-aware probability shell, with hooks for simple integration into any existing KV-SLAM implementation. Implementations for both a discrete viewpoint shell (implemented as an icosahedron) and a continuous viewpoint shell (implemented on a sphere) are made available.
+\subsubsection{The VBEE Library}
+The VBEE library (libVBEE) is a C++ implementation of the viewpoint-based existence estimation framework, with hooks for simple integration into any existing KV-SLAM implementation.  
 
-% The SLAM implementation: An implementation of the library in ORB-SLAM 3 to demonstrate its effectiveness.
-\subsubsection{ORB-SLAM3\_VAMPE}
-ORB-SLAM3, an extremely popular KV-SLAM implementation, is modified to utilize the VAMPE library for estimating the probability of map point existence within the global map. These probabilistic estimations are then used in the selection of keypoints for culling operations, regularly removing points which drop below a certain threshold, and for improving relocalization operations through an updated RANSAC implementation which weights high probability map points above low.
+\subsubsection{ORB-SLAM3 Integration}
+ORB-SLAM3, an extremely popular KV-SLAM implementation, is modified to utilize libVBEE for estimating the probability of map point existence within the global map. These probabilistic estimations are then used in the selection of keypoints for culling operations, regularly removing points which drop below a certain threshold, and for improving relocalization operations through an updated RANSAC implementation which weights high-probability map points above low.
 
-% The datasets: A set of datasets and experimental results demonstrating how the library improves SLAM performance.
 \subsubsection{Episodic Change Datasets}
-The datasets provided are recorded using an OAK-D stereo camera, rigidly mounted with a Unitree L2 LiDAR. The LiDAR is used to produce a highly accurate ground-truth, co-registered to the camera's view. IMU data is provided for both the camera and LiDAR. A map is provided for each dataset, generated using an unmodified implementation of ORB-SLAM3, and co-registered to the ground truth. Bounding boxes within this frame are provided representing keypoints known to change between runs.
+A set of stereo visual datasets is provided, each accompanied by a map generated using an unmodified implementation of ORB-SLAM3.
