@@ -5,6 +5,7 @@
 #include <Eigen/Geometry>
 
 #include "PointProbabilityEngine.h"
+#include "Visualizer.h"
 
 Eigen::Quaternionf lookAt(const Eigen::Vector3f &from, const Eigen::Vector3f &to)
 {
@@ -38,61 +39,28 @@ Eigen::Matrix4f makeTransform(const Eigen::Vector3f &position, const Eigen::Quat
 
 int main(int argc, char **argv)
 {
-  std::cout << "Point Probability Engine Demo for a single point which is periodically visible." << std::endl;
+    std::cout << "Point Probability Engine Demo" << std::endl;
+    std::cout << "Creating visualizer..." << std::endl;
 
-  // In this demo, there is a single keypoint at the origin. The keypoint lies on a
-  // wall which is smaller than the radius around which the camera rotates.
-  // The camera is always looking directly at the map point, but can only see
-  // it when it is in front of the wall between a rotation of 0 and pi radians.
+    // Create visualizer
+    Visualizer vis(800, 600, "Point Probability Engine Demo");
 
-  PointProbabilityEngine ppe;
-  Point p(Eigen::Vector3f(0., 0., 0.));
+    std::cout << "Entering render loop..." << std::endl;
 
-  // Changable parameters
-  float radius = 5;
-  float speed = 0.1;
-
-  // Initial parameters
-  float r = 3 * M_PI_2;
-  Eigen::Vector3f cameraPose(radius * cos(r), radius * sin(r), 0.);
-  Eigen::Quaternionf cameraRotation = lookAt(cameraPose, p.getPose());
-  Eigen::Matrix4f tCamera = makeTransform(cameraPose, cameraRotation);
-  bool seesPoint = false;
-
-  int count = 0;
-  while (true)
-  {
-    if (seesPoint)
+    // Main render loop
+    while (!vis.shouldClose())
     {
-      std::vector<Point *> points = {&p};
-      ppe.Update(tCamera, points);
-    }
-    else
-    {
-      // Can't see the point, send an empty list
-      std::vector<Point *> points = {};
-      ppe.Update(tCamera, points);
-    }
-    r += speed;
-    r = std::fmod(r, 2 * M_PI);
-
-    cameraPose = Eigen::Vector3f(radius * cos(r), radius * sin(r), 0.);
-    cameraRotation = lookAt(cameraPose, p.getPose());
-    tCamera = makeTransform(cameraPose, cameraRotation);
-
-    if (r > M_PI_2 && r < (3 * M_PI_2) || count >= 1000)
-    {
-      seesPoint = false;
-    }
-    else
-    {
-      seesPoint = true;
+        // Render the scene
+        vis.render();
+        
+        // Handle events and swap buffers
+        vis.pollEvents();
+        vis.swapBuffers();
+        
+        // Cap the frame rate
+        std::this_thread::sleep_for(std::chrono::milliseconds(16)); // ~60 FPS
     }
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(33));
-    if (count <= 1000)
-      count++;
-    if (count == 1000)
-      std::cout << "Hiding Point" << std::endl;
-  }
+    std::cout << "Exiting..." << std::endl;
+    return 0;
 }
