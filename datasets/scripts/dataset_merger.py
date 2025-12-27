@@ -21,6 +21,46 @@ def offset_timestamps(timestamps: List[int], offset: int) -> List[int]:
     """Offset all timestamps by a given amount."""
     return [ts + offset for ts in timestamps]
 
+def read_ground_truth(dataset_path: str) -> List[float]:
+    gt_file = dataset_path / 'mav0' / 'state_groundtruth_estimate0' / 'data.csv'
+    tum_mode = False
+    if not gt_file.exists():
+        gt_file = dataset_path / 'mav0' / 'state_groundtruth_estimate0' / 'data.tum'
+        if not gt_file.exists():
+            raise FileNotFoundError(f"Ground truth file not found in {dataset_path}")
+        tum_mode = True
+    
+    ground_truth = []
+    with open(gt_file, 'r') as f:
+        for line in f:
+            if '#' in line:
+                continue
+            line = line.strip()
+            if line:
+                if tum_mode:
+                    parts = line.split()
+                    timestamp = float(parts[0])
+                    pose = [float(parts[1]), float(parts[2]), float(parts[3]),
+                            float(parts[4]), float(parts[5]), float(parts[6]), float(parts[7])]
+                    ground_truth.append([timestamp] + pose)
+                else:
+                    parts = line.split(',')
+                    timestamp = float(parts[0]) / 1e9
+                    pose = [float(parts[1]), float(parts[2]), float(parts[3]),
+                            float(parts[5]), float(parts[6]), float(parts[7]), float(parts[4])]
+                    ground_truth.append([timestamp] + pose)
+    return ground_truth
+
+def offset_ground_truth(ground_truth: List[float], offset: float) -> List[float]:
+    """Offset all ground truth timestamps by a given amount."""
+    return [[gt[0] + offset] + gt[1:] for gt in ground_truth]
+
+def write_ground_truth(gt_file: str, ground_truth: List[float]) -> None:
+    with open(gt_file, 'w') as f:
+        for gt in ground_truth:
+            line = " ".join(str(val) for val in gt) + "\n"
+            f.write(line)
+
 def merge_datasets(dataset1_path: str, dataset2_path: str, output_path: str) -> None:
     """Merge two EuRoC style datasets.
     
@@ -56,6 +96,14 @@ def merge_datasets(dataset1_path: str, dataset2_path: str, output_path: str) -> 
     min_timestamp_dataset2 = min(timestamps2)
     offset = max_timestamp_dataset1 - min_timestamp_dataset2
     offset += timestamps2[1] - timestamps2[0]
+        
+    (output_path / 'mav0' / 'state_groundtruth_estimate0').mkdir(parents=True, exist_ok=True)
+    gt1 = read_ground_truth(dataset1_path)
+    gt2 = read_ground_truth(dataset2_path)
+    gt2_offset = offset_ground_truth(gt2, offset / 1e9)
+    merged_gt = gt1 + gt2_offset
+    merged_gt.sort(key=lambda x: x[0])
+    write_ground_truth(output_path / 'mav0' / 'state_groundtruth_estimate0' / 'data.tum', merged_gt)
 
     ds1_filenames = [str(ts) + '.png' for ts in timestamps1]
     
