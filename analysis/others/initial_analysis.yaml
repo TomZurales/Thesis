@@ -1,0 +1,34 @@
+name: Initial Analysis and Configuration
+datasets:
+  # - "all_days"
+  # - "all_machine_halls"
+  # - "all_vicon_room_1"
+  # - "all_vicon_room_2"
+  # - "big_skip"
+  # - "machine_hall_1_5"
+  - "small_skips"
+modes:
+  - "baseline"
+  - "vbee"
+  # - "vbee_fake"
+  - "vbee_ransac"
+  - "random_cull"
+  # - "random_cull_fake"
+iterations: 1
+
+# VBEE Configuration
+n: 38
+k: 9
+distance_threshold: 4.29
+unknown_psge_value: 0.02
+min_confidence_threshold: 0.02
+max_error_threshold: 0.03
+init_p_e: 0.62
+bad_threshold: 0.38
+damping_coeff: 0.65
+init_observability: 0.56
+observability_damping_coeff: 0.21
+sigmoid_midpoint: 400.43
+sigmoid_steepness: 3.91
+falseNegativeRate: 0.26
+falsePositiveRate: 0.005

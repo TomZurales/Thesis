@@ -1,0 +1,215 @@
+num_seq = 1
+file name: big_skip_Baseline_1
+Loading images for sequence 0...LOADED!
+SPLITS FILE DETECTED! Here are the split stamps: 
+192.925
+
+-------
+
+ORB-SLAM3 Copyright (C) 2017-2020 Carlos Campos, Richard Elvira, Juan J. Gómez, José M.M. Montiel and Juan D. Tardós, University of Zaragoza.
+ORB-SLAM2 Copyright (C) 2014-2016 Raúl Mur-Artal, José M.M. Montiel and Juan D. Tardós, University of Zaragoza.
+This program comes with ABSOLUTELY NO WARRANTY;
+This is free software, and you are welcome to redistribute it
+under certain conditions. See LICENSE.txt.
+
+Input sensor was set to: Stereo
+Loading settings from ../slam_systems/ORB_SLAM3/Examples/Stereo/VBEE.yaml
+Camera1.k3 optional parameter does not exist...
+	-Loaded camera 1
+Camera2.k3 optional parameter does not exist...
+	-Loaded camera 2
+Camera.newHeight optional parameter does not exist...
+Camera.newWidth optional parameter does not exist...
+	-Loaded image info
+	-Loaded ORB settings
+	-Loaded viewer settings
+System.LoadAtlasFromFile optional parameter does not exist...
+System.SaveAtlasToFile optional parameter does not exist...
+	-Loaded Atlas settings
+System.thFarPoints optional parameter does not exist...
+	-Loaded misc parameters
+	-Computed rectification maps
+----------------------------------
+SLAM settings: 
+	-Camera 1 parameters (Pinhole): [ 443.88687133789062 443.88687133789062 343.39697265625 203.32742309570312 ]
+	-Camera 1 distortion parameters: [  0 0 0 0 ]
+	-Camera 2 parameters (Pinhole: [ 443.88687133789062 443.88687133789062 343.39697265625 203.32742309570312 ]
+	-Camera 1 distortion parameters: [  0 0 0 0 ]
+	-Original image size: [ 640 , 400 ]
+	-Current image size: [ 640 , 400 ]
+	-Camera 1 parameters after rectification: [  443.88687133789062 443.88687133789062 343.39697265625 203.32742309570312 ]
+	-Sequence FPS: 20
+	-Stereo baseline: 0.075278922915458679
+	-Stereo depth threshold : 60
+	-Features per image: 600
+	-ORB scale factor: 1.2000000476837158
+	-ORB number of scales: 8
+	-Initial FAST threshold: 20
+	-Min FAST threshold: 7
+
+
+Loading ORB Vocabulary. This could take a while...
+Vocabulary loaded!
+
+Initialization of Atlas from scratch 
+Creation of new map with id: 0
+Creation of new map with last KF id: 0
+Seq. Name: 
+There are 1 cameras in the atlas
+Camera 0 is pinhole
+First KF:0; Map init KF:0
+New Map created with 275 points
+Starting the Viewer
+*Loop detected
+Local Mapping STOP
+Local Mapping RELEASE
+Local Mapping STOP
+Local Mapping RELEASE
+Fail to track local map!
+Fail to track local map!
+Fail to track local map!
+Fail to track local map!
+Fail to track local map!
+Relocalized!!
+*Loop detected
+Local Mapping STOP
+Local Mapping RELEASE
+Local Mapping STOP
+Local Mapping RELEASE
+*Loop detected
+Local Mapping STOP
+Local Mapping RELEASE
+Local Mapping STOP
+Local Mapping RELEASE
+*Loop detected
+Local Mapping STOP
+Local Mapping RELEASE
+Local Mapping STOP
+Local Mapping RELEASE
+*Loop detected
+Local Mapping STOP
+Local Mapping RELEASE
+Local Mapping STOP
+Local Mapping RELEASE
+*Loop detected
+Local Mapping STOP
+Local Mapping RELEASE
+Local Mapping STOP
+Local Mapping RELEASE
+*Loop detected
+Local Mapping STOP
+Local Mapping RELEASE
+Local Mapping STOP
+Local Mapping RELEASE
+SPLIT STAMP FOUND. SETTING ALL MAP POINTS TO BE FROM PREVIOUS MAP
+*Loop detected
+Local Mapping STOP
+Local Mapping RELEASE
+Local Mapping STOP
+Local Mapping RELEASE
+*Loop detected
+Local Mapping STOP
+Local Mapping RELEASE
+Local Mapping STOP
+Local Mapping RELEASE
+*Loop detected
+Local Mapping STOP
+Local Mapping RELEASE
+Local Mapping STOP
+Local Mapping RELEASE
+*Loop detected
+Local Mapping STOP
+Local Mapping RELEASE
+Local Mapping STOP
+Local Mapping RELEASE
+*Loop detected
+Local Mapping STOP
+Local Mapping RELEASE
+Local Mapping STOP
+Local Mapping RELEASE
+Shutdown
+
+ TIME STATS in ms (mean$\pm$std)
+OpenCV version: 4.6.0
+---------------------------
+Tracking
+
+ORB Extraction: 4.053$\pm$0.54947
+Stereo Matching: 0.89835$\pm$0.16472
+Pose Prediction: 0.56674$\pm$0.1736
+LM Track: 1.4981$\pm$1.4234
+New KF decision: 0.059103$\pm$0.30677
+Total Tracking: 8.8349$\pm$2.3642
+
+
+
+Local Mapping
+
+KF Insertion: 2.2684$\pm$0.9461
+MP Culling: 0.12159$\pm$0.18733
+MP Creation: 3.3121$\pm$2.5415
+LBA: 11.474$\pm$20.729
+KF Culling: 1.3527$\pm$2.3026
+Total Local Mapping: 18.486$\pm$24.718
+---------------------------
+
+LBA complexity (mean$\pm$std)
+LBA Edges: 3616.2$\pm$3819.1
+LBA KF optimized: 11.786$\pm$11.286
+LBA KF fixed: 32.486$\pm$43.744
+LBA MP: -nan$\pm$-nan
+
+LBA executions: 817
+LBA aborts: 13
+---------------------------
+
+Map complexity
+KFs in map: 808
+MPs in map: 30857
+---------------------------
+
+Place Recognition (mean$\pm$std)
+Database Query: 0.46512$\pm$0.26888
+SE3 estimation: 2.0754$\pm$1.1037
+Total Place Recognition: 2.7414$\pm$1.3708
+
+
+Loop Closing (mean$\pm$std)
+Loop Fusion: 5.1564$\pm$6.4933
+Essential Graph: 50.89$\pm$28.923
+Total Loop Closing: 58.49$\pm$31.312
+
+Num exec: 12
+Number of KFs: nan$\pm$nan
+
+Map Merging (mean$\pm$std)
+Merge Maps: -nan$\pm$-nan
+Welding BA: -nan$\pm$-nan
+Optimization Ess.: -nan$\pm$-nan
+Total Map Merging: -nan$\pm$-nan
+
+Num exec: 0
+Number of KFs: nan$\pm$nan
+Number of MPs: nan$\pm$nan
+
+Full GBA (mean$\pm$std)
+GBA: 1146.2$\pm$1258.1
+Map Update: 14.137$\pm$12.582
+Total Full GBA: 1160.3$\pm$1267.3
+
+Num exec: 12
+Num abort: 0
+Number of KFs: 440$\pm$225.45
+Number of MPs: 17342$\pm$8486.3
+
+Saving trajectory to big_skip_Baseline_1_Frame.txt ...
+There are 1 maps in the atlas
+  Map 0 has 808 KFs
+
+End of saving trajectory to big_skip_Baseline_1_Frame.txt ...
+
+Saving keyframe trajectory to big_skip_Baseline_1_KeyFrame.txt ...
+QObject::killTimer: Timers cannot be stopped from another thread
+QObject::~QObject: Timers cannot be stopped from another thread
+double free or corruption (out)
+../slam_systems/ORB_SLAM3/Examples/Stereo/stereo_euroc ../slam_systems/ORB_SLAM3/Vocabulary/ORBvoc.txt ../slam_systems/ORB_SLAM3/Examples/Stereo/VBEE.yaml ../datasets/big_skip ../datasets/big_skip/timestamps.txt big_skip_Baseline_1

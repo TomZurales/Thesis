@@ -113,7 +113,7 @@ def merge_datasets(dataset1_path: str, dataset2_path: str, output_path: str) -> 
     new_filenames = [str(ts) + '.png' for ts in timestamps2_offset]
     timestamps2_offset.sort()
 
-    with open(output_path / 'split_stamps.txt', 'a') as f:
+    with open(output_path / 'splits.txt', 'a') as f:
         f.write(f"{timestamps2_offset[0]}\n")
 
     # Merge timestamps

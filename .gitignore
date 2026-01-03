@@ -1,11 +1,13 @@
 .vscode/
 build/
-datasets/**/
-venv/
+datasets/**/data/
+.venv/
+.cache/
 __pycache__/
-
 
 imgui.ini
 /lib/
 /bin/
 /include/
+data/
+thesis_old/
