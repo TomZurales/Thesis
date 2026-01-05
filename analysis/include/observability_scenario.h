@@ -2,13 +2,13 @@
 
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
-#include <boost/serialization/serialization.hpp>
 #include <boost/serialization/map.hpp>
+#include <boost/serialization/serialization.hpp>
 #include <boost/serialization/string.hpp>
 #include <boost/serialization/vector.hpp>
+#include <eigen3/Eigen/Core>
 #include <utility>
 #include <vector>
-#include <eigen3/Eigen/Core>
 
 #include "vbee.h"
 
@@ -27,6 +27,17 @@
 #define MAX_STABLE_ATTEMPTS 100
 
 extern VBEESettings global_vbee_settings;
+
+namespace boost {
+namespace serialization {
+template <class Archive>
+void serialize(Archive &ar, Eigen::Vector3f &v, const unsigned int version) {
+  ar & v.x();
+  ar & v.y();
+  ar & v.z();
+}
+} // namespace serialization
+} // namespace boost
 
 class ObservabilityScenario {
   friend class boost::serialization::access;
@@ -58,6 +69,14 @@ private:
 public:
   ObservabilityScenario() = default; // Default constructor for serialization
   ObservabilityScenario(float goal_blocked_rate, float goal_keepout_rate);
+
+  static std::vector<ObservabilityScenario> FromFile(const std::string &file_path);
+  static void ToFile(const std::string &file_path,
+                     const std::vector<ObservabilityScenario> &scenarios);
+
+  static std::vector<ObservabilityScenario> LoadOrCreate(const std::string &file_path,
+                                                        int n_scenarios_per_rate,
+                                                        float rate_step);
 
   bool isInKeepout(Eigen::Vector3f point) const;
   std::pair<float, float> getRatePair() const;

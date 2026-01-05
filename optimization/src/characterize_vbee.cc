@@ -52,7 +52,7 @@ std::map<std::string, std::vector<Observation>> observation_cache;
  * Calculate the average error and confidence for a given world and model
  * Returns pair of (average_error, average_confidence)
  */
-float calculateModelError(const World& world, ObservabilityModel model) {
+float calculateModelError(const ObservabilityScenario& world, ObservabilityModel model) {
   float total_error = 0.0f;
   
   const std::string world_name = world.getName();
@@ -108,7 +108,7 @@ int main(int argc, char **argv) {
   const std::string output_filename(argv[16]);
   
   // Initialize world data structures
-  std::vector<World> worlds;
+  std::vector<ObservabilityScenario> worlds;
   std::set<std::pair<float, float>> existing_rate_pairs;
 
   // Load existing worlds from binary file if available
@@ -120,7 +120,7 @@ int main(int argc, char **argv) {
     try {
       std::ifstream ifs("data/worlds.bin", std::ios::binary);
       boost::archive::binary_iarchive ia(ifs);
-      std::vector<World> loaded_worlds;
+      std::vector<ObservabilityScenario> loaded_worlds;
       ia >> loaded_worlds;
       
       std::cout << "Successfully loaded " << loaded_worlds.size()
@@ -181,7 +181,7 @@ int main(int argc, char **argv) {
   for (size_t world_idx = 0; world_idx < worlds.size(); ++world_idx) {
     worker_threads.emplace_back([&worlds, world_idx, &world_stats_mutex, 
                                 &stdout_mutex, &p_e_error_by_world, &observability_error_by_world]() {
-      const World& world = worlds[world_idx];
+      const ObservabilityScenario& world = worlds[world_idx];
       float this_p_e_error = 0.0f;
       float this_observability_error = 0.0f;
       VBEE vbee(world_idx);

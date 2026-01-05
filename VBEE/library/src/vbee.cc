@@ -1,7 +1,5 @@
 #include "vbee.h"
 
-#include <iostream>
-
 #define OBSERVABILITY_MIN 0.001f
 #define OBSERVABILITY_MAX 0.75f
 
@@ -48,12 +46,17 @@ float VBEE::Update(Observation observation, bool commit, bool updatePExists) {
     seenStatus = SEEN;
   }
 
+  // If this is a first-time VBEE observation, and it's negative, just return
   if (!beenSeen && observation.s == 0.0f)
     return p_e;
 
-  if (last_observer_position.norm() > 0 &&
-      observation.v.dot(last_observer_position) < 0.05f) {
-    return p_e;
+  // Ensure the observation is from a sufficiently different viewpoint
+  // Note that !beenSeen is sufficient to bypass this check for the first observation
+  if(beenSeen)
+  {
+    if((last_observer_position - observation.v).norm() < 0.1f) {
+      return p_e;
+    }
   }
 
   last_observer_position = observation.v;
@@ -82,43 +85,54 @@ float VBEE::Update(Observation observation, bool commit, bool updatePExists) {
     negative_observation_buffer.clear();
   }
 
-  float model_estimate;
+  float model_estimate = std::min(0.999f, std::max(0.001f, model.Estimate(observation.v).first));
 
-  // If the map point is seen, then the dynamic model is more accurate
-  // because the map point still exists. If the point is not seen, then we
-  // rely on the observability model from the last time the point was seen.
-  if (observation.s == 1.0f) {
-    auto model_output = model_dyn.Estimate(observation.v);
-    model_estimate = std::min(0.999f, std::max(0.001f, model_output.first));
-  } else {
-    auto model_output = model.Estimate(observation.v);
-    model_estimate = std::min(0.999f, std::max(0.001f, model_output.first));
-  }
-  // // Clamp model estimate between 0.001 and 0.999
-  // float model_estimate =
-  //     std::min(0.999f, std::max(0.001f, model.Estimate(observation.v)));
-
-  // Update the posterior probability using EPE
   float posterior = epe.Update(observation, prior, model_estimate);
 
   float weight = (1.0f - observability) *
                  global_vbee_settings.observability_damping_coeff *
                  Sigmoid(n_observations);
-  // float tmp_p_e = std::min(
-  //     0.999f, std::max(0.001f, prior * (1.0f - weight) + posterior *
-  //     weight));
+
   p_e = std::min(
       0.999f, std::max(0.001f, prior * (1.0f - weight) + posterior * weight));
-  // if (updatePExists)
-  //   p_e = tmp_p_e;
 
-  if (observation.s == 1.0f) {
-    observability = std::max(0.25f, std::min(0.75f, model_dyn.Update(observation).first));
-    model =
-        model_dyn; // Replace the static model with the current dynamic model
-  } else {
-    model_dyn.Update(observation);
-  }
+  model.Update(observation);
+
+  // // If the map point is seen, then the dynamic model is more accurate
+  // // because the map point still exists. If the point is not seen, then we
+  // // rely on the observability model from the last time the point was seen.
+  // if (observation.s == 1.0f) {
+  //   auto model_output = model_dyn.Estimate(observation.v);
+  //   model_estimate = std::min(0.999f, std::max(0.001f, model_output.first));
+  // } else {
+  //   auto model_output = model.Estimate(observation.v);
+  //   model_estimate = std::min(0.999f, std::max(0.001f, model_output.first));
+  // }
+  // // // Clamp model estimate between 0.001 and 0.999
+  // // float model_estimate =
+  // //     std::min(0.999f, std::max(0.001f, model.Estimate(observation.v)));
+
+  // // Update the posterior probability using EPE
+  // float posterior = epe.Update(observation, prior, model_estimate);
+
+  // float weight = (1.0f - observability) *
+  //                global_vbee_settings.observability_damping_coeff *
+  //                Sigmoid(n_observations);
+  // // float tmp_p_e = std::min(
+  // //     0.999f, std::max(0.001f, prior * (1.0f - weight) + posterior *
+  // //     weight));
+  // p_e = std::min(
+  //     0.999f, std::max(0.001f, prior * (1.0f - weight) + posterior * weight));
+  // // if (updatePExists)
+  // //   p_e = tmp_p_e;
+
+  // if (observation.s == 1.0f) {
+  //   observability = std::max(0.25f, std::min(0.75f, model_dyn.Update(observation).first));
+  //   model =
+  //       model_dyn; // Replace the static model with the current dynamic model
+  // } else {
+  //   model_dyn.Update(observation);
+  // }
 
   // float obs_damping_coeff = params.observability_damping_coeff;
   // // Use s as the observation value
@@ -183,13 +197,13 @@ float VBEE::UpdateMany(std::vector<Observation> observations) {
     // If the map point is seen, then the dynamic model is more accurate
     // because the map point still exists. If the point is not seen, then we
     // rely on the observability model from the last time the point was seen.
-    if (observation.s == 1.0f) {
+    // if (observation.s == 1.0f) {
       auto model_output = model_dyn.Estimate(observation.v);
       model_estimate = std::min(0.999f, std::max(0.001f, model_output.first));
-    } else {
-      auto model_output = model.Estimate(observation.v);
-      model_estimate = std::min(0.999f, std::max(0.001f, model_output.first));
-    }
+    // } else {
+    //   auto model_output = model.Estimate(observation.v);
+    //   model_estimate = std::min(0.999f, std::max(0.001f, model_output.first));
+    // }
     // // Clamp model estimate between 0.001 and 0.999
     // float model_estimate =
     //     std::min(0.999f, std::max(0.001f, model.Estimate(observation.v)));
@@ -208,13 +222,13 @@ float VBEE::UpdateMany(std::vector<Observation> observations) {
     // if (updatePExists)
     //   p_e = tmp_p_e;
 
-    if (observation.s == 1.0f) {
+    // if (observation.s == 1.0f) {
       observability = model_dyn.Update(observation).first;
-      model =
-          model_dyn; // Replace the static model with the current dynamic model
-    } else {
-      model_dyn.Update(observation);
-    }
+    //   model =
+    //       model_dyn; // Replace the static model with the current dynamic model
+    // } else {
+    //   model_dyn.Update(observation);
+    // }
 
     // float obs_damping_coeff = params.observability_damping_coeff;
     // // Use s as the observation value

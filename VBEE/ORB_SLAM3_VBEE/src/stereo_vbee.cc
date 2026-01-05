@@ -18,8 +18,8 @@
 
 using namespace std;
 
-std::string thesis_root = getenv("THESIS_ROOT");
-std::string thesis_runtime_root = getenv("THESIS_RUNTIME_ROOT");
+char* _thesis_root = getenv("THESIS_ROOT");
+char* _thesis_runtime_root = getenv("THESIS_RUNTIME_ROOT");
 
 void LoadImages(const string &strPathLeft, const string &strPathRight,
                 const string &strPathTimes, vector<string> &vstrImageLeft,
@@ -29,7 +29,6 @@ VBEESettings global_vbee_settings;
 TrackedStats global_tracked_stats;
 
 int main(int argc, char **argv) {
-
   if (argc != 2) {
     std::cerr
         << "This program should be run through the run_tests script. Exiting."
@@ -37,12 +36,25 @@ int main(int argc, char **argv) {
     exit(1);
   }
 
+  if(!_thesis_root || !_thesis_runtime_root) {
+    std::cerr << "Please set THESIS_ROOT and THESIS_RUNTIME_ROOT "
+                 "environment variables."
+              << std::endl;
+    exit(1);
+  }
+
+  std::string thesis_root = std::string(_thesis_root);
+  std::string thesis_runtime_root = std::string(_thesis_runtime_root);
+
   bool use_viewer = false;
   std::ifstream viewer_file("use_viewer");
   if (viewer_file.good()) {
     use_viewer = true;
   }
   viewer_file.close();
+
+  // Override to always use viewer for debugging
+  use_viewer = true;
 
   {
     int fd = open("heartbeat.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -284,6 +296,7 @@ int main(int argc, char **argv) {
                 } else {
                   pMP->SetBadFlag();
                 }
+                pMP->SetVBEEEliminated();
               }
             }
           }
@@ -311,6 +324,7 @@ int main(int argc, char **argv) {
                 } else {
                   pMP->SetBadFlag();
                 }
+                pMP->SetVBEEEliminated();
               }
             }
           }

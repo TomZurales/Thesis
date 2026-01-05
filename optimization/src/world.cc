@@ -8,7 +8,7 @@
 #include <atomic>
 
 // returns (meets_target_blocked, error)
-std::pair<bool, int> World::meetsTargetBlocked(int target_n_blocked) {
+std::pair<bool, int> ObservabilityScenario::meetsTargetBlocked(int target_n_blocked) {
     int min_blocked =
         std::max(0, target_n_blocked - static_cast<int>(N_TESTERS * 0.025));
     int max_blocked = std::min(
@@ -50,7 +50,7 @@ std::pair<bool, int> World::meetsTargetBlocked(int target_n_blocked) {
   }
 
   // returns (meets_target_in_keepout, error)
-  std::pair<bool, int> World::meetsTargetKeepout(int target_n_in_keepout) {
+  std::pair<bool, int> ObservabilityScenario::meetsTargetKeepout(int target_n_in_keepout) {
     int min_in_keepout =
         std::max(0, target_n_in_keepout - static_cast<int>(N_TESTERS * 0.025));
     int max_in_keepout = std::min(
@@ -91,7 +91,7 @@ std::pair<bool, int> World::meetsTargetBlocked(int target_n_blocked) {
     return std::make_pair(true, error);
   }
 
-World::World(float goal_blocked_rate, float goal_keepout_rate)
+ObservabilityScenario::ObservabilityScenario(float goal_blocked_rate, float goal_keepout_rate)
     : blocked_rate(goal_blocked_rate), keepout_rate(goal_keepout_rate) {
     int n_blockers = 1000 * goal_blocked_rate;
     int n_keep_outs = 1000 * goal_keepout_rate;
@@ -180,7 +180,7 @@ World::World(float goal_blocked_rate, float goal_keepout_rate)
     }
   }
 
-bool World::isInKeepout(Eigen::Vector3f point) const {
+bool ObservabilityScenario::isInKeepout(Eigen::Vector3f point) const {
     for (const auto &keep_out : keep_outs) {
       float angle = acos(point.normalized().dot(keep_out.normalized()));
       if (angle < KEEP_OUT_ANGLE_RAD && point.norm() > keep_out.norm()) {
@@ -190,21 +190,21 @@ bool World::isInKeepout(Eigen::Vector3f point) const {
     return false;
   }
 
-std::pair<float, float> World::getRatePair() const {
+std::pair<float, float> ObservabilityScenario::getRatePair() const {
     return std::pair<float, float>(blocked_rate, keepout_rate);
   }
 
-void World::deletePoint() { pointDeleted = true; }
+void ObservabilityScenario::deletePoint() { pointDeleted = true; }
 
-bool World::isPointDeleted() const { return pointDeleted; }
+bool ObservabilityScenario::isPointDeleted() const { return pointDeleted; }
 
-void World::restorePoint() { pointDeleted = false; }
+void ObservabilityScenario::restorePoint() { pointDeleted = false; }
 
-void World::enableErrors() { doErrors = true; }
+void ObservabilityScenario::enableErrors() { doErrors = true; }
 
-void World::disableErrors() { doErrors = false; }
+void ObservabilityScenario::disableErrors() { doErrors = false; }
 
-bool World::isSeen(Eigen::Vector3f point) const {
+bool ObservabilityScenario::isSeen(Eigen::Vector3f point) const {
     if (pointDeleted) {
       if (!doErrors) {
         return false;
@@ -238,7 +238,7 @@ bool World::isSeen(Eigen::Vector3f point) const {
     return true;
   }
 
-Eigen::Vector3f World::getRandomViewpoint() const {
+Eigen::Vector3f ObservabilityScenario::getRandomViewpoint() const {
     float length =
         static_cast<float>(rand()) / static_cast<float>(RAND_MAX) *
             (WORLD_RADIUS - MIN_VIEWPOINT_DISTANCE) +
@@ -248,7 +248,7 @@ Eigen::Vector3f World::getRandomViewpoint() const {
            length; // Random point inside sphere of radius WORLD_RADIUS
 }
 
-Eigen::Vector3f World::getRandomValidViewpoint() const {
+Eigen::Vector3f ObservabilityScenario::getRandomValidViewpoint() const {
     Eigen::Vector3f point;
     do {
       point = getRandomViewpoint();
@@ -256,7 +256,7 @@ Eigen::Vector3f World::getRandomValidViewpoint() const {
     return point;
 }
 
-Eigen::Vector3f World::getRandomValidPositiveViewpoint() const {
+Eigen::Vector3f ObservabilityScenario::getRandomValidPositiveViewpoint() const {
     Eigen::Vector3f point;
     do {
       point = getRandomViewpoint();
@@ -264,7 +264,7 @@ Eigen::Vector3f World::getRandomValidPositiveViewpoint() const {
     return point;
 }
 
-Eigen::Vector3f World::getRandomValidNegativeViewpoint() const{
+Eigen::Vector3f ObservabilityScenario::getRandomValidNegativeViewpoint() const{
     Eigen::Vector3f point;
     do {
       point = getRandomViewpoint();
@@ -272,7 +272,7 @@ Eigen::Vector3f World::getRandomValidNegativeViewpoint() const{
     return point;
 }
 
-std::string World::getName() const {
+std::string ObservabilityScenario::getName() const {
     std::stringstream ss;
     ss << std::fixed << std::setprecision(2);
     ss << "BR: " << blocked_rate << ", KR: " << keepout_rate;
