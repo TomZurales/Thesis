@@ -44,7 +44,8 @@
 \contentsline {subsubsection}{\numberline {4.3.3}Existence Probability Estimator}{37}{}%
 \contentsline {subsection}{\numberline {4.4}Dataset Creation}{38}{}%
 \contentsline {subsection}{\numberline {4.5}Observability Scenarios Dataset}{38}{}%
-\contentsline {subsubsection}{\numberline {4.5.1}Episodic Visual SLAM Dataset}{39}{}%
+\contentsline {subsubsection}{\numberline {4.5.1}Static Episodic Visual SLAM Dataset}{39}{}%
+\contentsline {subsubsection}{\numberline {4.5.2}Changing Episodic Visual SLAM Datasets}{39}{}%
 \contentsline {subsection}{\numberline {4.6}ORB-SLAM3 Integration}{40}{}%
 \contentsline {subsubsection}{\numberline {4.6.1}Map Point}{40}{}%
 \contentsline {subsubsection}{\numberline {4.6.2}VBEE Post-Processing Operations}{40}{}%
@@ -53,22 +54,24 @@
 \contentsline {paragraph}{Phase 1 - Observability Model Tuning}{42}{}%
 \contentsline {paragraph}{Phase 2 - VBEE and EPE Tuning}{47}{}%
 \contentsline {subsection}{\numberline {4.8}Experimental Setup}{48}{}%
-\contentsline {section}{\numberline {5}Results and Analysis}{49}{}%
-\contentsline {subsection}{\numberline {5.1}EPE Analysis and Optimization}{49}{}%
-\contentsline {subsection}{\numberline {5.2}Evaluation Metrics}{49}{}%
-\contentsline {subsection}{\numberline {5.3}SLAM System Configurations}{49}{}%
-\contentsline {subsection}{\numberline {5.4}Parameter Optimization}{49}{}%
-\contentsline {subsubsection}{\numberline {5.4.1}Existence Estimation Framework Parameter Selection}{49}{}%
-\contentsline {paragraph}{Stage 1 - Bayesian Update Initial Parameter Selection}{49}{}%
-\contentsline {paragraph}{Parameters of Interest}{49}{}%
-\contentsline {subsection}{\numberline {5.5}Results}{51}{}%
-\contentsline {subsubsection}{\numberline {5.5.1}Quantitative Evaluation}{51}{}%
-\contentsline {subsubsection}{\numberline {5.5.2}Qualitative Evaluation}{51}{}%
-\contentsline {subsubsection}{\numberline {5.5.3}Ablation Study}{51}{}%
-\contentsline {section}{\numberline {6}Conclusion and Future Work}{52}{}%
-\contentsline {subsection}{\numberline {6.1}Future Work}{52}{}%
-\contentsline {section}{References}{53}{}%
-\contentsline {section}{Appendices}{59}{}%
-\contentsline {subsection}{\numberline {6.2}Key Algorithm Implementations}{59}{}%
-\contentsline {subsection}{Key Algorithm Implementations}{59}{}%
-\contentsline {subsection}{Full Results}{60}{}%
+\contentsline {section}{\numberline {5}Results and Analysis}{51}{}%
+\contentsline {subsection}{\numberline {5.1}EPE Analysis and Optimization}{51}{}%
+\contentsline {subsection}{\numberline {5.2}Evaluation Metrics}{51}{}%
+\contentsline {subsection}{\numberline {5.3}SLAM System Configurations}{51}{}%
+\contentsline {subsection}{\numberline {5.4}Parameter Optimization}{51}{}%
+\contentsline {subsubsection}{\numberline {5.4.1}Existence Estimation Framework Parameter Selection}{51}{}%
+\contentsline {paragraph}{Stage 1 - Bayesian Update Initial Parameter Selection}{51}{}%
+\contentsline {paragraph}{Parameters of Interest}{51}{}%
+\contentsline {subsection}{\numberline {5.5}Results}{53}{}%
+\contentsline {subsubsection}{\numberline {5.5.1}Quantitative Evaluation}{53}{}%
+\contentsline {subsubsection}{\numberline {5.5.2}Qualitative Evaluation}{53}{}%
+\contentsline {subsubsection}{\numberline {5.5.3}Ablation Study}{53}{}%
+\contentsline {section}{\numberline {6}Conclusion and Future Work}{54}{}%
+\contentsline {subsection}{\numberline {6.1}Future Work}{54}{}%
+\contentsline {section}{References}{55}{}%
+\contentsline {section}{\numberline {7}Appendices}{61}{}%
+\contentsline {section}{Appendices}{61}{}%
+\contentsline {subsection}{\numberline {7.1}Absolute and Relative Pose Error}{61}{}%
+\contentsline {subsection}{\numberline {7.2}Key Algorithm Implementations}{61}{}%
+\contentsline {subsection}{Key Algorithm Implementations}{61}{}%
+\contentsline {subsection}{Full Results}{62}{}%

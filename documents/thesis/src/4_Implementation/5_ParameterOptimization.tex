@@ -1,4 +1,5 @@
 \subsection{Parameter Optimization}
+\label{sec:param_optimization}
 
 Before experimentation can take place on the SLAM system, the parameters of libVBEE must be tuned to optimize performance. Parameters are split between the VBEE framework and the observability model. The VBEE and model parameters are tightly coupled through feedback, making optimization difficult as the parameters of one system affect the other. As a solution, parameter optimization is performed in three phases. The first phase freezes the VBEE parameters to reasonable values while optimizing the observability model parameters. The second phase freezes the observability model parameters to the values obtained in Phase 1 while optimizing the VBEE parameters. The final phase fine-tunes both parameter sets simultaneously, ideally achieving stable performance for the system.
 

@@ -1,94 +1,37 @@
 #pragma once
 
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-#include <boost/serialization/map.hpp>
-#include <boost/serialization/serialization.hpp>
-#include <boost/serialization/string.hpp>
-#include <boost/serialization/vector.hpp>
 #include <eigen3/Eigen/Core>
-#include <utility>
 #include <vector>
 
-#include "vbee.h"
-
-#define N_TESTERS 10000
-#define MIN_NOT_IN_KEEPOUT N_TESTERS * 0.2
-#define MIN_NOT_BLOCKED N_TESTERS * 0.2
-#define WORLD_RADIUS 10.0f
-#define MIN_VIEWPOINT_DISTANCE 0.1f
-#define KEEP_OUT_ANGLE_RAD 0.2f
-#define BLOCKER_ANGLE_RAD 0.2f
-#define FALSE_POSITIVE_RATE 0.005f
-#define FALSE_NEGATIVE_RATE 0.3f
-#define MAX_ITERS 2000
-#define MAX_VIEWPOINTS 100000
-#define NUM_TEST_POINTS 1000
-#define MAX_STABLE_ATTEMPTS 100
-
-extern VBEESettings global_vbee_settings;
-
-namespace boost {
-namespace serialization {
-template <class Archive>
-void serialize(Archive &ar, Eigen::Vector3f &v, const unsigned int version) {
-  ar & v.x();
-  ar & v.y();
-  ar & v.z();
-}
-} // namespace serialization
-} // namespace boost
-
 class ObservabilityScenario {
-  friend class boost::serialization::access;
-
-  template <class Archive>
-  void serialize(Archive &ar, const unsigned int version) {
-    ar & blockers;
-    ar & keep_outs;
-    ar & blocked_rate;
-    ar & keepout_rate;
-  }
-
 private:
+  bool valid = true;
   std::vector<Eigen::Vector3f> blockers;
-  std::vector<Eigen::Vector3f> keep_outs;
-
-  float blocked_rate;
-  float keepout_rate;
-
-  bool pointDeleted = false;
-  bool doErrors = false;
-
-  // returns (meets_target_blocked, error)
-  std::pair<bool, int> meetsTargetBlocked(int target_n_blocked);
-
-  // returns (meets_target_in_keepout, error)
-  std::pair<bool, int> meetsTargetKeepout(int target_n_in_keepout);
 
 public:
-  ObservabilityScenario() = default; // Default constructor for serialization
-  ObservabilityScenario(float goal_blocked_rate, float goal_keepout_rate);
+  ObservabilityScenario() = default;
+  ObservabilityScenario(int n_blockers, float goal_blocked_rate);
 
-  static std::vector<ObservabilityScenario> FromFile(const std::string &file_path);
-  static void ToFile(const std::string &file_path,
-                     const std::vector<ObservabilityScenario> &scenarios);
+  bool isInKeepout(Eigen::Vector3f point) const { return false; }
 
-  static std::vector<ObservabilityScenario> LoadOrCreate(const std::string &file_path,
-                                                        int n_scenarios_per_rate,
-                                                        float rate_step);
-
-  bool isInKeepout(Eigen::Vector3f point) const;
-  std::pair<float, float> getRatePair() const;
-  void deletePoint();
-  bool isPointDeleted() const;
-  void restorePoint();
-  void enableErrors();
-  void disableErrors();
   bool isSeen(Eigen::Vector3f point) const;
-  Eigen::Vector3f getRandomViewpoint() const;
-  Eigen::Vector3f getRandomValidViewpoint() const;
-  Eigen::Vector3f getRandomValidPositiveViewpoint() const;
-  Eigen::Vector3f getRandomValidNegativeViewpoint() const;
-  std::string getName() const;
+
+  bool isValid() const { return valid; }
 };
+
+inline Eigen::Vector3f randomPosition() {
+  float u = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+  float v = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+  float w = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+  
+  float theta = 2.0f * M_PI * u;
+  float phi = std::acos(2.0f * v - 1.0f);
+  float r = 5.0f * std::cbrt(w);
+  
+  // Convert to Cartesian coordinates
+  float x = r * std::sin(phi) * std::cos(theta);
+  float y = r * std::sin(phi) * std::sin(theta);
+  float z = r * std::cos(phi);
+  
+  return Eigen::Vector3f(x, y, z);
+}

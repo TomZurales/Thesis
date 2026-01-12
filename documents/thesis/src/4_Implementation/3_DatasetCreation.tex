@@ -1,4 +1,5 @@
 \subsection{Dataset Creation}
+\label{sec:dataset_creation}
 
 Two datasets were created to test the isolated performance of the VBEE library, and the integrated performance of VBEE with ORB-SLAM3 respectively The first dataset referred to as the Observability Scenarios Dataset, consists of a set of points, each with their own unique observability properties. These points can be queried to determine if a point can be seen from a given viewpoint, allowing the full VBEE pipeline to be exercised without a SLAM implementation. The second dataset known as the Episodic Visual SLAM Dataset is a stereo visual SLAM dataset in the style of the EuRoC MAV SLAM dataset, but with extensions for episodic operation. This section details the construction and intention behind these datasets.
 
@@ -28,7 +29,9 @@ The final dataset consists of observability scenarios generated for all pairings
     \label{fig:observability_scenarios}
 \end{figure}
 
-\subsubsection{Episodic Visual SLAM Dataset}
+\subsubsection{Static Episodic Visual SLAM Dataset}
+
+\subsubsection{Changing Episodic Visual SLAM Datasets}
 To evaluate VBEE performance in a real-world SLAM system, a stereo visual dataset was created consisting of a series of trajectories through a household environment. No dynamic changes occur during the recording of a single trajectory, but environmental changes are introduced between trajectories, matching the episodic run modality described in section \ref{sec:background}. Figure \ref{fig:episodic_datasets} shows example images from each trajectory at roughly the same location.
 
 \begin{figure}[H]

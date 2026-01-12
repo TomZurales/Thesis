@@ -1,315 +1,71 @@
 #include "observability_scenario.h"
-#include <algorithm>
-#include <atomic>
-#include <cmath>
-#include <cstdlib>
-#include <fstream>
-#include <iomanip>
-#include <iostream>
-#include <thread>
-#include <filesystem>
 
-std::vector<ObservabilityScenario> ObservabilityScenario::FromFile(const std::string &file_path) {
-  std::ifstream ifs(file_path, std::ios::binary);
-  boost::archive::binary_iarchive ia(ifs);
-  std::vector<ObservabilityScenario> scenarios;
-  ia >> scenarios;
-  return scenarios;
-}
-
-void ObservabilityScenario::ToFile(const std::string &file_path,
-                                   const std::vector<ObservabilityScenario> &scenarios) {
-  std::ofstream ofs(file_path, std::ios::binary);
-  boost::archive::binary_oarchive oa(ofs);
-  oa << scenarios;
-}
-
-std::vector<ObservabilityScenario> ObservabilityScenario::LoadOrCreate(const std::string &file_path,
-                                                        int n_scenarios_per_rate,
-                                                        float rate_step) {
-  if (std::filesystem::exists(file_path)) {
-    return FromFile(file_path);
-  } else {
-    std::vector<ObservabilityScenario> scenarios;
-    for (float blocked_rate = rate_step; blocked_rate < 1.0; blocked_rate += rate_step) {
-      for (float keepout_rate = rate_step; keepout_rate < 1.0; keepout_rate += rate_step) {
-        for (int i = 0; i < n_scenarios_per_rate; i++) {
-          ObservabilityScenario scenario(blocked_rate, keepout_rate);
-          scenarios.push_back(scenario);
-        }
-      }
-    }
-    ToFile(file_path, scenarios);
-    return scenarios;
+ObservabilityScenario::ObservabilityScenario(int n_blockers, float goal_blocked_rate)
+{
+  if(n_blockers < 0) {
+    valid = false;
+    return;
   }
-}
+  // if(n_blockers == 0 && goal_blocked_rate != 0.0f) {
+  //   valid = false;
+  //   return;
+  // } 
+  // if(n_blockers == 0) {
+  //   valid = true;
+  //   return;
+  // }
+  if(n_blockers > 4) {
+    valid = false;
+    return;
+  }
+  // if(goal_blocked_rate < 0.0f || goal_blocked_rate < (0.5f / n_blockers)) {
+  //   valid = false;
+  //   return;
+  // }
 
-// returns (meets_target_blocked, error)
-std::pair<bool, int>
-ObservabilityScenario::meetsTargetBlocked(int target_n_blocked) {
-  int min_blocked =
-      std::max(0, target_n_blocked - static_cast<int>(N_TESTERS * 0.025));
-  int max_blocked = std::min(
-      N_TESTERS, target_n_blocked + static_cast<int>(N_TESTERS * 0.025));
-  int n_blocked = 0;
-  std::atomic<int> n_blocked_atomic(0);
-  std::vector<std::thread> threads;
-  int num_threads = std::thread::hardware_concurrency();
-  int tests_per_thread = N_TESTERS / num_threads;
-
-  for (int t = 0; t < num_threads; ++t) {
-    threads.emplace_back([&, tests_per_thread, t]() {
-      int local_blocked = 0;
-      int start = t * tests_per_thread;
-      int end = (t == num_threads - 1) ? N_TESTERS : (t + 1) * tests_per_thread;
-
-      for (int i = start; i < end; ++i) {
-        if (!isSeen(getRandomValidViewpoint())) {
-          local_blocked++;
-        }
-      }
-      n_blocked_atomic += local_blocked;
-    });
+  std::vector<Eigen::Vector3f> testing_viewpoints;
+  for(int i = 0; i < 10000; i++) {
+    testing_viewpoints.push_back(randomPosition());
   }
 
-  for (auto &thread : threads) {
-    thread.join();
-  }
-
-  n_blocked = n_blocked_atomic.load();
-  int error = target_n_blocked - n_blocked;
-  if (n_blocked < min_blocked) {
-    return std::make_pair(false, error);
-  } else if (n_blocked > max_blocked) {
-    return std::make_pair(false, error);
-  }
-  return std::make_pair(true, error);
-}
-
-// returns (meets_target_in_keepout, error)
-std::pair<bool, int>
-ObservabilityScenario::meetsTargetKeepout(int target_n_in_keepout) {
-  int min_in_keepout =
-      std::max(0, target_n_in_keepout - static_cast<int>(N_TESTERS * 0.025));
-  int max_in_keepout = std::min(
-      N_TESTERS, target_n_in_keepout + static_cast<int>(N_TESTERS * 0.025));
-  int n_in_keepout = 0;
-  std::atomic<int> n_in_keepout_atomic(0);
-  std::vector<std::thread> threads;
-  int num_threads = std::thread::hardware_concurrency();
-  int tests_per_thread = N_TESTERS / num_threads;
-
-  for (int t = 0; t < num_threads; ++t) {
-    threads.emplace_back([&, tests_per_thread, t]() {
-      int local_in_keepout = 0;
-      int start = t * tests_per_thread;
-      int end = (t == num_threads - 1) ? N_TESTERS : (t + 1) * tests_per_thread;
-
-      for (int i = start; i < end; ++i) {
-        if (isInKeepout(getRandomViewpoint())) {
-          local_in_keepout++;
-        }
-      }
-      n_in_keepout_atomic += local_in_keepout;
-    });
-  }
-
-  for (auto &thread : threads) {
-    thread.join();
-  }
-
-  n_in_keepout = n_in_keepout_atomic.load();
-  int error = target_n_in_keepout - n_in_keepout;
-  if (n_in_keepout < min_in_keepout) {
-    return std::make_pair(false, error);
-  } else if (n_in_keepout > max_in_keepout) {
-    return std::make_pair(false, error);
-  }
-  return std::make_pair(true, error);
-}
-
-ObservabilityScenario::ObservabilityScenario(float goal_blocked_rate,
-                                             float goal_keepout_rate)
-    : blocked_rate(goal_blocked_rate), keepout_rate(goal_keepout_rate) {
-  int n_blockers = 1000 * goal_blocked_rate;
-  int n_keep_outs = 1000 * goal_keepout_rate;
-  bool found_solution = false;
-  int jump = 200;
-  std::vector<Eigen::Vector3f> best_blockers;
-  std::vector<Eigen::Vector3f> best_keepouts;
-  int best_error = N_TESTERS;
-
-  for (int i = 0; i < MAX_ITERS; i++) {
+  // while(true) {
     blockers.clear();
-    keep_outs.clear();
-    blockers.reserve(n_blockers);
-    for (int j = 0; j < n_blockers; ++j) {
-      blockers.emplace_back(getRandomViewpoint());
-    }
-    keep_outs.reserve(n_keep_outs);
-    for (int j = 0; j < n_keep_outs; ++j) {
-      keep_outs.emplace_back(getRandomViewpoint());
+    for(int i = 0; i < n_blockers; i++) {
+      blockers.push_back(randomPosition());
     }
 
-    std::pair<bool, int> blocked_info;
-    std::pair<bool, int> keepout_info;
-    std::thread keepout_thread([&]() {
-      keepout_info =
-          meetsTargetKeepout(static_cast<int>(N_TESTERS * goal_keepout_rate));
-    });
-    std::thread blocked_thread([&]() {
-      blocked_info =
-          meetsTargetBlocked(static_cast<int>(N_TESTERS * goal_blocked_rate));
-    });
+    // int n_blocked = 0;
+    // for(const auto& viewpoint : testing_viewpoints) {
+    //   if(!isSeen(viewpoint)) {
+    //     n_blocked++;
+    //   }
+    // }
 
-    keepout_thread.join();
-    blocked_thread.join();
+    // float blocked_rate = static_cast<float>(n_blocked) / testing_viewpoints.size();
 
-    if (keepout_info.first && blocked_info.first) {
-      found_solution = true;
-      break;
-    }
-
-    int total_error =
-        std::abs(keepout_info.second) + std::abs(blocked_info.second);
-    if (total_error < best_error) {
-      best_error = total_error;
-      best_blockers = blockers;
-      best_keepouts = keep_outs;
-    }
-
-    jump = static_cast<int>(std::max(
-        1.0f, std::min(50.0f, best_error *
-                                  (goal_blocked_rate + goal_keepout_rate / 2) *
-                                  ((1000 - (3 * i)) / 1000.0f))));
-
-    if (i > 100 && i % 50 == 0) {
-      std::cout << getName() << " - Iteration " << i << ": Trying with "
-                << n_blockers << " blockers and " << n_keep_outs << " keepouts."
-                << std::endl;
-      std::cout << "Best error: " << best_error << ", Jump: " << jump
-                << std::endl;
-    }
-    if (!keepout_info.first) {
-      if (keepout_info.second < 0) {
-        n_keep_outs = std::max(0, std::min(MAX_VIEWPOINTS, n_keep_outs - jump));
-      } else {
-        n_keep_outs = std::max(0, std::min(MAX_VIEWPOINTS, n_keep_outs + jump));
-      }
-    }
-
-    if (!blocked_info.first) {
-      if (blocked_info.second < 0) {
-        n_blockers = std::max(0, std::min(MAX_VIEWPOINTS, n_blockers - jump));
-      } else {
-        n_blockers = std::max(0, std::min(MAX_VIEWPOINTS, n_blockers + jump));
-      }
-    }
-  }
-  if (!found_solution) {
-    std::cout << "Warning: Could not find perfect blocker/keepout "
-                 "configuration. Using best found."
-              << std::endl;
-    blockers = best_blockers;
-    keep_outs = best_keepouts;
-  }
+    // if(fabs(blocked_rate - goal_blocked_rate) < 0.02f) {
+    //   valid = true;
+    //   return;
+    // }
+  // }
 }
 
-bool ObservabilityScenario::isInKeepout(Eigen::Vector3f point) const {
-  for (const auto &keep_out : keep_outs) {
-    float angle = acos(point.normalized().dot(keep_out.normalized()));
-    if (angle < KEEP_OUT_ANGLE_RAD && point.norm() > keep_out.norm()) {
-      return true;
+bool ObservabilityScenario::isSeen(Eigen::Vector3f point) const
+{
+    Eigen::Vector3f origin(0.0f, 0.0f, 0.0f);
+    
+    for(const auto& blocker_point : blockers) {
+        // Normal vector pointing towards origin
+        Eigen::Vector3f normal = (origin - blocker_point).normalized();
+        
+        // Vector from blocker point to test point
+        Eigen::Vector3f to_point = point - blocker_point;
+        
+        // If dot product is negative, point is on opposite side of blocker from origin
+        if(to_point.dot(normal) < 0.0f) {
+            return false;  // Point is blocked
+        }
     }
-  }
-  return false;
-}
-
-std::pair<float, float> ObservabilityScenario::getRatePair() const {
-  return std::pair<float, float>(blocked_rate, keepout_rate);
-}
-
-void ObservabilityScenario::deletePoint() { pointDeleted = true; }
-
-bool ObservabilityScenario::isPointDeleted() const { return pointDeleted; }
-
-void ObservabilityScenario::restorePoint() { pointDeleted = false; }
-
-void ObservabilityScenario::enableErrors() { doErrors = true; }
-
-void ObservabilityScenario::disableErrors() { doErrors = false; }
-
-bool ObservabilityScenario::isSeen(Eigen::Vector3f point) const {
-  if (pointDeleted) {
-    if (!doErrors) {
-      return false;
-    }
-    if (static_cast<float>(rand()) / static_cast<float>(RAND_MAX) <
-        global_vbee_settings.falsePositiveRate) {
-      return true;
-    }
-    return false;
-  }
-  for (const auto &blocker : blockers) {
-    float angle = acos(point.normalized().dot(blocker.normalized()));
-    if (angle < BLOCKER_ANGLE_RAD && point.norm() > blocker.norm()) {
-      if (!doErrors) {
-        return false;
-      }
-      if (static_cast<float>(rand()) / static_cast<float>(RAND_MAX) <
-          global_vbee_settings.falsePositiveRate) {
-        return true;
-      }
-      return false;
-    }
-  }
-  if (!doErrors) {
-    return true;
-  }
-  if (static_cast<float>(rand()) / static_cast<float>(RAND_MAX) <
-      global_vbee_settings.falseNegativeRate) {
-    return false;
-  }
-  return true;
-}
-
-Eigen::Vector3f ObservabilityScenario::getRandomViewpoint() const {
-  float length =
-      static_cast<float>(rand()) / static_cast<float>(RAND_MAX) *
-          (WORLD_RADIUS - MIN_VIEWPOINT_DISTANCE) +
-      MIN_VIEWPOINT_DISTANCE; // Random length between MIN_VIEWPOINT_DISTANCE
-                              // and WORLD_RADIUS
-  return Eigen::Vector3f::Random().normalized() *
-         length; // Random point inside sphere of radius WORLD_RADIUS
-}
-
-Eigen::Vector3f ObservabilityScenario::getRandomValidViewpoint() const {
-  Eigen::Vector3f point;
-  do {
-    point = getRandomViewpoint();
-  } while (isInKeepout(point));
-  return point;
-}
-
-Eigen::Vector3f ObservabilityScenario::getRandomValidPositiveViewpoint() const {
-  Eigen::Vector3f point;
-  do {
-    point = getRandomViewpoint();
-  } while (isInKeepout(point) || !isSeen(point));
-  return point;
-}
-
-Eigen::Vector3f ObservabilityScenario::getRandomValidNegativeViewpoint() const {
-  Eigen::Vector3f point;
-  do {
-    point = getRandomViewpoint();
-  } while (isInKeepout(point) || isSeen(point));
-  return point;
-}
-
-std::string ObservabilityScenario::getName() const {
-  std::stringstream ss;
-  ss << std::fixed << std::setprecision(2);
-  ss << "BR: " << blocked_rate << ", KR: " << keepout_rate;
-  return ss.str();
+    
+    return true;  // Point is visible (not blocked by any blocker)
 }

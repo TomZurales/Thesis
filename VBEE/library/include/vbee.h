@@ -33,10 +33,9 @@ public:
   void setInUse(bool use) { in_use = use; }
   void setWeightRansac(bool weight) { weight_ransac = weight; }
 
-  float Update(Observation, bool commit, bool updatePExists = true);
+  float Update(Observation);
   float Update(Eigen::Vector3f v, bool seen);
-  float Update(Eigen::Vector3f observerPose, Eigen::Vector3f mapPointPose,
-               bool seen);
+
   void Merge(VBEE &other);
   float Query(bool ransac = false) const;
   void Reset();
@@ -56,13 +55,13 @@ public:
 
   ObservabilityModel GetObservabilityModel() const { return model; }
 
-  float commitUncommittedObservation() {
-    if (hasUncommittedObservation) {
-      hasUncommittedObservation = false;
-      return Update(uncommittedObservation, true);
-    }
-    return p_e;
-  }
+  // float commitUncommittedObservation() {
+  //   if (hasUncommittedObservation) {
+  //     hasUncommittedObservation = false;
+  //     return Update(uncommittedObservation, true);
+  //   }
+  //   return p_e;
+  // }
 
 private:
   bool hasUncommittedObservation = false;
@@ -98,6 +97,11 @@ private:
   std::vector<Observation> negative_observation_buffer;
   float UpdateMany(std::vector<Observation> observations);
 };
+
+inline float clampNearZeroOne(float val)
+{
+  return std::min(0.999f, std::max(0.001f, val));
+}
 
 struct VBEESettings {
   // Use VBEE globally

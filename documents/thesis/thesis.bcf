@@ -2402,6 +2402,7 @@
     <bcf:citekey order="37" intorder="1">alcantarillaLearningVisibilityLandmarks2010</bcf:citekey>
     <bcf:citekey order="38" intorder="1">akibaOptunaNextgenerationHyperparameter2019</bcf:citekey>
     <bcf:citekey order="39" intorder="1">censorParetoOptimalityMultiobjective1977</bcf:citekey>
+    <bcf:citekey order="40" intorder="1">mur-artalORBSLAMVersatileAccurate2015</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">

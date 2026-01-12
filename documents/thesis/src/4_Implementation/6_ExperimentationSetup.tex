@@ -2,9 +2,33 @@
 
 This section describes the experiments conducted to evaluate the performance of the observability model and to determine the impact of libVBEE on SLAM systems. These experiments are defined here, and the results are presented in section \ref{sec:experimental_results}.
 
-\subsubsection*{Experiment 1: Observability Model Isolated Performance Comparison}
-The goal of this experiment is to determine whether the observability model accurately represents the observability of map points. 
+\subsubsection*{Experiment 1: Observability Model Prediction Quality}
+The goal of this experiment is to determine whether the observability model can estimate the probability of map point visibility from a given viewpoint based on historic observations.
 
-The experimental procedure begins by distributing the observability scenarios from the observability scenarios dataset randomly throughout a 3D space. The system is ``trained'' by selecting 10000 random viewpoints. For each of these viewpoints, each map point is labeled as visible, not visible, or invalid depending on if the observer is not behind a blocker, behind a blocker, or in a keep-out zone respectively. Additionally, each map point is updated with either a positive or a negative observation for each training viewpoint which is not invalid. From this training process, two metrics are calculated: per-point prevalence and global prevalence. These are the ratios of positive to non-positive observations on a per-point basis and a global basis respectively.
+The experimental procedure begins by distributing the observability scenarios from the observability scenarios dataset randomly throughout a 3D space to act as map points. The system is ``trained'' by selecting 10,000 random viewpoints. For each of these viewpoints, each map point is labeled as visible or not-visible depending on whether the map point is seen from the viewpoint. Additionally, each map point's VBEE instance is updated with either a positive or a negative observation for each training viewpoint. From this training process, two priors are calculated: per-point prevalence and global prevalence. These are the ratios of positive to non-positive observations on a per-point basis and a global basis respectively.
 
-Three control models are used in this test. The first is a random observability model which returns a uniformly distributed random value between 0 and 1. The second control model always returns the global prevalence, while the third model always returns the per-point prevalence. These models 
+Three control models are used in this test. The first is a random observability model which returns a uniformly distributed random value between 0 and 1 independently for each query. The second control model always returns the global prevalence, while the third model always returns the per-point prevalence. The random model serves as a baseline which has no knowledge of the geometric structure of the world, or a concept of viewpoint-based observability. The global prevalence model contains a general understanding of how likely an average map point is to be seen regardless of viewpoint, while the per-point prevalence model represents the specific likelihood of each map point to be seen regardless of viewpoint. During analysis, these models will be contrasted against the VBEE observability model, which has an understanding of viewpoint-based observability.
+
+Following training, a new set of 10,000 random viewpoints is selected, disjoint from those used for training. For each of these viewpoints, a ground truth value representing whether each map point is visible is generated, and the observability model estimates the probability of each map point being seen. During this stage, the observability model is not updated, instead providing estimates based strictly on the observations collected during training. Additionally, prevalence metrics are not updated.
+
+The Brier score was selected as the evaluation metric for comparisons between models. It measures mean squared error between predicted visibility probabilities and the binary visibility ground truth, penalizing confident, incorrect predictions more strongly than uncertain predictions. 
+
+\subsubsection*{Experiment 2: Integrated SLAM Performance with Static Episodic Operations}
+The goal of this experiment is to determine the effect that VBEE integration has on KV-SLAM tracking performance under static episodic operations. Tracking performance is quantified through two metrics: Absolute Pose Error (APE) and Relative Pose Error (RPE). These metrics provide statistics for global and local trajectory errors respectively, and a deeper discussion of these metrics can be found in Section \ref{sec:ape_rpe}. 
+
+This experiment consists of repeated trials of ORB-SLAM3 under two configurations. The control configuration is a minimally modified ORB-SLAM3 implementation with changes made to allow for episodic operations and to increase the rate of keyframe generation. The configuration under test is the VBEE integrated ORB-SLAM3 system discussed in Section \ref{sec:orb_slam3_integration}, with RANSAC weighting disabled. These systems are run on the \textit{All Machine Halls} dataset discussed in Section \ref{sec:dataset_creation}, which does not contain significant visual changes between runs.
+
+Each system is run using the EuRoC calibration provided by the ORB-SLAM3 repository which contains camera calibrations and SLAM system parameters which have been selected experimentally \cite{mur-artalORBSLAMVersatileAccurate2015}. % Check this citation
+The VBEE integrated system is run with the optimized VBEE parameters from Section \ref{sec:param_optimization}.
+
+When either system finishes running the dataset, two trajectory files are produced containing the frame trajectory and the keyframe trajectory respectively. The difference between these trajectories is discussed in Section \ref{sec:orb_slam3}, but simply put, the frame trajectory contains real-time, unoptimized pose estimates while the keyframe trajectory contains the final estimated poses of the keyframes after optimization. For each of these trajectories, the trajectory analysis tool \textit{evo} is used to produce APE and RPE statistics relative to the \textit{All Machine Halls} ground truth.
+
+Ten trials are performed for each system, with keyframe and frame APE and RPE values collected for each. Additionally, the number of map points, keyframes, and VBEE eliminations at the end of the trial are tracked for each system\footnote{The system without VBEE integration will always report 0 VBEE eliminations}.
+
+\subsubsection*{Experiment 3: Integrated SLAM Performance with Changing Episodic Operations}
+The goal of this experiment is to determine the effect that VBEE integration has on KV-SLAM tracking performance under changing episodic operations. APE and RPE are used as the primary metrics of tracking performance.
+
+The SLAM system configurations from the previous experiment are modified slightly to use the \textit{All Days} episodic dataset which contains significant visual changes between runs. The calibration for the SLAM system is also changed to the version produced during dataset creation. The optimized VBEE parameterization with RANSAC weighting disabled is again used for the VBEE integrated system.
+
+Each system is run ten times on the dataset, with keyframe and frame APE and RPE statistics, number of map points, number of keyframes, and number of VBEE eliminations collected for each.
+

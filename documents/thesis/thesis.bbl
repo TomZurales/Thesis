@@ -2317,6 +2317,70 @@
       \endverb
       \keyw{“scalarization”,cones of directions,convexity,dual cones,Multiobjective optimization,Pareto optimality,sub-differential,vector mathematical programming}
     \endentry
+    \entry{mur-artalORBSLAMVersatileAccurate2015}{article}{}
+      \name{author}{3}{}{%
+        {{hash=3bcf9140fcfbbb3fa5cdedbcb3380ee8}{%
+           family={Mur-Artal},
+           familyi={M\bibinithyphendelim A\bibinitperiod},
+           given={Raul},
+           giveni={R\bibinitperiod}}}%
+        {{hash=3d7bfecf7bb6ec2d8121cec8fb7beda2}{%
+           family={Montiel},
+           familyi={M\bibinitperiod},
+           given={J.\bibnamedelimi M.\bibnamedelimi M.},
+           giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=4f3c42c57deb1f1a73f77ad89e84fda0}{%
+           family={Tardos},
+           familyi={T\bibinitperiod},
+           given={Juan\bibnamedelima D.},
+           giveni={J\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+      }
+      \strng{namehash}{fe5af3dd2498fe70757ca0f512e0b87e}
+      \strng{fullhash}{fe5af3dd2498fe70757ca0f512e0b87e}
+      \strng{bibnamehash}{fe5af3dd2498fe70757ca0f512e0b87e}
+      \strng{authorbibnamehash}{fe5af3dd2498fe70757ca0f512e0b87e}
+      \strng{authornamehash}{fe5af3dd2498fe70757ca0f512e0b87e}
+      \strng{authorfullhash}{fe5af3dd2498fe70757ca0f512e0b87e}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{This paper presents ORB-SLAM, a feature-based monocular SLAM system that operates in real time, in small and large, indoor and outdoor environments. The system is robust to severe motion clutter, allows wide baseline loop closing and relocalization, and includes full automatic initialization. Building on excellent algorithms of recent years, we designed from scratch a novel system that uses the same features for all SLAM tasks: tracking, mapping, relocalization, and loop closing. A survival of the fittest strategy that selects the points and keyframes of the reconstruction leads to excellent robustness and generates a compact and trackable map that only grows if the scene content changes, allowing lifelong operation. We present an exhaustive evaluation in 27 sequences from the most popular datasets. ORB-SLAM achieves unprecedented performance with respect to other state-of-the-art monocular SLAM approaches. For the benefit of the community, we make the source code public.}
+      \field{eprintclass}{cs}
+      \field{eprinttype}{arXiv}
+      \field{issn}{1552-3098, 1941-0468}
+      \field{journaltitle}{IEEE Transactions on Robotics}
+      \field{month}{10}
+      \field{number}{5}
+      \field{shortjournal}{IEEE Trans. Robot.}
+      \field{shorttitle}{{{ORB-SLAM}}}
+      \field{title}{{{ORB-SLAM}}: A {{Versatile}} and {{Accurate Monocular SLAM System}}}
+      \field{urlday}{18}
+      \field{urlmonth}{7}
+      \field{urlyear}{2025}
+      \field{volume}{31}
+      \field{year}{2015}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{1147\bibrangedash 1163}
+      \range{pages}{17}
+      \verb{doi}
+      \verb 10.1109/TRO.2015.2463671
+      \endverb
+      \verb{eprint}
+      \verb 1502.00956
+      \endverb
+      \verb{file}
+      \verb C\:\\Users\\TomZu\\Zotero\\storage\\9CM34DZR\\Mur-Artal et al. - 2015 - ORB-SLAM a Versatile and Accurate Monocular SLAM System.pdf;C\:\\Users\\TomZu\\Zotero\\storage\\IHW3TDVW\\1502.html
+      \endverb
+      \verb{urlraw}
+      \verb http://arxiv.org/abs/1502.00956
+      \endverb
+      \verb{url}
+      \verb http://arxiv.org/abs/1502.00956
+      \endverb
+      \keyw{Computer Science - Computer Vision and Pattern Recognition,Computer Science - Robotics}
+    \endentry
   \enddatalist
 \endrefsection
 \endinput
