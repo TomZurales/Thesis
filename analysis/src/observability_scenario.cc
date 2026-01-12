@@ -32,9 +32,11 @@ std::vector<ObservabilityScenario> ObservabilityScenario::LoadOrCreate(const std
   } else {
     std::vector<ObservabilityScenario> scenarios;
     for (float blocked_rate = rate_step; blocked_rate < 1.0; blocked_rate += rate_step) {
-      for (int i = 0; i < n_scenarios_per_rate; i++) {
-        ObservabilityScenario scenario(blocked_rate, 0.0);
-        scenarios.push_back(scenario);
+      for (float keepout_rate = rate_step; keepout_rate < 1.0; keepout_rate += rate_step) {
+        for (int i = 0; i < n_scenarios_per_rate; i++) {
+          ObservabilityScenario scenario(blocked_rate, keepout_rate);
+          scenarios.push_back(scenario);
+        }
       }
     }
     ToFile(file_path, scenarios);

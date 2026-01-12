@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <ostream>
+#include <ratio>
 #include <unistd.h>
 #include <vector>
 #include <yaml-cpp/yaml.h>
@@ -12,14 +13,16 @@
 
 #include "System.h"
 
+#include "KeyFrame.h"
 #include "MapPoint.h"
+#include "Optimizer.h"
 #include "TrackedStats.h"
 #include "vbee.h"
 
 using namespace std;
 
-char* _thesis_root = getenv("THESIS_ROOT");
-char* _thesis_runtime_root = getenv("THESIS_RUNTIME_ROOT");
+char *_thesis_root = getenv("THESIS_ROOT");
+char *_thesis_runtime_root = getenv("THESIS_RUNTIME_ROOT");
 
 void LoadImages(const string &strPathLeft, const string &strPathRight,
                 const string &strPathTimes, vector<string> &vstrImageLeft,
@@ -36,7 +39,7 @@ int main(int argc, char **argv) {
     exit(1);
   }
 
-  if(!_thesis_root || !_thesis_runtime_root) {
+  if (!_thesis_root || !_thesis_runtime_root) {
     std::cerr << "Please set THESIS_ROOT and THESIS_RUNTIME_ROOT "
                  "environment variables."
               << std::endl;
@@ -209,14 +212,14 @@ int main(int argc, char **argv) {
   std::string settings_file = thesis_runtime_root + "/.aux/EuRoC.yaml";
 
   if (dataset == "all_days" || dataset == "small_skips" ||
-      dataset == "big_skip")
+      dataset == "big_skip" || dataset == "short_session")
     settings_file = thesis_runtime_root + "/.aux/VBEE.yaml";
 
   // Create SLAM system. It initializes all system threads and gets ready to
   // process frames.
   ORB_SLAM3::System SLAM(thesis_runtime_root + "/.aux/ORBvoc.txt",
-                         settings_file, ORB_SLAM3::System::STEREO, true,
-                         false, false);
+                         settings_file, ORB_SLAM3::System::STEREO, true, false,
+                         false);
 
   cv::Mat imLeft, imRight;
   for (seq = 0; seq < 1; seq++) {
@@ -227,6 +230,8 @@ int main(int argc, char **argv) {
     double t_track = 0;
     int num_rect = 0;
     int proccIm = 0;
+
+    std::set<ORB_SLAM3::KeyFrame *> processed_keyframes;
     for (int ni = 0; ni < nImages[seq]; ni++, proccIm++) {
       if (proccIm % 20 == 0) {
         int fd = open("heartbeat.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -270,65 +275,196 @@ int main(int argc, char **argv) {
 
       if (std::find(split_stamps.begin(), split_stamps.end(), tframe) !=
           split_stamps.end()) {
+        int fd = open("heartbeat.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        write(fd, "-1", 2);
+        close(fd);
 
-        double cull_count = 0.0;
-        double total_mps = 0.0;
+        global_vbee_settings.vbee_processing = true;
+
+        std::cout
+            << "Split Stamp Detected. Performing VBEE post-processing at time "
+            << tframe << std::endl;
+
+        // Optimize all maps before processing
         std::vector<ORB_SLAM3::Map *> vpMaps = SLAM.mpAtlas->GetAllMaps();
         for (ORB_SLAM3::Map *pMap : vpMaps) {
-          for (ORB_SLAM3::MapPoint *pMP : pMap->GetAllMapPoints()) {
-            if (pMP->isBad() || pMP->IsFakeBad())
+          if (pMap && pMap->GetAllKeyFrames().size() > 0) {
+            ORB_SLAM3::Optimizer::GlobalBundleAdjustemnt(pMap, 200);
+          }
+        }
+
+        auto all_keyframes = SLAM.mpAtlas->GetCurrentMap()->GetAllKeyFrames();
+        std::vector<ORB_SLAM3::KeyFrame *> unprocessed_keyframes;
+
+        // Grab all unprocessed keyframes
+        for (auto pkf : all_keyframes) {
+          if (processed_keyframes.find(pkf) == processed_keyframes.end()) {
+            unprocessed_keyframes.push_back(pkf);
+          }
+        }
+        auto all_mappoints = SLAM.mpAtlas->GetCurrentMap()->GetAllMapPoints();
+
+        std::sort(unprocessed_keyframes.begin(), unprocessed_keyframes.end(),
+                  [](ORB_SLAM3::KeyFrame *a, ORB_SLAM3::KeyFrame *b) {
+                    return a->mnId < b->mnId;
+                  });
+
+        for (ORB_SLAM3::KeyFrame *pkf : unprocessed_keyframes) {
+          if (pkf->isBad())
+            continue;
+
+          // Build our set of nearby keyframes
+          std::vector<ORB_SLAM3::KeyFrame *> cohort_kfs;
+          for (ORB_SLAM3::KeyFrame *other_kf : unprocessed_keyframes) {
+            if (other_kf == pkf)
+              continue;
+            double distance =
+                (pkf->GetCameraCenter() - other_kf->GetCameraCenter()).norm();
+            if (distance < 0.3f) {
+              cohort_kfs.push_back(other_kf);
+            }
+          }
+
+          // Create the set of observed map points
+          auto observed_mps = pkf->GetMapPoints();
+
+          // Any map points observed by the nearby keyframes are also considered
+          // observed (as long as they fall in the camera frustum).
+          for (ORB_SLAM3::KeyFrame *cohort_kf : cohort_kfs) {
+            auto cohort_mps = cohort_kf->GetMapPoints();
+            for (ORB_SLAM3::MapPoint *pmp : cohort_mps) {
+              if (pmp->isBad() || !pkf->IsInCameraFrustum(pmp))
+                continue;
+              observed_mps.insert(pmp);
+            }
+          }
+
+          // Unobserved MPs are those that fall in the camera's frustum, but are
+          // not observed by this keyframe or its cohort keyframes
+          auto unobserved_mps = std::set<ORB_SLAM3::MapPoint *>();
+
+          for (auto pmp : all_mappoints) {
+            if (pmp->isBad() || !pkf->IsInCameraFrustum(pmp))
               continue;
 
-            total_mps = total_mps + 1.0;
-            // If the point is from a previous map, and we're below the bad
-            // threshold, eliminate it
-            if (pMP->vbee.Query() < global_vbee_settings.bad_threshold) {
+            pmp->isInCameraView = true;
 
-              // If we're doing random sparsification, just count it towards the
-              // cull count. Otherwise, do a proper elimination.
-              if (global_vbee_settings.random_sparsification) {
-                cull_count = cull_count + 1.0;
-              } else {
-                global_tracked_stats.AddElimination(pMP->mnId);
-                // Decide whether to do a fake elimination or a real one
-                if (global_vbee_settings.fake_eliminations) {
-                  pMP->SetFakeBadFlag();
-                } else {
-                  pMP->SetBadFlag();
-                }
-                pMP->SetVBEEEliminated();
-              }
+            if (observed_mps.find(pmp) == observed_mps.end()) {
+              unobserved_mps.insert(pmp);
+              pmp->vbeeSeen = false;
+            } else {
+              pmp->vbeeSeen = true;
             }
           }
-        }
 
-        if (global_vbee_settings.random_sparsification && cull_count > 0.1) {
-          double elimination_ratio = cull_count / total_mps;
-
-          std::cout << "Random Sparsification culling " << cull_count
-                    << " out of " << total_mps << " map points ("
-                    << elimination_ratio * 100.0 << "%) at time " << tframe
-                    << std::endl;
-
-          std::vector<ORB_SLAM3::Map *> vpMaps = SLAM.mpAtlas->GetAllMaps();
-          for (ORB_SLAM3::Map *pMap : vpMaps) {
-            for (ORB_SLAM3::MapPoint *pMP : pMap->GetAllMapPoints()) {
-              if (pMP->isBad() || pMP->IsFakeBad())
-                continue;
-
-              double rand_val = static_cast<double>(rand()) / RAND_MAX;
-              if (rand_val < elimination_ratio) {
-                global_tracked_stats.AddElimination(pMP->mnId);
-                if (global_vbee_settings.fake_eliminations) {
-                  pMP->SetFakeBadFlag();
-                } else {
-                  pMP->SetBadFlag();
-                }
-                pMP->SetVBEEEliminated();
-              }
+          for (ORB_SLAM3::MapPoint *pmp : unobserved_mps) {
+            Observation obs = Observation{
+                .v = (pkf->GetCameraCenter() - pmp->GetWorldPos()), .s = 0.0};
+            pmp->vbee.Update(obs, true);
+            if (pmp->vbee.Query() < global_vbee_settings.bad_threshold) {
+              global_tracked_stats.AddElimination(pmp->mnId);
+              std::cout << "Eliminating MP " << pmp->mnId
+                        << " with VBEE score " << pmp->vbee.Query()
+                        << std::endl;
+              pmp->SetBadFlag();
             }
           }
+          for (ORB_SLAM3::MapPoint *pmp : observed_mps) {
+            Observation obs = Observation{
+                .v = (pkf->GetCameraCenter() - pmp->GetWorldPos()), .s = 1.0};
+            pmp->vbee.Update(obs, true);
+          }
+
+          // std::this_thread::sleep_for(std::chrono::milliseconds(100));
+          for (ORB_SLAM3::MapPoint *pmp : unobserved_mps) {
+            pmp->isInCameraView = false;
+            pmp->vbeeSeen = false;
+          }
+          for (ORB_SLAM3::MapPoint *pmp : observed_mps) {
+            pmp->isInCameraView = false;
+            pmp->vbeeSeen = false;
+          }
+          processed_keyframes.insert(pkf);
+          pkf->vbeeActive = false;
+          int fd = open("heartbeat.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+          write(fd, "1", 1);
+          close(fd);
         }
+
+        // // // Cull keyframes that were created for the sake of having more keyframes
+        // int kf_cull_count = 0;
+        // for(ORB_SLAM3::KeyFrame* pkf : all_keyframes) {
+        //   if (pkf->mnId == 0) continue;
+
+        //   if(!pkf->real) {
+        //     pkf->SetBadFlag();
+        //     kf_cull_count++;
+        //   }
+        // }
+
+        // std::cout << "Culled " << kf_cull_count
+        //           << " keyframes during VBEE processing." << std::endl;
+
+        // double cull_count = 0.0;
+        // double total_mps = 0.0;
+        // std::vector<ORB_SLAM3::Map *> vpMaps = SLAM.mpAtlas->GetAllMaps();
+        // for (ORB_SLAM3::Map *pMap : vpMaps) {
+        //   for (ORB_SLAM3::MapPoint *pMP : pMap->GetAllMapPoints()) {
+        //     if (pMP->isBad() || pMP->IsFakeBad())
+        //       continue;
+
+        //     total_mps = total_mps + 1.0;
+        //     // If the point is from a previous map, and we're below the bad
+        //     // threshold, eliminate it
+        //     if (pMP->vbee.Query() < global_vbee_settings.bad_threshold) {
+
+        //       // If we're doing random sparsification, just count it towards
+        //       the
+        //       // cull count. Otherwise, do a proper elimination.
+        //       if (global_vbee_settings.random_sparsification) {
+        //         cull_count = cull_count + 1.0;
+        //       } else {
+        //         global_tracked_stats.AddElimination(pMP->mnId);
+        //         // Decide whether to do a fake elimination or a real one
+        //         if (global_vbee_settings.fake_eliminations) {
+        //           pMP->SetFakeBadFlag();
+        //         } else {
+        //           pMP->SetBadFlag();
+        //         }
+        //         pMP->SetVBEEEliminated();
+        //       }
+        //     }
+        //   }
+        // }
+
+        // if (global_vbee_settings.random_sparsification && cull_count > 0.1) {
+        //   double elimination_ratio = cull_count / total_mps;
+
+        //   std::cout << "Random Sparsification culling " << cull_count
+        //             << " out of " << total_mps << " map points ("
+        //             << elimination_ratio * 100.0 << "%) at time " << tframe
+        //             << std::endl;
+
+        //   std::vector<ORB_SLAM3::Map *> vpMaps = SLAM.mpAtlas->GetAllMaps();
+        //   for (ORB_SLAM3::Map *pMap : vpMaps) {
+        //     for (ORB_SLAM3::MapPoint *pMP : pMap->GetAllMapPoints()) {
+        //       if (pMP->isBad() || pMP->IsFakeBad())
+        //         continue;
+
+        //       double rand_val = static_cast<double>(rand()) / RAND_MAX;
+        //       if (rand_val < elimination_ratio) {
+        //         global_tracked_stats.AddElimination(pMP->mnId);
+        //         if (global_vbee_settings.fake_eliminations) {
+        //           pMP->SetFakeBadFlag();
+        //         } else {
+        //           pMP->SetBadFlag();
+        //         }
+        //         pMP->SetVBEEEliminated();
+        //       }
+        //     }
+        //   }
+        // }
+        global_vbee_settings.vbee_processing = false;
       }
 
 #ifdef COMPILEDWITHC11

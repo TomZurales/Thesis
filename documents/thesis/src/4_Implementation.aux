@@ -1,67 +1,64 @@
 \relax 
-\@writefile{toc}{\contentsline {section}{\numberline {4}Implementation}{29}{}\protected@file@percent }
-\newlabel{sec:implementation}{{4}{29}{Implementation}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Definitions and Functions}{29}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Definitions}{29}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Functions}{30}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Method Overview}{31}{}\protected@file@percent }
-\newlabel{sec:method_overview}{{4.2}{31}{Method Overview}{}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}The Existence Estimation Framework}{31}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Existence Estimation Framework}}{31}{}\protected@file@percent }
-\newlabel{fig:existence_estimation_framework}{{7}{31}{The Existence Estimation Framework}{}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}The Observability Model}{32}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces 2D Global Observability}}{33}{}\protected@file@percent }
-\newlabel{fig:global_observability_p}{{8}{33}{The Observability Model}{}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.3}Existence Probability Estimator}{33}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.4}Overall Observability}{34}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}System Implementation}{35}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}Existence Estimation Framework Implementation}{35}{}\protected@file@percent }
-\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces VBEE Initialization}}{35}{}\protected@file@percent }
-\newlabel{alg:vbee_init}{{1}{35}{Existence Estimation Framework Implementation}{}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces VBEE Update}}{36}{}\protected@file@percent }
-\newlabel{alg:vbee_update}{{2}{36}{Existence Estimation Framework Implementation}{}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.2}KNN Observability Model}{36}{}\protected@file@percent }
-\newlabel{sec:observability_models}{{4.3.2}{36}{KNN Observability Model}{}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces KNN Observability Estimation}}{37}{}\protected@file@percent }
-\newlabel{alg:knn_estimate}{{3}{37}{KNN Observability Model}{}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {4}{\ignorespaces KNN Model Update}}{38}{}\protected@file@percent }
-\newlabel{alg:knn_update}{{4}{38}{KNN Observability Model}{}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.3}Existence Probability Estimator}{38}{}\protected@file@percent }
-\newlabel{sec:existence_confidence}{{4.3.3}{38}{Existence Probability Estimator}{}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {5}{\ignorespaces Bayesian Update Step}}{38}{}\protected@file@percent }
-\newlabel{alg:bayesian_update_impl}{{5}{38}{Existence Probability Estimator}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}ORB-SLAM3 Integration}{39}{}\protected@file@percent }
-\newlabel{sec:orb_slam3_integration}{{4.4}{39}{ORB-SLAM3 Integration}{}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {6}{\ignorespaces Find Map Points in Camera View}}{40}{}\protected@file@percent }
-\newlabel{alg:map_points_in_camera_view}{{6}{40}{ORB-SLAM3 Integration}{}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {7}{\ignorespaces Update Existence Probabilities}}{40}{}\protected@file@percent }
-\newlabel{alg:update_existence_probabilities}{{7}{40}{ORB-SLAM3 Integration}{}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.1}Culling Logic Implementation}{41}{}\protected@file@percent }
-\newlabel{sec:orb_slam3_culling_logic}{{4.4.1}{41}{Culling Logic Implementation}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Dataset Creation}{41}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Observability Scenarios Dataset}{42}{}\protected@file@percent }
-\newlabel{sec:observability_scenario_dataset}{{4.6}{42}{Observability Scenarios Dataset}{}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {8}{\ignorespaces Generate Observability Scenario}}{42}{}\protected@file@percent }
-\newlabel{alg:generate_observability_scenario}{{8}{42}{Observability Scenarios Dataset}{}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces 2D cutaways of examples from the Observability Scenarios Dataset}}{42}{}\protected@file@percent }
-\newlabel{fig:observability_scenarios}{{9}{42}{Observability Scenarios Dataset}{}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.6.1}Episodic Visual SLAM Dataset}{43}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Example images from each trajectory of the episodic visual SLAM dataset}}{43}{}\protected@file@percent }
-\newlabel{fig:episodic_datasets}{{10}{43}{Episodic Visual SLAM Dataset}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.7}Parameter Optimization}{43}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Phase 1 - Observability Model Tuning}{44}{}\protected@file@percent }
-\@writefile{loa}{\contentsline {algorithm}{\numberline {9}{\ignorespaces Objective Function: $n_{converge}$}}{45}{}\protected@file@percent }
-\newlabel{alg:obj_n_converge}{{9}{45}{Phase 1 - Observability Model Tuning}{}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {10}{\ignorespaces Objective Function: $\epsilon _{converge}$}}{46}{}\protected@file@percent }
-\newlabel{alg:obj_e_converge}{{10}{46}{Phase 1 - Observability Model Tuning}{}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {11}{\ignorespaces Objective Function: $t_{update}$}}{47}{}\protected@file@percent }
-\newlabel{alg:obj_t_update}{{11}{47}{Phase 1 - Observability Model Tuning}{}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {12}{\ignorespaces Observability Model Objective Function}}{48}{}\protected@file@percent }
-\newlabel{alg:obj_obs_model}{{12}{48}{Phase 1 - Observability Model Tuning}{}{}}
-\@writefile{toc}{\contentsline {paragraph}{Phase 2 - VBEE and EPE Tuning}{48}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.8}Experimental Setup}{49}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Implementation}{28}{}\protected@file@percent }
+\newlabel{sec:implementation}{{4}{28}{Implementation}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Definitions and Functions}{28}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Definitions}{28}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Functions}{29}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Method Overview}{30}{}\protected@file@percent }
+\newlabel{sec:method_overview}{{4.2}{30}{Method Overview}{}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}The Observability Model}{30}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces 2D Global Observability}}{31}{}\protected@file@percent }
+\newlabel{fig:global_observability_p}{{7}{31}{The Observability Model}{}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}Existence Probability Estimator}{32}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.3}The Existence Estimation Framework}{32}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Existence Estimation Framework}}{33}{}\protected@file@percent }
+\newlabel{fig:existence_estimation_framework}{{8}{33}{The Existence Estimation Framework}{}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.4}Overall Observability}{33}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}System Implementation}{34}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}Existence Estimation Framework Implementation}{34}{}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces VBEE Initialization}}{34}{}\protected@file@percent }
+\newlabel{alg:vbee_init}{{1}{34}{Existence Estimation Framework Implementation}{}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces VBEE Update}}{35}{}\protected@file@percent }
+\newlabel{alg:vbee_update}{{2}{35}{Existence Estimation Framework Implementation}{}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.2}KNN Observability Model}{35}{}\protected@file@percent }
+\newlabel{sec:observability_models}{{4.3.2}{35}{KNN Observability Model}{}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces KNN Observability Estimation}}{36}{}\protected@file@percent }
+\newlabel{alg:knn_estimate}{{3}{36}{KNN Observability Model}{}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {4}{\ignorespaces KNN Model Update}}{37}{}\protected@file@percent }
+\newlabel{alg:knn_update}{{4}{37}{KNN Observability Model}{}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.3}Existence Probability Estimator}{37}{}\protected@file@percent }
+\newlabel{sec:existence_confidence}{{4.3.3}{37}{Existence Probability Estimator}{}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {5}{\ignorespaces Bayesian Update Step}}{37}{}\protected@file@percent }
+\newlabel{alg:bayesian_update_impl}{{5}{37}{Existence Probability Estimator}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Dataset Creation}{38}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Observability Scenarios Dataset}{38}{}\protected@file@percent }
+\newlabel{sec:observability_scenario_dataset}{{4.5}{38}{Observability Scenarios Dataset}{}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {6}{\ignorespaces Generate Observability Scenario}}{39}{}\protected@file@percent }
+\newlabel{alg:generate_observability_scenario}{{6}{39}{Observability Scenarios Dataset}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces 2D cutaways of examples from the Observability Scenarios Dataset}}{39}{}\protected@file@percent }
+\newlabel{fig:observability_scenarios}{{9}{39}{Observability Scenarios Dataset}{}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.5.1}Episodic Visual SLAM Dataset}{39}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Example images from each trajectory of the episodic visual SLAM dataset}}{39}{}\protected@file@percent }
+\newlabel{fig:episodic_datasets}{{10}{39}{Episodic Visual SLAM Dataset}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}ORB-SLAM3 Integration}{40}{}\protected@file@percent }
+\newlabel{sec:orb_slam3_integration}{{4.6}{40}{ORB-SLAM3 Integration}{}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.6.1}Map Point}{40}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.6.2}VBEE Post-Processing Operations}{40}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.6.3}RANSAC Integration}{41}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7}Parameter Optimization}{42}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Phase 1 - Observability Model Tuning}{42}{}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {7}{\ignorespaces Objective Function: $n_{converge}$}}{44}{}\protected@file@percent }
+\newlabel{alg:obj_n_converge}{{7}{44}{Phase 1 - Observability Model Tuning}{}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {8}{\ignorespaces Objective Function: $\epsilon _{converge}$}}{45}{}\protected@file@percent }
+\newlabel{alg:obj_e_converge}{{8}{45}{Phase 1 - Observability Model Tuning}{}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {9}{\ignorespaces Objective Function: $t_{update}$}}{46}{}\protected@file@percent }
+\newlabel{alg:obj_t_update}{{9}{46}{Phase 1 - Observability Model Tuning}{}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {10}{\ignorespaces Observability Model Objective Function}}{47}{}\protected@file@percent }
+\newlabel{alg:obj_obs_model}{{10}{47}{Phase 1 - Observability Model Tuning}{}{}}
+\@writefile{toc}{\contentsline {paragraph}{Phase 2 - VBEE and EPE Tuning}{47}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.8}Experimental Setup}{48}{}\protected@file@percent }
 \@setckpt{src/4_Implementation}{
-\setcounter{page}{50}
+\setcounter{page}{49}
 \setcounter{equation}{0}
 \setcounter{enumi}{0}
 \setcounter{enumii}{0}
@@ -196,7 +193,7 @@
 \setcounter{caption@flags}{2}
 \setcounter{continuedfloat}{0}
 \setcounter{float@type}{16}
-\setcounter{algorithm}{12}
+\setcounter{algorithm}{10}
 \setcounter{ALG@line}{15}
 \setcounter{ALG@rem}{15}
 \setcounter{ALG@nested}{0}

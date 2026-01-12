@@ -28,7 +28,6 @@ class VBEE {
 public:
   VBEE() = default;
   VBEE(int);
-  VBEE(VBEEParams, ObservabilityModelParams, int);
   ~VBEE() = default;
 
   void setInUse(bool use) { in_use = use; }
@@ -147,6 +146,8 @@ struct VBEESettings {
   // Sensor noise characteristics
   float falseNegativeRate = 0.2642218339567518f; // Point not seen when it exists and is observable
   float falsePositiveRate = 0.005; // Point seen when it does not exist or is not observable
+
+  bool vbee_processing = false;
 };
 
 // struct VBEESettings {

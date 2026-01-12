@@ -69,21 +69,21 @@ float VBEE::Update(Observation observation, bool commit, bool updatePExists) {
 
   // Raise the bar for negative observations. Points tend to not be "under-seen"
   // more often than "over-seen"
-  if (observation.s == 0.0f) {
-    negative_observation_buffer.push_back(observation);
-    // 20 negative observations in a row causes all to be processed at once.
-    if (negative_observation_buffer.size() == 20) {
-      UpdateMany(negative_observation_buffer);
-      negative_observation_buffer.clear();
-      return p_e;
-    } else {
-      return p_e;
-    }
-  } else {
-    // But one positive observation causes all negative observations to be
-    // ignored, only processing the positive one
-    negative_observation_buffer.clear();
-  }
+  // if (observation.s == 0.0f) {
+  //   negative_observation_buffer.push_back(observation);
+  //   // 20 negative observations in a row causes all to be processed at once.
+  //   if (negative_observation_buffer.size() == 20) {
+  //     UpdateMany(negative_observation_buffer);
+  //     negative_observation_buffer.clear();
+  //     return p_e;
+  //   } else {
+  //     return p_e;
+  //   }
+  // } else {
+  //   // But one positive observation causes all negative observations to be
+  //   // ignored, only processing the positive one
+  //   negative_observation_buffer.clear();
+  // }
 
   float model_estimate = std::min(0.999f, std::max(0.001f, model.Estimate(observation.v).first));
 
@@ -96,6 +96,7 @@ float VBEE::Update(Observation observation, bool commit, bool updatePExists) {
   p_e = std::min(
       0.999f, std::max(0.001f, prior * (1.0f - weight) + posterior * weight));
 
+  p_e = posterior;
   model.Update(observation);
 
   // // If the map point is seen, then the dynamic model is more accurate

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.12.28)  28 DEC 2025 10:30
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.12.28)  11 JAN 2026 17:04
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -618,72 +618,72 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 \tf@loa=\write6
 \openout6 = `thesis.loa'.
 
- [6] [7]
+ [6]
 \openout2 = `src/0_Definitions.aux'.
 
- (./src/0_Definitions.tex) [8
+ (./src/0_Definitions.tex) [7
 
 ]
 \openout2 = `src/1_Introduction.aux'.
 
- (./src/1_Introduction.tex (./src/1_Introduction/1_ProblemContext.tex [9
+ (./src/1_Introduction.tex (./src/1_Introduction/1_ProblemContext.tex [8
 
 
 
-]) (./src/1_Introduction/2_ProblemStatement.tex [10] [11]
-<resources/omr_method_comparison.png, id=45, 945.5325pt x 682.55pt>
+]) (./src/1_Introduction/2_ProblemStatement.tex [9] [10]
+<resources/omr_method_comparison.png, id=42, 945.5325pt x 682.55pt>
 File: resources/omr_method_comparison.png Graphic file (type png)
 <use resources/omr_method_comparison.png>
 Package pdftex.def Info: resources/omr_method_comparison.png  used on input line 11.
 (pdftex.def)             Requested size: 422.77664pt x 305.19708pt.
-) [12] (./src/1_Introduction/3_ObjectivesAndScope.tex [13 <./resources/omr_method_comparison.png>] [14] [15]) (./src/1_Introduction/4_ResearchQuestions.tex) (./src/1_Introduction/5_Contribution.tex [16]) (./src/1_Introduction/6_RoadMap.tex [17])) [18]
+) [11] (./src/1_Introduction/3_ObjectivesAndScope.tex [12 <./resources/omr_method_comparison.png>] [13] [14]) (./src/1_Introduction/4_ResearchQuestions.tex) (./src/1_Introduction/5_Contribution.tex [15]) (./src/1_Introduction/6_RoadMap.tex [16])) [17]
 \openout2 = `src/2_Background.aux'.
 
  (./src/2_Background.tex (./src/2_Background/1_KVSLAM.tex
-<resources/slam_family_tree.png, id=70, 793.96625pt x 392.46625pt>
+<resources/slam_family_tree.png, id=67, 793.96625pt x 392.46625pt>
 File: resources/slam_family_tree.png Graphic file (type png)
 <use resources/slam_family_tree.png>
 Package pdftex.def Info: resources/slam_family_tree.png  used on input line 8.
 (pdftex.def)             Requested size: 422.77664pt x 208.98824pt.
- [19
+ [18
 
 
 
  <./resources/slam_family_tree.png>]
-<resources/feature_extraction_and_matching.png, id=76, 1534.73375pt x 992.70876pt>
+<resources/feature_extraction_and_matching.png, id=72, 1534.73375pt x 992.70876pt>
 File: resources/feature_extraction_and_matching.png Graphic file (type png)
 <use resources/feature_extraction_and_matching.png>
 Package pdftex.def Info: resources/feature_extraction_and_matching.png  used on input line 25.
 (pdftex.def)             Requested size: 422.77664pt x 273.45775pt.
- [20]
-<resources/ransac.png, id=80, 1300.86pt x 433.62pt>
+ [19]
+<resources/ransac.png, id=77, 1300.86pt x 433.62pt>
 File: resources/ransac.png Graphic file (type png)
 <use resources/ransac.png>
 Package pdftex.def Info: resources/ransac.png  used on input line 40.
 (pdftex.def)             Requested size: 422.77664pt x 140.92482pt.
- [21 <./resources/feature_extraction_and_matching.png>] [22 <./resources/ransac.png>]
-<resources/loop_closure.png, id=89, 244.9953pt x 141.46852pt>
+ [20 <./resources/feature_extraction_and_matching.png>] [21 <./resources/ransac.png>]
+<resources/loop_closure.png, id=86, 244.9953pt x 141.46852pt>
 File: resources/loop_closure.png Graphic file (type png)
 <use resources/loop_closure.png>
 Package pdftex.def Info: resources/loop_closure.png  used on input line 61.
 (pdftex.def)             Requested size: 422.77664pt x 244.15001pt.
- [23 <./resources/loop_closure.png>]) (./src/2_Background/2_ORBSLAM3.tex [24]
-<resources/orb-slam3.png, id=97, 506.6127pt x 304.9794pt>
+ [22 <./resources/loop_closure.png>]) (./src/2_Background/2_ORBSLAM3.tex [23]
+<resources/orb-slam3.png, id=94, 506.6127pt x 304.9794pt>
 File: resources/orb-slam3.png Graphic file (type png)
 <use resources/orb-slam3.png>
 Package pdftex.def Info: resources/orb-slam3.png  used on input line 8.
 (pdftex.def)             Requested size: 422.77664pt x 254.51495pt.
-)) [25 <./resources/orb-slam3.png>]
+)) [24 <./resources/orb-slam3.png>]
 \openout2 = `src/3_RelatedWork.aux'.
 
- (./src/3_RelatedWork.tex [26
+ (./src/3_RelatedWork.tex [25
 
 
 
-] [27]) [28]
+] [26]) [27]
 \openout2 = `src/4_Implementation.aux'.
 
- (./src/4_Implementation.tex (./src/4_Implementation/0_Constructs.tex [29
+ (./src/4_Implementation.tex (./src/4_Implementation/0_Constructs.tex [28
 
 
 
@@ -697,40 +697,39 @@ Overfull \hbox (4.89618pt too wide) in paragraph at lines 68--68
 []$[]\OML/cmm/m/it/12 : []\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 o; []\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 E\OT1/cmr/m/n/12 )[]\OML/cmm/m/it/12 ; []\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 S; v\OMS/cmsy/m/n/12 j\OML/cmm/m/it/12 E\OT1/cmr/m/n/12 ))$: Up-dates the map point's ex-is-tence prob-a-bil-ity $[](\OML/cmm/m/it/12 E\OT1/cmr/m/n/12 )[]$
  []
 
-[30]) (./src/4_Implementation/1_MethodOverview.tex
-<resources/existence_estimation_framework.png, id=123, 2236.7565pt x 935.8965pt>
-File: resources/existence_estimation_framework.png Graphic file (type png)
-<use resources/existence_estimation_framework.png>
-Package pdftex.def Info: resources/existence_estimation_framework.png  used on input line 13.
-(pdftex.def)             Requested size: 328.82707pt x 137.5794pt.
- [31 <./resources/existence_estimation_framework.png>]
-<resources/global_observability_p.png, id=129, 505.89pt x 578.16pt>
+[29]) (./src/4_Implementation/1_MethodOverview.tex
+<resources/global_observability_p.png, id=120, 505.89pt x 578.16pt>
 File: resources/global_observability_p.png Graphic file (type png)
 <use resources/global_observability_p.png>
-Package pdftex.def Info: resources/global_observability_p.png  used on input line 36.
+Package pdftex.def Info: resources/global_observability_p.png  used on input line 25.
 (pdftex.def)             Requested size: 328.82707pt x 375.80836pt.
- [32] [33 <./resources/global_observability_p.png>]
-Overfull \hbox (0.96342pt too wide) in paragraph at lines 77--79
+ [30] [31 <./resources/global_observability_p.png>]
+Overfull \hbox (0.96342pt too wide) in paragraph at lines 66--68
 []\OT1/cmr/m/n/12 representing the false pos-i-tive rate. As-sum-ing the model pro-vides an es-ti-mate $[](\OML/cmm/m/it/12 S; v\OMS/cmsy/m/n/12 j\OML/cmm/m/it/12 E\OT1/cmr/m/n/12 ) \OMS/cmsy/m/n/12 ^^Q
  []
 
-) (./src/4_Implementation/2_SystemImplementation.tex [34] [35] [36] [37]) (./src/4_Implementation/3_ORB-SLAM3Integration.tex [38] [39] [40]) (./src/4_Implementation/4_DatasetCreation.tex [41{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [42]) (./src/4_Implementation/5_ParameterOptimization.tex [43] [44] [45] [46] [47]) (./src/4_Implementation/6_ExperimentationSetup.tex)) [48] [49]
+<resources/existence_estimation_framework.png, id=131, 2236.7565pt x 935.8965pt>
+File: resources/existence_estimation_framework.png Graphic file (type png)
+<use resources/existence_estimation_framework.png>
+Package pdftex.def Info: resources/existence_estimation_framework.png  used on input line 84.
+(pdftex.def)             Requested size: 328.82707pt x 137.5794pt.
+[32]) [33 <./resources/existence_estimation_framework.png>] (./src/4_Implementation/2_SystemImplementation.tex [34] [35] [36]) (./src/4_Implementation/3_DatasetCreation.tex [37] [38]) (./src/4_Implementation/4_ORB-SLAM3Integration.tex [39] [40]) [41] (./src/4_Implementation/5_ParameterOptimization.tex [42{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [43] [44] [45] [46]) (./src/4_Implementation/6_ExperimentationSetup.tex [47])) [48]
 \openout2 = `src/5_Analysis.aux'.
 
- (./src/5_Analysis.tex (./src/5_Analysis/1_ModelAnalysis.tex) (./src/5_Analysis/4_ParameterOptimization.tex [50
+ (./src/5_Analysis.tex (./src/5_Analysis/1_ModelAnalysis.tex) (./src/5_Analysis/4_ParameterOptimization.tex [49
 
 
 
 ]
-<resources/damping_coefficient_selection_results.png, id=199, 1204.5pt x 1204.5pt>
+<resources/damping_coefficient_selection_results.png, id=195, 1204.5pt x 1204.5pt>
 File: resources/damping_coefficient_selection_results.png Graphic file (type png)
 <use resources/damping_coefficient_selection_results.png>
 Package pdftex.def Info: resources/damping_coefficient_selection_results.png  used on input line 35.
 (pdftex.def)             Requested size: 375.80544pt x 375.79881pt.
-)) [51] [52 <./resources/damping_coefficient_selection_results.png>]
+)) [50] [51 <./resources/damping_coefficient_selection_results.png>]
 \openout2 = `src/6_Conclusion.aux'.
 
- (./src/6_Conclusion.tex) [53
+ (./src/6_Conclusion.tex) [52
 
 
 
@@ -739,17 +738,17 @@ Overfull \hbox (11.84056pt too wide) in paragraph at lines 102--102
 []\OT1/cmr/m/n/12 Trey Smith et al. ``AS-TROBEE: A NEW PLAT-FORM FOR FREE-FLYING ROBOTICS
  []
 
-[54
+[53
 
 
-] [55] [56] [57] [58] [59]
+] [54] [55] [56] [57] [58]
 \openout2 = `src/8_Appendices.aux'.
 
  (./src/8_Appendices.tex (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
-) [60
+) [59
 
-]) [61] (./thesis.aux (./src/0_Definitions.aux) (./src/1_Introduction.aux) (./src/2_Background.aux) (./src/3_RelatedWork.aux) (./src/4_Implementation.aux) (./src/5_Analysis.aux) (./src/6_Conclusion.aux) (./src/8_Appendices.aux))
+]) [60] (./thesis.aux (./src/0_Definitions.aux) (./src/1_Introduction.aux) (./src/2_Background.aux) (./src/3_RelatedWork.aux) (./src/4_Implementation.aux) (./src/5_Analysis.aux) (./src/6_Conclusion.aux) (./src/8_Appendices.aux))
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
@@ -763,18 +762,18 @@ Package logreq Info: Writing requests to 'thesis.run.xml'.
 ### semi simple group (level 1) entered at line 66 (\begingroup)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 17050 strings out of 474222
- 311889 string characters out of 5748732
+ 17047 strings out of 474222
+ 311793 string characters out of 5748732
  2208975 words of memory out of 5000000
- 39010 multiletter control sequences out of 15000+600000
+ 39007 multiletter control sequences out of 15000+600000
  572808 words of font info for 92 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 66i,12n,81p,3446b,2487s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 66i,12n,81p,3446b,2495s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on thesis.pdf (61 pages, 2924724 bytes).
+Output written on thesis.pdf (60 pages, 2922708 bytes).
 PDF statistics:
- 328 PDF objects out of 1000 (max. 8388607)
- 202 compressed objects within 3 object streams
+ 323 PDF objects out of 1000 (max. 8388607)
+ 199 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  46 words of extra memory for PDF output out of 10000 (max. 10000000)
 

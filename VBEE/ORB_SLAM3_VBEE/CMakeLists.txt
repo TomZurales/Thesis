@@ -19,6 +19,6 @@ target_include_directories(ORB_SLAM3_VBEE_debug PRIVATE ${YAML_CPP_INCLUDE_DIR})
 set_target_properties(ORB_SLAM3_VBEE_debug PROPERTIES COMPILE_OPTIONS "")
 target_compile_options(ORB_SLAM3_VBEE_debug PRIVATE -O0 -g)
 
-install(TARGETS ORB_SLAM3_VBEE
+install(TARGETS ORB_SLAM3_VBEE ORB_SLAM3_VBEE_debug
     RUNTIME DESTINATION bin
 )

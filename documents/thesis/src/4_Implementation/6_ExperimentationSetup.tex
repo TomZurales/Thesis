@@ -1,3 +1,10 @@
 \subsection{Experimental Setup}
 
 This section describes the experiments conducted to evaluate the performance of the observability model and to determine the impact of libVBEE on SLAM systems. These experiments are defined here, and the results are presented in section \ref{sec:experimental_results}.
+
+\subsubsection*{Experiment 1: Observability Model Isolated Performance Comparison}
+The goal of this experiment is to determine whether the observability model accurately represents the observability of map points. 
+
+The experimental procedure begins by distributing the observability scenarios from the observability scenarios dataset randomly throughout a 3D space. The system is ``trained'' by selecting 10000 random viewpoints. For each of these viewpoints, each map point is labeled as visible, not visible, or invalid depending on if the observer is not behind a blocker, behind a blocker, or in a keep-out zone respectively. Additionally, each map point is updated with either a positive or a negative observation for each training viewpoint which is not invalid. From this training process, two metrics are calculated: per-point prevalence and global prevalence. These are the ratios of positive to non-positive observations on a per-point basis and a global basis respectively.
+
+Three control models are used in this test. The first is a random observability model which returns a uniformly distributed random value between 0 and 1. The second control model always returns the global prevalence, while the third model always returns the per-point prevalence. These models 

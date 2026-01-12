@@ -97,13 +97,13 @@ def merge_datasets(dataset1_path: str, dataset2_path: str, output_path: str) -> 
     offset = max_timestamp_dataset1 - min_timestamp_dataset2
     offset += timestamps2[1] - timestamps2[0]
         
-    (output_path / 'mav0' / 'state_groundtruth_estimate0').mkdir(parents=True, exist_ok=True)
-    gt1 = read_ground_truth(dataset1_path)
-    gt2 = read_ground_truth(dataset2_path)
-    gt2_offset = offset_ground_truth(gt2, offset / 1e9)
-    merged_gt = gt1 + gt2_offset
-    merged_gt.sort(key=lambda x: x[0])
-    write_ground_truth(output_path / 'mav0' / 'state_groundtruth_estimate0' / 'data.tum', merged_gt)
+    # (output_path / 'mav0' / 'state_groundtruth_estimate0').mkdir(parents=True, exist_ok=True)
+    # gt1 = read_ground_truth(dataset1_path)
+    # gt2 = read_ground_truth(dataset2_path)
+    # gt2_offset = offset_ground_truth(gt2, offset / 1e9)
+    # merged_gt = gt1 + gt2_offset
+    # merged_gt.sort(key=lambda x: x[0])
+    # write_ground_truth(output_path / 'mav0' / 'state_groundtruth_estimate0' / 'data.tum', merged_gt)
 
     ds1_filenames = [str(ts) + '.png' for ts in timestamps1]
     
