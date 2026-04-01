@@ -4,6 +4,9 @@ datasets/**/data/
 .venv/
 .cache/
 __pycache__/
+*.txt
+*.rar
+*.zip
 
 imgui.ini
 /lib/
