@@ -118,24 +118,26 @@ struct VBEESettings {
 
   // Observability model parameters
   // Number of historical observations to store
-  int n = 38;
+  int n = 254;
   // Number of nearest neighbors to use for estimation
-  int k = 9;
+  int k = 5;
   // Maximum distance between viewpoints to be considered neighbors
   float distance_threshold = 4.299932975338339f;
   // Value to return if no neighbors are found during estimation
-  float unknown_psge_value = 0.016163817045009243f;
+  float unknown_psge_value = 0.5000963371975422f;
   // Confidence threshold below which the observation must be included
   float min_confidence_threshold = 0.02069492104912618f;
   // Error threshold above which the observation is included
   float max_error_threshold = 0.03450036584553984f;
 
   // VBEE Parameters
+
+  float p_e_notch = 0.009550535695718895;
   
   // Initial existence probability
-  float init_p_e = 0.6192374475709618f;
+  float init_p_e = 0.6814731082458932f;
   // P(E) below which a map point is considered bad
-  float bad_threshold = 0.3847240852794481f;
+  float bad_threshold = 0.040797454558965204f;
   // Damping coefficient for P(E) updates
   float damping_coeff = 0.6527140319328085f;
   // Initial observability
@@ -148,7 +150,7 @@ struct VBEESettings {
   double sigmoid_steepness = 3.9187396850862326;
 
   // Sensor noise characteristics
-  float falseNegativeRate = 0.2642218339567518f; // Point not seen when it exists and is observable
+  float falseNegativeRate = 0.5; // Point not seen when it exists and is observable
   float falsePositiveRate = 0.005; // Point seen when it does not exist or is not observable
 
   bool vbee_processing = false;

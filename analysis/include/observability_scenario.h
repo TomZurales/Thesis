@@ -2,31 +2,40 @@
 
 #include <eigen3/Eigen/Core>
 #include <vector>
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/vector.hpp>
+#include <boost/serialization/version.hpp>
 
 class ObservabilityScenario {
 private:
-  bool valid = true;
   std::vector<Eigen::Vector3f> blockers;
+  
+  friend class boost::serialization::access;
+  template<class Archive>
+  void serialize(Archive & ar, const unsigned int version)
+  {
+    ar & blockers;
+  }
 
 public:
   ObservabilityScenario() = default;
-  ObservabilityScenario(int n_blockers, float goal_blocked_rate);
+  ObservabilityScenario(float goal_blocked_rate);
 
   bool isInKeepout(Eigen::Vector3f point) const { return false; }
 
   bool isSeen(Eigen::Vector3f point) const;
-
-  bool isValid() const { return valid; }
 };
 
 inline Eigen::Vector3f randomPosition() {
-  float u = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-  float v = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-  float w = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+  // Generate uniform random point inside unit sphere
+  float u1 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+  float u2 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+  float u3 = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
   
-  float theta = 2.0f * M_PI * u;
-  float phi = std::acos(2.0f * v - 1.0f);
-  float r = 5.0f * std::cbrt(w);
+  // Convert to spherical coordinates for uniform distribution
+  float theta = 2.0f * M_PI * u1;  // Azimuthal angle [0, 2π]
+  float phi = std::acos(2.0f * u2 - 1.0f);  // Polar angle [0, π] 
+  float r = std::cbrt(u3);  // Radius with cube root for uniform volume distribution
   
   // Convert to Cartesian coordinates
   float x = r * std::sin(phi) * std::cos(theta);

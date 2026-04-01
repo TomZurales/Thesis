@@ -4,7 +4,11 @@ find_package(Pangolin REQUIRED)
 add_library(observability_scenario src/observability_scenario.cc)
 target_include_directories(observability_scenario PUBLIC include)
 target_link_libraries(observability_scenario PUBLIC Boost::serialization)
-# target_compile_options(observability_scenario PRIVATE -O0 -g)
+
+add_library(observability_scenario_debug src/observability_scenario.cc)
+target_include_directories(observability_scenario_debug PUBLIC include)
+target_link_libraries(observability_scenario_debug PUBLIC Boost::serialization)
+target_compile_options(observability_scenario PRIVATE -O0 -g)
 
 add_executable(vbee_tester src/vbee_tester.cc)
 target_link_libraries(vbee_tester observability_scenario vbee)

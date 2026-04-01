@@ -360,7 +360,7 @@ int main(int argc, char **argv) {
           for (ORB_SLAM3::MapPoint *pmp : unobserved_mps) {
             Observation obs = Observation{
                 .v = (pkf->GetCameraCenter() - pmp->GetWorldPos()), .s = 0.0};
-            pmp->vbee.Update(obs, true);
+            pmp->vbee.Update(obs);
             if (pmp->vbee.Query() < global_vbee_settings.bad_threshold) {
               global_tracked_stats.AddElimination(pmp->mnId);
               std::cout << "Eliminating MP " << pmp->mnId
@@ -372,7 +372,7 @@ int main(int argc, char **argv) {
           for (ORB_SLAM3::MapPoint *pmp : observed_mps) {
             Observation obs = Observation{
                 .v = (pkf->GetCameraCenter() - pmp->GetWorldPos()), .s = 1.0};
-            pmp->vbee.Update(obs, true);
+            pmp->vbee.Update(obs);
           }
 
           // std::this_thread::sleep_for(std::chrono::milliseconds(100));

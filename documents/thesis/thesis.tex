@@ -16,6 +16,8 @@
 \usepackage{algpseudocode}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage[section]{placeins}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -49,6 +51,8 @@
 
 % Custom command for item definitions
 \newcommand{\defitem}[2]{\noindent\indent#1: #2\par\vspace{0.5em}}
+
+\newcommand{\thead}[1]{\rule{0pt}{2.6ex}#1\rule[-1.2ex]{0pt}{0pt}}
 
 \titleformat{\paragraph}[block]{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}[]
 
@@ -93,7 +97,9 @@
 
 \include{src/4_Implementation}
 
-\include{src/5_Analysis}
+\include{src/5_Results}
+
+\include{src/6_Analysis}
 
 \include{src/6_Conclusion}
 

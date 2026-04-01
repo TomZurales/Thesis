@@ -17,14 +17,14 @@ modes:
 iterations: 1
 
 # VBEE Configuration
-n: 700
-k: 243
+n: 254
+k: 5
 distance_threshold: 1.2928007973159406
-unknown_psge_value: 0.07857072595753747
+unknown_psge_value: 0.5000963371975422
 min_confidence_threshold: 0.8876967014544755
 max_error_threshold: 0.08409003757839911
-init_p_e: 0.9575920860102722
-bad_threshold: 0.680536060209478
+init_p_e: 0.6814731082458932
+bad_threshold: 0.040797454558965204
 damping_coeff: 0.39825059385077544
 init_observability: 0.610567696257429
 observability_damping_coeff: 0.8282104830704353

@@ -6,8 +6,8 @@
 #include <iostream>
 #include "vbee.h"
 
-#define N_TRAIN 5000
-#define N_TEST 5000
+#define N_TRAIN 10000
+#define N_TEST 10000
 
 VBEESettings global_vbee_settings;
 
@@ -94,8 +94,8 @@ float breir(std::vector<float> estimates, std::vector<float> ground_truth) {
 // }
 
 int main(int argc, char **argv) {
-  global_vbee_settings.n = 200;
-  global_vbee_settings.k = 10;
+  global_vbee_settings.n = 5000;
+  global_vbee_settings.k = 1;
 
   srand(static_cast<unsigned int>(time(nullptr)));
 
@@ -103,13 +103,12 @@ int main(int argc, char **argv) {
 
   std::vector<ObservabilityScenario> scenarios;
 
-  for(int n_blockers = 1; n_blockers <=4; n_blockers++) {
-    for(int i = 0; i < 100; i++)
-    {
-      scenarios.push_back(ObservabilityScenario(n_blockers, 0.5f));
-    }
+  for(float blocked_rate = 0.05; blocked_rate < 1.0f; blocked_rate += 0.05)
+  {
+    scenarios.push_back(ObservabilityScenario(blocked_rate));
   }
 
+  std::cout << "Scenario Creation Done" << std::endl;
   // Set up for the training portion of the experiment
   std::vector<TestPoint> test_points;
   for (int i = 0; i < scenarios.size(); i++) {
@@ -141,6 +140,8 @@ int main(int argc, char **argv) {
       }
     }
   }
+
+  std::cout << "Training Done" << std::endl;
 
   float global_positive = 0;
   float global_negative = 0;

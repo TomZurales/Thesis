@@ -2,7 +2,7 @@
 #include "observability_model.h"
 #include "observation.h"
 #include "vbee.h"
-#include "world.h"
+#include "observability_scenario.h"
 
 // Boost serialization
 #include <boost/archive/binary_iarchive.hpp>
@@ -13,7 +13,6 @@
 #include <boost/serialization/vector.hpp>
 
 // Standard library
-#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -46,30 +45,27 @@ double getCurrentThreadCpuTime() {
   return ts.tv_sec + ts.tv_nsec / 1e9;
 }
 
-std::map<std::string, std::vector<Observation>> observation_cache;
+std::vector<Eigen::Vector3f> viewpoints;
 
 /**
- * Calculate the average error and confidence for a given world and model
+ * Calculate the average error and confidence for a given scenario and model
  * Returns pair of (average_error, average_confidence)
  */
-float calculateModelError(const ObservabilityScenario& world, ObservabilityModel model) {
+float calculateModelError(const ObservabilityScenario& scenario, ObservabilityModel model) {
   float total_error = 0.0f;
-  
-  const std::string world_name = world.getName();
-  const auto& observations = observation_cache[world_name];
-  const float num_observations = static_cast<float>(observations.size());
 
-  for (const auto& observation : observations) {
-    auto estimate = model.Estimate(observation.v);
+  for (const auto& viewpoint : viewpoints) {
+    float seen = scenario.isSeen(viewpoint) ? 1.0f : 0.0f;
+    auto estimate = model.Estimate(Observation{viewpoint, seen}, false);
 
-    float error = std::abs(estimate.first - observation.s);
-    total_error += error;
+    float error = estimate - seen;
+    total_error += (error * error);
   }
 
   return total_error;
 }
 
-constexpr int EXPECTED_ARGC_WITH_PARAMS = 17;
+constexpr int EXPECTED_ARGC_WITH_PARAMS = 18;
 
 int main(int argc, char **argv) {
   chdir("/home/tom/workspace/Thesis/optimization");
@@ -101,114 +97,157 @@ int main(int argc, char **argv) {
     global_vbee_settings.sigmoid_steepness = std::stof(argv[13]);
     global_vbee_settings.falseNegativeRate = std::stof(argv[14]);
     global_vbee_settings.falsePositiveRate = std::stof(argv[15]);
+    global_vbee_settings.p_e_notch = std::stof(argv[16]);
   } else {
     std::cout << "Using default VBEE parameters." << std::endl;
   }
   
-  const std::string output_filename(argv[16]);
+  std::string output_filename(argv[17]);
+  if(argc == 1)
+  {
+    output_filename = "test_file";
+  }
   
-  // Initialize world data structures
-  std::vector<ObservabilityScenario> worlds;
-  std::set<std::pair<float, float>> existing_rate_pairs;
+  // Initialize scenario data structures
+  std::vector<ObservabilityScenario> scenarios;
 
-  // Load existing worlds from binary file if available
-  std::ifstream worlds_file("data/worlds.bin");
-  if (worlds_file.good()) {
-    worlds_file.close();
-    std::cout << "Loading worlds from 'data/worlds.bin'..." << std::endl;
+  // Load existing scenarios from binary file if available
+  std::ifstream scenarios_file("data/scenarios.bin");
+  if (scenarios_file.good()) {
+    scenarios_file.close();
+    std::cout << "Loading scenarios from 'data/scenarios.bin'..." << std::endl;
     
     try {
-      std::ifstream ifs("data/worlds.bin", std::ios::binary);
+      std::ifstream ifs("data/scenarios.bin", std::ios::binary);
       boost::archive::binary_iarchive ia(ifs);
-      std::vector<ObservabilityScenario> loaded_worlds;
-      ia >> loaded_worlds;
+      std::vector<ObservabilityScenario> loaded_scenarios;
+      ia >> loaded_scenarios;
       
-      std::cout << "Successfully loaded " << loaded_worlds.size()
-                << " worlds from file." << std::endl;
+      std::cout << "Successfully loaded " << loaded_scenarios.size()
+                << " scenarios from file." << std::endl;
 
-      // Store loaded worlds and track their rate pairs
-      for (const auto &world : loaded_worlds) {
-        worlds.push_back(world);
-        existing_rate_pairs.insert(world.getRatePair());
+      // Store loaded scenarios and track their rate pairs
+      for (const auto &scenario : loaded_scenarios) {
+        scenarios.push_back(scenario);
       }
     } catch (const std::exception &e) {
-      std::cerr << "Error loading worlds: " << e.what() << std::endl;
+      std::cerr << "Error loading scenarios: " << e.what() << std::endl;
       exit(-1);
     }
   } else {
-    std::cerr << "No worlds file found. Cannot proceed." << std::endl;
-    exit(-1);
+    std::cout << "Generating Scenarios File" << std::endl;
+    for(float blocked_rate = 0.05f; blocked_rate < 1.0f; blocked_rate += 0.05f)
+    {
+      for(int i = 0; i < 20; i++)
+      {
+        scenarios.push_back(ObservabilityScenario(blocked_rate));
+      }
+    }
+
+    std::cout << "Scenarios created. Saving to file." << std::endl;
+    try {
+      std::ofstream ofs("data/scenarios.bin", std::ios::binary);
+      boost::archive::binary_oarchive oa(ofs);
+      oa << scenarios;
+    } catch (const std::exception &e) {
+      std::cerr << "Error saving scenarios: " << e.what() << std::endl;
+      exit(-1);
+    }
   }
 
-  // Load or generate world observations
-  std::ifstream observations_file("data/world_observations.bin");
-  if (observations_file.good()) {
-    observations_file.close();
-    std::cout << "Loading world observations from 'data/world_observations.bin'..." << std::endl;
+  // Load or generate viewpoints
+  std::ifstream viewpoints_file("data/viewpoints.bin");
+  if (viewpoints_file.good()) {
+    viewpoints_file.close();
+    std::cout << "Loading viewpoints from 'data/viewpoints.bin'..." << std::endl;
     
     try {
-      std::ifstream ifs("data/world_observations.bin", std::ios::binary);
+      std::ifstream ifs("data/viewpoints.bin", std::ios::binary);
       boost::archive::binary_iarchive ia(ifs);
-      ia >> observation_cache;
+      ia >> viewpoints;
       
-      std::cout << "Successfully loaded observations for "
-                << observation_cache.size() << " worlds from file." << std::endl;
+      std::cout << "Successfully loaded "
+                << viewpoints.size() << "viewpoints from file." << std::endl;
     } catch (const std::exception &e) {
-      std::cerr << "Error loading world observations: " << e.what() << std::endl;
+      std::cerr << "Error loading viewpoints: " << e.what() << std::endl;
       exit(-1);
     }
   } else {
-    std::cerr << "No world observations file found. Cannot proceed." << std::endl;
-    exit(-1);
+    std::cerr << "No viewpoints file found. Creating file" << std::endl;
+    for(int i = 0; i < 5000; i++)
+    {
+      viewpoints.push_back(randomPosition());
+    }
+
+    try {
+      std::ofstream ofs("data/viewpoints.bin", std::ios::binary);
+      boost::archive::binary_oarchive oa(ofs);
+      oa << scenarios;
+    } catch (const std::exception &e) {
+      std::cerr << "Error saving viewpoints: " << e.what() << std::endl;
+      exit(-1);
+    }
   }
 
 
-  // Initialize threading and data structures for world processing
+  // Initialize threading and data structures for scenario processing
   std::vector<std::thread> worker_threads;
   std::ofstream results_file(output_filename);
 
   // Thread-safe data structures for collecting results
-  std::mutex world_stats_mutex;
+  std::mutex scenario_stats_mutex;
   std::mutex stdout_mutex;
 
-  std::vector<float> p_e_error_by_world(worlds.size(), 0.0f);
-  std::vector<float> observability_error_by_world(worlds.size(), 0.0f);
+  std::vector<float> p_e_error_by_scenario(scenarios.size(), 0.0f);
+  std::vector<float> observability_error_by_scenario(scenarios.size(), 0.0f);
 
   std::atomic<float> p_e_error(0.0f);
   std::atomic<float> observability_error(0.0f);
 
-  // Process each world in separate threads
-  for (size_t world_idx = 0; world_idx < worlds.size(); ++world_idx) {
-    worker_threads.emplace_back([&worlds, world_idx, &world_stats_mutex, 
-                                &stdout_mutex, &p_e_error_by_world, &observability_error_by_world]() {
-      const ObservabilityScenario& world = worlds[world_idx];
+  // Process each scenario in separate threads
+  for (size_t scenario_idx = 0; scenario_idx < scenarios.size(); ++scenario_idx) {
+    worker_threads.emplace_back([&scenarios, scenario_idx, &scenario_stats_mutex, 
+                                &stdout_mutex, &p_e_error_by_scenario, &observability_error_by_scenario]() {
+      const ObservabilityScenario& scenario = scenarios[scenario_idx];
       float this_p_e_error = 0.0f;
       float this_observability_error = 0.0f;
-      VBEE vbee(world_idx);
+      VBEE vbee(scenario_idx);
 
       // 1000 observations while the point exists
       for(int i = 0; i < 1000; i++)
       {
-        Eigen::Vector3f viewpoint = world.getRandomValidViewpoint();
-        bool seen = world.isSeen(viewpoint);
-        float p_e = vbee.Update(Observation{viewpoint, seen ? 1.0f : 0.0f}, true);
-        this_p_e_error += std::abs(1 - p_e);
+        Eigen::Vector3f viewpoint = randomPosition();
+        Observation o;
+        o.v = viewpoint;
+        o.s = scenario.isSeen(viewpoint) ? 1.0f : 0.0f;
+        float p_e = vbee.Update(o);
+        if(p_e < global_vbee_settings.bad_threshold)
+          this_p_e_error += 5.0f;
+        else
+          this_p_e_error += ((1 - global_vbee_settings.p_e_notch) - p_e) * ((1 - global_vbee_settings.p_e_notch) - p_e);
       }
 
-      this_observability_error = calculateModelError(world, vbee.GetObservabilityModel());
+      this_observability_error = calculateModelError(scenario, vbee.GetObservabilityModel());
 
       // 1000 observations while the point does not exist
       for(int i = 0; i < 1000; i++)
       {
-        Eigen::Vector3f viewpoint = world.getRandomValidViewpoint();
-        float p_e = vbee.Update(Observation{viewpoint, 0.0f}, true);
-        this_p_e_error += std::abs(0 - p_e);
+        Eigen::Vector3f viewpoint = randomPosition();
+        Observation o;
+        o.v = viewpoint;
+        o.s = 0.0f;
+        float p_e = vbee.Update(o);
+        this_p_e_error += (global_vbee_settings.p_e_notch - p_e) * (global_vbee_settings.p_e_notch - p_e);
+        if(p_e < global_vbee_settings.bad_threshold)
+        {
+          break;
+        }
       }
 
       {
-        std::lock_guard<std::mutex> lock(world_stats_mutex);
-        p_e_error_by_world[world_idx] = this_p_e_error;
-        observability_error_by_world[world_idx] = this_observability_error;
+        std::lock_guard<std::mutex> lock(scenario_stats_mutex);
+        p_e_error_by_scenario[scenario_idx] = this_p_e_error;
+        observability_error_by_scenario[scenario_idx] = this_observability_error;
       }
     });
   }
@@ -220,13 +259,13 @@ int main(int argc, char **argv) {
 
   float total_p_e_error = 0.0f;
   float total_observability_error = 0.0f;
-  std::ofstream results_by_world(output_filename + "_by_world.csv");
-  for (size_t i = 0; i < worlds.size(); ++i) {
-    total_p_e_error += p_e_error_by_world[i];
-    total_observability_error += observability_error_by_world[i];
-    results_by_world << p_e_error_by_world[i] << ", " << observability_error_by_world[i] << std::endl;
+  std::ofstream results_by_scenario(output_filename + "_by_scenario.csv");
+  for (size_t i = 0; i < scenarios.size(); ++i) {
+    total_p_e_error += p_e_error_by_scenario[i];
+    total_observability_error += observability_error_by_scenario[i];
+    results_by_scenario << p_e_error_by_scenario[i] << ", " << observability_error_by_scenario[i] << std::endl;
   }
-  results_by_world.close();
+  results_by_scenario.close();
 
   std::ofstream results_output_file(output_filename);
   results_output_file << total_p_e_error << ", " << total_observability_error << std::endl;

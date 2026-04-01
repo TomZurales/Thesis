@@ -6,26 +6,27 @@ import os
 from pathlib import Path
 
 # Create a persistent SQLite database for the study
-DB_PATH = "results/optuna_study.db"
+DB_PATH = "results/optuna_study_no_error.db"
 STUDY_NAME = "vbee_optimization"
 
 def objective(trial):
-    n = trial.suggest_int("n", 2, 1000)
-    k = trial.suggest_int("k", 1, n)
-    distance_threshold = trial.suggest_float("distance_threshold", 0.01, 10.0)
-    unknown_psge_value = trial.suggest_float("unknown_psge_value", 0.01, 0.99)
-    min_confidence_threshold = trial.suggest_float("min_confidence_threshold", 0.01, 0.99)
-    max_error_threshold = trial.suggest_float("max_error_threshold", 0.01, 0.99)
+    n = trial.suggest_int("n", 50, 400)#
+    k = trial.suggest_int("k", 1, n-1)#
+    distance_threshold = 1.0 #trial.suggest_float("distance_threshold", 0.01, 10.0)
+    unknown_psge_value = trial.suggest_float("unknown_psge_value", 0.01, 0.99)#
+    min_confidence_threshold = 1.0 #trial.suggest_float("min_confidence_threshold", 0.01, 0.99)
+    max_error_threshold = 1.0 #trial.suggest_float("max_error_threshold", 0.01, 0.99)
 
-    bad_threshold = trial.suggest_float("bad_threshold", 0.01, 0.75)
-    init_p_e = trial.suggest_float("init_p_e", bad_threshold + 0.1, 0.99)
-    damping_coefficient = trial.suggest_float("damping_coefficient", 0.01, 0.99)
-    init_observability = trial.suggest_float("init_observability", 0.001, 0.999)
-    observability_damping_coefficient = trial.suggest_float("observability_damping_coefficient", 0.01, 0.99)
-    sigmoid_midpoint = trial.suggest_float("sigmoid_midpoint", 0.0, 500.0)
-    sigmoid_steepness = trial.suggest_float("sigmoid_steepness", 0.0, 10.0)
-    false_negative_rate = trial.suggest_float("false_negative_rate", 0.0, 0.5)
-    false_positive_rate = trial.suggest_float("false_positive_rate", 0.0, 0.5)
+    p_e_notch = trial.suggest_float("p_e_notch", 0.001, 0.25)
+    bad_threshold = trial.suggest_float("bad_threshold", p_e_notch + 0.01, 1 - (p_e_notch + 0.25))#
+    init_p_e = trial.suggest_float("init_p_e", bad_threshold + 0.1, 1 - p_e_notch)#
+    damping_coefficient = 1.0 #trial.suggest_float("damping_coefficient", 0.01, 0.99)
+    init_observability = 1.0 #trial.suggest_float("init_observability", 0.001, 0.999)
+    observability_damping_coefficient = 1.0 #trial.suggest_float("observability_damping_coefficient", 0.01, 0.99)
+    sigmoid_midpoint = 1.0 #trial.suggest_float("sigmoid_midpoint", 0.0, 500.0)
+    sigmoid_steepness = 1.0 #trial.suggest_float("sigmoid_steepness", 0.0, 10.0)
+    false_negative_rate = 0.1 # trial.suggest_float("false_negative_rate", 0.0, 0.5)#
+    false_positive_rate = 0.001 # trial.suggest_float("false_positive_rate", 0.0, 0.5)#
 
 
     random_suffix = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
@@ -51,6 +52,7 @@ def objective(trial):
          str(sigmoid_steepness),
          str(false_negative_rate),
          str(false_positive_rate),
+         str(p_e_notch),
          csv_filename
          ],
         capture_output=True,

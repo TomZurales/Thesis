@@ -52,11 +52,11 @@ float VBEE::Update(Observation observation) {
   //                global_vbee_settings.observability_damping_coeff *
   //                Sigmoid(n_observations);
 
-  p_e = posterior;
+  p_e = std::max(global_vbee_settings.p_e_notch, std::min(1 - global_vbee_settings.p_e_notch, posterior));
   // std::min(
   //     0.999f, std::max(0.001f, prior * (1.0f - weight) + posterior * weight));
 
-  p_e = posterior;
+  // p_e = posterior;
 
   model.Update(observation);
 
