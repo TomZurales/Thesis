@@ -1,0 +1,44 @@
+\subsection{Dataset Creation}
+\label{sec:dataset_creation}
+
+Two datasets were created to test the isolated performance of the VBEE library, and the integrated performance of VBEE with ORB-SLAM3 respectively The first dataset referred to as the Observability Scenarios Dataset, consists of a set of points, each with their own unique observability properties. These points can be queried to determine if a point can be seen from a given viewpoint, allowing the full VBEE pipeline to be exercised without a SLAM implementation. The second dataset known as the Episodic Visual SLAM Dataset is a stereo visual SLAM dataset in the style of the EuRoC MAV SLAM dataset, but with extensions for episodic operation. This section details the construction and intention behind these datasets.
+
+\subsection{Observability Scenarios Dataset}
+\label{sec:observability_scenario_dataset}
+The observability scenarios dataset is intended to represent the domain of observability scenarios which may apply to map points seen during SLAM operations. A map point's observability can be represented as the union of three sets of viewpoints: Viewpoints from which the map point is visible, viewpoints from which the map point is not visible (obstructed), and viewpoints which are inaccessible to the observer (e.g. under a floor or inside a wall). These three sets cover the domain of viewpoints for a map point and represent the unique observability scenario for that map point.
+
+For the creation of the observability scenarios dataset, rather than classifying specific viewpoints into specific sets, the proportional sizes of these sets are defined, and a generative process is used to create a scenario matching these proportional sizes. The process of generating an observability scenario for a desired parameterization is shown in Algorithm \ref{alg:generate_observability_scenario}. This algorithm randomly generates inaccessible and obstructed areas around a central point, then samples random viewpoints to estimate the relative proportions of each set. If the proportional set sizes match the desired proportions within a defined tolerance, the observability scenario is returned. Otherwise, the number of inaccessible and obstructed areas are adjusted and regenerated until a valid solution is found.
+
+\begin{singlespace}
+    \begin{algorithm}[H]
+        \caption[Generate Observability Scenario]{$\operatorname{GenerateObservabilityScenario}$}
+        \label{alg:generate_observability_scenario}
+        \begin{algorithmic}
+            \Function{GenerateObservabilityScenario}{}
+            \EndFunction
+        \end{algorithmic}
+    \end{algorithm}
+\end{singlespace}
+
+The final dataset consists of observability scenarios generated for all pairings of 5\% inaccessible to 95\% inaccessible and 5\% obstructed to 95\% obstructed in 5\% increments, giving a total of 361 unique observability scenarios. A subset of cutaways from the dataset is shown in Figure \ref{fig:observability_scenarios}.
+
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{resources/placeholder.jpeg}
+    \caption{2D cutaways of examples from the Observability Scenarios Dataset}
+    \label{fig:observability_scenarios}
+\end{figure}
+
+\subsubsection{Static Episodic Visual SLAM Dataset}
+
+\subsubsection{Changing Episodic Visual SLAM Datasets}
+To evaluate VBEE performance in a real-world SLAM system, a stereo visual dataset was created consisting of a series of trajectories through a household environment. No dynamic changes occur during the recording of a single trajectory, but environmental changes are introduced between trajectories, matching the episodic run modality described in section \ref{sec:background}. Figure \ref{fig:episodic_datasets} shows example images from each trajectory at roughly the same location.
+
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{resources/placeholder.jpeg}
+    \caption{Example images from each trajectory of the episodic visual SLAM dataset}
+    \label{fig:episodic_datasets}
+\end{figure}
+
+This dataset is intended to replicate realistic episodic SLAM operation in a household environment. Ground truth is difficult to obtain in large-scale 3D environments, so evaluation focuses on the SLAM system's ability to maintain a consistent map across multiple trajectories. LibVBEE is integrated into ORB-SLAM3, and performance is evaluated by measuring its ability to identify and remove outdated map points while preserving map consistency across episodes.

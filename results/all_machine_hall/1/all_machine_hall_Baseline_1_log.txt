@@ -1,0 +1,1 @@
+../slam_systems/ORB_SLAM3/Examples/Stereo/stereo_euroc ../slam_systems/ORB_SLAM3/Vocabulary/ORBvoc.txt ../slam_systems/ORB_SLAM3/Examples/Stereo/EuRoC.yaml ../datasets/all_machine_hall ../datasets/all_machine_hall/timestamps.txt all_machine_hall_Baseline_1
