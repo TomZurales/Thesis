@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Preamble, forces an install from the repository, and only then runs the tests
+set -euo pipefail
+
+# Get the runtime directory (VBEE root)
+runtime_root="$(cd "$(dirname -- "$BASH_SOURCE")/.." && pwd)"
+
+if [ -z "${SKIP_INSTALL:-}" ]; then
+    echo "Building and installing..."
+    (cd "$THESIS_ROOT/build" && ninja && ninja install)
+
+    if [ ! -d "$runtime_root/.venv" ]; then
+        python3 -m venv $runtime_root/.venv
+        source $runtime_root/.venv/bin/activate
+        pip install -r $runtime_root/.aux/requirements.txt
+    else
+        source $runtime_root/.venv/bin/activate
+
+        # Check if installed packages differ from requirements
+        if pip install --dry-run -r "$runtime_root/.aux/requirements.txt" 2>&1 | grep -q "Would install"; then
+            pip install -r "$runtime_root/.aux/requirements.txt"
+        fi
+    fi
+
+    export SKIP_INSTALL=1
+    export THESIS_RUNTIME_ROOT="$runtime_root"
+
+    # Call the actual test runner instead of recursing
+    exec "$runtime_root/bin/run_tests"
+    exit $?
+fi
+
+echo "Running VBEE tests..."
+$runtime_root/bin/test_runner
+echo "Running Evaluations..."
+$runtime_root/bin/test_evaluator

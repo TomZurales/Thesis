@@ -1,0 +1,126 @@
+import optuna
+import subprocess
+import random
+import string
+import os
+from pathlib import Path
+
+# Create a persistent SQLite database for the study
+DB_PATH = "results/optuna_study_no_error.db"
+STUDY_NAME = "vbee_optimization"
+
+def objective(trial):
+    n = trial.suggest_int("n", 50, 400)#
+    k = trial.suggest_int("k", 1, n-1)#
+    distance_threshold = 1.0 #trial.suggest_float("distance_threshold", 0.01, 10.0)
+    unknown_psge_value = trial.suggest_float("unknown_psge_value", 0.01, 0.99)#
+    min_confidence_threshold = 1.0 #trial.suggest_float("min_confidence_threshold", 0.01, 0.99)
+    max_error_threshold = 1.0 #trial.suggest_float("max_error_threshold", 0.01, 0.99)
+
+    p_e_notch = trial.suggest_float("p_e_notch", 0.001, 0.25)
+    bad_threshold = trial.suggest_float("bad_threshold", p_e_notch + 0.01, 1 - (p_e_notch + 0.25))#
+    init_p_e = trial.suggest_float("init_p_e", bad_threshold + 0.1, 1 - p_e_notch)#
+    damping_coefficient = 1.0 #trial.suggest_float("damping_coefficient", 0.01, 0.99)
+    init_observability = 1.0 #trial.suggest_float("init_observability", 0.001, 0.999)
+    observability_damping_coefficient = 1.0 #trial.suggest_float("observability_damping_coefficient", 0.01, 0.99)
+    sigmoid_midpoint = 1.0 #trial.suggest_float("sigmoid_midpoint", 0.0, 500.0)
+    sigmoid_steepness = 1.0 #trial.suggest_float("sigmoid_steepness", 0.0, 10.0)
+    false_negative_rate = 0.1 # trial.suggest_float("false_negative_rate", 0.0, 0.5)#
+    false_positive_rate = 0.001 # trial.suggest_float("false_positive_rate", 0.0, 0.5)#
+
+
+    random_suffix = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
+    csv_filename = f"results/data/results_{random_suffix}"
+    
+    # Log the trial number for progress tracking
+    print(f"Running trial {trial.number}...")
+    
+    result = subprocess.run(
+        ["./bin/characterize_vbee",
+         str(n),
+         str(k),
+         str(distance_threshold),
+         str(unknown_psge_value),
+         str(min_confidence_threshold),
+         str(max_error_threshold),
+         str(init_p_e),
+         str(bad_threshold),
+         str(damping_coefficient),
+         str(init_observability),
+         str(observability_damping_coefficient),
+         str(sigmoid_midpoint),
+         str(sigmoid_steepness),
+         str(false_negative_rate),
+         str(false_positive_rate),
+         str(p_e_notch),
+         csv_filename
+         ],
+        capture_output=True,
+        text=True
+    )
+    
+    # Check for errors
+    if result.returncode != 0:
+        print(f"Error in trial {trial.number}: {result.stderr}")
+        raise optuna.TrialPruned()
+
+    values = None
+    try:
+        with open(csv_filename, 'r') as f:
+            line = f.readline().strip()
+            values = line.split(',')
+        os.remove(csv_filename)
+        
+        # Convert to float and add some logging
+        objective_values = tuple(float(v) for v in values)
+        print(f"Trial {trial.number} completed with values: {objective_values}")
+        return objective_values
+        
+    except (FileNotFoundError, ValueError) as e:
+        print(f"Error reading results for trial {trial.number}: {e}")
+        if os.path.exists(csv_filename):
+            os.remove(csv_filename)
+        raise optuna.TrialPruned()
+
+def main():
+    # Create study with persistent storage
+    storage = f"sqlite:///{DB_PATH}"
+    
+    # Create or load existing study
+    study = optuna.create_study(
+        study_name=STUDY_NAME,
+        storage=storage,
+        directions=["minimize", "minimize"],
+        load_if_exists=True  # This allows resuming optimization
+    )
+    
+    print(f"Study created with storage: {storage}")
+    print(f"Study name: {STUDY_NAME}")
+    print(f"Database path: {Path(DB_PATH).absolute()}")
+    
+    # Add study-level attributes for better dashboard visualization
+    study.set_system_attr("description", "VBEE parameter optimization")
+    study.set_system_attr("objective_names", ["Total P(E) Error", "Total Observability Error"])
+    
+    # Start optimization
+    try:
+        study.optimize(objective, n_trials=1000, n_jobs=30)
+        
+        print("\nOptimization completed!")
+        print(f"Best trials:")
+        for i, trial in enumerate(study.best_trials):
+            print(f"  Trial {trial.number}: {trial.values}")
+
+        # Print Pareto optimal parameters
+        print("\nPareto Optimal Parameters:")
+        for i, trial in enumerate(study.best_trials):
+            print(f"\nSolution {i+1} (Trial {trial.number}):")
+            for param_name, param_value in trial.params.items():
+                print(f"  {param_name}: {param_value}")
+            
+    except KeyboardInterrupt:
+        print("\nOptimization interrupted by user.")
+        print(f"Completed trials: {len(study.trials)}")
+
+if __name__ == "__main__":
+    main()

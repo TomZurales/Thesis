@@ -1,88 +1,143 @@
-\subsection{Observability Model Implementation}
+\subsection{System Implementation}
 
-The implementations explored in this thesis serve as representative examples of various methods for modeling map point observability. While not an exhaustive exploration of all possible methods or implementations, these examples provide a foundation for future research.
+This section describes the implementation of the existence estimation framework described in section \ref{sec:method_overview}. Implementation details of the KNN observability model, the Bayesian updater, and the Viewpoint-Based Existence Estimator library are provided. Pseudocode implementations of key functions are included to illustrate the implementation details of the framework.
 
-Each model described below is initialized with a vector of inputs representing various tunable parameters for the model. The final selection of these inputs will be tuned through an optimization process described in Section \ref{sec:parameter_tuning}. Each model provides functions for querying the models estimate of $P(S^{\boldsymbol{v}}|E)$ for a given viewpoint $\boldsymbol{v}$, and for integrating new observations $\boldsymbol{o}$ into the internal representation, optionally utilizing feedback from the Existence Probability Estimator in the form of $\Delta P(E)$.
+\subsubsection{Existence Estimation Framework Implementation}
 
-\paragraph{K-Nearest Neighbors Model}
+The viewpoint-based existence estimation framework is implemented as a C++ library called \texttt{libvbee}. This library facilitates the integration of VBEE into KV-SLAM systems by providing a standardized interface for observability estimation and existence probability estimation. The library provides the \vbee{} class, which configures the KNN model and provides functions for updating and querying the existence probability of a map point. Pseudocode for the initialization, update, and query functions is provided below.
 
-A simple method for modeling the observability is the use of a K-nearest-neighbors clustering method. This model estimate $P(S^{\boldsymbol{v}}|E)$ to be the proportion of positive observations near $\boldsymbol{v}$ to the total number of nearby observations.
-
-\begin{singlespace}
-    \paragraph{Parameters}
-    \begin{itemize}
-        \item $k$: The maximum number of neighboring observations used to estimate $P(S^{\boldsymbol{v}}|E)$
-        \item $n$: The maximum number of observations that can be stored in the internal representation
-        \item $a_{max}$: The maximum allowable angle between a query viewpoint and an observation to be considered a neighboring
-        \item $feedback\_threshold$: The minimum feedback value needed to force the integration of a new observation
-    \end{itemize}
-\end{singlespace}
+The initialization function in Algorithm \ref{alg:vbee_init} sets up the VBEE instance with the specified parameters, initializing the KNN model and the existence probability estimator.
 
 \begin{singlespace}
     \begin{algorithm}[H]
-        \caption{KNN Query}
-        \label{alg:knn_query}
+        \caption[VBEE Initialization]{VBEE Initialization: $\vbee.\initialize{\params{\vbee}, \params{\knn}, \params{\epe}}$}
+        \label{alg:vbee_init}
         \begin{algorithmic}
-            \Require Viewpoint $v = (\theta, \phi, d)$
-            \Require Previous $observations$ $[(\theta_0, \phi_0, d_0, \text{seen}_0),\dots,(\theta_j, \phi_j, d_j, \text{seen}_j)]$
-            \Require Parameters $k$, \texttt{max\_angle}
-            \Ensure Estimated probability of seeing the point from $v$
+            \Require $\params{\vbee}$: VBEE Parameters
+            \Require $\params{\knn}$: KNN Parameters
+            \Require $\params{\epe}$: Existence Probability Estimator Parameters
+            \State{\textbf{global} $p\_e, \damping, \observability, \observabilityupdate \gets \params{\vbee}$} 
+            \State{\textbf{global} $knn \gets \knn.\initialize{\params{\knn}}$}
+            \State{\textbf{global} $epe \gets \epe.\initialize{\params{\epe}}$}
+        \end{algorithmic}
+    \end{algorithm}
+\end{singlespace}
 
+The update function in Algorithm \ref{alg:vbee_update} integrates a new observation, determining an updated existence probability based on the observation and the KNN estimate. The KNN model is updated with feedback, and the overall observability is updated based on the difference between the observation’s state and the KNN estimate.
+
+\begin{singlespace}
+    \begin{algorithm}[H]
+        \caption[VBEE Update]{VBEE Update: $\vbee.\update{\observation}$}
+        \label{alg:vbee_update}
+        \begin{algorithmic}
+            \Require $\observation$: New Observation
+            \Ensure{$\estpe$: Updated Existence Probability}
+            \State{$prior \gets p\_e$}
+            \State{$model\_estimate \gets knn.\estimate{\observation.v}$} 
+            \State{$posterior \gets epe.\update{\observation, prior, model\_estimate}$}
+
+            \State{$weight \gets (1 - \observability) \cdot \damping$}
+            \State{$p\_e \gets prior \cdot (1 - weight) + posterior \cdot weight$}
+
+            \State{$\feedback \gets p\_e - prior$}
+            \State{$knn.\update{\observation, \feedback}$} 
+
+            \State{$\observability \gets \observability + \observabilityupdate \cdot (\observation.s - model\_estimate)$}
+            \Return{$p\_e$}
+        \end{algorithmic}
+    \end{algorithm}
+\end{singlespace}
+
+The query function simply returns the current existence probability $\pe$.
+
+\subsubsection{KNN Observability Model}
+\label{sec:observability_models}
+
+This thesis uses a K-nearest neighbors (KNN) method for modeling map point observability. The KNN model estimates $\psge$ as the ratio of positive observations within the $k$ nearest neighbors of the query viewpoint. Since infinite observations cannot be stored, the model maintains a finite buffer of $n$ observations. The angular distance between viewpoints is also considered, as distant observations may be irrelevant. Finally, the model incorporates feedback from the existence probability estimator to decide whether or not to integrate a new observation.
+
+The parameter vector is:
+$$
+    \params{\knn} = \{k, n, \athreshold, \feedbackthreshold\}
+$$
+where $k$ is the number of neighbors to consider, $n$ is the maximum number of stored observations, $\athreshold$ is the maximum angular distance for neighbors, and $\feedbackthreshold$ is the minimum feedback magnitude required for integration.
+
+The estimation function is shown in Algorithm \ref{alg:knn_estimate}, returning the ratio of positive neighbors, or $0.5$ if no neighbors are found.
+
+\begin{singlespace}
+    \begin{algorithm}[H]
+        \caption[KNN Observability Estimation]{KNN $\estimate{\viewpoint}$}
+        \label{alg:knn_estimate}
+        \begin{algorithmic}
+            \Require $\observations{}_{prev}$: Stored observations
+            \Require $k$, $\athreshold$: KNN parameters
+            \Ensure $\estpsge$: Estimated probability of observation
+            \Function{$\estimate$}{$\viewpoint$}
             \State $candidates \gets [\;]$
-            \ForAll{$obs \in observations$}
-            \State $obs\_view \gets (\theta_i, \phi_i, d_i)$
-            \If{$\texttt{angular\_dist}(v, obs\_view) \leq \texttt{max\_angle}$}
-            \State $dist \gets \texttt{euclidean\_dist}(v, obs\_view)$
-            \State $candidates.\texttt{append}((dist, obs))$
-            \EndIf
+            \ForAll{$o \in \observations{}_{prev}$}
+                \If{$\Delta\theta(o.v, \viewpoint) < \athreshold$}
+                    \State add $o$ to $candidates$
+                \EndIf
             \EndFor
-            \State Sort $candidates$ by $dist$ in ascending order
-            \State $k\_neighbors \gets$ first $\min(k, \texttt{length}(candidates))$ entries
-            \If{$\texttt{length}(k\_neighbors) = 0$}
-            \State \Return $0.5$
+            \State \texttt{sort} $candidates$ by distance to $\viewpoint$
+            \State $neighbors \gets$ first $\min(k, \texttt{length}(candidates))$
+            \If{$neighbors$ is empty}
+                \State \Return $0.5$
             \EndIf
-            \State $n\_seen \gets$ count of entries in $k\_neighbors$ where $\text{seen} = \text{True}$
-            \State \Return $n\_seen / \texttt{length}(k\_neighbors)$
+            \State $seen\_count \gets$ sum of $o.s$ in $neighbors$
+            \State \Return $seen\_count / \texttt{length}(neighbors)$
+            \EndFunction
         \end{algorithmic}
     \end{algorithm}
 \end{singlespace}
+
+The update function (Algorithm \ref{alg:knn_update}) integrates new observations. If the buffer is not full, the observation is added. If the feedback magnitude is below $\feedbackthreshold$, the observation is ignored. Otherwise, the observation replaces the nearest inconsistent stored observation.
 
 \begin{singlespace}
     \begin{algorithm}[H]
-        \caption{KNN Integrate Observation}
-        \label{alg:knn_integrate}
+        \caption[KNN Model Update]{KNN $\update{o, \feedback}$}
+        \label{alg:knn_update}
         \begin{algorithmic}
-            \Require Observation $o = (\theta, \phi, d, \text{seen})$
-            \Require Feedback $f \in [0,1]$
-            \Require Previous $observations$ $[(\theta_0, \phi_0, d_0, \text{seen}_0),\dots,(\theta_j, \phi_j, d_j, \text{seen}_j)]$
-            \If{$\texttt{length}(observations) < n$}
-            \State{$observations$.\texttt{append}($o$)}
-            \Return
+            \Require $\observations{}_{prev}$: Stored observations
+            \Require $n$, $\feedbackthreshold$: Parameters
+            \Function{$\update$}{$o, \feedback$}
+            \If{$\texttt{length}(\observations{}_{prev}) < n$}
+                \State add $o$
+                \State \Return
             \EndIf
-            \If{$f < feedback\_threshold$}
-            \State{\Return}
+            \If{$|\feedback| < \feedbackthreshold$}
+                \State \Return
             \EndIf
-            \If{$o.\text{seen} = \text{True}$}
-            \State{$observations$.\texttt{replace\_nearest\_not\_seen}($o$)} \Comment{Replaces the nearest observation where $o.\text{seen} = \text{False}$}
+            \If{$o.s = 1$}
+                \State replace nearest not-seen observation with $o$
             \Else
-            \State{$observations$.\texttt{replace\_nearest\_seen}($o$)}
+                \State replace nearest seen observation with $o$
             \EndIf
-            \State{\Return}
+            \EndFunction
         \end{algorithmic}
     \end{algorithm}
 \end{singlespace}
 
-Parameters to Optimize: $[n, k, \tau]$
+The accuracy and performance of the KNN model will be evaluated in section \ref{sec:observability_model_eval}.
 
-\paragraph{Binned Model}
+\subsubsection{Existence Probability Estimator}
+\label{sec:existence_confidence}
 
-In this model, each observation is assigned to a bin based on the unit direction of observation. Each bin stores the maximum distance from which it was observed, total number of observations within that distance, and the number of positive observations within that distance. The estimate is the number of positive observations within the distance divided by the total number of observations, or 0 if the observation occurs outside the observability shell.
+The Existence Probability Estimator (EPE) updates the probability $\pe$ of a map point’s existence. It is initialized with $\params{\epe} = \{\falseneg, \falsepos\}$. The update function takes an observation, the prior $\pe_t$, and the KNN estimate $\estpsge$ as inputs, and computes the posterior $\pe_{t+1}$ with a Bayesian update. Algorithm \ref{alg:bayesian_update_impl} shows the implementation.
 
-\paragraph{Continuous Model}
-
-\subsubsection{Icosahedral Shell Implementation}
-\label{sec:icos_construction}
-
-\subsection{Bayesian Update Implementation}
-
-\subsection{Existence Estimation Framework Implementation}
+\begin{singlespace}
+    \begin{algorithm}[H]
+        \caption{Bayesian Update Step}
+        \label{alg:bayesian_update_impl}
+        \begin{algorithmic}
+            \Require Observation $o = (v, s)$
+            \Require Prior $\estpe_t \in [0,1]$
+            \Require KNN estimate $\estpsge$
+            \If{$o.s = 1$}
+                \State $posterior \gets \frac{\estpsge (1 - \falseneg) \cdot \estpe_t}{\estpsge (1 - \falseneg) \cdot \estpe_t + \falsepos (1 - \estpe_t)}$
+            \Else
+                \State $posterior \gets \frac{(1 - \estpsge (1 - \falseneg)) \cdot \estpe_t}{(1 - \estpsge (1 - \falseneg)) \cdot \estpe_t + (1 - \falsepos)(1 - \estpe_t)}$
+            \EndIf
+            \State \Return $posterior$
+        \end{algorithmic}
+    \end{algorithm}
+\end{singlespace}

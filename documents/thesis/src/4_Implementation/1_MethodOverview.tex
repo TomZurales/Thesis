@@ -1,70 +1,24 @@
 \subsection{Method Overview}
+\label{sec:method_overview}
 
-% This section details the methods researched for modeling historical map point observability, and explores how it may be used to identify outdated map points. The methods explored here will be tested and benchmarked in Section \ref{sec:analysis} to determine if the objectives laid out in Section \ref{sec:objectives} are successfully achieved.
+This section describes a novel method for iteratively estimating and refining the probability of a 3D feature's existence. The estimation uses Bayesian methods to integrate prior knowledge of 3D positions where the feature is and is not visible and new observations of the feature to determine a new probability of the feature's existence. Due to the focus of this research on KV-SLAM, the 3D features discussed are 3D visual map points, but this method is adaptable to higher order features as well. 
 
-% The objective is to identify map points which, while previously viewed, are no longer visible due to environmental changes. To address this, we assign an incrementally updated probability of existence value to each map point. Observations of a map point increase our overall confidence in its existence. Conversely, failure to observe a map point from a viewpoint where it \textit{should} have been visible lowers our confidence in its existence. Determining whether a map point should be observable from a given viewpoint is not trivial, motivating the need for a viewpoint-aware observability model. The purpose of the model is to integrate historical observability data to estimate observability across all possible viewpoints. Each map point is attached to its own model.
+\subsubsection{The Observability Model}
 
-\subsubsection{The Existence Estimation Framework}
+The goal of the observability model is to estimate whether a point in 3D space is visible from another point in 3D space based on previous observations. These historical observations are made up of the observer's viewpoint, and whether the point of interest was visible from that location.
+In the context of KV-SLAM, these points of interest are visual landmarks
 
-The proposed existence estimation framework iteratively updates the existence probability for a KV-SLAM map point using historical observability priors and current observations. As shown in Figure \ref{fig:existence_estimation_framework}, the framework consumes new observational data, and outputs an updated estimate of the point's probability of existence.
+Map points are conceptualized as static, infinitesimally small points in 3D Euclidean space. Let the observability of a map point $p$ from a viewpoint $\viewpoint=\{\theta,\phi,d\} \in [0,2\pi) \times \left[-\tfrac{\pi}{2}, \tfrac{\pi}{2}\right] \times [0,\dmax)$ be represented by
 
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[width=0.7\textwidth]{resources/existence_estimation_framework.png}
-    \caption[Existence Estimation Framework]{A flowchart representing the flow of data through the proposed Existence Estimation Framework.}
-    \label{fig:existence_estimation_framework}
-\end{figure}
-
-The framework consists of two components: the observability model, and the existence probability updater. The observability model estimates the probability of a point being seen from a given viewpoint $P(S^{\boldsymbol{v}}|E)$, and updates its internal representation to integrate new observations. The existence probability updater performs a Bayesian update of the point's existence probability using the prior existence probability $P(E)$, the model estimate $P(S^{\boldsymbol{v}}|E)$, and the new observation's outcome $S$ or $\lnot S$. This approach ensures that negative observations from previously highly observable viewpoints impact the existence probability more strongly than those from more uncertain viewpoints.
-
-\subsubsection{The Bayesian Update Step}
-
-The system updates its confidence for a map point's existence based on environmental observations. This update follows Bayes' theorem, and can therefore be implemented to utilize Bayesian statistics. The events of interest are:
-\begin{itemize}
-    \item $E$: The event that the map point exists
-    \item $S^{\boldsymbol{v}}$: The event that the map point is seen from viewpoint $\boldsymbol{v}$
-\end{itemize}
-
-where $\boldsymbol{v} = \{\theta,\phi,d\}$, representing azimuth, elevation and distance from the observer to the point respectively. To formalize, our system updates $P(E) = P(E|S^{\boldsymbol{v}})$ given a positive observation, and $P(E) = P(E|\neg S^{\boldsymbol{v}})$ given a negative observation.
-
-Applying Bayes' theorem, the derived update function is
 \[
-    P(E) = \begin{cases}
-        \frac{P(S^{\boldsymbol{v}}|E)P(E)}{P(S^{\boldsymbol{v}})}           & \text{given }S^{\boldsymbol{v}}      \\
-        \frac{P(\neg S^{\boldsymbol{v}}|E)P(E)}{P(\neg S^{\boldsymbol{v}})} & \text{given }\neg S^{\boldsymbol{v}}
-    \end{cases}
+    \operatorname{observable}_p(\viewpoint) : V \to \{0,1\},
 \]
 
-Additionally, the marginal probability $P(S^{\boldsymbol{v}})$ is
-$$
-    P(S^{\boldsymbol{v}}) = P(S^{\boldsymbol{v}}|E)P(E) + P(S^{\boldsymbol{v}}|\neg E)P(\neg E)
-$$
+which returns $1$ if $p$ is observed from $\viewpoint$ and $0$ otherwise.  
+An observation of point $p$ is then defined as $\observation_p = (\viewpoint, \state)$, where $\state \in \{0,1\}$ denotes whether the point was seen.  
+A set of $n$ observations is $\observations{n}_p = \{\observation_{p0}, \dots, \observation_{pn}\}$.
 
-The probability of a false observation of a non-existent map point is small, but non-zero. The probability of a false match increases in low-light and in low texture environments. The value $\varepsilon$ is assigned to represent this probability, and will be experimentally determined in Section \ref{sec:existence_confidence_eval}.
-$$
-    \varepsilon = P(S^{\boldsymbol{v}}|\neg E) \approx 0
-$$
-
-Finally, assuming the existence of a model function $m$ which estimates the probability of observing the point from a given viewpoint $\boldsymbol{v}$
-$$
-    m(\boldsymbol{v}) \approx P(S^{\boldsymbol{v}}|E)
-$$
-
-The update step can be expressed as
-\[
-    P(E) = \begin{cases}
-        \frac{m(\boldsymbol{v})P(E)}{m(\boldsymbol{v})P(E) + \varepsilon(1-P(E))}             & \text{given }S^{\boldsymbol{v}}      \\
-        \frac{(1-m(\boldsymbol{v}))P(E)}{(1-m(\boldsymbol{v}))P(E) + (1-\varepsilon)(1-P(E))} & \text{given }\neg S^{\boldsymbol{v}}
-    \end{cases}
-\]
-
-\subsubsection{The Observability of Map Points}
-
-Map points are conceptualized as static, infinitesimally small points in 3D Euclidean space. Let the observability of a map point $p$ from a viewpoint $\boldsymbol{v} = \{\theta,\phi,d\}\in[0,2\pi)\times\left[-\frac{\pi}{2},\frac{\pi}{2}\right]\times[0,d_{max})$ be represented by the function
-$$
-    \operatorname{observable}_p : V \to \{0, 1\}
-$$
-where $\boldsymbol{v} = \{\theta,\phi,d\}$ represents the azimuth, elevation, and distance from the observer to $p$ respectively. This function returns 1 if $p$ is observed from $\boldsymbol{v}$, and 0 if it is not. From this, an observation of point $p$ can be defined as a vector $\boldsymbol{o}_p=\{\boldsymbol{v},observable_p(\boldsymbol{v})\}$, and a set of $n$ observations of $p$ as $\boldsymbol{O}_p=\{\boldsymbol{o}_{p0},\dots,\boldsymbol{o}_{pn}\}$. For illustrative purposes, figures in the remainder of this thesis may use a simplified 2D representation of these definitions, where $\boldsymbol{v}^{2D}=\{\theta,d\}$. Figure \ref{fig:global_observability_p} shows such a plot representing the global observability of a map point $p$, and the effects of obstructions on observability.
+For illustrative purposes, later figures may use a simplified 2D representation $\viewpoint^{2D}=\{\theta,d\}$. Figure \ref{fig:global_observability_p} shows an example of such a plot.
 
 \begin{figure}[!ht]
     \centering
@@ -73,35 +27,83 @@ where $\boldsymbol{v} = \{\theta,\phi,d\}$ represents the azimuth, elevation, an
     \label{fig:global_observability_p}
 \end{figure}
 
-The generation of such a plot would require the generation and storage of infinite observations taken from across the domain of viewpoints. The objectives defined in Section \ref{sec:objectives} state that the model's size should be constant and small. Therefore, the models described below must operate either on some fixed, finite number of observations, or on a constant sizes set of metadata.
+Constructing the exact global observability surface would require infinite observations across the full domain of viewpoints, which is infeasible. To satisfy the constant-size requirement in section \ref{sec:objectives}, the observability model maintains a finite, bounded representation.  
 
-\subsubsection{Observability Modeling}
+The model serves two roles:
+1. Estimating $P(S,\viewpoint|E)$ from a given viewpoint.  
+2. Integrating new observations into its internal representation.  
 
-The observability model performs two functions: estimation of the probability of the map point being seen from a given viewpoint, and the integration of new observations into its internal representation. The estimation function $\operatorname{m}_p$ takes a viewpoint as an argument, and returns the model's estimate of $P(S^{\boldsymbol{v}}|E)$. The update function takes an observation as an argument, and returns nothing. The goal of any model implementation is to minimize the objective function
-$$
-    \int |\operatorname{m}_p(\boldsymbol{v}) - \operatorname{observable}_p(\boldsymbol{v})| \,dV
-$$
-representing the total error between the model's estimate, and the true observability of a point $p$.
+The objective is to minimize the total error between the model estimate and the true observability:
+
+\[
+    \int \big| \hat{P}(S,\viewpoint|E) - \operatorname{observable}_p(\viewpoint) \big| \, dV.
+\]
+
+\subsubsection{Existence Probability Estimator}
+
+The probability of existence $\pe$ is updated with each new observation using Bayesian inference. Let $\pe_t$ denote the prior probability of existence before the observation, and $\pe_{t+1}$ the posterior after incorporating it.
+
+\[
+    \pe_{t+1} = 
+    \begin{cases}
+        \dfrac{P(S,\viewpoint|E)\,\pe_t}{P(S,\viewpoint)} & \text{if } \state=1, \\[1.2ex]
+        \dfrac{P(\lnot S,\viewpoint|E)\,\pe_t}{P(\lnot S,\viewpoint)} & \text{if } \state=0.
+    \end{cases}
+\]
+
+The marginal likelihood is
+
+\[
+    P(S,\viewpoint) = P(S,\viewpoint|E)\,\pe_t + P(S,\viewpoint|\lnot E)\,(1-\pe_t).
+\]
+
+False matches are possible when the map point does not exist. Let
+
+\[
+    \falsepos = P(S,\viewpoint|\lnot E) \approx 0,
+\]
+
+representing the false positive rate.  
+Assuming the model provides an estimate $\hat{P}(S,\viewpoint|E) \equiv m(\viewpoint)$, the update simplifies to
+
+\[
+    \pe_{t+1} =
+    \begin{cases}
+        \dfrac{m(\viewpoint)\,\pe_t}{m(\viewpoint)\,\pe_t + \falsepos(1-\pe_t)} & \text{if } \state=1, \\[1.2ex]
+        \dfrac{(1-m(\viewpoint))\,\pe_t}{(1-m(\viewpoint))\,\pe_t + (1-\falsepos)(1-\pe_t)} & \text{if } \state=0.
+    \end{cases}
+\]
+
+\subsubsection{The Existence Estimation Framework}
+
+The existence estimation framework combines an observability model with a Bayesian existence probability estimator. A high-level view is shown in Figure \ref{fig:existence_estimation_framework}.
+
+% TODO: Add feedback line
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{resources/existence_estimation_framework.png}
+    \caption[Existence Estimation Framework]{A flowchart representing the flow of data through the proposed existence estimation framework.}
+    \label{fig:existence_estimation_framework}
+\end{figure}
+
+The observability model estimates $P(S,\viewpoint|E)$, the probability of observing a map point from viewpoint $\viewpoint$ given that the point exists, using historical observations. This estimate is then used by the existence probability estimator to update the existence probability $\pe$ of the map point in a Bayesian manner. After the update, the new observation $\observation$ is integrated into the model’s internal representation, with feedback $\feedback$ from the existence probability update used to adjust the strength of integration.
 
 \subsubsection{Overall Observability}
 
-The models described above are lacking one critical component. Currently, if a model's estimation function returns 1, it is stating that it is fully confident that if the map point exists, it will be seen from the given viewpoint. Therefore, a single negative observation of a point which has always been observable would immediately drop $P(E)$ to zero. To combat this, a damping factor $\delta \in [0,1]$ could be added such that
+The update above is overly sensitive in cases where a map point has historically been highly observable. For instance, if $m(\viewpoint)=1$, then a single negative observation ($\state=0$) would drive $\pe_{t+1}$ close to zero. To reduce this sensitivity, a damping coefficient $\damping \in [0,1]$ is applied:
+
 \[
-    P(E) = \begin{cases}
-        \delta \frac{m(\boldsymbol{v})P(E)}{m(\boldsymbol{v})P(E) + \varepsilon(1-P(E))}             & \text{given }S^{\boldsymbol{v}}      \\
-        \delta \frac{(1-m(\boldsymbol{v}))P(E)}{(1-m(\boldsymbol{v}))P(E) + (1-\varepsilon)(1-P(E))} & \text{given }\neg S^{\boldsymbol{v}}
+    \pe_{t+1} =
+    \begin{cases}
+        \damping \cdot \dfrac{m(\viewpoint)\,\pe_t}{m(\viewpoint)\,\pe_t + \falsepos(1-\pe_t)} & \text{if } \state=1, \\[1.2ex]
+        \damping \cdot \dfrac{(1-m(\viewpoint))\,\pe_t}{(1-m(\viewpoint))\,\pe_t + (1-\falsepos)(1-\pe_t)} & \text{if } \state=0.
     \end{cases}
 \]
-allowing the maximum impact of new observations to be tuned through careful selection of $\delta$. However, this fails to account for the overall observability of the map point. Consider the case shown in Figure \ref{fig:overall_observability}. Clearly, a negative observation within the observable region of the left plot should have a smaller impact on $P(E)$ than a negative observation within the observable region of the right plot.
 
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[width=0.9\textwidth]{resources/overall_observability.png}
-    \caption[Overall Observability]{A 2D representation of the global observability of a map point $p$ with high overall observability (left) and low overall observability (right).}
-    \label{fig:overall_observability}
-\end{figure}
+To further improve robustness, the model incorporates an overall observability parameter $\observability$, defined as the proportion of viewpoints from which the point has historically been observable. This is adaptively updated using
 
-Overall observability represents the proportion of viewpoints from which the map point is observable to the total number of viewpoints. This knowledge is integrated into the existence estimator using an additional parameter $q$. This new parameter is updated based on the difference between the model's estimate, and the true observation, operating on the idea that if the model estimates that a point will not be seen from a viewpoint, but it is, then integration of that information should improve the overall observability of the map point. Conversely, if the model predicts that a point will be seen, but it is not, then the overall observability of the point goes down.
-$$
-    q = \rho(o - m(v))
-$$
+\[
+    \observability \;\leftarrow\; \observability + \observabilityupdate \cdot \big(\state - m(\viewpoint)\big),
+\]
+
+where $\observabilityupdate$ controls the adaptation rate. In effect, $\observability$ moderates the influence of each observation, ensuring that negative evidence in highly observable regions has more weight than in rarely observable ones.

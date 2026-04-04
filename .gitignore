@@ -14,12 +14,17 @@
 
 .vscode/
 build/
-datasets/**/
-venv/
+datasets/**/data/
+.venv/
+.cache/
 __pycache__/
+*.txt
+*.rar
+*.zip
 
 imgui.ini
 /lib/
 /bin/
 /include/
-
+data/
+thesis_old/

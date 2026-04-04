@@ -1,0 +1,34 @@
+name: Final Analysis of Optimized Parameters
+datasets:
+  - "all_days"
+  # - "all_machine_halls"
+  # - "all_vicon_room_1"
+  # - "all_vicon_room_2"
+  # - "big_skip"
+  # - "machine_hall_1_5"
+  # - "small_skips"
+modes:
+  # - "baseline"
+  - "vbee"
+  # - "vbee_fake"
+  # - "vbee_ransac"
+  # - "random_cull"
+  # - "random_cull_fake"
+iterations: 1
+
+# VBEE Configuration
+n: 254
+k: 5
+distance_threshold: 1.2928007973159406
+unknown_psge_value: 0.5000963371975422
+min_confidence_threshold: 0.8876967014544755
+max_error_threshold: 0.08409003757839911
+init_p_e: 0.6814731082458932
+bad_threshold: 0.040797454558965204
+damping_coeff: 0.39825059385077544
+init_observability: 0.610567696257429
+observability_damping_coeff: 0.8282104830704353
+sigmoid_midpoint: 33.524794615427844
+sigmoid_steepness: 2.0114447802646818
+falseNegativeRate: 0.01334823722608314
+falsePositiveRate: 0.000109331436496164
