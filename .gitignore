@@ -1,3 +1,17 @@
+*.log
+*.aux
+*.bbl
+*.bbl-SAVE-ERROR
+*.bcf
+*.blg
+*.pdf
+*.run.xml
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+*.toc
+
 .vscode/
 build/
 datasets/**/data/
