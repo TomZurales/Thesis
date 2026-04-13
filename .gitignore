@@ -1,4 +1,5 @@
 *.log
+*.lof
 *.aux
 *.bbl
 *.bbl-SAVE-ERROR
@@ -21,6 +22,7 @@ __pycache__/
 *.txt
 *.rar
 *.zip
+*.so
 
 imgui.ini
 /lib/
@@ -28,3 +30,5 @@ imgui.ini
 /include/
 data/
 thesis_old/
+
+deps/
