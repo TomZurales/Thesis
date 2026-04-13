@@ -1,7 +1,7 @@
 import random
 import numpy as np
 from scipy.spatial import ConvexHull, Delaunay, cKDTree
-from utility import cartesian_to_polar
+from utility import cartesian_to_polar, cartesian_to_spherical
 from dataclasses import dataclass
 from vbee import VBEE
 
@@ -241,7 +241,134 @@ class DiscreteBoundary(ObservabilityModel):
 
     def __str__(self):
         return f"DiscreteBoundary(n={self.n})"
-    
+
+
+class DiscreteBoundary3D(ObservabilityModel):
+    """3-D analogue of DiscreteBoundary.
+
+    The sphere around the goal is divided into n_theta × n_phi bins using a
+    latitude/longitude grid (theta: azimuth 0→2π, phi: polar 0→π).  Each bin
+    tracks the farthest visible radius (positive boundary) and the nearest
+    non-visible radius (negative boundary) observed in that angular region,
+    mirroring the 2-D DiscreteBoundary logic exactly.
+    """
+
+    def __init__(self, n_theta: int = 36, n_phi: int = 18,
+                 angular_weight: float = 10.0, radial_weight: float = 10.0):
+        super().__init__()
+        self.n_theta = n_theta
+        self.n_phi = n_phi
+        self.angular_weight = angular_weight
+        self.radial_weight = radial_weight
+
+        # Bin centers: evenly spaced in theta and phi (offset by half a cell
+        # so no bin sits exactly on the poles).
+        thetas = np.array([2 * np.pi * j / n_theta for j in range(n_theta)])
+        phis   = np.array([np.pi * (i + 0.5) / n_phi  for i in range(n_phi)])
+        tt, pp = np.meshgrid(thetas, phis)          # (n_phi, n_theta)
+        self._bin_theta = tt.ravel()                # (n_bins,)
+        self._bin_phi   = pp.ravel()                # (n_bins,)
+        # Solid-angle weight for each bin (sin φ factor) — used for coverage
+        self._bin_weight = np.sin(self._bin_phi)
+        self._bin_weight /= self._bin_weight.sum()
+
+        n_bins = n_theta * n_phi
+        self.positive_boundaries = np.full(n_bins, -1.0)
+        self.negative_boundaries = np.full(n_bins, np.inf)
+
+    def _get_bin_index(self, theta: float, phi: float) -> int:
+        """Nearest bin by great-circle distance (vectorised)."""
+        cos_dist = (np.sin(phi) * np.sin(self._bin_phi) * np.cos(theta - self._bin_theta)
+                    + np.cos(phi) * np.cos(self._bin_phi))
+        return int(np.argmax(cos_dist))
+
+    def _update(self, position: tuple, seen: bool):
+        r, theta, phi = cartesian_to_spherical(*position, relative_to=self.goal)
+        i = self._get_bin_index(theta, phi)
+        if seen and r > self.positive_boundaries[i]:
+            self.positive_boundaries[i] = r
+            if self.negative_boundaries[i] < self.positive_boundaries[i]:
+                self.negative_boundaries[i] = self.positive_boundaries[i]
+        elif not seen and r < self.negative_boundaries[i]:
+            self.negative_boundaries[i] = r
+            if self.positive_boundaries[i] > self.negative_boundaries[i]:
+                self.positive_boundaries[i] = self.negative_boundaries[i]
+
+    def _value_at_r(self, i: int, r: float) -> float:
+        pos = self.positive_boundaries[i]
+        neg = self.negative_boundaries[i]
+        if r <= pos and r <= neg:
+            return 1.0
+        if r >= neg and r >= pos:
+            return 0.0
+        push = 0.0
+        if pos != -1.0:
+            push += np.exp(-0.5 * (abs(r - pos) * self.radial_weight) ** 2) * 0.5
+        if neg != np.inf:
+            push -= np.exp(-0.5 * (abs(r - neg) * self.radial_weight) ** 2) * 0.5
+        return float(np.clip(0.5 + push, 0.0, 1.0))
+
+    def query(self, position: tuple) -> float:
+        r, theta, phi = cartesian_to_spherical(*position, relative_to=self.goal)
+        # Great-circle distance to every bin center
+        cos_dist = (np.sin(phi) * np.sin(self._bin_phi) * np.cos(theta - self._bin_theta)
+                    + np.cos(phi) * np.cos(self._bin_phi))
+        d_ang = np.arccos(np.clip(cos_dist, -1.0, 1.0))
+        weights = np.exp(-0.5 * (d_ang * self.angular_weight) ** 2)
+        values  = np.array([self._value_at_r(i, r) for i in range(len(self._bin_theta))])
+        push = np.sum(weights * (values - 0.5))
+        return float(np.clip(0.5 + push, 0.0, 1.0))
+
+    def commit(self):
+        if not self.new_observations:
+            return
+
+        queried = [
+            (pos, seen, self.query(pos))
+            for pos, seen in self.new_observations
+        ]
+
+        # Bins sampled with negative observations this session
+        negative_bin_indices = set(
+            self._get_bin_index(
+                *cartesian_to_spherical(*pos, relative_to=self.goal)[1:]
+            )
+            for pos, seen, _ in queried if not seen
+        )
+
+        # Solid-angle-weighted coverage: fraction of confirmed sphere covered by negatives
+        confirmed = self.positive_boundaries != -1.0
+        total_weight   = self._bin_weight[confirmed].sum()
+        sampled_weight = self._bin_weight[
+            np.array(list(negative_bin_indices), dtype=int)
+        ][confirmed[np.array(list(negative_bin_indices), dtype=int)]].sum() if negative_bin_indices else 0.0
+        coverage = float(sampled_weight / total_weight) if total_weight > 0 else 0.0
+
+        for pos, seen, p_s in queried:
+            if seen:
+                self.p_e = np.clip(
+                    self.p_e / (self.p_e + self.epsilon * (1 - self.p_e)),
+                    0.1, 0.9
+                )
+            else:
+                confidence = 2 * abs(p_s - 0.5)
+                factor = 1 - coverage * confidence * p_s
+                self.p_e = np.clip(
+                    (factor * self.p_e) / (factor * self.p_e + (1 - self.p_e)),
+                    0.1, 0.9
+                )
+
+        for pos, seen, p_s in queried:
+            if abs((1.0 if seen else 0.0) - p_s) > 0.25:
+                self._update(pos, seen)
+
+        self.new_observations.clear()
+        print(f"{self}: p_e = {self.p_e:.3f}, coverage = {coverage:.2f}")
+
+    def __str__(self):
+        return f"DiscreteBoundary3D(n_theta={self.n_theta}, n_phi={self.n_phi})"
+
+
 class LearnedBoundary(ObservabilityModel):
     def __init__(self):
         super().__init__()
