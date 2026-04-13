@@ -1,7 +1,7 @@
 \subsection{Method Overview}
 \label{sec:method_overview}
 
-This section describes a novel method for iteratively estimating and refining the probability of a 3D feature's existence. The estimation uses Bayesian methods to integrate prior knowledge of 3D positions where the feature is and is not visible and new observations of the feature to determine a new probability of the feature's existence. Due to the focus of this research on KV-SLAM, the 3D features discussed are 3D visual map points, but this method is adaptable to higher order features as well. 
+To achieve the goal of estimating and refining the probability of a 3D feature's existence. The estimation uses Bayesian methods to integrate prior knowledge of 3D positions where the feature is and is not visible and new observations of the feature to determine a new probability of the feature's existence. Due to the focus of this research on KV-SLAM, the 3D features discussed are 3D visual map points, but this method is adaptable to higher order features as well.
 
 \subsubsection{The Observability Model}
 
@@ -14,8 +14,8 @@ Map points are conceptualized as static, infinitesimally small points in 3D Eucl
     \operatorname{observable}_p(\viewpoint) : V \to \{0,1\},
 \]
 
-which returns $1$ if $p$ is observed from $\viewpoint$ and $0$ otherwise.  
-An observation of point $p$ is then defined as $\observation_p = (\viewpoint, \state)$, where $\state \in \{0,1\}$ denotes whether the point was seen.  
+which returns $1$ if $p$ is observed from $\viewpoint$ and $0$ otherwise.
+An observation of point $p$ is then defined as $\observation_p = (\viewpoint, \state)$, where $\state \in \{0,1\}$ denotes whether the point was seen.
 A set of $n$ observations is $\observations{n}_p = \{\observation_{p0}, \dots, \observation_{pn}\}$.
 
 For illustrative purposes, later figures may use a simplified 2D representation $\viewpoint^{2D}=\{\theta,d\}$. Figure \ref{fig:global_observability_p} shows an example of such a plot.
@@ -27,11 +27,11 @@ For illustrative purposes, later figures may use a simplified 2D representation 
     \label{fig:global_observability_p}
 \end{figure}
 
-Constructing the exact global observability surface would require infinite observations across the full domain of viewpoints, which is infeasible. To satisfy the constant-size requirement in section \ref{sec:objectives}, the observability model maintains a finite, bounded representation.  
+Constructing the exact global observability surface would require infinite observations across the full domain of viewpoints, which is infeasible. To satisfy the constant-size requirement in section \ref{sec:objectives}, the observability model maintains a finite, bounded representation.
 
 The model serves two roles:
-1. Estimating $P(S,\viewpoint|E)$ from a given viewpoint.  
-2. Integrating new observations into its internal representation.  
+1. Estimating $P(S,\viewpoint|E)$ from a given viewpoint.
+2. Integrating new observations into its internal representation.
 
 The objective is to minimize the total error between the model estimate and the true observability:
 
@@ -44,9 +44,9 @@ The objective is to minimize the total error between the model estimate and the 
 The probability of existence $\pe$ is updated with each new observation using Bayesian inference. Let $\pe_t$ denote the prior probability of existence before the observation, and $\pe_{t+1}$ the posterior after incorporating it.
 
 \[
-    \pe_{t+1} = 
+    \pe_{t+1} =
     \begin{cases}
-        \dfrac{P(S,\viewpoint|E)\,\pe_t}{P(S,\viewpoint)} & \text{if } \state=1, \\[1.2ex]
+        \dfrac{P(S,\viewpoint|E)\,\pe_t}{P(S,\viewpoint)}             & \text{if } \state=1, \\[1.2ex]
         \dfrac{P(\lnot S,\viewpoint|E)\,\pe_t}{P(\lnot S,\viewpoint)} & \text{if } \state=0.
     \end{cases}
 \]
@@ -63,13 +63,13 @@ False matches are possible when the map point does not exist. Let
     \falsepos = P(S,\viewpoint|\lnot E) \approx 0,
 \]
 
-representing the false positive rate.  
+representing the false positive rate.
 Assuming the model provides an estimate $\hat{P}(S,\viewpoint|E) \equiv m(\viewpoint)$, the update simplifies to
 
 \[
     \pe_{t+1} =
     \begin{cases}
-        \dfrac{m(\viewpoint)\,\pe_t}{m(\viewpoint)\,\pe_t + \falsepos(1-\pe_t)} & \text{if } \state=1, \\[1.2ex]
+        \dfrac{m(\viewpoint)\,\pe_t}{m(\viewpoint)\,\pe_t + \falsepos(1-\pe_t)}             & \text{if } \state=1, \\[1.2ex]
         \dfrac{(1-m(\viewpoint))\,\pe_t}{(1-m(\viewpoint))\,\pe_t + (1-\falsepos)(1-\pe_t)} & \text{if } \state=0.
     \end{cases}
 \]
@@ -95,7 +95,7 @@ The update above is overly sensitive in cases where a map point has historically
 \[
     \pe_{t+1} =
     \begin{cases}
-        \damping \cdot \dfrac{m(\viewpoint)\,\pe_t}{m(\viewpoint)\,\pe_t + \falsepos(1-\pe_t)} & \text{if } \state=1, \\[1.2ex]
+        \damping \cdot \dfrac{m(\viewpoint)\,\pe_t}{m(\viewpoint)\,\pe_t + \falsepos(1-\pe_t)}             & \text{if } \state=1, \\[1.2ex]
         \damping \cdot \dfrac{(1-m(\viewpoint))\,\pe_t}{(1-m(\viewpoint))\,\pe_t + (1-\falsepos)(1-\pe_t)} & \text{if } \state=0.
     \end{cases}
 \]

@@ -64,7 +64,7 @@
 
 \title{Thesis}
 \author{Tom Zurales}
-\date{December 2025}
+\date{April 2026}
 
 \begin{document}
 \doublespace
@@ -74,7 +74,7 @@
 \newpage
 
 \begin{abstract}
-    This thesis implements and analyzes a novel, viewpoint-aware method for map point culling in keypoint-based visual SLAM systems. This method makes use of a K-Nearest Neighbors Observability Model to estimate viewpoint-dependent observability for each map point using constant additional space per point. This estimate supports continuous calculation of a map point's existence probability using a Bayesian update step implemented by an Existence Probability Estimator. This thesis explores the use of viewpoint-based existence estimations as a method of culling outdated map points, such as those originally seen on an object which has since moved, and as an extension to the RANSAC algorithm to prioritize map points with higher existence probability. The implementation is released as an open-source library, libVBEE, along with an ORB-SLAM3 integration utilizing the library for point culling and RANSAC improvement. Additionally, a set of stereo visual datasets are provided, containing scenarios specifically intended to exercise and characterize the performance of the system. Effects on standard non-dynamic SLAM datasets are discussed alongside the new datasets.
+    Keypoint-Based Visual SLAM algorithms perform well over short durations or in unchanging environments, but struggle with increasing map size and outdated map points when environments change. Methods exist to improve performance in dynamic environments over large time scales by removing old or inconsistent data from generated maps. However, no existing method integrates both geometric consistency and historic observability to identify outdated map data. This thesis presents a novel viewpoint-aware probabilistic method for map point culling in keypoint-based visual SLAM systems. The system generates and maintains a model of each map point's global observability, allowing the likelihood of observing a map point to be estimated from arbitrary locations. These model values are combined with new observations of the map point using Bayesian methods to estimate the probability of the map point's continued existence. The implementation is released as an open-source library along with an ORB-SLAM3 integration utilizing the library for point culling and RANSAC improvement. Additionally, a set of stereo visual datasets are provided, containing scenarios specifically intended to exercise and characterize the performance of the system. Effects on standard non-dynamic SLAM datasets are discussed alongside the effects on the dynamic datasets.
 \end{abstract}
 
 \newpage
