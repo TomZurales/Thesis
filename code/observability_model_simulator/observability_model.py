@@ -3,6 +3,7 @@ import numpy as np
 from scipy.spatial import ConvexHull, Delaunay, cKDTree
 from utility import cartesian_to_polar
 from dataclasses import dataclass
+from vbee import VBEE
 
 @dataclass
 class Bin:
@@ -12,13 +13,20 @@ class Bin:
 
 class ObservabilityModel:
     def __init__(self):
-        self.all_observations: list[tuple[tuple[int, int], bool]] = []
+        self.new_observations: list[tuple[tuple[int, int], bool]] = []
         self.observations: list[tuple[tuple[int, int], bool]] = []
+        self.epsilon = 1e-6
+        self.p_e = 0.9
     
     def add_observation(self, position: tuple[int, int], seen: bool):
-        self.all_observations.append((position, seen))
-        self._update(position, seen)
+        self.new_observations.append((position, seen))
 
+    def commit(self):
+        pass
+
+    def get_p_e(self) -> float:
+        return self.p_e
+    
     def _update(self, position: tuple[int, int], seen: bool):
         pass
 
@@ -64,10 +72,12 @@ class KNNObservabilityModel(ObservabilityModel):
     def __str__(self):
         return f"KNN(k={self.k})"
     
-class DiscreteBoundary(ObservabilityModel):
-    def __init__(self, n: int):
+class DiscreteBoundaryInterpolated(ObservabilityModel):
+    def __init__(self, n: int, angular_weight: float = 10.0, radial_weight: float = 10.0):
         super().__init__()
         self.n = n
+        self.angular_weight = angular_weight
+        self.radial_weight = radial_weight
         self.positive_boundaries = [-1 for _ in range(n)]
         self.negative_boundaries = [np.inf for _ in range(n)]
         self.bin_centers = [2 * np.pi * i / n for i in range(n)]
@@ -87,34 +97,148 @@ class DiscreteBoundary(ObservabilityModel):
         bin_index = self._get_bin_index(theta)
         if seen and r > self.positive_boundaries[bin_index]:
             self.positive_boundaries[bin_index] = r
-            # Set negative boundary to positive boundary if it was previously closer
-            if self.negative_boundaries[bin_index] < self.positive_boundaries[bin_index]:
-                self.negative_boundaries[bin_index] = r
         elif not seen and r < self.negative_boundaries[bin_index]:
             self.negative_boundaries[bin_index] = r
-            if self.positive_boundaries[bin_index] > self.negative_boundaries[bin_index]:
-                self.positive_boundaries[bin_index] = r
 
+    def _value_at_r(self, i: int, r: float) -> float:
+        pos = self.positive_boundaries[i]
+        neg = self.negative_boundaries[i]
+
+        if r <= pos:
+            return 1.0
+        if r >= neg:
+            return 0.0
+
+        # In the uncertain zone — Gaussian push from each known boundary
+        push = 0.0
+        if pos != -1:
+            d_rad = abs(r - pos)
+            w = np.exp(-0.5 * (d_rad * self.radial_weight) ** 2)
+            push += w * 0.5
+        if neg != np.inf:
+            d_rad = abs(r - neg)
+            w = np.exp(-0.5 * (d_rad * self.radial_weight) ** 2)
+            push -= w * 0.5
+
+        return float(np.clip(0.5 + push, 0.0, 1.0))
 
     def query(self, position: tuple[int, int]) -> float:
         r, theta = cartesian_to_polar(position[0], position[1], relative_to=self.goal)
-        # find which discrete angle bin this query falls into
-        bin_index = self._get_bin_index(theta)
 
-        if r < self.positive_boundaries[bin_index]:
-            return 1.0
-        if r > self.negative_boundaries[bin_index]:
-            return 0.0
-        
-        # If we fall between the positive / negative boundaries for this bin, interpolate
-        pos = self.positive_boundaries[bin_index]
-        neg = self.negative_boundaries[bin_index]
-        if pos == -1 or neg == np.inf:
-            # one of the boundaries is undefined, fall back to 0.5
-            return 0.5
-        return float((neg - r) / (neg - pos))
+        push = 0.0
+        for i in range(self.n):
+            center = self.bin_centers[i]
+            d_ang = abs(theta - center) % (2 * np.pi)
+            d_ang = min(d_ang, 2 * np.pi - d_ang)
 
+            w = np.exp(-0.5 * (d_ang * self.angular_weight) ** 2)
+            v = self._value_at_r(i, r)
+            push += w * (v - 0.5)
+
+        return float(np.clip(0.5 + push, 0.0, 1.0))
+
+    def __str__(self):
+        return f"DiscreteBoundaryInterpolated(n={self.n})"
     
+class DiscreteBoundary(ObservabilityModel):
+    def __init__(self, n: int, angular_weight: float = 10.0, radial_weight: float = 10.0):
+        super().__init__()
+        self.n = n
+        self.angular_weight = angular_weight
+        self.radial_weight = radial_weight
+        self.positive_boundaries = [-1.0] * n
+        self.negative_boundaries = [np.inf] * n
+        self.bin_centers = np.array([2 * np.pi * i / n for i in range(n)])
+
+    def _get_bin_index(self, theta: float) -> int:
+        d = np.abs(theta - self.bin_centers) % (2 * np.pi)
+        d = np.minimum(d, 2 * np.pi - d)
+        return int(np.argmin(d))
+
+    def _update(self, position: tuple[int, int], seen: bool):
+        r, theta = cartesian_to_polar(position[0], position[1], relative_to=self.goal)
+        i = self._get_bin_index(theta)
+        if seen and r > self.positive_boundaries[i]:
+            self.positive_boundaries[i] = r
+            if self.negative_boundaries[i] < self.positive_boundaries[i]:
+                self.negative_boundaries[i] = self.positive_boundaries[i]
+        elif not seen and r < self.negative_boundaries[i]:
+            self.negative_boundaries[i] = r
+            if self.positive_boundaries[i] > self.negative_boundaries[i]:
+                self.positive_boundaries[i] = self.negative_boundaries[i]
+
+
+    def _value_at_r(self, i: int, r: float) -> float:
+        pos = self.positive_boundaries[i]
+        neg = self.negative_boundaries[i]
+        if r <= pos and r <= neg:
+            return 1.0
+        if r >= neg and r >= pos:
+            return 0.0
+        push = 0.0
+        if pos != -1:
+            w = np.exp(-0.5 * (abs(r - pos) * self.radial_weight) ** 2)
+            push += w * 0.5
+        if neg != np.inf:
+            w = np.exp(-0.5 * (abs(r - neg) * self.radial_weight) ** 2)
+            push -= w * 0.5
+        return float(np.clip(0.5 + push, 0.0, 1.0))
+
+    def query(self, position: tuple[int, int]) -> float:
+        r, theta = cartesian_to_polar(position[0], position[1], relative_to=self.goal)
+        d_ang = np.abs(theta - self.bin_centers) % (2 * np.pi)
+        d_ang = np.minimum(d_ang, 2 * np.pi - d_ang)
+        weights = np.exp(-0.5 * (d_ang * self.angular_weight) ** 2)
+        values = np.array([self._value_at_r(i, r) for i in range(self.n)])
+        push = np.sum(weights * (values - 0.5))
+        return float(np.clip(0.5 + push, 0.0, 1.0))
+
+    def commit(self):
+        if not self.new_observations:
+            return
+
+        # Query model before any updates for batch consistency
+        queried = [
+            (pos, seen, self.query(pos))
+            for pos, seen in self.new_observations
+        ]
+
+        # Unique bins sampled with non-observations this session
+        negative_bin_indices = set(
+            self._get_bin_index(
+                cartesian_to_polar(pos[0], pos[1], relative_to=self.goal)[1]
+            )
+            for pos, seen, _ in queried if not seen
+        )
+
+        # Equal weight per confirmed bin — one angular region, one vote
+        total_weight = sum(1.0 for i in range(self.n) if self.positive_boundaries[i] != -1)
+        sampled_weight = sum(1.0 for i in negative_bin_indices if self.positive_boundaries[i] != -1)
+        coverage = sampled_weight / total_weight if total_weight > 0 else 0.0
+
+        # Update P(E)
+        for pos, seen, p_s in queried:
+            if seen:
+                self.p_e = np.clip(
+                    self.p_e / (self.p_e + self.epsilon * (1 - self.p_e)),
+                    0.1, 0.9
+                )
+            else:
+                confidence = 2 * abs(p_s - 0.5)
+                factor = 1 - coverage * confidence * p_s
+                self.p_e = np.clip(
+                    (factor * self.p_e) / (factor * self.p_e + (1 - self.p_e)),
+                    0.1, 0.9
+                )
+
+        # Update observability model only where observation disagrees with model
+        for pos, seen, p_s in queried:
+            if abs((1.0 if seen else 0.0) - p_s) > 0.25:
+                self._update(pos, seen)
+
+        self.new_observations.clear()
+        print(f"{self}: p_e = {self.p_e:.3f}, coverage = {coverage:.2f}")
+
     def __str__(self):
         return f"DiscreteBoundary(n={self.n})"
     
@@ -142,7 +266,6 @@ class LearnedBoundary(ObservabilityModel):
                 positive=r if seen else -1.0,
                 negative=r if not seen else np.inf,
             ))
-            print(f"NEW BIN {theta}")
             return
 
         # Find the bin that this observation falls into
@@ -159,7 +282,6 @@ class LearnedBoundary(ObservabilityModel):
             dist = self.dist_to_border(theta)
             if abs(dist) < 0.1 and abs(dist) > 0.01:  # near a border, slide the bin center rather than add a new bin
                 b.center = b.center + dist
-                print(f"SLID BIN {bin_index} TO {b.center}")
                 return
 
             # Place the new bin so its border with the conflicting bin falls at
@@ -171,7 +293,6 @@ class LearnedBoundary(ObservabilityModel):
                 positive=r if seen else -1.0,
                 negative=r if not seen else np.inf,
             ))
-            print(f"NEW BIN center={c_new:.4f} (border at theta={theta:.4f})")
             return
 
         if seen and r > b.positive:
@@ -451,7 +572,7 @@ class ConcaveHullObservabilityModel(ObservabilityModel):
         return "Concave Hull"
 
 
-ObservabilityModels = [RandomObservabilityModel(), KNNObservabilityModel(10), KNNObservabilityModel(1), DiscreteBoundary(144), LearnedBoundary(), AdjustableDiscreteBoundaryObservabilityModel(36), PinchedHullObservabilityModel(), ConvexHullObservabilityModel(), ConcaveHullObservabilityModel()]
+ObservabilityModels = [RandomObservabilityModel(), KNNObservabilityModel(10), KNNObservabilityModel(1), DiscreteBoundary(36), LearnedBoundary(), AdjustableDiscreteBoundaryObservabilityModel(36), PinchedHullObservabilityModel(), ConvexHullObservabilityModel(), ConcaveHullObservabilityModel()]
 
 
 if __name__ == "__main__":

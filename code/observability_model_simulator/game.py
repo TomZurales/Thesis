@@ -293,6 +293,7 @@ def main():
         EDIT_MODES,
         font,
     )
+    edit_dropdown.selected = "Observe"
 
     observe_button = Button(
         MARGIN + DROPDOWN_WIDTH + 16,
@@ -312,6 +313,7 @@ def main():
         VIEW_MODES,
         font,
     )
+    view_dropdown.selected = "DiscreteBoundary(n=36)"
 
     res_dropdown = Dropdown(
         MARGIN + DROPDOWN_WIDTH + 16 + 120 + 16 + DROPDOWN_WIDTH + 16,
@@ -340,6 +342,15 @@ def main():
         90,
         DROPDOWN_HEIGHT,
         "Clear",
+        font,
+    )
+
+    end_of_run_button = Button(
+        _btn_x + 90 + 8 + 90 + 8,
+        WINDOW_HEIGHT - MARGIN - DROPDOWN_HEIGHT,
+        120,
+        DROPDOWN_HEIGHT,
+        "End of Run",
         font,
     )
 
@@ -391,6 +402,13 @@ def main():
                 world_rects.clear()
                 goal_point = None
                 world_version += 1
+                view_dirty = True
+                continue
+
+            if end_of_run_button.handle_event(event):
+                for model in MODELS:
+                    model.commit()
+                obs_version += 1
                 view_dirty = True
                 continue
 
@@ -524,12 +542,18 @@ def main():
         if goal_point is not None:
             pygame.draw.circle(screen, BLUE, goal_point, GOAL_RADIUS)
 
+        if view_mode != "Raw" and view_mode in MODEL_BY_NAME:
+            active_model = MODEL_BY_NAME[view_mode]
+            pe_text = font.render(f"p_e = {active_model.get_p_e():.4f}", True, TEXT_COLOR)
+            screen.blit(pe_text, (MARGIN, MARGIN))
+
         edit_dropdown.draw(screen)
         observe_button.draw(screen)
         view_dropdown.draw(screen)
         res_dropdown.draw(screen)
         save_button.draw(screen)
         clear_button.draw(screen)
+        end_of_run_button.draw(screen)
         pygame.display.flip()
         clock.tick(60)
 
