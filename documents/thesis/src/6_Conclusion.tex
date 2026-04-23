@@ -1,5 +1,17 @@
-\section{Conclusion and Future Work}
+\section{Future Work and Conclusions}
 \label{sec:conclusion}
 
 \subsection{Future Work}
 \label{sec:future_work}
+
+Performing the map point removal as part of an offline post-processing step is done for performance reasons. Projecting every map point into the camera's frustum for every frame proved to be too significant of a load to run the system in real time. Optimizations were attempted making use of ORB-SLAM3's co-observability graph to reduce the number of map points to project, but this still caused high computational load beyond what would be allowable for low-powered systems. This could be addressed by reimplementing the map backend using a data structure optimized for spacial searches such as a k-d tree. Selecting points that are likely to project into the camera's frame would significantly reduce the number of points that need to be tested. Additionally, KNN-based observability models would benefit from this structure, as nearby past observations would be fast to identify (O(log N) vs O(N)).
+
+The methods of modeling global map point observability explored in this research are not comprehensive, and make no claims around being optimal in terms of accuracy or storage space. A deeper exploration into methods of encoding observability information may reveal significant improvements in both these areas. The discrete boundary model explored encoding maximum observability distance for a fixed number of bins, but issues arise when geometricly complex boundaries exist within a single bin, leading to ambiguity. Ideally, bins could be created or modified dynamically, allowing for a higher density of bins in geometricly complex areas, and lower density in uninteresting or unexplored areas.
+
+If a discrete number of bins is desired for memory consistency and reduced complexity, the selection of bins using the fibonacci sphere may not be optimal. Other methods of descritizing the sphere could provide distinct advantages. For example, using icosahedron subdivisions or HEALPix would provide uniform segmentation areas distributed evenly around the sphere. Because 3D map points tend to lie on surfaces or corners, it is common for a map point to only be observable from a single hemisphere. If surface normals are estimated for each map point, bins could be concentrated around the surface normal, rather than wasting density on low likelyhood observability areas.
+
+Online learning methods may also be useful for encoding global observability within a high dimensional vector representing a continuous shell around the map point rather than a finite set of bins. If properly implemented, this could allow map points to learn complex observability boundaries without the disadvantages of a discrete set of bins.
+
+Treating map points as discrete elements matches the structure used by most KV-SLAM systems, but it ignores potential optimizations that could occur by considering similar observability in nearby map points. Two map points that are physically close to each other on the same surface will have nearly identical observability boundaries. If map points with similar observability boundaries could be identified, a single observability boundary could be defined for a group of map points instead of on an individual basis.
+
+Finally, while the selected hyperparameters were selected through multivariate optimization, there may be more mathematically rigorous methods of selecting one or more of these values. The simulations used to select the values were limited in terms of applicability to real-world SLAM systems, and easily could have converged to local minima. 

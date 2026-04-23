@@ -16,7 +16,7 @@ The initialization function in Algorithm \ref{alg:vbee_init} sets up the VBEE in
             \Require $\params{\vbee}$: VBEE Parameters
             \Require $\params{\knn}$: KNN Parameters
             \Require $\params{\epe}$: Existence Probability Estimator Parameters
-            \State{\textbf{global} $p\_e, \damping, \observability, \observabilityupdate \gets \params{\vbee}$} 
+            \State{\textbf{global} $p\_e, \damping, \observability, \observabilityupdate \gets \params{\vbee}$}
             \State{\textbf{global} $knn \gets \knn.\initialize{\params{\knn}}$}
             \State{\textbf{global} $epe \gets \epe.\initialize{\params{\epe}}$}
         \end{algorithmic}
@@ -33,15 +33,15 @@ The update function in Algorithm \ref{alg:vbee_update} integrates a new observat
             \Require $\observation$: New Observation
             \Ensure{$\estpe$: Updated Existence Probability}
             \State{$prior \gets p\_e$}
-            \State{$model\_estimate \gets knn.\estimate{\observation.v}$} 
+            \State{$model\_estimate \gets knn.\estimate{\observation.v}$}
             \State{$posterior \gets epe.\update{\observation, prior, model\_estimate}$}
-
+            
             \State{$weight \gets (1 - \observability) \cdot \damping$}
             \State{$p\_e \gets prior \cdot (1 - weight) + posterior \cdot weight$}
-
+            
             \State{$\feedback \gets p\_e - prior$}
-            \State{$knn.\update{\observation, \feedback}$} 
-
+            \State{$knn.\update{\observation, \feedback}$}
+            
             \State{$\observability \gets \observability + \observabilityupdate \cdot (\observation.s - model\_estimate)$}
             \Return{$p\_e$}
         \end{algorithmic}
@@ -49,11 +49,14 @@ The update function in Algorithm \ref{alg:vbee_update} integrates a new observat
 \end{singlespace}
 
 The query function simply returns the current existence probability $\pe$.
-
-\subsubsection{KNN Observability Model}
+\subsubsection{Observability Models}
 \label{sec:observability_models}
 
-This thesis uses a K-nearest neighbors (KNN) method for modeling map point observability. The KNN model estimates $\psge$ as the ratio of positive observations within the $k$ nearest neighbors of the query viewpoint. Since infinite observations cannot be stored, the model maintains a finite buffer of $n$ observations. The angular distance between viewpoints is also considered, as distant observations may be irrelevant. Finally, the model incorporates feedback from the existence probability estimator to decide whether or not to integrate a new observation.
+Two methods are explored for modeling observability. The first model performs a K-Nearest Neighbors search on a representative set of previous observations. The Discrete Boundary model attempts to estimate the boundary in all directions from which the map point transitions from visible to obscured.
+
+\textbf{KNN Model}
+
+The KNN model estimates $\psge$ as the ratio of positive observations within the $k$ nearest neighbors of the query viewpoint. The model maintains a finite buffer of $n$ observations. The angular distance between viewpoints is also considered, as distant observations may be irrelevant. Finally, the model incorporates feedback from the existence probability estimator to decide whether or not to integrate a new observation.
 
 The parameter vector is:
 $$
@@ -74,14 +77,14 @@ The estimation function is shown in Algorithm \ref{alg:knn_estimate}, returning 
             \Function{$\estimate$}{$\viewpoint$}
             \State $candidates \gets [\;]$
             \ForAll{$o \in \observations{}_{prev}$}
-                \If{$\Delta\theta(o.v, \viewpoint) < \athreshold$}
-                    \State add $o$ to $candidates$
-                \EndIf
+            \If{$\Delta\theta(o.v, \viewpoint) < \athreshold$}
+            \State add $o$ to $candidates$
+            \EndIf
             \EndFor
             \State \texttt{sort} $candidates$ by distance to $\viewpoint$
             \State $neighbors \gets$ first $\min(k, \texttt{length}(candidates))$
             \If{$neighbors$ is empty}
-                \State \Return $0.5$
+            \State \Return $0.5$
             \EndIf
             \State $seen\_count \gets$ sum of $o.s$ in $neighbors$
             \State \Return $seen\_count / \texttt{length}(neighbors)$
@@ -101,23 +104,27 @@ The update function (Algorithm \ref{alg:knn_update}) integrates new observations
             \Require $n$, $\feedbackthreshold$: Parameters
             \Function{$\update$}{$o, \feedback$}
             \If{$\texttt{length}(\observations{}_{prev}) < n$}
-                \State add $o$
-                \State \Return
+            \State add $o$
+            \State \Return
             \EndIf
             \If{$|\feedback| < \feedbackthreshold$}
-                \State \Return
+            \State \Return
             \EndIf
             \If{$o.s = 1$}
-                \State replace nearest not-seen observation with $o$
+            \State replace nearest not-seen observation with $o$
             \Else
-                \State replace nearest seen observation with $o$
+            \State replace nearest seen observation with $o$
             \EndIf
             \EndFunction
         \end{algorithmic}
     \end{algorithm}
 \end{singlespace}
 
-The accuracy and performance of the KNN model will be evaluated in section \ref{sec:observability_model_eval}.
+The accuracy and performance of the KNN model will be evaluated in section \ref{sec:observability_model_eval}.\\
+
+\textbf{Discrete Boundary Model}
+
+The Discrete Boundary Model establishes a set of "bins" surrounding the map point, each tied to a unique direction vector. Each bin stores the radial distance to the furthest positive observation, and the closest negative observation. For each query observation, the bin whos direction vector is nearest to the queried point's direction vector is selected. Queries closer than the bin's maximum positive observation are scored with a high $\psge$. Queries more distant than the bin's furthest negative observation are scored with a low $\psge$. Queries between these values are linearly interpolated based on their relative distance to the two borders.
 
 \subsubsection{Existence Probability Estimator}
 \label{sec:existence_confidence}
@@ -133,9 +140,9 @@ The Existence Probability Estimator (EPE) updates the probability $\pe$ of a map
             \Require Prior $\estpe_t \in [0,1]$
             \Require KNN estimate $\estpsge$
             \If{$o.s = 1$}
-                \State $posterior \gets \frac{\estpsge (1 - \falseneg) \cdot \estpe_t}{\estpsge (1 - \falseneg) \cdot \estpe_t + \falsepos (1 - \estpe_t)}$
+            \State $posterior \gets \frac{\estpsge (1 - \falseneg) \cdot \estpe_t}{\estpsge (1 - \falseneg) \cdot \estpe_t + \falsepos (1 - \estpe_t)}$
             \Else
-                \State $posterior \gets \frac{(1 - \estpsge (1 - \falseneg)) \cdot \estpe_t}{(1 - \estpsge (1 - \falseneg)) \cdot \estpe_t + (1 - \falsepos)(1 - \estpe_t)}$
+            \State $posterior \gets \frac{(1 - \estpsge (1 - \falseneg)) \cdot \estpe_t}{(1 - \estpsge (1 - \falseneg)) \cdot \estpe_t + (1 - \falsepos)(1 - \estpe_t)}$
             \EndIf
             \State \Return $posterior$
         \end{algorithmic}
