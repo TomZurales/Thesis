@@ -1,5 +1,6 @@
 *.log
 *.lof
+*.loa
 *.aux
 *.bbl
 *.bbl-SAVE-ERROR
@@ -15,7 +16,7 @@
 
 .vscode/
 build/
-datasets/**/data/
+datasets/
 .venv/
 .cache/
 __pycache__/
