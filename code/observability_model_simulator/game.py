@@ -10,8 +10,8 @@ from observability_model import ObservabilityModels
 
 SAVE_FILE = Path(__file__).parent / "world_save.json"
 
-WINDOW_WIDTH = 1920
-WINDOW_HEIGHT = 1080
+WINDOW_WIDTH = 960
+WINDOW_HEIGHT = 540
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (200, 50, 50)
@@ -313,7 +313,7 @@ def main():
         VIEW_MODES,
         font,
     )
-    view_dropdown.selected = "DiscreteBoundary(n=36)"
+    view_dropdown.selected = "DiscreteBoundary(n=360)"
 
     res_dropdown = Dropdown(
         MARGIN + DROPDOWN_WIDTH + 16 + 120 + 16 + DROPDOWN_WIDTH + 16,

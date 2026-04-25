@@ -1,0 +1,6 @@
+class ObservabilityModel:
+    def query(self, position: tuple[int, int]) -> float:
+        ...
+
+    def integrate(self, observations: list[tuple[float, float, bool]]):
+        ...
