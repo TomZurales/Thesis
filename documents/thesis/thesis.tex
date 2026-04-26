@@ -18,6 +18,9 @@
 \usepackage{xcolor}
 \usepackage{booktabs}
 \usepackage[section]{placeins}
+\usepackage[nottoc]{tocbibind}
+\usepackage{microtype}
+
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -60,32 +63,52 @@
 
 \addbibresource{../sources/Thesis.bib}
 
-\title{Thesis}
-\author{Tom Zurales}
-\date{April 2026}
-
 \begin{document}
 \doublespace
 
-\maketitle
+\begin{titlepage}
+    \centering
+    \vfill
+    Viewpoint-Based Map Point Existence Estimation for\\
+    Episodic Keypoint-Based Visual SLAM
+    \vfill
+    A THESIS\\
+    SUBMITTED TO THE FACULTY OF THE UNIVERSITY\\
+    OF MINNESOTA\\
+    BY
+    \vfill
+    Thomas Zurales
+    \vfill
+    IN PARTIAL FULFILLMENT OF THE REQUIREMENTS\\
+    FOR THE DEGREE OF\\
+    MASTER OF SCIENCE
+    \vfill
+    Dr. Arshia Khan
+    \vfill
+    2026
+    \vfill
+\end{titlepage}
 
-\newpage
+\pagenumbering{roman}
 
 \begin{abstract}
     Keypoint-Based Visual SLAM algorithms perform well over short durations or in unchanging environments, but struggle with increasing map size and outdated map points when environments change. Methods exist to improve performance in dynamic environments over large time scales by removing old or inconsistent data from generated maps. However, no existing method integrates both geometric consistency and historic observability to identify outdated map data. This thesis presents a novel viewpoint-aware probabilistic method for map point culling in keypoint-based visual SLAM systems. The system generates and maintains a model of each map point's global observability, allowing the likelihood of observing a map point to be estimated from arbitrary locations. These model values are combined with new observations of the map point using Bayesian methods to estimate the probability of the map point's continued existence. The implementation is released as an open-source library along with an ORB-SLAM3 integration utilizing the library for point culling and RANSAC improvement. Additionally, a set of stereo visual datasets are provided, containing scenarios specifically intended to exercise and characterize the performance of the system. Effects on standard non-dynamic SLAM datasets are discussed alongside the effects on the dynamic datasets.
 \end{abstract}
+\clearpage
 
-\newpage
+\section*{Acknowlegements}
+\clearpage
 
 \tableofcontents
-
-\newpage
+\clearpage
 
 \listoffigures
-\listofalgorithms
+\clearpage
 
-\addcontentsline{toc}{section}{Definitions}
-\include{src/0_Definitions}
+\listoftables
+\clearpage
+
+\pagenumbering{arabic}
 
 \include{src/1_Introduction}
 
@@ -101,8 +124,8 @@
 
 \include{src/6_Conclusion}
 
-\addcontentsline{toc}{section}{References}
-\printbibliography
+\singlespacing
+\printbibliography[heading=bibintoc, title={Bibliography}]
 
 \include{src/8_Appendices}
 

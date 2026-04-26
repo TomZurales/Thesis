@@ -54,7 +54,7 @@ The query function simply returns the current existence probability $\pe$.
 
 Two methods are explored for modeling observability. The first model performs a K-Nearest Neighbors search on a representative set of previous observations. The Discrete Boundary model attempts to estimate the boundary in all directions from which the map point transitions from visible to obscured.
 
-\textbf{KNN Model}
+\paragraph{KNN Model}
 
 The KNN model estimates $\psge$ as the ratio of positive observations within the $k$ nearest neighbors of the query viewpoint. The model maintains a finite buffer of $n$ observations. The angular distance between viewpoints is also considered, as distant observations may be irrelevant. Finally, the model incorporates feedback from the existence probability estimator to decide whether or not to integrate a new observation.
 
@@ -120,9 +120,9 @@ The update function (Algorithm \ref{alg:knn_update}) integrates new observations
     \end{algorithm}
 \end{singlespace}
 
-The accuracy and performance of the KNN model will be evaluated in section \ref{sec:observability_model_eval}.\\
+The accuracy and performance of the KNN model will be evaluated in section \ref{sec:observability_model_eval}.
 
-\textbf{Discrete Boundary Model}
+\paragraph{Discrete Boundary Model}
 
 The Discrete Boundary Model establishes a set of "bins" surrounding the map point, each tied to a unique direction vector. Each bin stores the radial distance to the furthest positive observation, and the closest negative observation. For each query observation, the bin whos direction vector is nearest to the queried point's direction vector is selected. Queries closer than the bin's maximum positive observation are scored with a high $\psge$. Queries more distant than the bin's furthest negative observation are scored with a low $\psge$. Queries between these values are linearly interpolated based on their relative distance to the two borders.
 
