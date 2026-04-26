@@ -1,7 +1,8 @@
-#include <vector>
-#include <Eigen/Core>
+#pragma once
 
-class DiscreteBoundary
+#include "observability_model.h"
+
+class DiscreteBoundary : public ObservabilityModel
 {
 private:
     int n;

@@ -1,6 +1,5 @@
 from observability_models.discrete_boundary import DiscreteBoundary
 
-
 class VBEE:
     def __init__(self):
         self.obs_models = {}
