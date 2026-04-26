@@ -4,7 +4,8 @@ import os
 from collections import deque
 import numpy as np
 
-from vbee import VBEE
+from vbee_2d.vbee import VBEE
+from vbee_2d.observability_models.discrete_boundary import DiscreteBoundary
 
 ASPECT = 16 / 9
 BASE_W = 1280
@@ -47,13 +48,13 @@ COLOR_GOAL     = (30, 80, 210)
 GOAL_RADIUS   = 5
 OBS_RADIUS   = 2
 
-vbee = VBEE()
+vbee = None
 
 # ---------------------------------------------------------------------------
 # Run-mode entry point — implement this function
 # ---------------------------------------------------------------------------
 def on_next(_observations: list[tuple[float, float, bool]]) -> None:
-    vbee.integrate(_observations)
+    vbee.step(_observations)
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -163,9 +164,11 @@ def ray_clear(px, py, goal_row, goal_col, grid, cell_w, cell_h):
 
 
 def heatmap_color(value: float) -> tuple[int, int, int]:
-    """Map a [0, 1] value to a red→green color."""
+    """Map a [0, 1] value to a red→yellow→green color."""
     v = max(0.0, min(1.0, value))
-    return (round(255 * (1 - v)), round(255 * v), 0)
+    r = round(255 * min(1.0, (1.0 - v) * 2))
+    g = round(255 * min(1.0, v * 2))
+    return (r, g, 0)
 
 
 def compute_heatmap(grid, win_w, win_h, model: str) -> pygame.Surface:
@@ -197,9 +200,7 @@ def compute_heatmap(grid, win_w, win_h, model: str) -> pygame.Surface:
         rel_y = TOOLBAR_H + py - gy_screen
         for px in range(win_w):
             if grid[r, col_of[px]] != WALL:
-                value = vbee.query((px - gx_screen, rel_y), model)
-                v = max(0.0, min(1.0, value))
-                pixels[px, py] = (round(255 * (1 - v)), round(255 * v), 0)
+                pixels[px, py] = heatmap_color(vbee.query((px - gx_screen, rel_y)))
 
     return pygame.surfarray.make_surface(pixels)
 
@@ -305,6 +306,7 @@ def draw_run_toolbar(screen, win_w, font, algo_index, dropdown_open):
 # Main
 # ---------------------------------------------------------------------------
 def main():
+    global vbee
     pygame.init()
     font = pygame.font.SysFont(None, 26)
 
@@ -349,6 +351,8 @@ def main():
                             if rect.collidepoint(mx, my):
                                 if label == "Done" and goal_placed:
                                     mode = MODE_RUN
+                                    if vbee is None:
+                                        vbee = VBEE(find_goal(grid), DiscreteBoundary(20))
                                     dragging = False
                                 elif label in TOOLS:
                                     active_tool = label
@@ -371,6 +375,7 @@ def main():
                                 if grid[row, col] == EMPTY:
                                     grid[grid == GOAL] = EMPTY
                                     grid[row, col] = GOAL
+                                    vbee = VBEE(find_goal(grid), DiscreteBoundary(20))
 
                 elif mode == MODE_RUN:
                     tb_rects = run_toolbar_rects()
