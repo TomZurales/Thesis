@@ -16,15 +16,15 @@ endif()
 
 set(CMAKE_INSTALL_PREFIX ${OUT_DIR})
 
-add_subdirectory(deps/DBoW2)
-add_subdirectory(deps/g2o)
-add_subdirectory(deps/Sophus)
-add_subdirectory(VBEE/library)
-add_subdirectory(libVBEE)
-add_subdirectory(ORB_SLAM3)
-add_subdirectory(VBEE)
-add_subdirectory(analysis)
-add_subdirectory(optimization)
+# add_subdirectory(deps/DBoW2)
+# add_subdirectory(deps/g2o)
+# add_subdirectory(deps/Sophus)
+# add_subdirectory(VBEE/library)
+# add_subdirectory(libVBEE)
+add_subdirectory(ORB-SLAM3_VBEE)
+# add_subdirectory(VBEE)
+# add_subdirectory(analysis)
+# add_subdirectory(optimization)
 
 add_custom_target(update_requirements ALL
     COMMAND /bin/bash -c "source ${CMAKE_SOURCE_DIR}/.venv/bin/activate; pip freeze > ${CMAKE_SOURCE_DIR}/.aux/requirements.txt" VERBATIM
