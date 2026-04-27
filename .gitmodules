@@ -1,6 +1,9 @@
 [submodule "ORB_SLAM3"]
 	path = ORB_SLAM3
 	url = git@github.com:TomZurales/ORB_SLAM3.git
+[submodule "ORB-SLAM3_VBEE"]
+	path = ORB-SLAM3_VBEE
+	url = git@github.com:TomZurales/ORB-SLAM3_VBEE.git
 [submodule "code/predictor/third_party/imgui"]
 	path = code/predictor/third_party/imgui
 	url = git@github.com:ocornut/imgui.git
