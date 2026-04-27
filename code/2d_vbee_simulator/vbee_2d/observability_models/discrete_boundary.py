@@ -1,10 +1,7 @@
 import math
 
-def clamp(value, min_value, max_value):
-    return max(min_value, min(max_value, value))
-
 def clamp(value, minmax_value):
-    return clamp(value, -minmax_value, minmax_value)
+    return max(-minmax_value, min(minmax_value, value))
 
 def map_value(value, from_min, from_max, to_min, to_max):
     if from_max == from_min:
@@ -15,7 +12,6 @@ class DiscreteBoundary:
     def __init__(self, n: int, k: int = 5, ambiguous_range = 0.5):
         self.n = n
         self.k = k
-        self._observability = 0.0
         self.ambiguous_range = ambiguous_range
         self.max_seen = [0] * n
         self.bin_observabilities = [0] * n
@@ -30,7 +26,7 @@ class DiscreteBoundary:
             if r < self.min_unseen[bin]:
                 return 1.0
             else:
-                return map_value(self.bin_ambiguous[bin], 0, 2 * self.k, 0.5 - (self.ambiguous_range / 2), 0.5 + self.ambiguous_range)
+                return map_value(self.bin_ambiguous[bin], 0, 2 * self.k, 0.5 - (self.ambiguous_range / 2), 0.5 + (self.ambiguous_range / 2))
         else:
             return 0.0
     
@@ -50,7 +46,7 @@ class DiscreteBoundary:
                 self.min_unseen[bin] = r
                 updated = True
 
-        if r < self.max_seen[bin] and r > self.min_unseen[bin]:
+        if r <= self.max_seen[bin] and r >= self.min_unseen[bin]:
             if obs:
                 self.bin_ambiguous[bin] = min(2 * self.k, self.bin_ambiguous[bin] + 1)
             else:
@@ -66,7 +62,7 @@ class DiscreteBoundary:
                 # Two sections
                 s1_vol = math.pi * (self.min_unseen[bin] ** 2) / self.n
                 s2_vol = (math.pi * (self.max_seen[bin] ** 2) / self.n) - s1_vol
-                self.bin_observabilities[bin] = s1_vol + ((self.bin_ambiguous[bin] / (2 * self.k)) * s2_vol)
+                self.bin_observabilities[bin] = s1_vol + (map_value(self.bin_ambiguous[bin], 0, 2 * self.k, 0.5 - (self.ambiguous_range / 2), 0.5 + (self.ambiguous_range / 2)) * s2_vol)
             else:
                 # One section
                 self.bin_observabilities[bin] = math.pi * (self.max_seen[bin] ** 2) / self.n
