@@ -1,10 +1,16 @@
 #pragma once
 
-#include <vector>
-#include <Eigen/Core>
+#include "observation.h"
+class ObservabilityModel {
 
-class ObservabilityModel
-{
-  public:
-    virtual std::vector<float> EstimateAndIntegrate(const Eigen::Vector3f &viewpoint) = 0;
+  std::vector<Observation> past_observations;
+
+  std::vector<Observation> pastObservationsInSameHemisphere(const Viewpoint&);
+  std::vector<Observation> pastObservationsInInflucencedArea(const Viewpoint&);
+
+public:
+  float Estimate(const Observation &observation, bool doUpdate = true);
+  float Estimateish(const Observation &observation);
+
+  void Update(const Observation &observation);
 };

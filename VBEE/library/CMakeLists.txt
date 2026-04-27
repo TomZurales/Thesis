@@ -1,11 +1,9 @@
-find_package(Eigen3 3.1.0 REQUIRED)
-find_package(Threads)
+FIND_PACKAGE(Eigen3 3.1.0 REQUIRED)
 
 # add_library(vbee SHARED
 add_library(vbee
    src/vbee.cc
    src/observability_model.cc
-   src/observability_models/discrete_boundary.cc
    src/existence_probability_estimator.cc
 )
 target_include_directories(vbee PUBLIC include)
@@ -15,7 +13,6 @@ target_link_libraries(vbee PUBLIC Eigen3::Eigen)
 add_library(vbee_debug
    src/vbee.cc
    src/observability_model.cc
-   src/observability_models/discrete_boundary.cc
    src/existence_probability_estimator.cc
 )
 target_include_directories(vbee_debug PUBLIC include)
@@ -30,9 +27,3 @@ target_include_directories(vbee_tests PRIVATE include)
 target_link_libraries(vbee_tests PRIVATE vbee_debug GTest::gtest GTest::gtest_main)
 set_target_properties(vbee_tests PROPERTIES COMPILE_OPTIONS "")
 target_compile_options(vbee_tests PRIVATE -O0 -g)
-
-add_executable(discrete_boundary_tests testing/observability_models/discrete_boundary_tests.cc)
-target_include_directories(discrete_boundary_tests PRIVATE include)
-target_link_libraries(discrete_boundary_tests PRIVATE vbee_debug GTest::gtest GTest::gtest_main)
-set_target_properties(discrete_boundary_tests PROPERTIES COMPILE_OPTIONS "")
-target_compile_options(discrete_boundary_tests PRIVATE -O0 -g)

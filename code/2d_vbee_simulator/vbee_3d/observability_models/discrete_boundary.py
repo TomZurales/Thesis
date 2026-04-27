@@ -40,9 +40,9 @@ class DiscreteBoundary:
         self.k = k
         self.ambiguous_range = ambiguous_range
         self.max_seen = [0] * N
+        self.min_unseen = [float('inf')] * N
         self.bin_observabilities = [0] * N
         self.bin_ambiguous = [k] * N
-        self.min_unseen = [float('inf')] * N
 
     def query(self, position: tuple[float, float, float]) -> float:
         x, y, z = position

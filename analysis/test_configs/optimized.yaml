@@ -1,12 +1,13 @@
 name: Final Analysis of Optimized Parameters
 datasets:
-  - "all_days"
+  # - "all_days"
   # - "all_machine_halls"
   # - "all_vicon_room_1"
   # - "all_vicon_room_2"
   # - "big_skip"
   # - "machine_hall_1_5"
   # - "small_skips"
+  - "short_session"
 modes:
   # - "baseline"
   - "vbee"

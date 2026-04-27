@@ -4,3 +4,6 @@
 [submodule "code/predictor/third_party/imgui"]
 	path = code/predictor/third_party/imgui
 	url = git@github.com:ocornut/imgui.git
+[submodule "libVBEE"]
+	path = libVBEE
+	url = git@github.com:TomZurales/libVBEE.git
