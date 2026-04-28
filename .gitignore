@@ -1,6 +1,7 @@
 *.log
 *.lof
 *.loa
+*.lot
 *.aux
 *.bbl
 *.bbl-SAVE-ERROR
