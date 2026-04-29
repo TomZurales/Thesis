@@ -34,3 +34,4 @@ data/
 thesis_old/
 
 deps/
+.claude/

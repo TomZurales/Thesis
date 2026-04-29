@@ -211,7 +211,7 @@ int main(int argc, char **argv) {
       const ObservabilityScenario& scenario = scenarios[scenario_idx];
       float this_p_e_error = 0.0f;
       float this_observability_error = 0.0f;
-      VBEE vbee(scenario_idx);
+      Point vbee(scenario_idx);
 
       // 1000 observations while the point exists
       for(int i = 0; i < 1000; i++)
