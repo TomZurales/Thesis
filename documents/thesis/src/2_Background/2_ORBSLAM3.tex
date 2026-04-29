@@ -9,3 +9,8 @@ ORB-SLAM3 is a KV-SLAM implementation that is popular in research contexts due t
     \caption[Simplified ORB-SLAM3 Operational Diagram]{A simplified diagram of the inputs, outputs, and subprocesses of ORB-SLAM3.}
     \label{fig:orb-slam3}
 \end{figure}
+
+\subsubsection{Map Points and Native Culling}
+\label{sec:orb_slam3_map_points}
+
+ORB-SLAM3 represents the environment as a set of 3D map points, each associated with a visual descriptor and a history of keyframe observations, and applies native culling rules to remove points that fail quality checks during local mapping.

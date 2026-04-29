@@ -9,7 +9,7 @@ Several research topics fall under lifelong SLAM, with those relevant to the wor
 
 As previously discussed, place recognition refers to the ability to determine when an agent has entered a previously visited area. In KV-SLAM, this is commonly achieved using a bag-of-words approach over binary feature descriptors extracted from camera images \cite{camposORBSLAM3AccurateOpenSource2021}. However, these features can vary significantly over time due to changes in lighting, weather, scene layout, or viewpoint. Chen et al. \cite{chenDeepLearningFeatures2017} proposed using deep learning to identify features that are invariant to conditions and viewpoint, but they are still sensitive to geometric changes.
 
-Milford et al. improved robustness to time-of-day and weather variation by matching sequences of whole-image comparisons rather than relying on a single image or feature-based matches. However, this approach requires alignment between the image sequence and the reference trajectory, effectively requiring similar speed and direction of travel. Naseer et al. \cite{naseerVisionbasedMarkovLocalization2015} relaxed this constraint by computing a full probability distribution over possible locations, removing the need for trajectory alignment. Both of these approaches are sensitive to viewpoint variation, and can fail when the camera trajectory differs significantly from previously observed trajectories.
+Milford et al. \cite{milfordSeqSLAMVisualRoutebased2012} improved robustness to time-of-day and weather variation by matching sequences of whole-image comparisons rather than relying on a single image or feature-based matches. However, this approach requires alignment between the image sequence and the reference trajectory, effectively requiring similar speed and direction of travel. Naseer et al. \cite{naseerVisionbasedMarkovLocalization2015} relaxed this constraint by computing a full probability distribution over possible locations, removing the need for trajectory alignment. Both of these approaches are sensitive to viewpoint variation, and can fail when the camera trajectory differs significantly from previously observed trajectories.
 
 Learning-based methods like NetVLAD \cite{arandjelovicNetVLADCNNArchitecture2016} assign global descriptors to places rather than features, increasing robustness to viewpoint, conditions, and dynamic clutter. HF-Net \cite{sarlinCoarseFineRobust2019} extends this idea by utilizing global descriptors for large-scale place recognition and local learned features for refinement. The negative aspects of learning-based approaches tend to be their computational load, requiring significantly higher capability than methods that do not require a neural network.
 
@@ -23,17 +23,27 @@ Girardeau-Montaut et al. \cite{girardeau-montautCHANGEDETECTIONPOINTS2005} imple
 
 Many modern methods utilize a learning-based approach to align and detect changes in dissimilar data types. Larsen et al. \cite{larsenChangeDetectionModel} % TODO: expand description of Larsen et al.
 
-\subsection{Dynamic Rejection}
+Lázaro et al. \cite{lazaroEfficientLongtermMapping2018} implemented map updates for ... % TODO: expand
+Wilf et al. \cite{wilfCumulativeEvidenceScene2022} ... % TODO: expand
+Qian et al. \cite{qianPOCDProbabilisticObjectLevel2022} ... % TODO: expand
+Takeda et al. \cite{takedaLifelongChangeDetection2023} ... % TODO: expand
+Schmid et al. \cite{schmidKhronosUnifiedApproach2024} ... % TODO: expand
+
+\subsection{Dynamic Object Rejection}
 
 Dynamic rejection is the process of identifying dynamic objects within a scene and rejecting image features that fall on them. This requires either tracking object motion to verify the object is dynamic, or performing image segmentation and semantic identification to categorize objects as either dynamic or static. It can also be accomplished without strict object identification using methods that detect movement in images (e.g., optical flow) or in point clouds. % TODO: add example/reference for point cloud motion methods
 
-\subsection{Lifelong SLAM}
+Saputra et al. \cite{saputraVisualSLAMStructure2019} ... % TODO: expand
+Henein et al. \cite{heneinDynamicSLAMNeed2020} ... % TODO: expand
+Mao et al. \cite{maoSemanticMaskingVisual2024} ... % TODO: expand
 
-Lázaro et al. \cite{lazaroEfficientLongtermMapping2018} implemented map updates for ... % TODO: expand  
-Mielle et al. \cite{mielleSLAMAutocompleteCompleting2017} ... % TODO: expand
+\subsection{Feature Persistence and Observability Modeling}
 
-\subsection{Map Point Observability}
+Feature persistence modeling refers to the estimation of whether a specific map feature will remain observable over time, producing per-feature metrics that can drive map maintenance decisions.
 
-Derner et al. \cite{dernerChangeDetectionUsing2021} ... % TODO: expand  
-Berrio et al. \cite{berrioUpdatingVisibilityFeaturebased2019,berrioLongtermMapMaintenance2020} ... % TODO: expand  
+Derner et al. \cite{dernerChangeDetectionUsing2021} ... % TODO: expand
+Berrio et al. \cite{berrioUpdatingVisibilityFeaturebased2019,berrioLongtermMapMaintenance2020} ... % TODO: expand
 Alcantarilla et al. \cite{alcantarillaLearningVisibilityLandmarks2010} ... % TODO: expand
+Hashemifar and Dantu \cite{hashemifarPracticalPersistenceReasoning2020} ... % TODO: expand
+Rosen et al. \cite{rosenLifelongFeaturebasedMapping2016} ... % TODO: expand
+Walcott-Bryant et al. \cite{walcott-bryantDynamicPoseGraph2012} ... % TODO: expand

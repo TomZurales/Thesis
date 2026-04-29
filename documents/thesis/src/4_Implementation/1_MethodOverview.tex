@@ -76,7 +76,7 @@ Assuming the model provides an estimate $\hat{P}(S,\viewpoint|E) \equiv m(\viewp
 
 \subsubsection{The Existence Estimation Framework}
 
-The existence estimation framework combines an observability model with a Bayesian existence probability estimator. A high-level view is shown in Figure \ref{fig:existence_estimation_framework}.
+The existence estimation framework combines an observability model with a Bayesian existence update step. A high-level view is shown in Figure \ref{fig:existence_estimation_framework}.
 
 % TODO: Add feedback line
 \begin{figure}[!ht]
@@ -86,7 +86,7 @@ The existence estimation framework combines an observability model with a Bayesi
     \label{fig:existence_estimation_framework}
 \end{figure}
 
-The observability model estimates $P(S,\viewpoint|E)$, the probability of observing a map point from viewpoint $\viewpoint$ given that the point exists, using historical observations. This estimate is then used by the existence probability estimator to update the existence probability $\pe$ of the map point in a Bayesian manner. After the update, the new observation $\observation$ is integrated into the model’s internal representation, with feedback $\feedback$ from the existence probability update used to adjust the strength of integration.
+The observability model estimates $P(S,\viewpoint|E)$, the probability of observing a map point from viewpoint $\viewpoint$ given that the point exists, using historical observations. This estimate is then used to update the existence probability $\pe$ of the map point in a Bayesian manner. After the update, the new observation $\observation$ is integrated into the model's internal representation.
 
 \subsubsection{Overall Observability}
 

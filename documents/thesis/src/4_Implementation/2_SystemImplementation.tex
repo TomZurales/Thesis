@@ -1,29 +1,26 @@
 \subsection{System Implementation}
 
-This section describes the implementation of the existence estimation framework described in section \ref{sec:method_overview}. Implementation details of the KNN observability model, the Bayesian updater, and the Viewpoint-Based Existence Estimator library are provided. Pseudocode implementations of key functions are included to illustrate the implementation details of the framework.
+This section describes the implementation of the existence estimation framework described in section \ref{sec:method_overview}. Implementation details of the Discrete Boundary observability model and the VBEE library are provided. Pseudocode implementations of key functions are included to illustrate the implementation details of the framework.
 
 \subsubsection{Existence Estimation Framework Implementation}
 
-The viewpoint-based existence estimation framework is implemented as a C++ library called \texttt{libvbee}. This library facilitates the integration of VBEE into KV-SLAM systems by providing a standardized interface for observability estimation and existence probability estimation. The library provides the \vbee{} class, which configures the KNN model and provides functions for updating and querying the existence probability of a map point. Pseudocode for the initialization, update, and query functions is provided below.
+The viewpoint-based existence estimation framework is implemented as a C++ library called \texttt{libvbee}. This library facilitates the integration of VBEE into KV-SLAM systems by providing a standardized interface for observability estimation and existence probability estimation. The library provides the \vbee{} class, which accepts an observability model through a common interface and provides functions for updating and querying the existence probability of a map point. Pseudocode for the initialization, update, and query functions is provided below.
 
-The initialization function in Algorithm \ref{alg:vbee_init} sets up the VBEE instance with the specified parameters, initializing the KNN model and the existence probability estimator.
+The initialization function in Algorithm \ref{alg:vbee_init} sets up the VBEE instance with the specified parameters, including the Discrete Boundary observability model.
 
 \begin{singlespace}
     \begin{algorithm}[H]
-        \caption[VBEE Initialization]{VBEE Initialization: $\vbee.\initialize{\params{\vbee}, \params{\knn}, \params{\epe}}$}
+        \caption[VBEE Initialization]{VBEE Initialization: $\vbee.\initialize{\params{\vbee}}$}
         \label{alg:vbee_init}
         \begin{algorithmic}
-            \Require $\params{\vbee}$: VBEE Parameters
-            \Require $\params{\knn}$: KNN Parameters
-            \Require $\params{\epe}$: Existence Probability Estimator Parameters
-            \State{\textbf{global} $p\_e, \damping, \observability, \observabilityupdate \gets \params{\vbee}$}
-            \State{\textbf{global} $knn \gets \knn.\initialize{\params{\knn}}$}
-            \State{\textbf{global} $epe \gets \epe.\initialize{\params{\epe}}$}
+            \Require $\params{\vbee}$: VBEE Parameters (includes $\params{\db}$, $\falseneg$, $\falsepos$)
+            \State{\textbf{global} $p\_e, \damping, \observability, \observabilityupdate, \falseneg, \falsepos \gets \params{\vbee}$}
+            \State{\textbf{global} $model \gets \db.\initialize{\params{\db}}$}
         \end{algorithmic}
     \end{algorithm}
 \end{singlespace}
 
-The update function in Algorithm \ref{alg:vbee_update} integrates a new observation, determining an updated existence probability based on the observation and the KNN estimate. The KNN model is updated with feedback, and the overall observability is updated based on the difference between the observation's state and the KNN estimate.
+The update function in Algorithm \ref{alg:vbee_update} integrates a new observation, determining an updated existence probability based on the observation and the observability model's estimate. The observability model is updated with the new observation, and the overall observability is updated based on the difference between the observation's state and the model estimate.
 
 \begin{singlespace}
     \begin{algorithm}[H]
@@ -33,15 +30,14 @@ The update function in Algorithm \ref{alg:vbee_update} integrates a new observat
             \Require $\observation$: New Observation
             \Ensure{$\estpe$: Updated Existence Probability}
             \State{$prior \gets p\_e$}
-            \State{$model\_estimate \gets knn.\estimate{\observation.v}$}
-            \State{$posterior \gets epe.\update{\observation, prior, model\_estimate}$}
-            
+            \State{$model\_estimate \gets model.\estimate{\observation.v}$}
+            \State{$posterior \gets \operatorname{BayesianUpdate}(\observation, prior, model\_estimate)$}
+
             \State{$weight \gets (1 - \observability) \cdot \damping$}
             \State{$p\_e \gets prior \cdot (1 - weight) + posterior \cdot weight$}
-            
-            \State{$\feedback \gets p\_e - prior$}
-            \State{$knn.\update{\observation, \feedback}$}
-            
+
+            \State{$model.\integrate{\observation}$}
+
             \State{$\observability \gets \observability + \observabilityupdate \cdot (\observation.s - model\_estimate)$}
             \Return{$p\_e$}
         \end{algorithmic}
@@ -52,9 +48,9 @@ The query function simply returns the current existence probability $\pe$.
 \subsubsection{Observability Models}
 \label{sec:observability_models}
 
-Two methods are explored for modeling observability. The first model performs a K-Nearest Neighbors search on a representative set of previous observations. The Discrete Boundary model attempts to estimate the boundary in all directions from which the map point transitions from visible to obscured.
+The Discrete Boundary model is implemented as the primary observability model for this system. A K-Nearest Neighbors approach was explored first and is described below to motivate the Discrete Boundary design.
 
-\paragraph{KNN Model}
+\paragraph{KNN Model (Precursor)}
 
 The KNN model estimates $\psge$ as the ratio of positive observations within the $k$ nearest neighbors of the query viewpoint. The model maintains a finite buffer of $n$ observations. The angular distance between viewpoints is also considered, as distant observations may be irrelevant. Finally, the model incorporates feedback from the existence probability estimator to decide whether or not to integrate a new observation.
 
@@ -120,7 +116,7 @@ The update function (Algorithm \ref{alg:knn_update}) integrates new observations
     \end{algorithm}
 \end{singlespace}
 
-The accuracy and performance of the KNN model will be evaluated in section \ref{sec:observability_model_eval}.
+The limitations of the KNN approach — particularly its inability to exploit geometric sight-line constraints — motivated the Discrete Boundary design described in the following section.
 
 \paragraph{Discrete Boundary Model}
 
@@ -134,10 +130,10 @@ Because the domain of viewpoints is downsampled into a finite number of bins, it
 
 Querying this model is done first by identifying the bin for the given viewpoint. Once found, the region is determined. If the viewpoint's distance is greater than the maximum view distance, the query returns 0. If the viewpoint's distance is less than the minimum non-observation distance and the maximum observation distance, the query returns 1. If the observation occurs between these two values, the weighting of the ambiguous region is used to determine an estimate in the range XXX.
 
-\subsubsection{Existence Probability Estimator}
+\subsubsection{Bayesian Existence Update}
 \label{sec:existence_confidence}
 
-The Existence Probability Estimator (EPE) updates the probability $\pe$ of a map point’s existence. It is initialized with $\params{\epe} = \{\falseneg, \falsepos\}$. The update function takes an observation, the prior $\pe_t$, and the KNN estimate $\estpsge$ as inputs, and computes the posterior $\pe_{t+1}$ with a Bayesian update. Algorithm \ref{alg:bayesian_update_impl} shows the implementation.
+The Bayesian existence update computes the posterior probability $\pe$ of a map point’s existence. This logic is implemented directly within the \vbee{} class and is parameterized by $\falseneg$ and $\falsepos$, now part of $\params{\vbee}$. The update takes an observation, the prior $\pe_t$, and the model estimate $\estpsge$ as inputs, and computes the posterior $\pe_{t+1}$. Algorithm \ref{alg:bayesian_update_impl} shows the implementation.
 
 \begin{singlespace}
     \begin{algorithm}[H]
@@ -146,7 +142,7 @@ The Existence Probability Estimator (EPE) updates the probability $\pe$ of a map
         \begin{algorithmic}
             \Require Observation $o = (v, s)$
             \Require Prior $\estpe_t \in [0,1]$
-            \Require KNN estimate $\estpsge$
+            \Require Model estimate $\estpsge$
             \If{$o.s = 1$}
             \State $posterior \gets \frac{\estpsge (1 - \falseneg) \cdot \estpe_t}{\estpsge (1 - \falseneg) \cdot \estpe_t + \falsepos (1 - \estpe_t)}$
             \Else

@@ -28,6 +28,7 @@ Future sections explore the mathematical basis and implementation of the propose
 \newcommand{\epe}{\ensuremath{\text{EPE}}}
 \newcommand{\vbee}{\ensuremath{\text{VBEE}}}
 \newcommand{\knn}{\ensuremath{\text{KNN}}}
+\newcommand{\db}{\ensuremath{\text{DB}}}
 \newcommand{\initialize}[1]{\ensuremath{\operatorname{Initialize}(#1)}}
 \newcommand{\estimate}[1]{\ensuremath{\operatorname{Estimate}(#1)}}
 \newcommand{\integrate}[1]{\ensuremath{\operatorname{Integrate}(#1)}}
@@ -49,20 +50,23 @@ Future sections explore the mathematical basis and implementation of the propose
 \defitem{$\damping$}{The damping coefficient applied to updates of $\pe$.}
 \defitem{$\observability_t$}{The estimated overall observability of the map point at time $t$.}
 \defitem{$\observabilityupdate$}{The damping coefficient applied to updates of $\observability$.}
-\defitem{$\feedback$}{The feedback propagated from the Bayesian update step back to the KNN model, calculated as $\estpe_t - \estpe_{t-1}$.}
-\defitem{$\knn$}{An instance of the KNN observability model.}
-\defitem{$\epe$}{An instance of the existence probability estimator.}
-\defitem{$\vbee$}{An instance of the viewpoint-based existence estimator, which contains both an existence probability estimator and a KNN model.}
+\defitem{$\feedback$}{The feedback propagated from the Bayesian update step back to the observability model, calculated as $\estpe_t - \estpe_{t-1}$.}
+\defitem{$\knn$}{An instance of the KNN observability model, a precursor to the Discrete Boundary model (see Section~\ref{sec:observability_models}).}
+\defitem{$\db$}{An instance of the Discrete Boundary observability model.}
+\defitem{$\epe$}{The Bayesian existence probability update step, now implemented internally within $\vbee$ rather than as a separate component.}
+\defitem{$\vbee$}{An instance of the viewpoint-based existence estimator, which holds a reference to an observability model and performs Bayesian existence probability updates internally.}
 \defitem{$\params{\knn}$}{A vector of parameters specific to the KNN model in the form $\{\param{\knn}{1},\dots,\param{\knn}{n}\}$, where $n$ is the number of parameters.}
-\defitem{$\params{\epe}$}{A vector of parameters for the existence probability estimator in the form $\{\falseneg,\falsepos\}$.}
-\defitem{$\params{\vbee}$}{A vector of parameters for the viewpoint-based existence estimator in the form $\{\knn,\estpe_0,\damping,\observability_0,\observabilityupdate\}$.}
+\defitem{$\params{\db}$}{A vector of parameters for the Discrete Boundary model in the form $\{k, \text{ambiguous\_range}\}$, where $k$ is the ambiguity counter maximum and $\text{ambiguous\_range}$ controls the width of the ambiguous region's output range.}
+\defitem{$\params{\epe}$}{The false negative and false positive rates $\{\falseneg,\falsepos\}$, now incorporated directly into $\params{\vbee}$.}
+\defitem{$\params{\vbee}$}{A vector of parameters for the viewpoint-based existence estimator in the form $\{model,\estpe_0,\damping,\observability_0,\observabilityupdate,\falseneg,\falsepos\}$, where $model$ is the observability model instance.}
 
 \paragraph{Functions}
-\defitem{$\vbee.\initialize{\params{\vbee},\params{\knn},\params{\epe}}$}{Initializes the viewpoint-based existence estimator.}
+\defitem{$\vbee.\initialize{\params{\vbee}}$}{Initializes the viewpoint-based existence estimator, including the observability model instance.}
 \defitem{$\vbee.\update{\observation}$}{Updates the estimator with a new observation $\observation$, returning the updated existence probability $\estpe$.}
 \defitem{$\vbee.\query$}{Queries the estimator for the current estimate of the map point's existence probability $\estpe$.}
-\defitem{$\knn.\initialize{\params{\knn}}$}{Initializes the KNN model with parameters $\params{\knn}$.}
-\defitem{$\knn.\estimate{\viewpoint}$}{Returns the KNN model's estimated probability of seeing the map point from viewpoint $\viewpoint$, given the point exists: $\estimate{\viewpoint} = \estpsge$.}
-\defitem{$\knn.\integrate{\observation, \feedback}$}{Integrates a new observation $\observation$ into the KNN model's internal representation, using feedback $\feedback$ to adjust for the direction and magnitude of the change in existence probability.}
-\defitem{$\epe.\initialize{\params{\epe}}$}{Initializes the existence probability estimator with parameters $\params{\epe}$.}
-\defitem{$\epe.\update{\observation, \estpe_t, \estpsge}$}{Updates the map point's existence probability $\estpe_{t+1}$ based on $\observation$, the prior estimate $\estpe_t$, and the current KNN estimate $\estpsge$.}
+\defitem{$\db.\initialize{\params{\db}}$}{Initializes the Discrete Boundary model with parameters $\params{\db}$.}
+\defitem{$\db.\estimate{\viewpoint}$}{Returns the Discrete Boundary model's estimated probability of seeing the map point from viewpoint $\viewpoint$, given the point exists: $\estimate{\viewpoint} = \estpsge$.}
+\defitem{$\db.\integrate{\observation}$}{Integrates a new observation $\observation$ into the Discrete Boundary model's internal bin state.}
+\defitem{$\knn.\initialize{\params{\knn}}$}{Initializes the KNN model (precursor) with parameters $\params{\knn}$.}
+\defitem{$\knn.\estimate{\viewpoint}$}{Returns the KNN model's estimated probability of seeing the map point from viewpoint $\viewpoint$: $\estimate{\viewpoint} = \estpsge$.}
+\defitem{$\knn.\integrate{\observation, \feedback}$}{Integrates a new observation $\observation$ into the KNN model's stored observation buffer, using feedback $\feedback$ to determine whether the observation is incorporated.}

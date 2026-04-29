@@ -5,7 +5,7 @@ Before experimentation can take place on the SLAM system, the parameters of libV
 
 \paragraph{Phase 1 - Observability Model Tuning}
 
-The observability model has parameters $\params{\knn} = \{k, n, \athreshold, \feedbackthreshold\}$, which are tuned to minimize the following objectives:
+The Discrete Boundary observability model has parameters $\params{\db} = \{k, \text{ambiguous\_range}\}$, which are tuned to minimize the following objectives:
 \begin{itemize}
     \item $n_{\text{converge}}$: The number of observations necessary for the VBEE system to converge to a stable estimate of $\pe$
     \item $\epsilon_{\text{converge}}$: The observability model's error after $n_{\text{converge}}$ observations
@@ -15,12 +15,11 @@ The observability model has parameters $\params{\knn} = \{k, n, \athreshold, \fe
     \item size: The total storage in bytes needed to serialize one map point's observability
 \end{itemize}
 
-In this first phase, the $\vbee$ and $\epe$ parameters are locked to the following values:
+In this first phase, the $\vbee$ parameters are locked to the following values:
 \begin{align*}
-    \params{\epe}^* &= \{\falseneg = 0.1, \falsepos = 0.001\}\\
-    \params{\vbee}^* &= \{\estpe_0 = 0.9, \damping = 0.1, \observability_0 = 0.5, \observabilityupdate = 0.5\}
+    \params{\vbee}^* &= \{\estpe_0 = 0.9, \damping = 0.1, \observability_0 = 0.5, \observabilityupdate = 0.5, \falseneg = 0.1, \falsepos = 0.001\}
 \end{align*}
-The observability model parameters $\params{\knn}$ are optimized to minimize the objectives using the objective functions described below. 
+The Discrete Boundary parameters $\params{\db}$ are optimized to minimize the objectives using the objective functions described below. 
 
 The function $\operatorname{ObjectiveNConverge}$ shown in Algorithm \ref{alg:obj_n_converge} determines the average number of observations needed for the system to converge to a stable $\estpe$ for each observability scenario in the dataset. The system is considered converged when the standard deviation over the last $w = 100$ samples drops below $\sigma_{\text{converge}} = 0.2$. If the system does not converge within $m_{\text{max}} = 1000$ observations, the test is considered failed, and the optimization is penalized accordingly.
 
@@ -29,7 +28,7 @@ The function $\operatorname{ObjectiveNConverge}$ shown in Algorithm \ref{alg:obj
         \caption[Objective Function: $n_{converge}$]{ObjectiveNConverge}
         \label{alg:obj_n_converge}
         \begin{algorithmic}[1]
-            \Require{$vbee$: VBEE instance initialized with $\params{\vbee}^*, \params{\knn}, \params{\epe}^*$}
+            \Require{$vbee$: VBEE instance initialized with $\params{\vbee}^*, \params{\db}$}
             \Require{$observability\_scenarios$: Observability Scenario Dataset}
             \Function{ObjectiveNConverge}{}
             \State{$all\_n\_convergences \gets [\;]$}
@@ -68,7 +67,7 @@ The function $\operatorname{ObjectiveEConverge}$ shown in Algorithm \ref{alg:obj
         \caption[Objective Function: $\epsilon_{converge}$]{ObjectiveEConverge}
         \label{alg:obj_e_converge}
         \begin{algorithmic}
-            \Require{$vbee$: VBEE instance initialized with $\params{\vbee}^*, \params{\knn}, \params{\epe}^*$}
+            \Require{$vbee$: VBEE instance initialized with $\params{\vbee}^*, \params{\db}$}
             \Require{$observability\_scenarios$: Observability Scenario Dataset}
             \Function{ObjectiveEConverge}{}
             \State{$all\_e\_convergences \gets [\;]$}
@@ -112,7 +111,7 @@ The function $\operatorname{ObjectiveTUpdate}$, shown in Algorithm \ref{alg:obj_
         \caption[Objective Function: $t_{update}$]{ObjectiveTUpdate}
         \label{alg:obj_t_update}
         \begin{algorithmic}
-            \Require{$vbee$: VBEE instance initialized with $\params{\vbee}^*, \params{\knn}, \params{\epe}^*$}
+            \Require{$vbee$: VBEE instance initialized with $\params{\vbee}^*, \params{\db}$}
             \Require{$observability\_scenarios$: Observability Scenario Dataset}
             \Function{ObjectiveTUpdate}{}
             \State{$all\_t\_updates \gets [\;]$}
@@ -136,12 +135,12 @@ The function $\operatorname{ObjectiveTUpdate}$, shown in Algorithm \ref{alg:obj_
 
 The function $\operatorname{ObjectiveSize}$ calculates the total size in bytes necessary to store all information required to reconstruct a serialized map point VBEE system in the same state as when it was serialized. This reconstruction requires:
 \begin{itemize}
-    \item All parameter vectors $\params{\vbee}, \params{\knn}, \params{\epe}$
+    \item All parameter vectors $\params{\vbee}$ (including $\params{\db}$)
     \item The current estimated existence probability $\estpe$
     \item The current observability $\observability$
-    \item The list of observations from the observability model
+    \item The model's internal bin state (20 bins)
 \end{itemize}
-The only item in this list with a size dependent on the parameter vectors is the observations list, which has a maximum capacity of $n$, provided in $\params{\knn}$. All other sizes are not dependent on the input parameters. The serialization of an observation requires three floating-point values for the $x$, $y$, and $z$ coordinates in the map point's frame, and a boolean value for whether the observation is positive or negative. If a float is assumed to be four bytes in size and the boolean one byte, then $\operatorname{ObjectiveSize}$ can be implemented to simply return $5 * n$.
+The Discrete Boundary model's internal representation has fixed size: 20 bins, each storing a maximum observation distance, a minimum non-observation distance, an ambiguity counter, and a bin observability estimate. Since this size is independent of all parameters, $\operatorname{ObjectiveSize}$ returns the constant $20 \times 4 \times 4 = 320$ bytes (four 32-bit values per bin).
 
 The final multi-objective function is shown in Algorithm \ref{alg:obj_obs_model}. This function returns an objective vector of six values, each related to one of the performance criteria defined previously. At this stage, the system is able to undergo multi-objective optimization to find values that minimize each of the six objectives.
 
@@ -150,9 +149,9 @@ The final multi-objective function is shown in Algorithm \ref{alg:obj_obs_model}
         \caption{Observability Model Objective Function}
         \label{alg:obj_obs_model}
         \begin{algorithmic}
-            \Require{$\params{\vbee}^*, \params{\epe}^*$: Static VBEE and EPE parameters}
-            \Function{ObjectiveObservabilityModel}{$\params{\knn}$}
-            \State{$vbee \gets \vbee.\initialize{\params{\vbee}^*, \params{\knn}, \params{\epe}^*}$}
+            \Require{$\params{\vbee}^*$: Static VBEE parameters}
+            \Function{ObjectiveObservabilityModel}{$\params{\db}$}
+            \State{$vbee \gets \vbee.\initialize{\params{\vbee}^*, \params{\db}}$}
             \State{$n_{converge} \gets \operatorname{ObjectiveNConverge}()$}
             \State{$\texttt{reset } vbee$}
             \State{$\epsilon_{converge} \gets \operatorname{ObjectiveEConverge}()$}
@@ -172,6 +171,6 @@ The final multi-objective function is shown in Algorithm \ref{alg:obj_obs_model}
 
 The Python library Optuna \cite{akibaOptunaNextgenerationHyperparameter2019} was selected to perform the multi-objective optimization of the system's parameters. Optuna is a hyperparameter optimization framework that allows for the discovery of Pareto optimal \cite{censorParetoOptimalityMultiobjective1977} parameter sets.
 
-\paragraph{Phase 2 - VBEE and EPE Tuning}
+\paragraph{Phase 2 - VBEE Tuning}
 
-In the second phase, the observability model parameters are frozen to the values obtained in Phase 1, and the VBEE and EPE parameters are tuned. The VBEE parameters $\params{\vbee} = \{\estpe_0, \damping, \observability_0, \observabilityupdate\}$ are tuned to minimize the same objectives as in Phase 1, while the EPE parameters $\params{\epe} = \{\falseneg, \falsepos\}$ are tuned to minimize the following objectives:
+In the second phase, the observability model parameters are frozen to the values obtained in Phase 1, and the VBEE parameters are tuned. The VBEE parameters $\params{\vbee} = \{\estpe_0, \damping, \observability_0, \observabilityupdate, \falseneg, \falsepos\}$ are tuned to minimize the following objectives:

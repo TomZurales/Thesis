@@ -2,11 +2,11 @@
 
 \subsubsection*{Question 1: How can the historical viewpoint-dependent observability of points be modeled in order to meet the objectives laid out in Objective 1?}
 
-Integrating historical viewpoint-dependent observability into existing change detection approaches requires a compact model of observability at the point level. Three model implementations are explored in section \ref{sec:observability_models} and evaluated in section \ref{sec:observability_model_eval}.
+Integrating historical viewpoint-dependent observability into existing change detection approaches requires a compact model of observability at the point level. The Discrete Boundary observability model is developed and explored in section \ref{sec:observability_models} and evaluated in section \ref{sec:observability_model_eval}. A simpler KNN-based approach is also described as a precursor to motivate the design of the Discrete Boundary model.
 
 \subsubsection*{Question 2: How does the integration of historical observability data affect the estimation of point existence confidence?}
 
-Each of the three model implementations is integrated into an existing change detection model, discussed in section \ref{sec:existence_confidence}, which utilizes a Bayesian update step to iteratively update a confidence estimation of the map point's existence. Each of the three models is evaluated for speed, accuracy, and robustness in section \ref{sec:existence_confidence_eval}.
+The Discrete Boundary model is integrated into the VBEE system's Bayesian update framework, discussed in section \ref{sec:existence_confidence}. The model is evaluated for speed, accuracy, and robustness in section \ref{sec:existence_confidence_eval}.
 
 \subsubsection*{Question 3: Can the change detection model be integrated into an existing KV-SLAM system in a way that meets the goals of Objective 2?}
 
