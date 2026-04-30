@@ -51,7 +51,8 @@ It should be noted that RANSAC requires a low proportion of outliers in the data
 
 \subsubsection{Tracking and Mapping}
 
-In the context of KV-SLAM, tracking refers to the process of estimating the real-time position and orientation of the camera, while mapping refers to the process of generating a 3D map of the environment. Methods such as the eight-point algorithm can be used to simultaneously calculate the transformation and depths between two images taken from different viewpoints using their 2D-2D feature correspondences \cite{longuet-higginsComputerAlgorithmReconstructing1981}\cite{hartleyDefenseEightpointAlgorithm1997}. This is primarily used for map initialization, before any 3D map points have been established. Once a set of 3D map points has been established, tracking can be achieved using the Perspective-n-Point (PnP) algorithm \cite{fischlerRandomSampleConsensus1981}, with mapping utilizing triangulation to generate new map points \cite{davisonRealtimeSimultaneousLocalisation2003}.
+In the context of KV-SLAM, tracking refers to the process of estimating the real-time position and orientation of the camera, while mapping refers to the process of generating a 3D map of the environment. Methods such as the eight-point algorithm can be used to simultaneously calculate the transformation and depths between two images taken from different viewpoints using their 2D-2D feature correspondences \cite{longuet-higginsComputerAlgorithmReconstructing1981}\cite{hartleyDefenseEightpointAlgorithm1997}. This is primarily used for map initialization, before any 3D map points have been established. Once a set of 3D map points has been established, tracking can be achieved using the Perspective-n-Point (PnP) algorithm, % TODO: add PnP citation (e.g. Lepetit et al. EPnP)
+with mapping utilizing triangulation to generate new map points \cite{davisonRealtimeSimultaneousLocalisation2003}.
 
 Incorrect 2D-2D and 2D-3D correspondences degrade the performance of the tracking and mapping processes. To account for outliers in the correspondences, RANSAC is used to estimate the transformations and 3D depths on a subset of the matches with the goal of finding a transformation that maximizes the number of correspondence inliers.
 
@@ -93,17 +94,16 @@ ORB-SLAM3 is a KV-SLAM implementation that is popular in research contexts due t
 \subsubsection{Map Points and Native Culling}
 \label{sec:orb_slam3_map_points}
 
-ORB-SLAM3 represents the environment as a set of 3D map points, each associated with a visual descriptor and a history of keyframe observations, and applies native culling rules to remove points that fail quality checks during local mapping.
+ORB-SLAM3 represents the environment as a set of 3D map points, each associated with a visual descriptor and a history of keyframe observations, and applies native culling rules to remove points that fail quality checks during local mapping. Native culling evaluates each new map point against a set of observation-ratio and tracking-consistency thresholds, discarding points that are rarely matched or frequently lost; however, it does not account for whether a point has become outdated due to environmental change.
 
-\subsection{Bayesian Inference}
-\label{sec:bayesian_background}
+\subsubsection{Keyframes and Bundle Adjustment}
 
-Bayesian inference is a probabilistic framework for updating a belief in a hypothesis as new evidence is observed, and forms the mathematical foundation of the existence probability update at the core of this system.
+ORB-SLAM3 designates a subset of processed frames as keyframes. These are spatially distributed reference poses used for mapping and optimization. The system periodically refines the full set of keyframe poses and map point positions through bundle adjustment, with local bundle adjustment running continuously, and global bundle adjustment triggered by loop closure events.
 
 \subsection{Viewpoint-Dependent Observability}
 \label{sec:viewpoint_observability_background}
 
-The visibility of a physical feature from a given location depends not only on whether the feature exists, but also on the direction and distance from which it is viewed, a property that motivates the viewpoint-aware design of the proposed observability model.
+The visibility of a visual feature from a given location depends on whether the feature exists, and the direction and distance from which it is viewed.
 
 \subsection{Spherical Discretization}
 \label{sec:spherical_discretization_background}

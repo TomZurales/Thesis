@@ -1,70 +1,14 @@
 \section{Results}
 \label{sec:results}
 
-\subsection*{Experiment 1: Observability Model Prediction Quality}
+\subsection{Experiment 1: VBEE Integrated SLAM Performance with Static Episodic Operations}
 \label{sec:exp1_results}
 
-Table \ref{tab:exp_1_raw} shows the resultant Brier scores for each observability model split by trial. The mean and standard deviation are calculated across trials by model, and are shown in Table \ref{tab:exp_1_aggregated_stats}.
+The following tables present trajectory error and operational metrics from 10 independent trials for the baseline and VBEE integrated systems run on the static \textit{All Machine Halls} episodic dataset.
 
-The mean difference between the VBEE observability model Brier scores and each baseline Brier score is shown in Table \ref{tab:exp_1_pairwise_comparison}. Additionally, this table contains a 95\% confidence interval computed using a paired t-distribution over the 10 trials, and a count of the number of trials in which the VBEE observability model ``wins'' against a baseline by achieving a lower Brier score.
+Tables \ref{tab:exp_1_baseline_raw} and \ref{tab:exp_1_vbee_raw} show the resulting metrics collected for each of the 10 trials of Experiment 1 by the baseline SLAM system and the VBEE integrated SLAM system respectively.
 
-The same observability scenarios, training viewpoints and evaluation viewpoints are shared between models in the same trial. Therefore, the Brier scores are considered paired with a trial, giving the following formula for the mean difference between the VBEE observability model and a baseline $b$ as
-$$
-\overline{\Delta_{vbee,b}} = \frac{1}{10}\sum_{i = 1}^{10} (Brier_{vbee,i} - Brier_{b,i})
-$$
-where $Brier_{m,i}$ represents the Brier score for model $m$ in trial $i$.
-\begin{table}[htbp]
-\centering
-\begin{tabular}{|c|l|l|l|l|}
-\hline
-Trial & \multicolumn{1}{c|}{$Brier_{gp}$} & \multicolumn{1}{c|}{$Brier_{pp}$} & \multicolumn{1}{c|}{$Brier_{vbee}$} \\ \hline
-1 &   &  &  \\ \hline
-2 &   &  &  \\ \hline
-3 &   &  &  \\ \hline
-4 &   &  &  \\ \hline
-5 &   &  &  \\ \hline
-6 &   &  &  \\ \hline
-7 &   &  &  \\ \hline
-8 &   &  &  \\ \hline
-9 &   &  &  \\ \hline
-10 &  &  &  \\ \hline
-\end{tabular}
-\caption{Brier scores for three observability models across 10 independent trials}
-\label{tab:exp_1_raw}
-\end{table}
-
-\begin{table}[htbp]
-\centering
-\begin{tabular}{|c|l|l|}
-\hline
-\thead{Model $m$} & \multicolumn{1}{c|}{$\overline{Brier_{m}}$} & \multicolumn{1}{c|}{Std. Dev.} \\ \hline
-$gp$ &  &  \\ \hline
-$pp$ &  &  \\ \hline
-$vbee$ &  &  \\ \hline
-\end{tabular}
-\caption{Brier score averages and standard deviations by model}
-\label{tab:exp_1_aggregated_stats}
-\end{table}
-
-\begin{table}[htbp]
-\centering
-\begin{tabular}{|c|l|l|l|}
-\hline
-\thead{Baseline $b$} & \multicolumn{1}{c|}{$\overline{\Delta_{vbee,b}}$} & \multicolumn{1}{c|}{95\% CI} & Wins (out of 10) \\ \hline
-$gp$ &  &  &  \\ \hline
-$pp$ &  &  &  \\ \hline
-\end{tabular}
-\caption{Pairwise comparisons of VBEE observability model Brier scores to baseline Brier scores}
-\label{tab:exp_1_pairwise_comparison}
-\end{table}
-\FloatBarrier
-
-\subsection{Experiment 2: VBEE Integrated SLAM Performance with Static Episodic Operations}
-\label{sec:exp2_results}
-
-Tables \ref{tab:exp_2_baseline_raw} and \ref{tab:exp_2_vbee_raw} show the resulting metrics collected for each of the 10 trials of Experiment 2 by the baseline SLAM system and the VBEE integrated SLAM system respectively.
-
-Table \ref{tab:exp_2_aggregated} shows the per-metric means and standard deviations for the baseline and VBEE integrated SLAM systems, and compares the metrics between the two systems.
+Table \ref{tab:exp_1_aggregated} shows the per-metric means and standard deviations for the baseline and VBEE integrated SLAM systems, and compares the metrics between the two systems.
 
 \begin{table}[htbp]
 \centering
@@ -83,7 +27,7 @@ Table \ref{tab:exp_2_aggregated} shows the per-metric means and standard deviati
 10 &  &  &  &  &  &  &  &  \\ \hline
 \end{tabular}
 \caption{Metrics from 10 independent trials of the baseline SLAM system run on the static \textit{All Machine Halls} episodic dataset.}
-\label{tab:exp_2_baseline_raw}
+\label{tab:exp_1_baseline_raw}
 \end{table}
 
 \begin{table}[htbp]
@@ -103,6 +47,72 @@ Table \ref{tab:exp_2_aggregated} shows the per-metric means and standard deviati
 10 &  &  &  &  &  &  &  &  \\ \hline
 \end{tabular}
 \caption{Metrics from 10 independent trials of the VBEE integrated SLAM system run on the static \textit{All Machine Halls} episodic dataset.}
+\label{tab:exp_1_vbee_raw}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+Metric & Baseline $(\mu\pm\sigma)$ & VBEE Integrated $(\mu\pm\sigma)$ & $\Delta(\text{VBEE}-\text{Baseline})$ \\ \hline
+\thead{$APE^{RMSE}_{KF}$} &  &  &  \\ \hline
+\thead{$APE^{RMSE}_{Frame}$} &  &  &  \\ \hline
+\thead{$RPE^{RMSE}_{KF}$} &  &  &  \\ \hline
+\thead{$RPE^{RMSE}_{Frame}$} &  &  &  \\ \hline
+$n_{ve}$ &  &  &  \\ \hline
+$p_{lf}$ &  &  &  \\ \hline
+$n_r$ &  &  &  \\ \hline
+$n_{lc}$ &  &  &  \\ \hline
+\end{tabular}
+\caption{Per-metric comparison between the baseline SLAM system and the VBEE integrated SLAM system}
+\label{tab:exp_1_aggregated}
+\end{table}
+\FloatBarrier
+
+\subsection{Experiment 2: VBEE Integrated SLAM Performance with Changing Episodic Operations}
+\label{sec:exp2_results}
+
+The following tables present trajectory error and operational metrics from 10 independent trials for the baseline and VBEE integrated systems run on the changing \textit{All Days} episodic dataset.
+
+Experiment 2 mirrors the structure of Experiment 1, but is evaluated with a different dataset. Therefore, the structure of data matches the previous section with Tables \ref{tab:exp_2_baseline_raw} and \ref{tab:exp_2_vbee_raw} showing the raw resultant metrics, and Table \ref{tab:exp_2_aggregated} showing the per-metric comparisons between the two systems.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|l|l|l|l|l|l|l|l|}
+\hline
+\thead{Trial} & \multicolumn{1}{c|}{$APE^{RMSE}_{KF}$} & \multicolumn{1}{c|}{$APE^{RMSE}_{Frame}$} & $RPE^{RMSE}_{KF}$ & $RPE^{RMSE}_{Frame}$ & $n_{ve}$ & $p_{lf}$ & $n_r$ & $n_{lc}$ \\ \hline
+1 &  &  &  &  &  &  &  &  \\ \hline
+2 &  &  &  &  &  &  &  &  \\ \hline
+3 &  &  &  &  &  &  &  &  \\ \hline
+4 &  &  &  &  &  &  &  &  \\ \hline
+5 &  &  &  &  &  &  &  &  \\ \hline
+6 &  &  &  &  &  &  &  &  \\ \hline
+7 &  &  &  &  &  &  &  &  \\ \hline
+8 &  &  &  &  &  &  &  &  \\ \hline
+9 &  &  &  &  &  &  &  &  \\ \hline
+10 &  &  &  &  &  &  &  &  \\ \hline
+\end{tabular}
+\caption{Metrics from 10 independent trials of the baseline SLAM system run on the changing \textit{All Days} episodic dataset.}
+\label{tab:exp_2_baseline_raw}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|l|l|l|l|l|l|l|l|}
+\hline
+\thead{Trial} & \multicolumn{1}{c|}{$APE^{RMSE}_{KF}$} & \multicolumn{1}{c|}{$APE^{RMSE}_{Frame}$} & $RPE^{RMSE}_{KF}$ & $RPE^{RMSE}_{Frame}$ & $n_{ve}$ & $p_{lf}$ & $n_r$ & $n_{lc}$ \\ \hline
+1 &  &  &  &  &  &  &  &  \\ \hline
+2 &  &  &  &  &  &  &  &  \\ \hline
+3 &  &  &  &  &  &  &  &  \\ \hline
+4 &  &  &  &  &  &  &  &  \\ \hline
+5 &  &  &  &  &  &  &  &  \\ \hline
+6 &  &  &  &  &  &  &  &  \\ \hline
+7 &  &  &  &  &  &  &  &  \\ \hline
+8 &  &  &  &  &  &  &  &  \\ \hline
+9 &  &  &  &  &  &  &  &  \\ \hline
+10 &  &  &  &  &  &  &  &  \\ \hline
+\end{tabular}
+\caption{Metrics from 10 independent trials of the VBEE integrated SLAM system run on the changing \textit{All Days} episodic dataset.}
 \label{tab:exp_2_vbee_raw}
 \end{table}
 
@@ -125,76 +135,14 @@ $n_{lc}$ &  &  &  \\ \hline
 \end{table}
 \FloatBarrier
 
-\subsection{Experiment 3: VBEE Integrated SLAM Performance with Changing Episodic Operations}
+\subsection{Experiment 3: VBEE + RANSAC SLAM Performance with Changing Episodic Operations}
 \label{sec:exp3_results}
 
-Experiment 3 mirrors the structure of Experiment 2, but is evaluated with a different dataset. Therefore, the structure of data matches the previous section with Tables \ref{tab:exp_3_baseline_raw} and \ref{tab:exp_3_vbee_raw} showing the raw resultant metrics, and Table \ref{tab:exp_3_aggregated} showing the per-metric comparisons between the two systems.
+The following tables present trajectory error and operational metrics from 10 independent trials of the VBEE + RANSAC system, alongside pairwise comparisons to the baseline and VBEE-only systems from Experiment 2.
 
-\begin{table}[htbp]
-\centering
-\begin{tabular}{|c|l|l|l|l|l|l|l|l|}
-\hline
-\thead{Trial} & \multicolumn{1}{c|}{$APE^{RMSE}_{KF}$} & \multicolumn{1}{c|}{$APE^{RMSE}_{Frame}$} & $RPE^{RMSE}_{KF}$ & $RPE^{RMSE}_{Frame}$ & $n_{ve}$ & $p_{lf}$ & $n_r$ & $n_{lc}$ \\ \hline
-1 &  &  &  &  &  &  &  &  \\ \hline
-2 &  &  &  &  &  &  &  &  \\ \hline
-3 &  &  &  &  &  &  &  &  \\ \hline
-4 &  &  &  &  &  &  &  &  \\ \hline
-5 &  &  &  &  &  &  &  &  \\ \hline
-6 &  &  &  &  &  &  &  &  \\ \hline
-7 &  &  &  &  &  &  &  &  \\ \hline
-8 &  &  &  &  &  &  &  &  \\ \hline
-9 &  &  &  &  &  &  &  &  \\ \hline
-10 &  &  &  &  &  &  &  &  \\ \hline
-\end{tabular}
-\caption{Metrics from 10 independent trials of the baseline SLAM system run on the changing \textit{All Days} episodic dataset.}
-\label{tab:exp_3_baseline_raw}
-\end{table}
+Table \ref{tab:exp_3_ransac_raw} shows the resulting metrics collected for each of the 10 trials of Experiment 3 by the VBEE + RANSAC (VR) SLAM system.
 
-\begin{table}[htbp]
-\centering
-\begin{tabular}{|c|l|l|l|l|l|l|l|l|}
-\hline
-\thead{Trial} & \multicolumn{1}{c|}{$APE^{RMSE}_{KF}$} & \multicolumn{1}{c|}{$APE^{RMSE}_{Frame}$} & $RPE^{RMSE}_{KF}$ & $RPE^{RMSE}_{Frame}$ & $n_{ve}$ & $p_{lf}$ & $n_r$ & $n_{lc}$ \\ \hline
-1 &  &  &  &  &  &  &  &  \\ \hline
-2 &  &  &  &  &  &  &  &  \\ \hline
-3 &  &  &  &  &  &  &  &  \\ \hline
-4 &  &  &  &  &  &  &  &  \\ \hline
-5 &  &  &  &  &  &  &  &  \\ \hline
-6 &  &  &  &  &  &  &  &  \\ \hline
-7 &  &  &  &  &  &  &  &  \\ \hline
-8 &  &  &  &  &  &  &  &  \\ \hline
-9 &  &  &  &  &  &  &  &  \\ \hline
-10 &  &  &  &  &  &  &  &  \\ \hline
-\end{tabular}
-\caption{Metrics from 10 independent trials of the VBEE integrated SLAM system run on the changing \textit{All Days} episodic dataset.}
-\label{tab:exp_3_vbee_raw}
-\end{table}
-
-\begin{table}[htbp]
-\centering
-\begin{tabular}{|l|l|l|l|}
-\hline
-Metric & Baseline $(\mu\pm\sigma)$ & VBEE Integrated $(\mu\pm\sigma)$ & $\Delta(\text{VBEE}-\text{Baseline})$ \\ \hline
-\thead{$APE^{RMSE}_{KF}$} &  &  &  \\ \hline
-\thead{$APE^{RMSE}_{Frame}$} &  &  &  \\ \hline
-\thead{$RPE^{RMSE}_{KF}$} &  &  &  \\ \hline
-\thead{$RPE^{RMSE}_{Frame}$} &  &  &  \\ \hline
-$n_{ve}$ &  &  &  \\ \hline
-$p_{lf}$ &  &  &  \\ \hline
-$n_r$ &  &  &  \\ \hline
-$n_{lc}$ &  &  &  \\ \hline
-\end{tabular}
-\caption{Per-metric comparison between the baseline SLAM system and the VBEE integrated SLAM system}
-\label{tab:exp_3_aggregated}
-\end{table}
-\FloatBarrier
-
-\subsection{Experiment 4: VBEE + RANSAC SLAM Performance with Changing Episodic Operations}
-\label{sec:exp4_results}
-
-Table \ref{tab:exp_4_ransac_raw} shows the resulting metrics collected for each of the 10 trials of Experiment 4 by the VBEE + RANSAC (VR) SLAM system.
-
-Table \ref{tab:exp_4_aggregated} shows the per-metric means and standard deviations for the VBEE + RANSAC system, and pairwise comparisons between it and the systems tested in Experiment 3.
+Table \ref{tab:exp_3_aggregated} shows the per-metric means and standard deviations for the VBEE + RANSAC system, and pairwise comparisons between it and the systems tested in Experiment 2.
 
 \begin{table}[htbp]
 \centering
@@ -213,7 +161,7 @@ Table \ref{tab:exp_4_aggregated} shows the per-metric means and standard deviati
 10 &  &  &  &  &  &  &  &  \\ \hline
 \end{tabular}
 \caption{Metrics from 10 independent trials of the VBEE + RANSAC SLAM system run on the changing \textit{All Days} episodic dataset.}
-\label{tab:exp_4_ransac_raw}
+\label{tab:exp_3_ransac_raw}
 \end{table}
 
 \begin{table}[htbp]
@@ -231,6 +179,6 @@ $n_r$ &  &  &  \\ \hline
 $n_{lc}$ &  &  &  \\ \hline
 \end{tabular}
 \caption{Per-metric comparison between the VBEE + RANSAC SLAM system, the baseline SLAM system, and VBEE integrated SLAM system}
-\label{tab:exp_4_aggregated}
+\label{tab:exp_3_aggregated}
 \end{table}
 \FloatBarrier

@@ -1,5 +1,13 @@
-\section{Future Work and Conclusions}
+\section{Conclusions and Future Work}
 \label{sec:conclusion}
+
+\subsection{Conclusions}
+
+This chapter evaluates the research outcomes against the objectives and research questions defined in Section~\ref{sec:objectives} and identifies areas requiring further investigation.
+
+\subsection{Summary of Contributions}
+
+Three artifacts are released as part of this research: the libVBEE C++ library, a modified build of ORB-SLAM3 with libVBEE integrated, and a set of stereo visual datasets designed for episodic SLAM evaluation.
 
 \subsection{Future Work}
 \label{sec:future_work}
@@ -8,7 +16,7 @@ Performing the map point removal as part of an offline post-processing step is d
 
 The methods of modeling global map point observability explored in this research are not comprehensive, and make no claims around being optimal in terms of accuracy or storage space. A deeper exploration into methods of encoding observability information may reveal significant improvements in both these areas. The discrete boundary model explored encoding maximum observability distance for a fixed number of bins, but issues arise when geometricly complex boundaries exist within a single bin, leading to ambiguity. Ideally, bins could be created or modified dynamically, allowing for a higher density of bins in geometricly complex areas, and lower density in uninteresting or unexplored areas.
 
-If a discrete number of bins is desired for memory consistency and reduced complexity, the selection of bins using the fibonacci sphere may not be optimal. Other methods of descritizing the sphere could provide distinct advantages. For example, using icosahedron subdivisions or HEALPix would provide uniform segmentation areas distributed evenly around the sphere. Because 3D map points tend to lie on surfaces or corners, it is common for a map point to only be observable from a single hemisphere. If surface normals are estimated for each map point, bins could be concentrated around the surface normal, rather than wasting density on low likelyhood observability areas.
+If a discrete number of bins is desired for memory consistency and reduced complexity, the current approach of using icosahedron face centroids may not be optimal. Other methods of discretizing the sphere could provide distinct advantages. For example, using icosahedron subdivisions or HEALPix would provide more uniform segmentation areas distributed evenly around the sphere. Because 3D map points tend to lie on surfaces or corners, it is common for a map point to only be observable from a single hemisphere. If surface normals are estimated for each map point, bins could be concentrated around the surface normal, rather than wasting density on low likelyhood observability areas.
 
 Online learning methods may also be useful for encoding global observability within a high dimensional vector representing a continuous shell around the map point rather than a finite set of bins. If properly implemented, this could allow map points to learn complex observability boundaries without the disadvantages of a discrete set of bins.
 

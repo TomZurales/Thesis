@@ -3,19 +3,15 @@
 
 The episodic operating model which is used for this thesis falls under the umbrella of Lifelong SLAM. The term lifelong SLAM has varied definitions throughout the literature, but for simplicity, this research adopts the definition provided by Shi et al. \cite{shiAreWeReady2020}, describing lifelong SLAM as the ability for a robot to generate, maintain, and localize within a map of a particular environment over an extended period of time. Unlike the standard SLAM operating model, lifelong SLAM operating models are expected to perform without the assumption of a static environment. This research falls under the topic of map maintenance, but has downstream effects on other operations related to lifelong SLAM.
 
-Several research topics fall under lifelong SLAM, with those relevant to the work presented in this thesis discussed below. This research directly impacts the KV-SLAM map, so the downstream effects on other aspects of lifelong SLAM performance will be discussed at the end.
+Several research topics fall under lifelong SLAM, with those relevant to the work presented in this thesis discussed below. This research directly impacts the KV-SLAM map; as downstream operations such as place recognition and relocalization depend on the map's accuracy, improvements to map maintenance propagate to overall system performance.
 
-\subsection{Place Recognition over Long Time Horizons}
+\subsection{Proactive Map Point Rejection}
 
-As previously discussed, place recognition refers to the ability to determine when an agent has entered a previously visited area. In KV-SLAM, this is commonly achieved using a bag-of-words approach over binary feature descriptors extracted from camera images \cite{camposORBSLAM3AccurateOpenSource2021}. However, these features can vary significantly over time due to changes in lighting, weather, scene layout, or viewpoint. Chen et al. \cite{chenDeepLearningFeatures2017} proposed using deep learning to identify features that are invariant to conditions and viewpoint, but they are still sensitive to geometric changes.
+Dynamic rejection is the process of identifying dynamic objects within a scene and rejecting image features that fall on them. This requires either tracking object motion to verify the object is dynamic, or performing image segmentation and semantic identification to categorize objects as either dynamic or static.
 
-Milford et al. \cite{milfordSeqSLAMVisualRoutebased2012} improved robustness to time-of-day and weather variation by matching sequences of whole-image comparisons rather than relying on a single image or feature-based matches. However, this approach requires alignment between the image sequence and the reference trajectory, effectively requiring similar speed and direction of travel. Naseer et al. \cite{naseerVisionbasedMarkovLocalization2015} relaxed this constraint by computing a full probability distribution over possible locations, removing the need for trajectory alignment. Both of these approaches are sensitive to viewpoint variation, and can fail when the camera trajectory differs significantly from previously observed trajectories.
+Mao et al. \cite{maoSemanticMaskingVisual2024} proposes a lightweight semantic layer to categorize static and dynamic objects in camera images, and uses this layer to ensure localization is only attempted against static image features. Similarly, Schmid et al. \cite{schmidKhronosUnifiedApproach2024} presents Khronos, a dense semantic SLAM system which handles short and long term environmental changes by separating dynamic objects from the static background.
 
-Learning-based methods like NetVLAD \cite{arandjelovicNetVLADCNNArchitecture2016} assign global descriptors to places rather than features, increasing robustness to viewpoint, conditions, and dynamic clutter. HF-Net \cite{sarlinCoarseFineRobust2019} extends this idea by utilizing global descriptors for large-scale place recognition and local learned features for refinement. The negative aspects of learning-based approaches tend to be their computational load, requiring significantly higher capability than methods that do not require a neural network.
-
-While the methods discussed here do allow for place recognition to succeed despite significant visual and geometric changes, in general place recognition is most effective when the internal scene representation matches the true environment. To accomplish this, the system must be able to identify and correct discrepancies between the map and the current sensor readings.
-
-\subsection{Change Detection for Map Maintenance}
+\subsection{Reactive Map Maintenance via Change Detection}
 
 Change detection in SLAM refers to identifying discrepancies between current sensor observations and the existing map. This functionality supports operations like relocalization and place recognition by acting as the mechanism through which outdated map data is identified so it can be updated. The implementation of change detection depends heavily on sensor modality and map representation.
 
@@ -23,27 +19,16 @@ Girardeau-Montaut et al. \cite{girardeau-montautCHANGEDETECTIONPOINTS2005} imple
 
 Many modern methods utilize a learning-based approach to align and detect changes in dissimilar data types. Larsen et al. \cite{larsenChangeDetectionModel} % TODO: expand description of Larsen et al.
 
-Lázaro et al. \cite{lazaroEfficientLongtermMapping2018} implemented map updates for ... % TODO: expand
-Wilf et al. \cite{wilfCumulativeEvidenceScene2022} ... % TODO: expand
-Qian et al. \cite{qianPOCDProbabilisticObjectLevel2022} ... % TODO: expand
-Takeda et al. \cite{takedaLifelongChangeDetection2023} ... % TODO: expand
-Schmid et al. \cite{schmidKhronosUnifiedApproach2024} ... % TODO: expand
-
-\subsection{Dynamic Object Rejection}
-
-Dynamic rejection is the process of identifying dynamic objects within a scene and rejecting image features that fall on them. This requires either tracking object motion to verify the object is dynamic, or performing image segmentation and semantic identification to categorize objects as either dynamic or static. It can also be accomplished without strict object identification using methods that detect movement in images (e.g., optical flow) or in point clouds. % TODO: add example/reference for point cloud motion methods
-
-Saputra et al. \cite{saputraVisualSLAMStructure2019} ... % TODO: expand
-Henein et al. \cite{heneinDynamicSLAMNeed2020} ... % TODO: expand
-Mao et al. \cite{maoSemanticMaskingVisual2024} ... % TODO: expand
+Walcott-Bryant et al. \cite{walcott-bryantDynamicPoseGraph2012} uses change detection between lidar scans of subsequent revisits to an area to update SLAM maps, improving robustness to large scale change over time. Lázaro et al. \cite{lazaroEfficientLongtermMapping2018} implemented map updates for 2D SLAM using change detection on subsequent LIDAR scans matched using ICP. Wilf et al. \cite{wilfCumulativeEvidenceScene2022} utilized change detection based on point cloud descriptors combined with a cumulative evedence model to update 3D maps. At the object level, Qian et al. \cite{qianPOCDProbabilisticObjectLevel2022} implements change detection for map maintenance of 3D sparese maps, using a Bayesian update rule to determine when to update the map based on geometric and semantic information. Takeda et al. \cite{takedaLifelongChangeDetection2023} proposes the reverse approach, utilizing robot navigation through an environment as a data source for updating an object-level semantic map of the environment over time.
 
 \subsection{Feature Persistence and Observability Modeling}
 
 Feature persistence modeling refers to the estimation of whether a specific map feature will remain observable over time, producing per-feature metrics that can drive map maintenance decisions.
 
-Derner et al. \cite{dernerChangeDetectionUsing2021} ... % TODO: expand
-Berrio et al. \cite{berrioUpdatingVisibilityFeaturebased2019,berrioLongtermMapMaintenance2020} ... % TODO: expand
-Alcantarilla et al. \cite{alcantarillaLearningVisibilityLandmarks2010} ... % TODO: expand
-Hashemifar and Dantu \cite{hashemifarPracticalPersistenceReasoning2020} ... % TODO: expand
-Rosen et al. \cite{rosenLifelongFeaturebasedMapping2016} ... % TODO: expand
-Walcott-Bryant et al. \cite{walcott-bryantDynamicPoseGraph2012} ... % TODO: expand
+Derner et al. \cite{dernerChangeDetectionUsing2021} experimented with weighting visual features differently based on their stability, maintaining a database of localized features collected over time and updating weights based on subsequent observations and non-observations. Similarly, Berrio et al. \cite{berrioUpdatingVisibilityFeaturebased2019,berrioLongtermMapMaintenance2020} utilized probabilistic modeling to estimate the likelyhood of observing visual features based on distance and angle in the 2D case, removing features from the map when they are not seen when expected to reduce the impact of oudated visual data. Alcantarilla et al. \cite{alcantarillaLearningVisibilityLandmarks2010} estimates and updates the visiblity of map points based on the geometric relationship between the camera and the map point for use in localization, with each map point integrating the camera poses from which it was viewed using a learned kernel to estimate observability. Rosen et al. \cite{rosenLifelongFeaturebasedMapping2016} presents the idea of persistence estimation of visual features using a Bayesian estimator to estimate the survival of image features over time, an approach later integrated into ORB-SLAM by Hashemifar and Dantu \cite{hashemifarPracticalPersistenceReasoning2020}.
+
+\subsection{Research Gap and Thesis Positioning}
+
+The method proposed in this thesis can be classified as an observability modeling approach toward reactive map maintenance. Several of the observability modeling papers discussed make reference to future work of integrating an observability modeling approach into 3D KV-SLAM, but from the survey of the literature, a publication of an implementation has not been found. Additionally, of the observability modeling methods found during the survey, most tended toward binary classification of visible/not visible based on viewpoint.
+
+The primary potential for contribution to the field lies in the lack of an integrated system of global observability modeling and reactive map maintenance into a 3D KV-SLAM system.
