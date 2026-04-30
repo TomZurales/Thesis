@@ -1,16 +1,670 @@
 \section{Implementation}
 \label{sec:implementation}
 
-\input{src/4_Implementation/0_Constructs}
+\subsection{Definitions and Functions}
 
-\input{src/4_Implementation/1_MethodOverview}
+Future sections explore the mathematical basis and implementation of the proposed system. To provide a common reference, useful definitions and constructs are defined here.
 
-\input{src/4_Implementation/2_SystemImplementation}
+\newcommand{\viewpoint}{\ensuremath{v}}
+\newcommand{\viewpointdomain}{\ensuremath{V}}
+\newcommand{\dmin}{\ensuremath{d_{\text{min}}}}
+\newcommand{\dmax}{\ensuremath{d_{\text{max}}}}
+\newcommand{\observation}{\ensuremath{o}}
+\newcommand{\observations}[1]{\ensuremath{\boldsymbol{O}^{#1}}}
+\newcommand{\pe}{\ensuremath{P(E)}}
+\newcommand{\estpe}{\ensuremath{\hat{P}(E)}}
+\newcommand{\ps}{\ensuremath{P(S,v)}}
+\newcommand{\psge}{\ensuremath{P(S,v|E)}}
+\newcommand{\estpsge}{\ensuremath{\hat{P}(S,v|E)}}
+\newcommand{\psgne}{\ensuremath{P(S,v|\lnot E)}}
+\newcommand{\pegs}{\ensuremath{P(E|S,v)}}
+\newcommand{\pegns}{\ensuremath{P(E|\lnot S,v)}}
+\newcommand{\falsepos}{\ensuremath{\varepsilon_{\text{pos}}}}
+\newcommand{\falseneg}{\ensuremath{\varepsilon_{\text{neg}}}}
+\newcommand{\damping}{\ensuremath{\alpha}}
+\newcommand{\observability}{\ensuremath{\rho}}
+\newcommand{\observabilityupdate}{\ensuremath{\eta}}
+\newcommand{\state}{\ensuremath{s}}
+\newcommand{\feedback}{\ensuremath{\beta}}
+\newcommand{\params}[1]{\ensuremath{\boldsymbol{\theta}_{#1}}}
+\newcommand{\param}[2]{\ensuremath{\theta_{#1,#2}}}
+\newcommand{\epe}{\ensuremath{\text{EPE}}}
+\newcommand{\vbee}{\ensuremath{\text{VBEE}}}
+\newcommand{\knn}{\ensuremath{\text{KNN}}}
+\newcommand{\db}{\ensuremath{\text{DB}}}
+\newcommand{\initialize}[1]{\ensuremath{\operatorname{Initialize}(#1)}}
+\newcommand{\estimate}[1]{\ensuremath{\operatorname{Estimate}(#1)}}
+\newcommand{\integrate}[1]{\ensuremath{\operatorname{Integrate}(#1)}}
+\newcommand{\update}[1]{\ensuremath{\operatorname{Update}(#1)}}
+\newcommand{\query}{\ensuremath{\operatorname{Query}()}}
+\newcommand{\athreshold}{\ensuremath{\tau_{\text{angle}}}}
+\newcommand{\feedbackthreshold}{\ensuremath{\tau_{\beta}}}
+\newcommand{\existsthreshold}{\ensuremath{\tau_{E}}}
 
-\input{src/4_Implementation/3_DatasetCreation}
+\paragraph{Definitions}
+\defitem{$\dmin$ and $\dmax$}{The minimum and maximum distances at which a map point may be considered visible to the camera.}
+\defitem{$\viewpoint$}{A viewpoint in the domain $\viewpoint \in \mathbb{S}^2 \times [\dmin, \dmax] \rightarrow \mathbb{R}^3$.}
+\defitem{$\observation$}{An observation of a map point defined as $\observation = (\viewpoint, \state)$, where $\viewpoint$ is the viewpoint and $\state \in \{0.0, 1.0\}$ indicates whether the point was seen (1.0) or not seen (0.0) from $\viewpoint$.}
+\defitem{$\observations{n}$}{A vector of $n$ observations in the form $\{\observation_0,\dots,\observation_n\}$.}
+\defitem{$\pe$}{The probability that the map point exists.}
+\defitem{$\ps$}{The probability that the map point is visible from a given viewpoint $\viewpoint$.}
+\defitem{$\falseneg$}{The probability of a false negative (not observing a map point when it is actually observable).}
+\defitem{$\falsepos$}{The probability of a false positive (observing a map point when it is actually unobservable).}
+\defitem{$\damping$}{The damping coefficient applied to updates of $\pe$.}
+\defitem{$\observability_t$}{The estimated overall observability of the map point at time $t$.}
+\defitem{$\observabilityupdate$}{The damping coefficient applied to updates of $\observability$.}
+\defitem{$\feedback$}{The feedback propagated from the Bayesian update step back to the observability model, calculated as $\estpe_t - \estpe_{t-1}$.}
+\defitem{$\knn$}{An instance of the KNN observability model, a precursor to the Discrete Boundary model (see Section~\ref{sec:observability_models}).}
+\defitem{$\db$}{An instance of the Discrete Boundary observability model.}
+\defitem{$\epe$}{The Bayesian existence probability update step, now implemented internally within $\vbee$ rather than as a separate component.}
+\defitem{$\vbee$}{An instance of the viewpoint-based existence estimator, which holds a reference to an observability model and performs Bayesian existence probability updates internally.}
+\defitem{$\params{\knn}$}{A vector of parameters specific to the KNN model in the form $\{\param{\knn}{1},\dots,\param{\knn}{n}\}$, where $n$ is the number of parameters.}
+\defitem{$\params{\db}$}{A vector of parameters for the Discrete Boundary model in the form $\{k, \text{ambiguous\_range}\}$, where $k$ is the ambiguity counter maximum and $\text{ambiguous\_range}$ controls the width of the ambiguous region's output range.}
+\defitem{$\params{\epe}$}{The false negative and false positive rates $\{\falseneg,\falsepos\}$, now incorporated directly into $\params{\vbee}$.}
+\defitem{$\params{\vbee}$}{A vector of parameters for the viewpoint-based existence estimator in the form $\{model,\estpe_0,\damping,\observability_0,\observabilityupdate,\falseneg,\falsepos\}$, where $model$ is the observability model instance.}
 
-\input{src/4_Implementation/4_ORB-SLAM3Integration}
+\paragraph{Functions}
+\defitem{$\vbee.\initialize{\params{\vbee}}$}{Initializes the viewpoint-based existence estimator, including the observability model instance.}
+\defitem{$\vbee.\update{\observation}$}{Updates the estimator with a new observation $\observation$, returning the updated existence probability $\estpe$.}
+\defitem{$\vbee.\query$}{Queries the estimator for the current estimate of the map point's existence probability $\estpe$.}
+\defitem{$\db.\initialize{\params{\db}}$}{Initializes the Discrete Boundary model with parameters $\params{\db}$.}
+\defitem{$\db.\estimate{\viewpoint}$}{Returns the Discrete Boundary model's estimated probability of seeing the map point from viewpoint $\viewpoint$, given the point exists: $\estimate{\viewpoint} = \estpsge$.}
+\defitem{$\db.\integrate{\observation}$}{Integrates a new observation $\observation$ into the Discrete Boundary model's internal bin state.}
+\defitem{$\knn.\initialize{\params{\knn}}$}{Initializes the KNN model (precursor) with parameters $\params{\knn}$.}
+\defitem{$\knn.\estimate{\viewpoint}$}{Returns the KNN model's estimated probability of seeing the map point from viewpoint $\viewpoint$: $\estimate{\viewpoint} = \estpsge$.}
+\defitem{$\knn.\integrate{\observation, \feedback}$}{Integrates a new observation $\observation$ into the KNN model's stored observation buffer, using feedback $\feedback$ to determine whether the observation is incorporated.}
 
-\input{src/4_Implementation/5_ParameterOptimization}
+\subsection{Method Overview}
+\label{sec:method_overview}
 
-\input{src/4_Implementation/6_ExperimentationSetup}
+To achieve the goal of estimating and refining the probability of a 3D feature's existence. The estimation uses Bayesian methods to integrate prior knowledge of 3D positions where the feature is and is not visible and new observations of the feature to determine a new probability of the feature's existence. Due to the focus of this research on KV-SLAM, the 3D features discussed are 3D visual map points, but this method is adaptable to higher order features as well.
+
+\subsubsection{The Observability Model}
+
+The goal of the observability model is to estimate whether a point in 3D space is visible from another point in 3D space based on previous observations. These historical observations are made up of the observer's viewpoint, and whether the point of interest was visible from that location.
+In the context of KV-SLAM, these points of interest are visual landmarks
+
+Map points are conceptualized as static, infinitesimally small points in 3D Euclidean space. Let the observability of a map point $p$ from a viewpoint $\viewpoint=\{\theta,\phi,d\} \in [0,2\pi) \times \left[-\tfrac{\pi}{2}, \tfrac{\pi}{2}\right] \times [0,\dmax)$ be represented by
+
+\[
+    \operatorname{observable}_p(\viewpoint) : V \to \{0,1\},
+\]
+
+which returns $1$ if $p$ is observed from $\viewpoint$ and $0$ otherwise.
+An observation of point $p$ is then defined as $\observation_p = (\viewpoint, \state)$, where $\state \in \{0,1\}$ denotes whether the point was seen.
+A set of $n$ observations is $\observations{n}_p = \{\observation_{p0}, \dots, \observation_{pn}\}$.
+
+For illustrative purposes, later figures may use a simplified 2D representation $\viewpoint^{2D}=\{\theta,d\}$. Figure \ref{fig:global_observability_p} shows an example of such a plot.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{resources/global_observability_p.png}
+    \caption[2D Global Observability]{A 2D representation of the global observability of a map point $p$ near two orthogonal obstructions.}
+    \label{fig:global_observability_p}
+\end{figure}
+
+Constructing the exact global observability surface would require infinite observations across the full domain of viewpoints, which is infeasible. To satisfy the constant-size requirement in section \ref{sec:objectives}, the observability model maintains a finite, bounded representation.
+
+The model serves two roles:
+1. Estimating $P(S,\viewpoint|E)$ from a given viewpoint.
+2. Integrating new observations into its internal representation.
+
+The objective is to minimize the total error between the model estimate and the true observability:
+
+\[
+    \int \big| \hat{P}(S,\viewpoint|E) - \operatorname{observable}_p(\viewpoint) \big| \, dV.
+\]
+
+\subsubsection{Existence Probability Estimator}
+
+The probability of existence $\pe$ is updated with each new observation using Bayesian inference. Let $\pe_t$ denote the prior probability of existence before the observation, and $\pe_{t+1}$ the posterior after incorporating it.
+
+\[
+    \pe_{t+1} =
+    \begin{cases}
+        \dfrac{P(S,\viewpoint|E)\,\pe_t}{P(S,\viewpoint)}             & \text{if } \state=1, \\[1.2ex]
+        \dfrac{P(\lnot S,\viewpoint|E)\,\pe_t}{P(\lnot S,\viewpoint)} & \text{if } \state=0.
+    \end{cases}
+\]
+
+The marginal likelihood is
+
+\[
+    P(S,\viewpoint) = P(S,\viewpoint|E)\,\pe_t + P(S,\viewpoint|\lnot E)\,(1-\pe_t).
+\]
+
+False matches are possible when the map point does not exist. Let
+
+\[
+    \falsepos = P(S,\viewpoint|\lnot E) \approx 0,
+\]
+
+representing the false positive rate.
+Assuming the model provides an estimate $\hat{P}(S,\viewpoint|E) \equiv m(\viewpoint)$, the update simplifies to
+
+\[
+    \pe_{t+1} =
+    \begin{cases}
+        \dfrac{m(\viewpoint)\,\pe_t}{m(\viewpoint)\,\pe_t + \falsepos(1-\pe_t)}             & \text{if } \state=1, \\[1.2ex]
+        \dfrac{(1-m(\viewpoint))\,\pe_t}{(1-m(\viewpoint))\,\pe_t + (1-\falsepos)(1-\pe_t)} & \text{if } \state=0.
+    \end{cases}
+\]
+
+\subsubsection{The Existence Estimation Framework}
+
+The existence estimation framework combines an observability model with a Bayesian existence update step. A high-level view is shown in Figure \ref{fig:existence_estimation_framework}.
+
+% TODO: Add feedback line
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{resources/existence_estimation_framework.png}
+    \caption[Existence Estimation Framework]{A flowchart representing the flow of data through the proposed existence estimation framework.}
+    \label{fig:existence_estimation_framework}
+\end{figure}
+
+The observability model estimates $P(S,\viewpoint|E)$, the probability of observing a map point from viewpoint $\viewpoint$ given that the point exists, using historical observations. This estimate is then used to update the existence probability $\pe$ of the map point in a Bayesian manner. After the update, the new observation $\observation$ is integrated into the model's internal representation.
+
+\subsubsection{Overall Observability}
+
+The update above is overly sensitive in cases where a map point has historically been highly observable. For instance, if $m(\viewpoint)=1$, then a single negative observation ($\state=0$) would drive $\pe_{t+1}$ close to zero. To reduce this sensitivity, a damping coefficient $\damping \in [0,1]$ is applied:
+
+\[
+    \pe_{t+1} =
+    \begin{cases}
+        \damping \cdot \dfrac{m(\viewpoint)\,\pe_t}{m(\viewpoint)\,\pe_t + \falsepos(1-\pe_t)}             & \text{if } \state=1, \\[1.2ex]
+        \damping \cdot \dfrac{(1-m(\viewpoint))\,\pe_t}{(1-m(\viewpoint))\,\pe_t + (1-\falsepos)(1-\pe_t)} & \text{if } \state=0.
+    \end{cases}
+\]
+
+To further improve robustness, the model incorporates an overall observability parameter $\observability$, defined as the proportion of viewpoints from which the point has historically been observable. This is adaptively updated using
+
+\[
+    \observability \;\leftarrow\; \observability + \observabilityupdate \cdot \big(\state - m(\viewpoint)\big),
+\]
+
+where $\observabilityupdate$ controls the adaptation rate. In effect, $\observability$ moderates the influence of each observation, ensuring that negative evidence in highly observable regions has more weight than in rarely observable ones.
+
+\subsection{System Implementation}
+
+This section describes the implementation of the existence estimation framework described in section \ref{sec:method_overview}. Implementation details of the Discrete Boundary observability model and the VBEE library are provided. Pseudocode implementations of key functions are included to illustrate the implementation details of the framework.
+
+\subsubsection{Existence Estimation Framework Implementation}
+
+The viewpoint-based existence estimation framework is implemented as a C++ library called \texttt{libvbee}. This library facilitates the integration of VBEE into KV-SLAM systems by providing a standardized interface for observability estimation and existence probability estimation. The library provides the \vbee{} class, which accepts an observability model through a common interface and provides functions for updating and querying the existence probability of a map point. Pseudocode for the initialization, update, and query functions is provided below.
+
+The initialization function in Algorithm \ref{alg:vbee_init} sets up the VBEE instance with the specified parameters, including the Discrete Boundary observability model.
+
+\begin{singlespace}
+    \begin{algorithm}[H]
+        \caption[VBEE Initialization]{VBEE Initialization: $\vbee.\initialize{\params{\vbee}}$}
+        \label{alg:vbee_init}
+        \begin{algorithmic}
+            \Require $\params{\vbee}$: VBEE Parameters (includes $\params{\db}$, $\falseneg$, $\falsepos$)
+            \State{\textbf{global} $p\_e, \damping, \observability, \observabilityupdate, \falseneg, \falsepos \gets \params{\vbee}$}
+            \State{\textbf{global} $model \gets \db.\initialize{\params{\db}}$}
+        \end{algorithmic}
+    \end{algorithm}
+\end{singlespace}
+
+The update function in Algorithm \ref{alg:vbee_update} integrates a new observation, determining an updated existence probability based on the observation and the observability model's estimate. The observability model is updated with the new observation, and the overall observability is updated based on the difference between the observation's state and the model estimate.
+
+\begin{singlespace}
+    \begin{algorithm}[H]
+        \caption[VBEE Update]{VBEE Update: $\vbee.\update{\observation}$}
+        \label{alg:vbee_update}
+        \begin{algorithmic}
+            \Require $\observation$: New Observation
+            \Ensure{$\estpe$: Updated Existence Probability}
+            \State{$prior \gets p\_e$}
+            \State{$model\_estimate \gets model.\estimate{\observation.v}$}
+            \State{$posterior \gets \operatorname{BayesianUpdate}(\observation, prior, model\_estimate)$}
+
+            \State{$weight \gets (1 - \observability) \cdot \damping$}
+            \State{$p\_e \gets prior \cdot (1 - weight) + posterior \cdot weight$}
+
+            \State{$model.\integrate{\observation}$}
+
+            \State{$\observability \gets \observability + \observabilityupdate \cdot (\observation.s - model\_estimate)$}
+            \Return{$p\_e$}
+        \end{algorithmic}
+    \end{algorithm}
+\end{singlespace}
+
+The query function simply returns the current existence probability $\pe$.
+\subsubsection{Observability Models}
+\label{sec:observability_models}
+
+The Discrete Boundary model is implemented as the primary observability model for this system. A K-Nearest Neighbors approach was explored first and is described below to motivate the Discrete Boundary design.
+
+\paragraph{KNN Model (Precursor)}
+
+The KNN model estimates $\psge$ as the ratio of positive observations within the $k$ nearest neighbors of the query viewpoint. The model maintains a finite buffer of $n$ observations. The angular distance between viewpoints is also considered, as distant observations may be irrelevant. Finally, the model incorporates feedback from the existence probability estimator to decide whether or not to integrate a new observation.
+
+The parameter vector is:
+$$
+    \params{\knn} = \{k, n, \athreshold, \feedbackthreshold\}
+$$
+where $k$ is the number of neighbors to consider, $n$ is the maximum number of stored observations, $\athreshold$ is the maximum angular distance for neighbors, and $\feedbackthreshold$ is the minimum feedback magnitude required for integration.
+
+The estimation function is shown in Algorithm \ref{alg:knn_estimate}, returning the ratio of positive neighbors, or $0.5$ if no neighbors are found.
+
+\begin{singlespace}
+    \begin{algorithm}[H]
+        \caption[KNN Observability Estimation]{KNN $\estimate{\viewpoint}$}
+        \label{alg:knn_estimate}
+        \begin{algorithmic}
+            \Require $\observations{}_{prev}$: Stored observations
+            \Require $k$, $\athreshold$: KNN parameters
+            \Ensure $\estpsge$: Estimated probability of observation
+            \Function{$\estimate$}{$\viewpoint$}
+            \State $candidates \gets [\;]$
+            \ForAll{$o \in \observations{}_{prev}$}
+            \If{$\Delta\theta(o.v, \viewpoint) < \athreshold$}
+            \State add $o$ to $candidates$
+            \EndIf
+            \EndFor
+            \State \texttt{sort} $candidates$ by distance to $\viewpoint$
+            \State $neighbors \gets$ first $\min(k, \texttt{length}(candidates))$
+            \If{$neighbors$ is empty}
+            \State \Return $0.5$
+            \EndIf
+            \State $seen\_count \gets$ sum of $o.s$ in $neighbors$
+            \State \Return $seen\_count / \texttt{length}(neighbors)$
+            \EndFunction
+        \end{algorithmic}
+    \end{algorithm}
+\end{singlespace}
+
+The update function (Algorithm \ref{alg:knn_update}) integrates new observations. If the buffer is not full, the observation is added. If the feedback magnitude is below $\feedbackthreshold$, the observation is ignored. Otherwise, the observation replaces the nearest inconsistent stored observation.
+
+\begin{singlespace}
+    \begin{algorithm}[H]
+        \caption[KNN Model Update]{KNN $\update{o, \feedback}$}
+        \label{alg:knn_update}
+        \begin{algorithmic}
+            \Require $\observations{}_{prev}$: Stored observations
+            \Require $n$, $\feedbackthreshold$: Parameters
+            \Function{$\update$}{$o, \feedback$}
+            \If{$\texttt{length}(\observations{}_{prev}) < n$}
+            \State add $o$
+            \State \Return
+            \EndIf
+            \If{$|\feedback| < \feedbackthreshold$}
+            \State \Return
+            \EndIf
+            \If{$o.s = 1$}
+            \State replace nearest not-seen observation with $o$
+            \Else
+            \State replace nearest seen observation with $o$
+            \EndIf
+            \EndFunction
+        \end{algorithmic}
+    \end{algorithm}
+\end{singlespace}
+
+An inhert limitation with the KNN approach is its inability to exploit geometric sight-line constraints. The desire to take advantage of these constraints motivated the Discrete Boundary design described in the following section.
+
+\paragraph{Discrete Boundary Model}
+
+The KNN model is simple to implement and use, but it does not take advantage of geometric sight lines. If a map point can be observed from a distance d, then it is guaranteed that it can be observed from a distance < d along the same vector. The Discrete Boundary Model establishes a set of "bins" surrounding the map point, each tied to a unique direction vector. Each bin stores the radial distance to the furthest positive observation, and the closest negative observation. For each query observation, the bin whos direction vector is nearest to the queried point's direction vector is selected. Queries closer than the bin's maximum positive observation are scored with a high $\psge$. Queries more distant than the bin's furthest negative observation are scored with a low $\psge$. Queries between these values are linearly interpolated based on their relative distance to the two borders.
+
+For simplicity, this implementation uses 20 bins, with direction vectors corresponding to the centroids of each face of an icosahedron with a virtex in the +Z direction and a face in the +X direction. This provides a consistent tiling of the sphere, so each bin covers equal angular area.
+
+Integrating a new observation into this model first requires the selection of the appropriate bin. This can be done by identifying the direction vector with the lowest cosine angle to the vector from the map point to the viewpoint. If the observation is positive and the distance is further than that bin's current max observation distance, the max observation distance is updated to the distance between the observation and the map point. Similarly, if the observation is negative and the distance is closer than the current min non-observation distance, the bin is again updated. Bins are initialized to have 0 max observation distance and infinite minimum non-observation distance.
+
+Because the domain of viewpoints is downsampled into a finite number of bins, it is possible for negative observations to occur at distances closer than the maximum positive distance due to environmental geometry. If a negative observation occurs at a distance less than the maximum positive distance, an "ambiguous region" is created. This is the region in which both positive and negative observations have occured, and it is given a weight based on the proportion of positive observations to all observations that occured in that region.
+
+Querying this model is done first by identifying the bin for the given viewpoint. Once found, the region is determined. If the viewpoint's distance is greater than the maximum view distance, the query returns 0. If the viewpoint's distance is less than the minimum non-observation distance and the maximum observation distance, the query returns 1. If the observation occurs between these two values, the weighting of the ambiguous region is used to determine an estimate in the range XXX.
+
+\subsubsection{Bayesian Existence Update}
+\label{sec:existence_confidence}
+
+The Bayesian existence update computes the posterior probability $\pe$ of a map point's existence. This logic is implemented directly within the \vbee{} class and is parameterized by $\falseneg$ and $\falsepos$, now part of $\params{\vbee}$. The update takes an observation, the prior $\pe_t$, and the model estimate $\estpsge$ as inputs, and computes the posterior $\pe_{t+1}$. Algorithm \ref{alg:bayesian_update_impl} shows the implementation.
+
+\begin{singlespace}
+    \begin{algorithm}[H]
+        \caption{Bayesian Update Step}
+        \label{alg:bayesian_update_impl}
+        \begin{algorithmic}
+            \Require Observation $o = (v, s)$
+            \Require Prior $\estpe_t \in [0,1]$
+            \Require Model estimate $\estpsge$
+            \If{$o.s = 1$}
+            \State $posterior \gets \frac{\estpsge (1 - \falseneg) \cdot \estpe_t}{\estpsge (1 - \falseneg) \cdot \estpe_t + \falsepos (1 - \estpe_t)}$
+            \Else
+            \State $posterior \gets \frac{(1 - \estpsge (1 - \falseneg)) \cdot \estpe_t}{(1 - \estpsge (1 - \falseneg)) \cdot \estpe_t + (1 - \falsepos)(1 - \estpe_t)}$
+            \EndIf
+            \State \Return $posterior$
+        \end{algorithmic}
+    \end{algorithm}
+\end{singlespace}
+
+\subsection{Dataset Creation}
+\label{sec:dataset_creation}
+
+Two datasets were created to test the isolated performance of the VBEE library, and the integrated performance of VBEE with ORB-SLAM3 respectively The first dataset referred to as the Observability Scenarios Dataset, consists of a set of points, each with their own unique observability properties. These points can be queried to determine if a point can be seen from a given viewpoint, allowing the full VBEE pipeline to be exercised without a SLAM implementation. The second dataset known as the Episodic Visual SLAM Dataset is a stereo visual SLAM dataset in the style of the EuRoC MAV SLAM dataset, but with extensions for episodic operation. This section details the construction and intention behind these datasets.
+
+\subsection{Observability Scenarios Dataset}
+\label{sec:observability_scenario_dataset}
+The observability scenarios dataset is intended to represent the domain of observability scenarios which may apply to map points seen during SLAM operations. A map point's observability can be represented as the union of three sets of viewpoints: Viewpoints from which the map point is visible, viewpoints from which the map point is not visible (obstructed), and viewpoints which are inaccessible to the observer (e.g. under a floor or inside a wall). These three sets cover the domain of viewpoints for a map point and represent the unique observability scenario for that map point.
+
+For the creation of the observability scenarios dataset, rather than classifying specific viewpoints into specific sets, the proportional sizes of these sets are defined, and a generative process is used to create a scenario matching these proportional sizes. The process of generating an observability scenario for a desired parameterization is shown in Algorithm \ref{alg:generate_observability_scenario}. This algorithm randomly generates inaccessible and obstructed areas around a central point, then samples random viewpoints to estimate the relative proportions of each set. If the proportional set sizes match the desired proportions within a defined tolerance, the observability scenario is returned. Otherwise, the number of inaccessible and obstructed areas are adjusted and regenerated until a valid solution is found.
+
+\begin{singlespace}
+    \begin{algorithm}[H]
+        \caption[Generate Observability Scenario]{$\operatorname{GenerateObservabilityScenario}$}
+        \label{alg:generate_observability_scenario}
+        \begin{algorithmic}
+            \Function{GenerateObservabilityScenario}{}
+            \EndFunction
+        \end{algorithmic}
+    \end{algorithm}
+\end{singlespace}
+
+The final dataset consists of observability scenarios generated for all pairings of 5\% inaccessible to 95\% inaccessible and 5\% obstructed to 95\% obstructed in 5\% increments, giving a total of 361 unique observability scenarios. A subset of cutaways from the dataset is shown in Figure \ref{fig:observability_scenarios}.
+
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{resources/placeholder.jpeg}
+    \caption{2D cutaways of examples from the Observability Scenarios Dataset}
+    \label{fig:observability_scenarios}
+\end{figure}
+
+\subsubsection{Static Episodic Visual SLAM Dataset}
+
+\subsubsection{Changing Episodic Visual SLAM Datasets}
+To evaluate VBEE performance in a real-world SLAM system, a stereo visual dataset was created consisting of a series of trajectories through a household environment. No dynamic changes occur during the recording of a single trajectory, but environmental changes are introduced between trajectories, matching the episodic run modality described in section \ref{sec:background}. Figure \ref{fig:episodic_datasets} shows example images from each trajectory at roughly the same location.
+
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{resources/placeholder.jpeg}
+    \caption{Example images from each trajectory of the episodic visual SLAM dataset}
+    \label{fig:episodic_datasets}
+\end{figure}
+
+This dataset is intended to replicate realistic episodic SLAM operation in a household environment. Ground truth is difficult to obtain in large-scale 3D environments, so evaluation focuses on the SLAM system's ability to maintain a consistent map across multiple trajectories. LibVBEE is integrated into ORB-SLAM3, and performance is evaluated by measuring its ability to identify and remove outdated map points while preserving map consistency across episodes.
+
+\subsection{ORB-SLAM3 Integration}
+\label{sec:orb_slam3_integration}
+
+The VBEE library is designed to be easily integrated into existing KV-SLAM systems. This section covers the integration of libVBEE into ORB-SLAM3. As discussed in section \ref{sec:orb_slam3}, ORB-SLAM3 was selected due to its wide adoption, high performance, and inclusion of several SLAM extensions which can benefit from outdated map point culling.
+
+The original intention was to perform VBEE operations on every image frame in real-time as it passed through the SLAM system. However, these operations are time-consuming and computationally expensive, which led to a reduction in frame throughput and localization accuracy. Instead, the decision was made to operate on keyframes rather than frames, and to move the VBEE operations to the ends of episodic runs, acting as a post-processing step rather than a real-time update.
+
+\subsubsection{Map Point}
+
+The Map Point class is modified to include a VBEE instance, allowing for observability based existence estimation on a per-map point basis. The Map Point class includes a merge method which is called when the SLAM system's optimization operations identify that two map points likely represent the same visual feature. This method is modified to call the VBEE merge method to combine the VBEE instances of the two map points.
+
+\subsubsection{VBEE Post-Processing Operations}
+
+Run ends are determined by matching the current frame's timestamp to a timestamp in the splits file provided by the episodic datasets. Figure \ref{fig:damping_coefficient_selection} shows the pipeline of VBEE operations which take place at the ends of runs.
+
+At the end of the run, several iterations of Global Bundle Adjustment are performed to minimize the global error of the map. This operation repositions keyframes and merges map points, which give the VBEE operations the greatest chance of success. Each keyframe from the most recent run is then processed in order of collection. For each keyframe, two groups of map points are generated: positive observations and negative observations. Positive observations are map points that the SLAM system observed within the keyframe, while negative observations are map points that could be projected onto the camera's sensor based on the keyframe's pose, but were not observed within the keyframe. For each positively observed map point, an update is submitted to its VBEE instance with a viewpoint of the keyframe's position, and a seen status of 1. Similarly, for each negatively observed map point, an update is submitted with a seen status of 0.
+
+After all new keyframes have been processed, map point culling begins. For each map point in the map, if its probability of existence is found to be less than the $P(E)$ threshold, the map point is marked bad. Once marked bad, ORB-SLAM3 will perform the necessary operations to remove the map point from the map, and clean up any pointers to its instance.
+
+\subsubsection{RANSAC Integration}
+
+RANSAC is used for relocalization and loop closing in ORB-SLAM3. The base implementation selects map points with a uniform probability of selection. The integration of VBEE into the system allows the selection to instead be weighted by the map point's probability of being seen $P(S)$ from the given viewpoint. The conjecture is that by weighting for selection of map points with a high likelihood of being seen, the number of iterations required to fit a model to the data will be minimized.
+
+For each map point, $P(S)$ is calculated as follows:
+$$
+P(S)=P(S|E)P(E)+P(S|\neg E)P(\neg E)
+$$
+where $P(S|E)$ is the observability model's estimate from the current position, and $P(S|\neg E)$ is the false positive rate parameter. A selection is made from the pool of map points, with each map point's probability of selection proportional to its probability of being seen. Instrumentation is added to the loop closing and relocalization methods to count the number of iterations the RANSAC process takes to find a solution.
+
+\subsection{Parameter Optimization}
+\label{sec:param_optimization}
+
+Before experimentation can take place on the SLAM system, the parameters of libVBEE must be tuned to optimize performance. Parameters are split between the VBEE framework and the observability model. The VBEE and model parameters are tightly coupled through feedback, making optimization difficult as the parameters of one system affect the other. As a solution, parameter optimization is performed in three phases. The first phase freezes the VBEE parameters to reasonable values while optimizing the observability model parameters. The second phase freezes the observability model parameters to the values obtained in Phase 1 while optimizing the VBEE parameters. The final phase fine-tunes both parameter sets simultaneously, ideally achieving stable performance for the system.
+
+\paragraph{Phase 1 - Observability Model Tuning}
+
+The Discrete Boundary observability model has parameters $\params{\db} = \{k, \text{ambiguous\_range}\}$, which are tuned to minimize the following objectives:
+\begin{itemize}
+    \item $n_{\text{converge}}$: The number of observations necessary for the VBEE system to converge to a stable estimate of $\pe$
+    \item $\epsilon_{\text{converge}}$: The observability model's error after $n_{\text{converge}}$ observations
+    \item $n_{\text{adapt}}$: The number of observations necessary for the system to re-converge to a stable estimate of $\pe$ after changing the point's observability
+    \item $\epsilon_{\text{adapt}}$: The observability model's error after $n_{\text{adapt}}$ observations
+    \item $t_{update}$: The average time in ms needed to perform one estimation and one update
+    \item size: The total storage in bytes needed to serialize one map point's observability
+\end{itemize}
+
+In this first phase, the $\vbee$ parameters are locked to the following values:
+\begin{align*}
+    \params{\vbee}^* &= \{\estpe_0 = 0.9, \damping = 0.1, \observability_0 = 0.5, \observabilityupdate = 0.5, \falseneg = 0.1, \falsepos = 0.001\}
+\end{align*}
+The Discrete Boundary parameters $\params{\db}$ are optimized to minimize the objectives using the objective functions described below.
+
+The function $\operatorname{ObjectiveNConverge}$ shown in Algorithm \ref{alg:obj_n_converge} determines the average number of observations needed for the system to converge to a stable $\estpe$ for each observability scenario in the dataset. The system is considered converged when the standard deviation over the last $w = 100$ samples drops below $\sigma_{\text{converge}} = 0.2$. If the system does not converge within $m_{\text{max}} = 1000$ observations, the test is considered failed, and the optimization is penalized accordingly.
+
+\begin{singlespace}
+    \begin{algorithm}[H]
+        \caption[Objective Function: $n_{converge}$]{ObjectiveNConverge}
+        \label{alg:obj_n_converge}
+        \begin{algorithmic}[1]
+            \Require{$vbee$: VBEE instance initialized with $\params{\vbee}^*, \params{\db}$}
+            \Require{$observability\_scenarios$: Observability Scenario Dataset}
+            \Function{ObjectiveNConverge}{}
+            \State{$all\_n\_convergences \gets [\;]$}
+            \For{$os$ in $observability\_scenarios$}
+                \State{$\texttt{reset } vbee$}
+                \State{$window \gets \operatorname{Queue()}$}
+                \State{$n\_converge \gets -1$}
+                \For{$i = 0$ to $m_{max}$}
+                    \State{$v \gets \texttt{random viewpoint}$}
+                    \State{$new\_\estpe \gets \vbee.\update{\observation = (v, os.\query(v))}$}
+                    \State{$\texttt{push } new\_\estpe$ onto $window$}
+                    \If{$window \texttt{ size} > w$}
+                        \State{$\texttt{pop } window$}
+                        \If{$\texttt{std dev}(window) < \sigma_{converge}$}
+                            \State{$n\_converge \gets i$}
+                            \State{break}
+                        \EndIf
+                    \EndIf
+                \EndFor
+                \If{$n\_converge = -1$}
+                    \State{$\texttt{append } 2 * m_{max}$ to $all\_n\_convergences$}
+                \Else
+                    \State{$\texttt{append } i$ to $all\_n\_convergences$}
+                \EndIf
+            \EndFor
+            \State{\Return{$\texttt{average } all\_n\_convergences$}}
+            \EndFunction
+        \end{algorithmic}
+    \end{algorithm}
+\end{singlespace}
+
+The function $\operatorname{ObjectiveEConverge}$ shown in Algorithm \ref{alg:obj_e_converge} determines the average error between the observability model and the observability scenario after the system has converged across all observability scenarios. Model error is calculated as the sum of differences between $\vbee.\query$ and the true observability from the dataset over $j = 1000$ random viewpoints. Once again, if the system does not converge to a stable probability estimate, the system is penalized.
+
+\begin{singlespace}
+    \begin{algorithm}[H]
+        \caption[Objective Function: $\epsilon_{converge}$]{ObjectiveEConverge}
+        \label{alg:obj_e_converge}
+        \begin{algorithmic}
+            \Require{$vbee$: VBEE instance initialized with $\params{\vbee}^*, \params{\db}$}
+            \Require{$observability\_scenarios$: Observability Scenario Dataset}
+            \Function{ObjectiveEConverge}{}
+            \State{$all\_e\_convergences \gets [\;]$}
+            \For{$os$ in $observability\_scenarios$}
+                \State{$\texttt{reset } vbee$}
+                \State{$error \gets 0$}
+                \State{$window \gets \operatorname{Queue()}$}
+                \For{$m_{max}$ times}
+                    \State{[\textit{Same as Algorithm \ref{alg:obj_n_converge}, lines 8-13}]}
+                    \If{$window \texttt{ size} > w$}
+                        \State{$\texttt{pop } window$}
+                        \If{$\texttt{std dev}(window) < \sigma_{converge}$}
+                            \For{$j$ times}
+                                \State{$v \gets \texttt{random viewpoint}$}
+                                \State{$true\_obs \gets os.\query(v)$}
+                                \State{$model\_obs \gets vbee.model.\estimate{v}$}
+                                \State{$error \gets error + |true\_obs - model\_obs|$}
+                            \EndFor
+                            \State{break}
+                        \EndIf
+                    \EndIf
+                \EndFor
+                \If{$error = 0$}
+                    \State{$\texttt{append } 1000$ to $all\_e\_convergences$}
+                \Else
+                    \State{$\texttt{append } error$ to $all\_e\_convergences$}
+                \EndIf
+            \EndFor
+            \State{\Return{$\texttt{average } all\_e\_convergences$}}
+            \EndFunction
+        \end{algorithmic}
+    \end{algorithm}
+\end{singlespace}
+
+The functions $\operatorname{ObjectiveNAdapt}$ and $\operatorname{ObjectiveEAdapt}$ are implemented similarly but perform two convergence loops per scenario. Between the loops, the active scenario is replaced with a predetermined partner scenario selected to be significantly different from the original but with some observability overlap.
+
+The function $\operatorname{ObjectiveTUpdate}$, shown in Algorithm \ref{alg:obj_t_update}, determines the average time to perform $\vbee.\update{}$ for 1000 random observations, averaged for every scenario.
+
+\begin{singlespace}
+    \begin{algorithm}[H]
+        \caption[Objective Function: $t_{update}$]{ObjectiveTUpdate}
+        \label{alg:obj_t_update}
+        \begin{algorithmic}
+            \Require{$vbee$: VBEE instance initialized with $\params{\vbee}^*, \params{\db}$}
+            \Require{$observability\_scenarios$: Observability Scenario Dataset}
+            \Function{ObjectiveTUpdate}{}
+            \State{$all\_t\_updates \gets [\;]$}
+            \For{$os$ in $observability\_scenarios$}
+                \State{$\texttt{reset } vbee$}
+                \State{$avg\_t\_update \gets 0$}
+                \For{1000 times}
+                    \State{$v \gets \texttt{random viewpoint}$}
+                    \State{$t_0 \gets \texttt{current time in ms}$}
+                    \State{$new\_\estpe \gets \vbee.\update{\observation = (v, os.\query(v))}$}
+                    \State{$t_1 \gets \texttt{current time in ms}$}
+                    \State{$avg\_t\_update \gets avg\_t\_update + (t_1 - t_0)$}
+                \EndFor
+                \State{$\texttt{append } (avg\_t\_update / 1000)$ to $all\_t\_updates$}
+            \EndFor
+            \State{\Return{$\texttt{average } all\_t\_updates$}}
+            \EndFunction
+        \end{algorithmic}
+    \end{algorithm}
+\end{singlespace}
+
+The function $\operatorname{ObjectiveSize}$ calculates the total size in bytes necessary to store all information required to reconstruct a serialized map point VBEE system in the same state as when it was serialized. This reconstruction requires:
+\begin{itemize}
+    \item All parameter vectors $\params{\vbee}$ (including $\params{\db}$)
+    \item The current estimated existence probability $\estpe$
+    \item The current observability $\observability$
+    \item The model's internal bin state (20 bins)
+\end{itemize}
+The Discrete Boundary model's internal representation has fixed size: 20 bins, each storing a maximum observation distance, a minimum non-observation distance, an ambiguity counter, and a bin observability estimate. Since this size is independent of all parameters, $\operatorname{ObjectiveSize}$ returns the constant $20 \times 4 \times 4 = 320$ bytes (four 32-bit values per bin).
+
+The final multi-objective function is shown in Algorithm \ref{alg:obj_obs_model}. This function returns an objective vector of six values, each related to one of the performance criteria defined previously. At this stage, the system is able to undergo multi-objective optimization to find values that minimize each of the six objectives.
+
+\begin{singlespace}
+    \begin{algorithm}[H]
+        \caption{Observability Model Objective Function}
+        \label{alg:obj_obs_model}
+        \begin{algorithmic}
+            \Require{$\params{\vbee}^*$: Static VBEE parameters}
+            \Function{ObjectiveObservabilityModel}{$\params{\db}$}
+            \State{$vbee \gets \vbee.\initialize{\params{\vbee}^*, \params{\db}}$}
+            \State{$n_{converge} \gets \operatorname{ObjectiveNConverge}()$}
+            \State{$\texttt{reset } vbee$}
+            \State{$\epsilon_{converge} \gets \operatorname{ObjectiveEConverge}()$}
+            \State{$\texttt{reset } vbee$}
+            \State{$n_{adapt} \gets \operatorname{ObjectiveNAdapt}()$}
+            \State{$\texttt{reset } vbee$}
+            \State{$\epsilon_{adapt} \gets \operatorname{ObjectiveEAdapt}()$}
+            \State{$\texttt{reset } vbee$}
+            \State{$t_{update} \gets \operatorname{ObjectiveTUpdate}()$}
+            \State{$\texttt{reset } vbee$}
+            \State{$size \gets \operatorname{ObjectiveSize}()$}
+            \State{\Return{$(n_{converge}, \epsilon_{converge}, n_{adapt}, \epsilon_{adapt}, t_{update}, size)$}}
+            \EndFunction
+        \end{algorithmic}
+    \end{algorithm}
+\end{singlespace}
+
+The Python library Optuna \cite{akibaOptunaNextgenerationHyperparameter2019} was selected to perform the multi-objective optimization of the system's parameters. Optuna is a hyperparameter optimization framework that allows for the discovery of Pareto optimal \cite{censorParetoOptimalityMultiobjective1977} parameter sets.
+
+\paragraph{Phase 2 - VBEE Tuning}
+
+In the second phase, the observability model parameters are frozen to the values obtained in Phase 1, and the VBEE parameters are tuned. The VBEE parameters $\params{\vbee} = \{\estpe_0, \damping, \observability_0, \observabilityupdate, \falseneg, \falsepos\}$ are tuned to minimize the following objectives:
+
+\subsection{Experimental Setup}
+
+This section describes the experiments conducted to evaluate the performance of the observability model and to determine the impact of libVBEE on SLAM systems. These experiments are defined here, and the results are presented in section \ref{sec:experimental_results}.
+
+\subsubsection*{Experiment 1: Observability Model Prediction Quality}
+The goal of this experiment is to determine whether the VBEE observability model can estimate the probability of map point visibility from a given viewpoint (assuming the map point still exists) based on historic observations, beyond what can be explained by viewpoint-agnostic prevalence statistics.
+
+The experimental procedure begins by generating 200 random observability scenarios, which are distributed randomly throughout a 3D space to act as map points. The system is ``trained'' by selecting 10,000 random viewpoints. For each of these viewpoints, each map point is labeled as visible or not visible depending on whether the map point can be seen from the viewpoint based on the observability rules defined in Section \ref{sec:observability_scenario_dataset}. Additionally, each map point's VBEE instance is updated with either a positive or a negative observation for each training viewpoint. From this training process, two prevalence-based priors are calculated: point prevalence and global prevalence. These are the ratios of positive to total observations on a per-point basis and across all map points respectively.
+
+Two control models are used in this test. The first control model always returns the global prevalence, while the second control model always returns the point prevalence. The global prevalence model captures the average likelihood that a map point is visible, independent of viewpoint. The point prevalence model captures the average likelihood that a specific map point is visible, independent of viewpoint.
+
+Following training, evaluation begins using a new set of 10,000 random viewpoints disjoint from those used for training. For each of these viewpoints, a ground truth value indicating whether each map point is visible is generated, along with a predicted visibility probability provided by each model. The VBEE observability model and prevalence scores are not updated. Instead, estimates are provided based strictly on the observations collected during training.
+
+The Brier score was selected as the evaluation metric for comparisons between models. It measures mean squared error between predicted visibility probabilities and the binary visibility ground truth, penalizing confident, incorrect predictions more strongly than uncertain predictions. The Brier score for each model is calculated against the ground truth values, resulting in the following metrics:
+\begin{itemize}
+    \item $Brier_{gp}$ - Brier score for the global prevalence model
+    \item $Brier_{pp}$ - Brier score for the point prevalence model
+    \item $Brier_{vbee}$ - Brier score for the VBEE observability model
+\end{itemize}
+
+This experiment is run over 10 independent trials. For each trial, a new random seed is selected, and observability scenarios and viewpoints are regenerated. The resultant data from this experiment is shown in Section \ref{sec:exp1_data}.
+
+\subsubsection*{Experiment 2: VBEE Integrated SLAM Performance with Static Episodic Operations}
+The goal of this experiment is to quantify the effect that VBEE integration has on KV-SLAM tracking performance under static episodic operations.
+
+Two configurations of ORB-SLAM3 are used: the control configuration with changes made only to support episodic operations and increased keyframe generation rate, and the VBEE integrated configuration discussed in Section \ref{sec:orb_slam3_integration}. These systems are run on the static \textit{All Machine Halls} dataset discussed in Section \ref{sec:dataset_creation}.
+
+Each system is run using the EuRoC calibration provided by the ORB-SLAM3 repository which contains camera calibrations and SLAM system parameters which have been selected experimentally \cite{mur-artalORBSLAMVersatileAccurate2015}. % Check this citation
+The VBEE integrated system is run with the optimized parameters selected in Section \ref{sec:param_optimization}.
+
+Two trajectory files are produced containing the frame trajectory and the keyframe trajectory respectively. The difference between these trajectories is discussed in Section \ref{sec:orb_slam3}, but put simply, the frame trajectory contains real-time, unoptimized pose estimates while the keyframe trajectory contains the final estimated poses of the keyframes after optimization. For each of these trajectories, the trajectory analysis tool \textit{evo} is used to produce absolute and relative pose error statistics relative to the \textit{All Machine Halls} ground truth. While evo returns several statistics for APE and RPE, the RMSE is selected as the primary measurement of trajectory error for comparison. Additional metrics are collected from the instrumentation added to ORB-SLAM3, resulting in the following being reported for each test:
+\begin{itemize}
+    \item $APE^{RMSE}_{KF}$ - APE RMSE for the keyframe trajectory
+    \item $APE^{RMSE}_{Frame}$ - APE RMSE for the frame trajectory
+    \item $RPE^{RMSE}_{KF}$ - RPE RMSE for the keyframe trajectory
+    \item $RPE^{RMSE}_{Frame}$ - RPE RMSE for the frame trajectory
+    \item $n_{ve}$ - The number of VBEE eliminated points at the end of the test (0 for no VBEE integration)
+    \item $p_{lf}$ - The percentage of frames where the tracking system is ``lost''
+    \item $n_{r}$ - The number of successful relocalizations performed during the test
+    \item $n_{lc}$ - The number of successful loop closures performed during the test
+\end{itemize}
+
+Ten trials are performed for each system, with a different random seed for each trial.
+
+\subsubsection*{Experiment 3: VBEE Integrated SLAM Performance with Changing Episodic Operations}
+The goal of this experiment is to evaluate whether VBEE integration improves tracking robustness and accuracy relative to the control system when previously observed map points become outdated, as is the case in changing episodic operations.
+
+This experiment has a construction identical to Experiment 2 in terms of system configuration, parameters, and evaluation procedure, but is run on the changing \textit{All Days} dataset described in Section \ref{sec:dataset_creation}, and evaluated against that dataset's ground truth. The same metrics are reported as in Experiment 2:
+\begin{itemize}
+    \item $APE^{RMSE}_{KF}$
+    \item $APE^{RMSE}_{Frame}$
+    \item $RPE^{RMSE}_{KF}$
+    \item $RPE^{RMSE}_{Frame}$
+    \item $n_{ve}$
+    \item $p_{lf}$
+    \item $n_{r}$
+    \item $n_{lc}$
+\end{itemize}
+
+Ten trials are performed for each system with a different random seed for each trial.
+
+\subsubsection*{Experiment 4: VBEE + RANSAC SLAM Performance with Changing Episodic Operations}
+This experiment evaluates the extent to which VBEE integration combined with RANSAC weighting affects tracking robustness and accuracy relative to the control system and the unweighted VBEE integrated system under changing episodic conditions.
+
+The configuration of the control and VBEE integrated systems are identical to Experiment 3, and because each trial is independent, the results for the control and VBEE integrated systems are reused, while the VBEE + RANSAC system is evaluated in new trials. The VBEE + RANSAC system is configured similarly to the VBEE integrated system from Experiment 3, but with RANSAC weighting enabled as discussed in Section \ref{sec:orb_slam3_integration_RANSAC}. A new metric $n_{ri}$ is added, representing the average number of RANSAC iterations needed to find sufficient inliers per successful RANSAC run.\footnote{This metric was recorded in Experiment 3 as well, but is not relevant to that experiment} The metrics reported for each test are:
+ \begin{itemize}
+    \item $APE^{RMSE}_{KF}$
+    \item $APE^{RMSE}_{Frame}$
+    \item $RPE^{RMSE}_{KF}$
+    \item $RPE^{RMSE}_{Frame}$
+    \item $n_{ve}$
+    \item $p_{lf}$
+    \item $n_{r}$
+    \item $n_{lc}$
+    \item $n_{ri}$
+\end{itemize}
+
+Ten trials are performed on the VBEE + RANSAC system with a different random seed for each trial.
